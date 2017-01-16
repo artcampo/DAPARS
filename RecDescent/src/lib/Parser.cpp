@@ -1,25 +1,18 @@
 #include "Parser.hpp"
-
+#include <iterator>
+#include <fstream>
 
 namespace RecDescent{
 
-Parser::Parser(std::string const &file_name){
-  std::ifstream testFile("testfile", std::ios::binary);
-  std::vector<char> fileContents((std::istreambuf_iterator<char>(testFile)),
-                               std::istreambuf_iterator<char>());
-
-void writeByteCode(ByteCode const &byte_code, ){
-  std::unique_ptr<std::ofstream> outputFile( new std::ofstream() );
-  outputFile->open (file_name);
-  *outputFile << std::string("davm") << "\n";    
-  *outputFile << byte_code.stream.size();
+Parser::Parser(std::string const &file_name) 
+  : file_(std::ifstream (file_name.c_str(), std::ios::binary) )
+  , file_data_(std::vector<char> ((std::istreambuf_iterator<char>(file_)),
+                                   std::istreambuf_iterator<char>()) )
+{
+  //std::ifstream file(file_name.c_str(), std::ios::binary);
   
-  for ( auto const inst : byte_code.stream){
-    *outputFile << inst << "\n";
-  }
   
-  outputFile->close();
-}  
+  
   
 }
 

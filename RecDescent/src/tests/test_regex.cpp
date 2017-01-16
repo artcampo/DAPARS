@@ -1,5 +1,7 @@
 #include "Parser.hpp"
 #include <iostream>
+#include <memory>
+#include <string>
 
 int main(int argc, char **argv){
   
@@ -9,7 +11,7 @@ int main(int argc, char **argv){
   }
   
   using namespace RecDescent;
-  std::unique_ptr<Parser> vm(new Parser(std::string(argv[1])) );
+  std::unique_ptr<Parser> vm(new Parser(std::string(argv[1])));
 
   return 0;
 }
