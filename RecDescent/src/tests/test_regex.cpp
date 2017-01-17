@@ -11,7 +11,9 @@ int main(int argc, char **argv){
   }
   
   using namespace RecDescent;
-  std::unique_ptr<Parser> vm(new Parser(std::string(argv[1])));
+  std::unique_ptr<Parser> parser(new Parser(std::string(argv[1])));
 
+  parser->parse();
+  
   return 0;
 }
