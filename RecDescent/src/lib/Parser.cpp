@@ -12,18 +12,22 @@ Parser::Parser(std::string const &file_name)
   , current_position_(file_data_.cbegin())
   , skip_symbols_ {' ','\n'}
 {
-  //std::ifstream file(file_name.c_str(), std::ios::binary);
-  
-  
-  
-  
+ 
 }
 
 void Parser::parse(){
   skip();
   while( current_position_ != file_data_.cend()){    
     std::cout << *current_position_;
-    ++current_position_;
+    switch(*current_position_){
+      case 'a': ++current_position_; break;
+      case 'b': {
+        ++current_position_;
+        while(*current_position_ == 'c') ++current_position_;
+        }; break;
+      default: std::cout << "not matched"; break;
+    } //SHAME ON YOU
+    
     skip();
   }
 }
