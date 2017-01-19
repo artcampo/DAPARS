@@ -2,9 +2,20 @@
 #include <iterator>
 #include <fstream>
 #include <iostream>
+#include <exception>
 
 namespace RecDescent{
 
+  /*
+class ExceptionNotEndFile: public exception{
+  virtual const char* what() const throw()
+  {
+    return "Parsed last expression, but more ";
+  }
+};
+*/
+
+  
 Parser::Parser(std::string const &file_name) 
   : file_(std::ifstream (file_name.c_str(), std::ios::binary) )
   , file_data_(std::vector<char> ((std::istreambuf_iterator<char>(file_)),
@@ -15,24 +26,26 @@ Parser::Parser(std::string const &file_name)
  
 }
 
-void Parser::parse(){
-  skip();
-  while( current_position_ != file_data_.cend()){    
-    std::cout << *current_position_;
-    switch(*current_position_){
-      case 'a': ++current_position_; break;
-      case 'b': {
-        ++current_position_;
-        while(*current_position_ == 'c') ++current_position_;
-        }; break;
-      default: std::cout << "not matched"; break;
-    } //SHAME ON YOU
-    
-    skip();
+void Parser::Parse(){
+  NextToken();
+  if(Expr()){
+    if(token_ != Tokenizer::kToken::eof){
+      std::cout << "More data after program.";
+    }
   }
 }
 
-void Parser::skip() noexcept{
+void Parser::NextToken() noexcept{
+  Skip();
+  if(current_position_ == file_data_.cend())
+    token_ = Tokenizer::kToken::eof;
+  else{
+    //(?) store init/end position of current token for conversion
+    token_ = Tokenizer::ParseToken(current_position_);
+  }
+}
+
+void Parser::Skip() noexcept{
   bool symbol_is_no_skip = false;
   while(not symbol_is_no_skip 
         and current_position_ != file_data_.cend() ){

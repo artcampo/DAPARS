@@ -1,0 +1,6 @@
+Prog  := E
+E     := F E'
+E'    := + F
+      |  empty
+F     := ( E )
+      |  numerical
