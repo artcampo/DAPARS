@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <string>
 #include "Symbol.hpp"
 
 
@@ -14,6 +15,14 @@ public:
   
   const Symbol              head_;
   const std::vector<Symbol> derived_;
+  
+  std::string str() const noexcept{
+    std::string s(head_.str());
+    s += " -> ";
+    for(const auto &symbol : derived_) { s += symbol.str(); s+= " ";} 
+    return s;
+  }
+    
   
 private:
 
