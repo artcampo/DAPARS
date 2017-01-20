@@ -21,6 +21,8 @@ public:
   
   bool IsBackTrackFree() noexcept;
   
+  void DumpFirst() const noexcept;
+  
 private:
   std::vector<Rule> rules_;
   bool analized_;

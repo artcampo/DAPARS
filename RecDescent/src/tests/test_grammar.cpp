@@ -33,5 +33,7 @@ int main(){
   //Anaylze
   g.Analyze();
   
+  g.DumpFirst();
+  
   return 0;
 }

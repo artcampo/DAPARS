@@ -60,22 +60,36 @@ void Grammar::ComputeFirstSets() noexcept{
       
       
       //check if set stays the same, and if not, update it
-
+      for(const auto &symbol : new_set){
+        if(first_[r.head_].find(symbol) == first_[r.head_].end()){
+          first_[r.head_].insert(symbol);
+          hasChanged = true;
+        }
+      }
+      /*
       if(first_[r.head_] != new_set){ 
         std::cout << "Rule: " << r.str() << std::endl;
         std::cout << "change: " << std::endl;
         
+        std::cout << "OLD: ";
         for(const auto &symbol : first_[r.head_])
           std::cout << symbol.str() <<" ";
         std::cout << "" << std::endl;
         
+        std::cout << "NEW: ";
         for(const auto &symbol : new_set)
           std::cout << symbol.str() <<" ";
-        std::cout << "" << std::endl;        
+        std::cout << "" << std::endl;   
+        
         
         hasChanged = true;
-        first_[r.head_] = new_set;
-      }
+        first_[r.head_].insert(new_set.cbegin(), new_set.cend());
+        
+        std::cout << "RES: ";
+        for(const auto &symbol : first_[r.head_])
+          std::cout << symbol.str() <<" ";
+        std::cout << "" << std::endl;           
+      }*/
       
     }
   }
@@ -89,6 +103,17 @@ void Grammar::ComputeFirstPlusSets() noexcept{
 
 bool Grammar::IsBackTrackFree() noexcept{
   if(not analized_) Analyze();
+}
+
+void Grammar::DumpFirst() const noexcept{
+  for(const auto &entry : first_){
+    std::cout << entry.first.str() << " : ";
+    
+    for(const auto &s : entry.second){
+      std::cout << s.str() << " , ";
+    }
+    std::cout << std::endl;
+  }
 }
 
 } //end namespace GrammarAnalyzer
