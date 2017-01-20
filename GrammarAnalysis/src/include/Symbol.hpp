@@ -29,6 +29,7 @@ public:
   
   const bool operator< ( const Symbol &s ) const { return ( name_ < s.name_ );}
   const bool operator== ( const Symbol &s ) const { return ( name_ == s.name_ );}
+  const bool operator!= ( const Symbol &s ) const { return not( name_ == s.name_ );}
   
 private:
 

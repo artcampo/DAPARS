@@ -96,6 +96,42 @@ void Grammar::ComputeFirstSets() noexcept{
 }
 
 void Grammar::ComputeFollowSets() noexcept{
+  
+  bool hasChanged = true;
+  while(hasChanged){
+    hasChanged = false;
+    for(const auto &r : rules_){  
+      bool all_have_empty = true;
+      const Symbol& a = r.head_;
+      std::set<Symbol> trailer = follow_[a];
+      
+      for(const auto &symbol : r.derived_){
+        const Symbol& b = symbol;
+        if(not b.IsTerminal()){
+          std::set<Symbol>& b_set = follow_[b];
+          //check if set stays the same, and if not, update it
+          for(const auto &symbol : trailer){
+            if(b_set.find(symbol) == b_set.end()){
+              b_set.insert(symbol);
+              hasChanged = true;
+            }
+          }
+          std::set<Symbol>& b_first_set = first_[b];
+          if(b_first_set.find(Symbol::Empty()) == b_first_set.end()){
+            //trailer <- trailer U (first(b) - empty)
+            for(const auto &symbol : trailer)
+              if(symbol != Symbol::Empty())
+                trailer.insert(symbol);
+                
+          }else{
+            trailer = first_[b];
+          }
+        }else{
+          trailer = first_[b];
+        }
+      }// for(const auto &symbol : r.derived_)
+    } // end for(const auto &r : rules_){  
+  }// end while   
 }
 
 void Grammar::ComputeFirstPlusSets() noexcept{
@@ -117,5 +153,19 @@ void Grammar::DumpFirst() const noexcept{
     }
   }
 }
+
+void Grammar::DumpFollow() const noexcept{
+  for(const auto &entry : follow_){
+    if(not entry.first.IsTerminal()){
+      std::cout << entry.first.str() << " : ";
+      
+      for(const auto &s : entry.second){
+        std::cout << s.str() << " , ";
+      }
+      std::cout << std::endl;
+    }
+  }
+}
+
 
 } //end namespace GrammarAnalyzer

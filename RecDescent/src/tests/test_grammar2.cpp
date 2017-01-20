@@ -54,6 +54,8 @@ int main(){
   g.Analyze();
   
   g.DumpFirst();
+  std::cout << "-----------------------------" << std::endl;
+  g.DumpFollow();
   
   return 0;
 }
