@@ -7,7 +7,7 @@ class Symbol{
   
 public:  
   explicit Symbol(const std::string& name, const std::string& value, 
-         const bool is_terminal, const bool is_empty)
+         const bool is_terminal, const bool is_empty = false)
   : name_(name), value_(value), is_terminal_(is_terminal), is_empty_(is_empty)
   {}
 

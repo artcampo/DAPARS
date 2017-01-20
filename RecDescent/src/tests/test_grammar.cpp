@@ -9,7 +9,7 @@ int main(){
   
   using namespace GrammarAnalyzer;
   
-  const Symbol P("PROG");
+  const Symbol P("PROG", "PROG", is_terminal = false);
   
   Grammar g;
   /*
