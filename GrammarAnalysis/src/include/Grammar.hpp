@@ -16,6 +16,8 @@ public:
   Grammar();
   
   void AddRule(const Rule& rule)  noexcept;
+  void AddStartingRule(const Rule& rule)  noexcept;
+  
 
   void Analyze() noexcept;
   
@@ -31,6 +33,7 @@ private:
   std::set<Symbol> symbols_;
   std::map<Symbol, std::set<Symbol>> first_;
   std::map<Symbol, std::set<Symbol>> follow_;
+  Symbol start_symbol_;
   
   void ComputeFirstSets() noexcept;
   void ComputeFollowSets() noexcept;

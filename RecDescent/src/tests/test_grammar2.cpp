@@ -34,7 +34,7 @@ int main(){
   
   //Grammar
   Grammar g;
-  g.AddRule(Rule(p,  {e}));
+  g.AddStartingRule(Rule(p,  {e}));
   
   g.AddRule(Rule(e,  {t, ep}));
   g.AddRule(Rule(ep, {plus, t, ep}));
@@ -49,6 +49,8 @@ int main(){
   g.AddRule(Rule(f,  {lpar, e, rpar}));
   g.AddRule(Rule(f,  {numr}));
   g.AddRule(Rule(f,  {name}));
+  
+  
   
   //Anaylze
   g.Analyze();

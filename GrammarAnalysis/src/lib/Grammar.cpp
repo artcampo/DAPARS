@@ -21,6 +21,11 @@ void Grammar::AddRule(const Rule& rule) noexcept{
     symbols_.insert(s);
 }
 
+void Grammar::AddStartingRule(const Rule& rule)  noexcept{
+  AddRule(rule);
+  start_symbol_ = rule.head_;
+}
+
 
 void Grammar::Analyze() noexcept{
   if(not analized_){
@@ -58,7 +63,6 @@ void Grammar::ComputeFirstSets() noexcept{
       if(all_have_empty)
         new_set.insert(Symbol::Empty());
       
-      
       //check if set stays the same, and if not, update it
       for(const auto &symbol : new_set){
         if(first_[r.head_].find(symbol) == first_[r.head_].end()){
@@ -66,36 +70,16 @@ void Grammar::ComputeFirstSets() noexcept{
           hasChanged = true;
         }
       }
-      /*
-      if(first_[r.head_] != new_set){ 
-        std::cout << "Rule: " << r.str() << std::endl;
-        std::cout << "change: " << std::endl;
-        
-        std::cout << "OLD: ";
-        for(const auto &symbol : first_[r.head_])
-          std::cout << symbol.str() <<" ";
-        std::cout << "" << std::endl;
-        
-        std::cout << "NEW: ";
-        for(const auto &symbol : new_set)
-          std::cout << symbol.str() <<" ";
-        std::cout << "" << std::endl;   
-        
-        
-        hasChanged = true;
-        first_[r.head_].insert(new_set.cbegin(), new_set.cend());
-        
-        std::cout << "RES: ";
-        for(const auto &symbol : first_[r.head_])
-          std::cout << symbol.str() <<" ";
-        std::cout << "" << std::endl;           
-      }*/
       
     }
   }
 }
 
 void Grammar::ComputeFollowSets() noexcept{
+//   std::set<Symbol> start_set;
+//   start_set.insert(Symbol::Eof());
+//   follow_[start_symbol_] = start_set;
+  follow_[start_symbol_].insert(Symbol::Eof());
   
   bool hasChanged = true;
   while(hasChanged){

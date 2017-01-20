@@ -6,10 +6,11 @@ namespace GrammarAnalyzer{
 class Symbol{
   
 public:  
-  explicit Symbol(const std::string& name, const std::string& value, 
+  Symbol(const std::string& name, const std::string& value, 
          const bool is_terminal, const bool is_empty = false)
   : name_(name), value_(value), is_terminal_(is_terminal), is_empty_(is_empty)
   {}
+  Symbol(){};
 
   std::string str() const noexcept{
     if(is_empty_) return std::string("{empty}");
@@ -19,10 +20,10 @@ public:
   bool IsEmpty() const noexcept   { return is_empty_; }
   bool IsTerminal() const noexcept{ return is_terminal_; }
   
-  const std::string name_;
-  const std::string value_;
-  const bool is_terminal_; 
-  const bool is_empty_;
+  std::string name_;
+  std::string value_;
+  bool is_terminal_; 
+  bool is_empty_;
   
   const Symbol static Empty(){ return Symbol("EMPTY","{empty}", true, true); }
   const Symbol static Eof()  { return Symbol("EOF",  "{eof}",   true, false); }
@@ -30,6 +31,10 @@ public:
   const bool operator< ( const Symbol &s ) const { return ( name_ < s.name_ );}
   const bool operator== ( const Symbol &s ) const { return ( name_ == s.name_ );}
   const bool operator!= ( const Symbol &s ) const { return not( name_ == s.name_ );}
+  
+  //const bool operator= ( const Symbol &s ) const { return not( name_ == s.name_ );}
+  
+  //const Symbol& X::operator=(X rhs)
   
 private:
 
