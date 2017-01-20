@@ -7,9 +7,6 @@
 int main(){
   
   
-  using namespace RecDescent;
-  std::unique_ptr<Parser> parser(new Parser(std::string(argv[1])));
-
   using namespace GrammarAnalyzer;
   Grammar g;
   

@@ -1,5 +1,5 @@
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../include")
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../../GrammarAnalysis")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../../GrammarAnalysis/src/include")
 
 add_definitions( -std=c++11 -g)
 
