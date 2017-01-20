@@ -107,12 +107,14 @@ bool Grammar::IsBackTrackFree() noexcept{
 
 void Grammar::DumpFirst() const noexcept{
   for(const auto &entry : first_){
-    std::cout << entry.first.str() << " : ";
-    
-    for(const auto &s : entry.second){
-      std::cout << s.str() << " , ";
+    if(not entry.first.IsTerminal()){
+      std::cout << entry.first.str() << " : ";
+      
+      for(const auto &s : entry.second){
+        std::cout << s.str() << " , ";
+      }
+      std::cout << std::endl;
     }
-    std::cout << std::endl;
   }
 }
 
