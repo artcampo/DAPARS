@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <map>
 #include "Rule.hpp"
 #include "Symbol.hpp"
 
@@ -15,10 +16,15 @@ public:
   
   void AddRule(const Rule& rule)  noexcept;
 
+  void Analyze() noexcept;
   
 private:
   std::vector<Rule> rules_;
+  bool analized_;
   
+  void ComputeFirstSets() noexcept;
+  void ComputeFollowSets() noexcept;
+  void ComputeFirstPlusSets() noexcept;
   
 };
 

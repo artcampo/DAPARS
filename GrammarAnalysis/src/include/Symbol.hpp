@@ -21,6 +21,10 @@ public:
   const bool is_terminal_; 
   const bool is_empty_;
   
+  const Symbol static Empty(){
+    return Symbol("EMPTY","{empty}", true, true);
+  }
+  
 private:
 
 };
