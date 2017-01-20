@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <set>
 
 namespace GrammarAnalyzer{
 
@@ -25,8 +26,23 @@ public:
     return Symbol("EMPTY","{empty}", true, true);
   }
   
+  const bool operator< ( const Symbol &s ) const { return ( name_ < s.name_ );}
+  
 private:
 
 };
+
+/*
+namespace std
+{
+template<> struct less<GrammarAnalyzer::Symbol>
+{
+  bool operator() (const GrammarAnalyzer::Symbol& lhs, 
+                    const GrammarAnalyzer::Symbol& rhs) const{
+      return lhs.name_ < rhs.name_;
+  }
+};
+}//end namespace std
+*/
 
 } //end namespace GrammarAnalyzer
