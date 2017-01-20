@@ -8,7 +8,14 @@ int main(){
   
   
   using namespace GrammarAnalyzer;
-  Grammar g;
   
+  const Symbol P("PROG");
+  
+  Grammar g;
+  /*
+  g.AddRule(Rule( Symbol,
+                  {("E", )}
+  );
+  */
   return 0;
 }

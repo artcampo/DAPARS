@@ -9,10 +9,14 @@ namespace GrammarAnalyzer{
 
 
   
-Grammar::Grammar() 
+Grammar::Grammar()
 {
  
 }
 
+
+void Grammar::AddRule(const Rule& rule) noexcept{
+  rules_.push_back(rule);
+}
 
 } //end namespace GrammarAnalyzer
