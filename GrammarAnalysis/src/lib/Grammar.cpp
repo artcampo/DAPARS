@@ -101,9 +101,9 @@ void Grammar::ComputeFollowSets() noexcept{
             }
           }
           std::set<Symbol>& b_first_set = first_[b];
-          if(b_first_set.find(Symbol::Empty()) == b_first_set.end()){
+          if(b_first_set.find(Symbol::Empty()) != b_first_set.end()){
             //trailer <- trailer U (first(b) - empty)
-            for(const auto &symbol : trailer)
+            for(const auto &symbol : b_first_set)
               if(symbol != Symbol::Empty())
                 trailer.insert(symbol);
                 
