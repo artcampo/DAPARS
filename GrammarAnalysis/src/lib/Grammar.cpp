@@ -89,8 +89,8 @@ void Grammar::ComputeFollowSets() noexcept{
       const Symbol& a = r.head_;
       std::set<Symbol> trailer = follow_[a];
       
-      for(const auto &symbol : r.derived_){
-        const Symbol& b = symbol;
+      for (auto it = r.derived_.rbegin(); it != r.derived_.rend(); ++it){
+        const Symbol& b = *it;
         if(not b.IsTerminal()){
           std::set<Symbol>& b_set = follow_[b];
           //check if set stays the same, and if not, update it
@@ -128,10 +128,10 @@ bool Grammar::IsBackTrackFree() noexcept{
 void Grammar::DumpFirst() const noexcept{
   for(const auto &entry : first_){
     if(not entry.first.IsTerminal()){
-      std::cout << entry.first.str() << " : ";
+      std::cout << entry.first.str() << " ";
       
       for(const auto &s : entry.second){
-        std::cout << s.str() << " , ";
+        std::cout << s.str() << " ";
       }
       std::cout << std::endl;
     }
@@ -141,10 +141,10 @@ void Grammar::DumpFirst() const noexcept{
 void Grammar::DumpFollow() const noexcept{
   for(const auto &entry : follow_){
     if(not entry.first.IsTerminal()){
-      std::cout << entry.first.str() << " : ";
+      std::cout << entry.first.str() << " ";
       
       for(const auto &s : entry.second){
-        std::cout << s.str() << " , ";
+        std::cout << s.str() << " ";
       }
       std::cout << std::endl;
     }
