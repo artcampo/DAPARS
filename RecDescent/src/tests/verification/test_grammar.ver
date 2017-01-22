@@ -1,0 +1,9 @@
+EXP' {empty} + 
+EXPR ( {num} 
+FACT ( {num} 
+PROG ( {num} 
+-----------------------------
+EXP' {eof} ) 
+EXPR {eof} ) 
+FACT {eof} + ) 
+PROG {eof} 

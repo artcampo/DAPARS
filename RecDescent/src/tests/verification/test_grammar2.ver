@@ -1,0 +1,13 @@
+EXP' {empty} - + 
+EXPR ( {nam} {num} 
+FACT ( {nam} {num} 
+PROG ( {nam} {num} 
+TER' / {empty} * 
+TERM ( {nam} {num} 
+-----------------------------
+EXP' {eof} ) 
+EXPR {eof} ) 
+FACT / {eof} - * + ) 
+PROG {eof} 
+TER' {eof} - + ) 
+TERM {eof} - + ) 
