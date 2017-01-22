@@ -26,12 +26,10 @@ Parser::Parser(std::string const &file_name)
  
 }
 
+
 void Parser::Parse(){
-  NextToken();
-  if(Expr()){
-    if(token_ != Tokenizer::kToken::eof){
-      std::cout << "More data after program.";
-    }
+  if(not Prog()){
+    Error("Program malformed. ");
   }
 }
 
@@ -60,7 +58,22 @@ void Parser::Skip() noexcept{
     }
     if(not current_symbol_skipped) symbol_is_no_skip = true;
   }
+}
+
+void Parser::Error(const std::string& message){
+  std::cout << message << " at: [[";
   
+  //Go back N chars
+  std::vector<char>::const_iterator start_of_error = current_position_;
+  for(int i = 0; i < num_characters_to_display_before_error_
+                and start_of_error != file_data_.cbegin(); ++i)
+    --start_of_error;
+  
+  while(start_of_error != current_position_){
+    std::cout << *start_of_error;
+    ++start_of_error;
+  }
+  std::cout << "]]" << std::endl;
 }
 
 } //end namespace RecDescent

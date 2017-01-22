@@ -7,14 +7,22 @@
 namespace RecDescent{
 
 
-void Parser::Error(const std::string& message){
-  std::cout << message << " at: \n";
+bool Parser::Prog(){
+  NextToken();
+  if(Expr()){
+    std::cout << "Prog" << std::endl;
+    if(token_ != Tokenizer::kToken::eof){
+      std::cout << "More data after program.";
+    }
+  }
 }
 
 bool Parser::Expr(){
   // E->F E'
   if(Factor()){
-    return ExprPrime();
+    std::cout << "Fact" << std::endl;
+    bool success = ExprPrime();
+    if(success) std::cout << "Exp" << std::endl;
   }else Error("Factor missing.");
   return false;
 }
@@ -22,16 +30,36 @@ bool Parser::Expr(){
 bool Parser::ExprPrime(){
   // E'-> + F | empty
   if(token_ == Tokenizer::kToken::plus){
-    return Factor();
+    NextToken();
+    bool success = Factor();
+    if(success) std::cout << "Exp'" << std::endl;
+    return success;
   } else{
     //check Follow(E')
-    return true;
+    if(token_ == Tokenizer::kToken::eof or token_ == Tokenizer::kToken::rpar)
+      return true;
+    else
+      Error("Expecting eof or rpar.");
   }
   return false;
 }
 
 
 bool Parser::Factor(){
+  // F := ( E ) | numerical
+  if(token_ == Tokenizer::kToken::numerical){
+    std::cout << "Fact" << std::endl;
+    return true;
+  }
+  if(token_ == Tokenizer::kToken::lpar){
+    NextToken();
+    bool success = Expr();
+    NextToken();
+    if(token_ == Tokenizer::kToken::rpar){
+      std::cout << "Fact" << std::endl;
+      return true;
+    }
+  }
   return false;
 }
 
