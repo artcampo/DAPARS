@@ -1,0 +1,2 @@
+- Inspect commit 6eb5f9c1e98e2d4c225c03f66503c703616df444
+where presumably the set is forcing Symbol's default ctor

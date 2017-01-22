@@ -23,7 +23,8 @@ int main(){
   
   //Grammar
   Grammar g;
-  g.AddRule(Rule(p,  {e}));
+  g.AddStartingRule(Rule(p,  {e}));
+  
   g.AddRule(Rule(e,  {f, ep}));
   g.AddRule(Rule(ep, {plus, f}));
   g.AddRule(Rule(ep, {Symbol::Empty()}));
@@ -33,7 +34,10 @@ int main(){
   //Anaylze
   g.Analyze();
   
+  //Print
   g.DumpFirst();
+  std::cout << "-----------------------------" << std::endl;
+  g.DumpFollow();
   
   return 0;
 }
