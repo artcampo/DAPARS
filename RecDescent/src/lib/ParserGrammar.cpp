@@ -16,11 +16,13 @@ bool Parser::Prog(){
       return false;
     }
   }
+ std::cout << "Program is syntactically correct." << std::endl;
+ std::cout << "-> " << str(token_);
  return true;
 }
 
 bool Parser::Expr(){
-  std::cout << "Exp"<< std::endl;
+  std::cout << std::endl << "Exp";
   // E->F E'
   if(Factor()){
 //    Accept
@@ -31,10 +33,10 @@ bool Parser::Expr(){
 }
 
 bool Parser::ExprPrime(){
-  std::cout << "Exp'"<< std::endl;
+  std::cout << std::endl << "Exp'";
   // E'-> + F E' | empty
   if(token_ == Tokenizer::kToken::plus){
-    std::cout << "+" << std::endl;
+   
     NextToken();
     bool success = Factor();
 //     if(success) std::cout << "Exp'" << std::endl;
@@ -52,20 +54,23 @@ bool Parser::ExprPrime(){
 
 
 bool Parser::Factor(){
-  std::cout << "Fact"<< std::endl;
+  std::cout << std::endl << "Fact";
   // F := ( E ) | numerical
   if(token_ == Tokenizer::kToken::numerical){
     NextToken();
-    std::cout << "Fact: num" << std::endl;
     return true;
   }
   if(token_ == Tokenizer::kToken::lpar){
     NextToken();
     bool success = Expr();
+    std::cout << "[[test )]]";
     if(token_ == Tokenizer::kToken::rpar){
       NextToken();
 //       std::cout << "Fact" << std::endl;
       return true;
+    }else {
+      Error("Expecting rpar.");
+      return false;
     }
   }
   return false;

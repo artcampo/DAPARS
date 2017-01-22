@@ -29,6 +29,19 @@ ParseToken(std::vector<char>::const_iterator& current_position) noexcept{
   if(ParseNumerical(current_position))              return kToken::numerical;
 }
 
+std::string str(const kToken& t){
+  switch(t){
+    case kToken::eof:       return std::string("eof");  break;
+    case kToken::lpar:      return std::string("lpar"); break;
+    case kToken::rpar:      return std::string("rpar"); break;
+    case kToken::plus:      return std::string("plus"); break;
+    case kToken::numerical: return std::string("num");  break;
+    default:                break;
+  }
+  return std::string("error");
+}
+
+
 } //end namespace Tokenizer
 
 

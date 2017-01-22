@@ -1,15 +1,12 @@
+-> lpar
 Exp
-Fact
+Fact-> num
 Exp
-Fact
-Fact: num
-Exp'
-+
-Fact
-Fact: num
-Exp'
-Exp'
-+
-Fact
-Fact: num
-Exp'
+Fact-> plus
+Exp'-> num
+Fact-> rpar
+Exp'[[test )]]-> plus
+Exp'-> num
+Fact-> eof
+Exp'Program is syntactically correct.
+-> eof

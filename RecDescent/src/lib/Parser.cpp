@@ -41,6 +41,8 @@ void Parser::NextToken() noexcept{
     //(?) store init/end position of current token for conversion
     token_ = Tokenizer::ParseToken(current_position_);
   }
+  
+  std::cout << "-> " << str(token_);
 }
 
 void Parser::Skip() noexcept{
