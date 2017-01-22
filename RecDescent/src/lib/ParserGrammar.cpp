@@ -13,8 +13,10 @@ bool Parser::Prog(){
     std::cout << "Prog" << std::endl;
     if(token_ != Tokenizer::kToken::eof){
       std::cout << "More data after program.";
+      return false;
     }
   }
+ return true;
 }
 
 bool Parser::Expr(){
@@ -30,12 +32,13 @@ bool Parser::Expr(){
 
 bool Parser::ExprPrime(){
   std::cout << "Exp'"<< std::endl;
-  // E'-> + F | empty
+  // E'-> + F E' | empty
   if(token_ == Tokenizer::kToken::plus){
     std::cout << "+" << std::endl;
     NextToken();
     bool success = Factor();
 //     if(success) std::cout << "Exp'" << std::endl;
+    success &= ExprPrime();
     return success;
   } else{
     //check Follow(E')

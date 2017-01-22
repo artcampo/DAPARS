@@ -1,6 +1,6 @@
 Prog  := E
 E     := F E'
-E'    := + F
+E'    := + F E'
       |  empty
 F     := ( E )
       |  numerical
