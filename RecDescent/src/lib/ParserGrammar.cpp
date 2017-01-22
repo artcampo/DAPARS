@@ -18,21 +18,24 @@ bool Parser::Prog(){
 }
 
 bool Parser::Expr(){
+  std::cout << "Exp"<< std::endl;
   // E->F E'
   if(Factor()){
-    std::cout << "Fact" << std::endl;
+//    Accept
     bool success = ExprPrime();
-    if(success) std::cout << "Exp" << std::endl;
+//     if(success) std::cout << "Exp" << std::endl;
   }else Error("Factor missing.");
   return false;
 }
 
 bool Parser::ExprPrime(){
+  std::cout << "Exp'"<< std::endl;
   // E'-> + F | empty
   if(token_ == Tokenizer::kToken::plus){
+    std::cout << "+" << std::endl;
     NextToken();
     bool success = Factor();
-    if(success) std::cout << "Exp'" << std::endl;
+//     if(success) std::cout << "Exp'" << std::endl;
     return success;
   } else{
     //check Follow(E')
@@ -46,17 +49,19 @@ bool Parser::ExprPrime(){
 
 
 bool Parser::Factor(){
+  std::cout << "Fact"<< std::endl;
   // F := ( E ) | numerical
   if(token_ == Tokenizer::kToken::numerical){
-    std::cout << "Fact" << std::endl;
+    NextToken();
+    std::cout << "Fact: num" << std::endl;
     return true;
   }
   if(token_ == Tokenizer::kToken::lpar){
     NextToken();
     bool success = Expr();
-    NextToken();
     if(token_ == Tokenizer::kToken::rpar){
-      std::cout << "Fact" << std::endl;
+      NextToken();
+//       std::cout << "Fact" << std::endl;
       return true;
     }
   }
