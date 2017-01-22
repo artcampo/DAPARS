@@ -23,13 +23,14 @@ bool Parser::Prog(){
 
 bool Parser::Expr(){
   std::cout << std::endl << "Exp";
+  bool success;
   // E->F E'
   if(Factor()){
 //    Accept
-    bool success = ExprPrime();
+    success = ExprPrime();
 //     if(success) std::cout << "Exp" << std::endl;
   }else Error("Factor missing.");
-  return false;
+  return success;
 }
 
 bool Parser::ExprPrime(){
@@ -54,16 +55,17 @@ bool Parser::ExprPrime(){
 
 
 bool Parser::Factor(){
+  bool success = true;
   std::cout << std::endl << "Fact";
   // F := ( E ) | numerical
   if(token_ == Tokenizer::kToken::numerical){
     NextToken();
-    return true;
+    return success;
   }
   if(token_ == Tokenizer::kToken::lpar){
     NextToken();
-    bool success = Expr();
-    std::cout << "[[test )]]";
+    success = Expr();
+    //std::cout << "[[test )]]";
     if(token_ == Tokenizer::kToken::rpar){
       NextToken();
 //       std::cout << "Fact" << std::endl;
@@ -73,7 +75,7 @@ bool Parser::Factor(){
       return false;
     }
   }
-  return false;
+  return success;
 }
 
 

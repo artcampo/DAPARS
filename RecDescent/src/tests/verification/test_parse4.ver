@@ -7,8 +7,8 @@ Exp
 Fact-> num
 Exp
 Fact-> rpar
-Exp'[[test )]]-> eof
-Exp'[[test )]]Expecting rpar. at: [[((2)
+Exp'-> eof
+Exp'Expecting rpar. at: [[((2)
 ]]
 
 Exp'Program is syntactically correct.

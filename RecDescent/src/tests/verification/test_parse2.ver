@@ -5,8 +5,9 @@ Exp
 Fact-> plus
 Exp'-> num
 Fact-> rpar
-Exp'[[test )]]-> plus
+Exp'-> plus
 Exp'-> num
 Fact-> eof
-Exp'Program is syntactically correct.
+Exp'Prog
+Program is syntactically correct.
 -> eof

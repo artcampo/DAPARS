@@ -5,5 +5,6 @@ Exp'-> num
 Fact-> plus
 Exp'-> num
 Fact-> eof
-Exp'Program is syntactically correct.
+Exp'Prog
+Program is syntactically correct.
 -> eof
