@@ -13,6 +13,10 @@ target_link_libraries(test_grammar PARSER GRAMMAR)
 add_executable(test_grammar2 test_grammar2.cpp)
 target_link_libraries(test_grammar2 PARSER GRAMMAR)
 
+add_executable(test_parser test_parser.cpp)
+target_link_libraries(test_parser PARSER GRAMMAR)
+
 INSTALL(TARGETS test_regex DESTINATION tests)
 INSTALL(TARGETS test_grammar DESTINATION tests)
 INSTALL(TARGETS test_grammar2 DESTINATION tests)
+INSTALL(TARGETS test_parser DESTINATION tests)
