@@ -26,9 +26,13 @@ bool Parser::Prog(){
 Node* Parser::Expr(){
   std::cout << std::endl << "Exp";
   Node* return_node;
+  Node* return_node_prime;
   
-  if(Factor() != nullptr){
-    return_node = ExprPrime();
+  return_node = Factor();
+  if(return_node != nullptr){
+    return_node_prime = ExprPrime();
+    if(return_node_prime != nullptr)
+      return_node = return_node_prime; //return plus(F,E')
   }else {
     Error("Factor missing.");
   }
@@ -74,14 +78,11 @@ Node* Parser::Factor(){
   if(token_ == Tokenizer::kToken::lpar){
     NextToken();
     return_node = Expr();
-    //std::cout << "[[test )]]";
-    if(token_ == Tokenizer::kToken::rpar){
+    if(token_ == Tokenizer::kToken::rpar)
       NextToken();
-//       std::cout << "Fact" << std::endl;
-    }else {
+    else 
       Error("Expecting rpar.");
-    }
-  } else 
+  }else 
     Error("Expectinglrpar.");
   
   return return_node;
