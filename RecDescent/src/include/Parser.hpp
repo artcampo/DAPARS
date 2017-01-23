@@ -21,6 +21,7 @@ private:
   const static int num_characters_to_display_before_error_ = 5;
   std::vector<char> skip_symbols_;
   
+  Block*& programBlock_;
   std::ifstream     file_;
   std::vector<char> file_data_;
   std::vector<char>::const_iterator current_position_;
@@ -36,7 +37,8 @@ private:
   
   bool  Prog();
   Node* Expr();
-  Node* ExprPrime();
+  //Node* ExprPrime(const Node* lhs);
+  Node* ExprPrime(Node* lhs);
   Node* Factor();
   
   

@@ -23,6 +23,7 @@ Parser::Parser(std::string const &file_name, Block* &programBlock)
                                    std::istreambuf_iterator<char>()) )
   , current_position_(file_data_.cbegin())
   , skip_symbols_ {' ','\n'}
+  , programBlock_(programBlock)
 {
  
 }

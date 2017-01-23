@@ -1,38 +1,54 @@
 #include "Parser.hpp"
 #include "Node.hpp"
+#include "IRDefinition.hpp"
 #include <iterator>
 #include <fstream>
 #include <iostream>
 #include <exception>
 
+
+using namespace IRDefinition;
+using namespace SubtypesArithmetic;
+
 namespace RecDescent{
 
 
 bool Parser::Prog(){
+  programBlock_ = new Block();
+  Node* node_expr;
+  
   NextToken();
-  if(Expr()){
-    std::cout << "Prog" << std::endl;
+  node_expr = Expr();
+  if(node_expr != nullptr){
+//     std::cout << "Prog" << std::endl;
     if(token_ != Tokenizer::kToken::eof){
       std::cout << "More data after program.";
       return false;
     }
   }
- std::cout << "Program is syntactically correct." << std::endl;
- std::cout << "-> " << str(token_);
- return true;
+  
+  ExpressionStatement* exp_stmt = new ExpressionStatement(dynamic_cast<Expression*>(node_expr));
+  programBlock_->statements.push_back(exp_stmt);
+  
+  std::cout << "Program is syntactically correct." << std::endl;
+  std::cout << "-> " << str(token_);
+  return true;
 }
 
 // E->F E'
 Node* Parser::Expr(){
-  std::cout << std::endl << "Exp";
+//   std::cout << std::endl << "Exp";
   Node* return_node;
-  Node* return_node_prime;
+  Node* return_factor;
+  Node* return_prime;
   
-  return_node = Factor();
+  return_factor = Factor();
+  return_node   = return_factor;
+  
   if(return_node != nullptr){
-    return_node_prime = ExprPrime();
-    if(return_node_prime != nullptr)
-      return_node = return_node_prime; //return plus(F,E')
+    return_prime = ExprPrime(return_factor);
+    if(return_prime != nullptr)
+      return_node = return_prime; //return plus(F,E')
   }else {
     Error("Factor missing.");
   }
@@ -43,36 +59,48 @@ Node* Parser::Expr(){
 // returns:
 // - nullptr, if E' is empty
 // - Node of plus(E_caller,F)
-Node* Parser::ExprPrime(){
-  std::cout << std::endl << "Exp'";
+//Node* Parser::ExprPrime(const Node* lhs){
+Node* Parser::ExprPrime(Node* lhs){
+//   std::cout << std::endl << "Exp'";
   Node* return_node = nullptr;
   
   if(token_ == Tokenizer::kToken::plus){
-   
     NextToken();
-    Factor();
-//     if(success) std::cout << "Exp'" << std::endl;
-    ExprPrime();
+    Node* return_factor = Factor();
     
-    //return_node = new BinaryOp($1, IR_ADD, $3);
+    /*
+    return_node = new BinaryOp( dynamic_cast<const Expression*>(lhs)
+                              , IR_ADD
+                              , dynamic_cast<Expression*>(return_factor) );
+                              */
+    
+    return_node = new BinaryOp( dynamic_cast<Expression*>(lhs)
+                              , IR_ADD
+                              , dynamic_cast<Expression*>(return_factor) );    
+    
+    //A new E' will op against current op+
+    Node* return_expprr = ExprPrime(return_node);
+    if(return_expprr != nullptr)
+      return_node = return_expprr;
     
   } else{
     //check Follow(E')
     if(not(token_ == Tokenizer::kToken::eof or token_ == Tokenizer::kToken::rpar))
       Error("Expecting eof or rpar.");
-    }
+  }
   
   return return_node;
 }
 
-
+// F := ( E ) | numerical
 Node* Parser::Factor(){
-  std::cout << std::endl << "Fact";
+//   std::cout << std::endl << "Fact";
   Node* return_node;
-  // F := ( E ) | numerical
+  
   if(token_ == Tokenizer::kToken::numerical){
-    Node* return_node = new Literal(2);
+    return_node = new Literal(token_int_value_);
     NextToken();
+    return return_node;
   }
   
   if(token_ == Tokenizer::kToken::lpar){

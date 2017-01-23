@@ -18,33 +18,37 @@ int main(int argc, char **argv)
     exit(1);
   }
   
-  Block* programBlock;
+  Block* programBlock = nullptr;
   
   using namespace RecDescent;
   std::unique_ptr<Parser> parser(new Parser(std::string(argv[1]), programBlock));
 
   parser->Parse();
+  
+  if(programBlock != nullptr)
 
-    {
-    std::cout << "Print AST\n";
-    ASTVisitorPrettyPrinter visitor;
-    visitor.Visit(*programBlock);
-    }
+  {
+  std::cout << "Print AST\n";
+  ASTVisitorPrettyPrinter visitor;
+  visitor.Visit(*programBlock);
+  }
+  
+  /*
+  std::cout << "--------------------------\n";
+  std::cout << "ByteCode:\n";
+  ASTVisitorCodeGenerator visitor;
+  visitor.Visit(*programBlock);
+  visitor.EndOfProgram();
+  
+  visitor.Print();
+  
+  if(argc == 2){
+    VMUtils::writeByteCode( visitor.byte_code(), std::string(argv[1]) );
     
-    std::cout << "--------------------------\n";
-    std::cout << "ByteCode:\n";
-    ASTVisitorCodeGenerator visitor;
-    visitor.Visit(*programBlock);
-    visitor.EndOfProgram();
-    
-    visitor.Print();
-    
-    if(argc == 2){
-      VMUtils::writeByteCode( visitor.byte_code(), std::string(argv[1]) );
-      
 //       std::cout << "--------------------------\n";
 //       std::cout << "Bytecode written to: " << argv[1] << "\n";
-    }
+  }
+  */
     
     return 0;
 }
