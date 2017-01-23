@@ -1,15 +1,4 @@
--> num
-Exp
-Fact-> plus
-Exp'-> lpar
-Fact-> lpar
-Exp
-Fact-> num
-Exp
-Fact-> rpar
-Exp'-> eof
-Exp'Expecting rpar. at: [[((2)
+-> num-> plus-> lpar-> lpar-> num-> rpar-> eofExpecting rpar. at: [[((2)
 ]]
-
-Exp'Program is syntactically correct.
+Program is syntactically correct.
 -> eof

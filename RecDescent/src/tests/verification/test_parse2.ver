@@ -1,13 +1,2 @@
--> lpar
-Exp
-Fact-> num
-Exp
-Fact-> plus
-Exp'-> num
-Fact-> rpar
-Exp'-> plus
-Exp'-> num
-Fact-> eof
-Exp'Prog
-Program is syntactically correct.
+-> lpar-> num-> plus-> num-> rpar-> plus-> num-> eofProgram is syntactically correct.
 -> eof
