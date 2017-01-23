@@ -1,2 +1,2 @@
-cat ../DACOMPILER/doc/version.txt > dacomp_version.txt
+cat DACOMPILER/doc/version.txt > dacomp_version.txt
 
