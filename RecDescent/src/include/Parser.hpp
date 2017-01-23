@@ -6,12 +6,14 @@
 
 #include "Tokenizer.hpp"
 
+class Block;
+
 namespace RecDescent{
 
 class Parser{
   
 public:  
-  Parser(std::string const &file_name);
+  Parser(std::string const &file_name, Block* &programBlock);
   void Parse();
   
 private:

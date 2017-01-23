@@ -10,8 +10,9 @@ int main(int argc, char **argv){
     exit(1);
   }
   
+  Block* programBlock;
   using namespace RecDescent;
-  std::unique_ptr<Parser> parser(new Parser(std::string(argv[1])));
+  std::unique_ptr<Parser> parser(new Parser(std::string(argv[1]), programBlock));
 
   parser->Parse();
   
