@@ -4,3 +4,4 @@ project(DAPARS)
 
 add_subdirectory(RecDescent)
 add_subdirectory(GrammarAnalysis)
+add_subdirectory(DACOMPILER)
