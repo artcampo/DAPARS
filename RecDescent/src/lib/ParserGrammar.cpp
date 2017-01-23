@@ -1,4 +1,5 @@
 #include "Parser.hpp"
+#include "Node.hpp"
 #include <iterator>
 #include <fstream>
 #include <iostream>
@@ -21,68 +22,69 @@ bool Parser::Prog(){
  return true;
 }
 
-bool Parser::Expr(){
+// E->F E'
+Node* Parser::Expr(){
   std::cout << std::endl << "Exp";
-  bool success = true;
-  // E->F E'
-  if(Factor()){
-//    Accept
-    success = ExprPrime();
-//     if(success) std::cout << "Exp" << std::endl;
+  Node* return_node;
+  
+  if(Factor() != nullptr){
+    return_node = ExprPrime();
   }else {
     Error("Factor missing.");
-    success = false;
   }
-  return success;
+  return return_node;
 }
 
-bool Parser::ExprPrime(){
+// E'-> + F E' | empty
+// returns:
+// - nullptr, if E' is empty
+// - Node of plus(E_caller,F)
+Node* Parser::ExprPrime(){
   std::cout << std::endl << "Exp'";
-  bool success;
-  // E'-> + F E' | empty
+  Node* return_node = nullptr;
+  
   if(token_ == Tokenizer::kToken::plus){
    
     NextToken();
-    success = Factor();
+    Factor();
 //     if(success) std::cout << "Exp'" << std::endl;
-    success &= ExprPrime();
-    return success;
+    ExprPrime();
+    
+    //return_node = new BinaryOp($1, IR_ADD, $3);
+    
   } else{
     //check Follow(E')
-    if(token_ == Tokenizer::kToken::eof or token_ == Tokenizer::kToken::rpar)
-      return true;
-    else{
+    if(not(token_ == Tokenizer::kToken::eof or token_ == Tokenizer::kToken::rpar))
       Error("Expecting eof or rpar.");
-      success = false;
     }
-  }
-  return false;
+  
+  return return_node;
 }
 
 
-bool Parser::Factor(){
-  bool success = true;
+Node* Parser::Factor(){
   std::cout << std::endl << "Fact";
+  Node* return_node;
   // F := ( E ) | numerical
   if(token_ == Tokenizer::kToken::numerical){
+    Node* return_node = new Literal(2);
     NextToken();
-    return success;
   }
+  
   if(token_ == Tokenizer::kToken::lpar){
     NextToken();
-    success = Expr();
+    return_node = Expr();
     //std::cout << "[[test )]]";
     if(token_ == Tokenizer::kToken::rpar){
       NextToken();
 //       std::cout << "Fact" << std::endl;
-      return true;
     }else {
       Error("Expecting rpar.");
-      return false;
     }
   } else 
-    success = false;
-  return success;
+    Error("Expectinglrpar.");
+  
+  return return_node;
 }
 
 

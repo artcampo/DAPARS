@@ -7,6 +7,7 @@
 #include "Tokenizer.hpp"
 
 class Block;
+class Node;
 
 namespace RecDescent{
 
@@ -23,18 +24,20 @@ private:
   std::ifstream     file_;
   std::vector<char> file_data_;
   std::vector<char>::const_iterator current_position_;
+  std::vector<char>::const_iterator previous_position_;
   
   Tokenizer::kToken token_;
+  int               token_int_value_;
   
   void Skip() noexcept;
   void NextToken() noexcept;
   
   void Error(const std::string& message);
   
-  bool Prog();
-  bool Expr();
-  bool ExprPrime();
-  bool Factor();
+  bool  Prog();
+  Node* Expr();
+  Node* ExprPrime();
+  Node* Factor();
   
   
 };

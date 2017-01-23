@@ -1,4 +1,5 @@
 #include "Parser.hpp"
+#include "Node.hpp"
 #include <iterator>
 #include <fstream>
 #include <iostream>
@@ -39,7 +40,12 @@ void Parser::NextToken() noexcept{
     token_ = Tokenizer::kToken::eof;
   else{
     //(?) store init/end position of current token for conversion
+    previous_position_ = current_position_;
     token_ = Tokenizer::ParseToken(current_position_);
+    if(token_ == Tokenizer::kToken::numerical){
+      token_int_value_ = atoi( std::string( previous_position_
+                                    , current_position_).c_str());
+    }
   }
   
   std::cout << "-> " << str(token_);
