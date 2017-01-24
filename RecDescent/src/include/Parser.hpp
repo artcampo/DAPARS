@@ -30,6 +30,8 @@ private:
   Tokenizer::kToken token_;
   int               token_int_value_;
   
+  int               num_errors_;
+  
   void Skip() noexcept;
   void NextToken() noexcept;
   

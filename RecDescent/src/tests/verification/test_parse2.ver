@@ -1,2 +1,1 @@
--> lpar-> num-> plus-> num-> rpar-> plus-> num-> eofProgram is syntactically correct.
--> eof
+-> lpar-> num-> plus-> num-> rpar-> plus-> num-> eof

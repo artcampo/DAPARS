@@ -30,8 +30,6 @@ bool Parser::Prog(){
   ExpressionStatement* exp_stmt = new ExpressionStatement(dynamic_cast<Expression*>(node_expr));
   programBlock_->statements.push_back(exp_stmt);
   
-  std::cout << "Program is syntactically correct." << std::endl;
-  std::cout << "-> " << str(token_);
   return true;
 }
 

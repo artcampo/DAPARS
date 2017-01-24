@@ -1,4 +1,4 @@
--> num-> plus-> lpar-> lpar-> num-> rpar-> eofExpecting rpar. at: [[((2)
+-> num-> plus-> lpar-> lpar-> num-> rpar-> eof
+Expecting rpar. at: [[((2)
 ]]
-Program is syntactically correct.
--> eof
+Program syntactically incorrect

@@ -24,6 +24,7 @@ Parser::Parser(std::string const &file_name, Block* &programBlock)
   , current_position_(file_data_.cbegin())
   , skip_symbols_ {' ','\n'}
   , programBlock_(programBlock)
+  , num_errors_(0)
 {
  
 }
@@ -32,6 +33,9 @@ Parser::Parser(std::string const &file_name, Block* &programBlock)
 void Parser::Parse(){
   if(not Prog()){
     Error("Program malformed. ");
+  }  
+  if(num_errors_ != 0){
+    std::cout << "Program syntactically incorrect\n";
   }
 }
 
@@ -49,7 +53,7 @@ void Parser::NextToken() noexcept{
     }
   }
   
-  std::cout << "-> " << str(token_);
+  std::cout << "-> " <<  str(token_);
 }
 
 void Parser::Skip() noexcept{
@@ -70,7 +74,8 @@ void Parser::Skip() noexcept{
 }
 
 void Parser::Error(const std::string& message){
-  std::cout << message << " at: [[";
+  ++num_errors_;
+  std::cout << "\n" << message << " at: [[";
   
   //Go back N chars
   std::vector<char>::const_iterator start_of_error = current_position_;
@@ -84,5 +89,7 @@ void Parser::Error(const std::string& message){
   }
   std::cout << "]]" << std::endl;
 }
-
+  
+  
 } //end namespace RecDescent
+ 
