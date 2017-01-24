@@ -25,10 +25,10 @@ int main(int argc, char **argv)
 
   parser->Parse();
   
-  if(programBlock != nullptr)
-
+  if(programBlock == nullptr)
+    std::cout << "Program block is empty!" << std::endl;
   {
-  std::cout << "Print AST\n";
+  std::cout << "\nPrint AST\n";
   ASTVisitorPrettyPrinter visitor;
   visitor.Visit(*programBlock);
   }
