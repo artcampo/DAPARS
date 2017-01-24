@@ -5,7 +5,7 @@ set(files
     Grammar.cpp
     Rule.cpp
     Symbol.cpp
-    Grammar.cpp
+    GrammarLR1.cpp
 )
 
 add_definitions( -std=c++11 -g)
