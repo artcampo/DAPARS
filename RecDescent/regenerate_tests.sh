@@ -15,10 +15,10 @@ regenerate_test_with_input(){
   cp $2.ver ../../src/tests/verification/.
 }
 
-regenerate_test_with_input test_parser test_parse1
-regenerate_test_with_input test_parser test_parse2
-regenerate_test_with_input test_parser test_parse3
-regenerate_test_with_input test_parser test_parse4
+regenerate_test_with_input test_parser_compiler test_parse1
+regenerate_test_with_input test_parser_compiler test_parse2
+regenerate_test_with_input test_parser_compiler test_parse3
+regenerate_test_with_input test_parser_compiler test_parse4
 
 
 #end
