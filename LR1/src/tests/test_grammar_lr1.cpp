@@ -56,5 +56,9 @@ int main(){
     std::cout << i.str() << "\n";
   }  
   
+  //Test CC
+  std::cout << "-- CC" << std::endl;
+  g.BuildTables();
+  
   return 0;
 }

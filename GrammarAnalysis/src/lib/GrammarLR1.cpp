@@ -89,12 +89,29 @@ void GrammarLR1::CanonicalCollection(){
   
   bool has_changed = true;
   while(has_changed){
+    has_changed = false;
+    
     for(const auto &set : cc){
       if(marked[set] == false){
         marked[set] = true;
         
         for(const auto &item : set){
-        }
+          if(item.HasSymbolAfterStackTop()){
+               
+               SetLR1_Item temp  = Goto(set, item.SymbolAfterStackTop());
+               if(cc.find(temp) == cc.end()){
+                 std::cout<< "for Symbol: " << item.SymbolAfterStackTop().str() << "\n";
+                 has_changed = true;
+                 marked[temp] = false;
+                 cc.insert(temp);
+                 
+                 std::cout << "New set: \n";
+                 for(const auto &i : temp)
+                  std::cout << i.str() << "\n";
+                  
+              }
+            } 
+        }//end for(const auto &item : set){
         
       }// end if(marked[set] == false){
     }// end for(const auto &set : cc)

@@ -32,7 +32,8 @@ void Grammar::AddRule(const Rule& rule) noexcept{
 
 void Grammar::AddStartingRule(const Rule& rule)  noexcept{
   AddRule(rule);
-  start_symbol_ = rule.head_;
+  start_symbol_  = rule.head_;
+  starting_rule_ = rule;
 }
 
 

@@ -1,3 +1,55 @@
+for Symbol: LIST
+New set: 
+[LIST -> LIST {·} PAIR , {eof}]
+[LIST -> LIST {·} PAIR , (]
+[PAIR -> {·} ( PAIR ) , {eof}]
+[PAIR -> {·} ( PAIR ) , (]
+[PAIR -> {·} ( ) , {eof}]
+[PAIR -> {·} ( ) , (]
+[PROG -> LIST {·} , {eof}]
+for Symbol: PAIR
+New set: 
+[LIST -> PAIR {·} , {eof}]
+[LIST -> PAIR {·} , (]
+for Symbol: (
+New set: 
+[PAIR -> ( {·} PAIR ) , {eof}]
+[PAIR -> ( {·} PAIR ) , (]
+[PAIR -> ( {·} ) , {eof}]
+[PAIR -> ( {·} ) , (]
+[PAIR -> {·} ( PAIR ) , )]
+[PAIR -> {·} ( ) , )]
+for Symbol: PAIR
+New set: 
+[PAIR -> ( PAIR {·} ) , {eof}]
+[PAIR -> ( PAIR {·} ) , (]
+for Symbol: )
+New set: 
+[PAIR -> ( ) {·} , {eof}]
+[PAIR -> ( ) {·} , (]
+for Symbol: (
+New set: 
+[PAIR -> ( {·} PAIR ) , )]
+[PAIR -> ( {·} ) , )]
+[PAIR -> {·} ( PAIR ) , )]
+[PAIR -> {·} ( ) , )]
+for Symbol: PAIR
+New set: 
+[PAIR -> ( PAIR {·} ) , )]
+for Symbol: )
+New set: 
+[PAIR -> ( ) {·} , )]
+for Symbol: PAIR
+New set: 
+[LIST -> LIST PAIR {·} , {eof}]
+[LIST -> LIST PAIR {·} , (]
+for Symbol: )
+New set: 
+[PAIR -> ( PAIR ) {·} , {eof}]
+[PAIR -> ( PAIR ) {·} , (]
+for Symbol: )
+New set: 
+[PAIR -> ( PAIR ) {·} , )]
 -- FIRST
 LIST ( 
 PAIR ( 
@@ -19,3 +71,56 @@ PROG (
 [PAIR -> ( {·} ) , (]
 [PAIR -> {·} ( PAIR ) , )]
 [PAIR -> {·} ( ) , )]
+-- CC
+for Symbol: LIST
+New set: 
+[LIST -> LIST {·} PAIR , {eof}]
+[LIST -> LIST {·} PAIR , (]
+[PAIR -> {·} ( PAIR ) , {eof}]
+[PAIR -> {·} ( PAIR ) , (]
+[PAIR -> {·} ( ) , {eof}]
+[PAIR -> {·} ( ) , (]
+[PROG -> LIST {·} , {eof}]
+for Symbol: PAIR
+New set: 
+[LIST -> PAIR {·} , {eof}]
+[LIST -> PAIR {·} , (]
+for Symbol: (
+New set: 
+[PAIR -> ( {·} PAIR ) , {eof}]
+[PAIR -> ( {·} PAIR ) , (]
+[PAIR -> ( {·} ) , {eof}]
+[PAIR -> ( {·} ) , (]
+[PAIR -> {·} ( PAIR ) , )]
+[PAIR -> {·} ( ) , )]
+for Symbol: PAIR
+New set: 
+[PAIR -> ( PAIR {·} ) , {eof}]
+[PAIR -> ( PAIR {·} ) , (]
+for Symbol: )
+New set: 
+[PAIR -> ( ) {·} , {eof}]
+[PAIR -> ( ) {·} , (]
+for Symbol: (
+New set: 
+[PAIR -> ( {·} PAIR ) , )]
+[PAIR -> ( {·} ) , )]
+[PAIR -> {·} ( PAIR ) , )]
+[PAIR -> {·} ( ) , )]
+for Symbol: PAIR
+New set: 
+[PAIR -> ( PAIR {·} ) , )]
+for Symbol: )
+New set: 
+[PAIR -> ( ) {·} , )]
+for Symbol: PAIR
+New set: 
+[LIST -> LIST PAIR {·} , {eof}]
+[LIST -> LIST PAIR {·} , (]
+for Symbol: )
+New set: 
+[PAIR -> ( PAIR ) {·} , {eof}]
+[PAIR -> ( PAIR ) {·} , (]
+for Symbol: )
+New set: 
+[PAIR -> ( PAIR ) {·} , )]
