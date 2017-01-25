@@ -9,11 +9,12 @@ namespace GrammarAnalyzer{
 class Rule{
   
 public:  
+  Rule(){};
   Rule(const Symbol& head, const std::vector<Symbol>& derived)
   : head_(head), derived_(derived)
   {}
   
-  const Symbol        head_;
+  Symbol        head_;
   std::vector<Symbol> derived_;
   
   std::string str() const noexcept{

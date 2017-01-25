@@ -30,6 +30,7 @@ public:
   
 private:
 
+  void CanonicalCollection();
   
 };
 

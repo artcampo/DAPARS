@@ -63,6 +63,7 @@ std::set<LR1_Item> GrammarLR1::Closure(const std::set<LR1_Item>& set){
 
 std::set<LR1_Item> GrammarLR1::Goto(const std::set<LR1_Item>& set, const Symbol& symbol){
   std::set<LR1_Item> moved;
+  
   for(const LR1_Item &i : set)
     if(i.HasSymbolAfterStackTop() and i.SymbolAfterStackTop() == symbol){
       LR1_Item advanced = i.SwapSymbolAfterStackTop();
@@ -71,8 +72,37 @@ std::set<LR1_Item> GrammarLR1::Goto(const std::set<LR1_Item>& set, const Symbol&
   return Closure(moved);
 }
 
-void GrammarLR1::BuildTables() noexcept{
+void GrammarLR1::CanonicalCollection(){
+  using SetLR1_Item       = std::set<LR1_Item>;
+  using SetOfSetsLR1_Item = std::set<SetLR1_Item>;
+  
+  std::map<SetLR1_Item, bool> marked;
+  
+  SetLR1_Item initial_set {InitLR1_Item( starting_rule_ )};
+  SetLR1_Item cc0 = Closure(initial_set);
+  marked[cc0] = false;
+  
+  SetOfSetsLR1_Item cc;
+  
+  
+  cc.insert(cc0);
+  
+  bool has_changed = true;
+  while(has_changed){
+    for(const auto &set : cc){
+      if(marked[set] == false){
+        marked[set] = true;
+        
+        for(const auto &item : set){
+        }
+        
+      }// end if(marked[set] == false){
+    }// end for(const auto &set : cc)
+  }
+}
 
+void GrammarLR1::BuildTables() noexcept{
+  CanonicalCollection();
 }
 
 

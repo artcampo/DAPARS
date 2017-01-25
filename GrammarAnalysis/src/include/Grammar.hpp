@@ -37,6 +37,7 @@ protected:
   std::map<Symbol, std::set<Symbol>> first_;
   std::map<Symbol, std::set<Symbol>> follow_;
   Symbol start_symbol_;
+  Rule   starting_rule_;
   
   void ComputeFirstSets() noexcept;
   void ComputeFollowSets() noexcept;
