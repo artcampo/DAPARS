@@ -12,6 +12,10 @@
 namespace GrammarAnalyzer{
 
 class GrammarLR1 : public Grammar{
+
+  using SetLR1_Item       = std::set<LR1_Item>;
+  using SetOfSetsLR1_Item = std::set<SetLR1_Item>;
+  using SetId             = size_t;
   
 public:  
   GrammarLR1();
@@ -32,6 +36,18 @@ private:
 
   void CanonicalCollection();
   
+  
+  std::map<SetLR1_Item, bool> marked_;
+  SetOfSetsLR1_Item cc_;
+  std::map<SetLR1_Item, SetId> set_id_;
+  SetId free_id_;
+  
+  std::map<SetId, std::map<Symbol,SetId>> action_table_;
+  std::map<SetId, std::map<Symbol,SetId>> goto_table_;
+  
+  
+  void NewCC    (const std::set<LR1_Item>& set);
+  void AssignId (const std::set<LR1_Item>& set);
 };
 
 } //end namespace GrammarAnalyzer

@@ -72,55 +72,14 @@ PROG (
 [PAIR -> {·} ( PAIR ) , )]
 [PAIR -> {·} ( ) , )]
 -- CC
-for Symbol: LIST
-New set: 
-[LIST -> LIST {·} PAIR , {eof}]
-[LIST -> LIST {·} PAIR , (]
-[PAIR -> {·} ( PAIR ) , {eof}]
-[PAIR -> {·} ( PAIR ) , (]
-[PAIR -> {·} ( ) , {eof}]
-[PAIR -> {·} ( ) , (]
-[PROG -> LIST {·} , {eof}]
-for Symbol: PAIR
-New set: 
-[LIST -> PAIR {·} , {eof}]
-[LIST -> PAIR {·} , (]
-for Symbol: (
-New set: 
-[PAIR -> ( {·} PAIR ) , {eof}]
-[PAIR -> ( {·} PAIR ) , (]
-[PAIR -> ( {·} ) , {eof}]
-[PAIR -> ( {·} ) , (]
-[PAIR -> {·} ( PAIR ) , )]
-[PAIR -> {·} ( ) , )]
-for Symbol: PAIR
-New set: 
-[PAIR -> ( PAIR {·} ) , {eof}]
-[PAIR -> ( PAIR {·} ) , (]
-for Symbol: )
-New set: 
-[PAIR -> ( ) {·} , {eof}]
-[PAIR -> ( ) {·} , (]
-for Symbol: (
-New set: 
-[PAIR -> ( {·} PAIR ) , )]
-[PAIR -> ( {·} ) , )]
-[PAIR -> {·} ( PAIR ) , )]
-[PAIR -> {·} ( ) , )]
-for Symbol: PAIR
-New set: 
-[PAIR -> ( PAIR {·} ) , )]
-for Symbol: )
-New set: 
-[PAIR -> ( ) {·} , )]
-for Symbol: PAIR
-New set: 
-[LIST -> LIST PAIR {·} , {eof}]
-[LIST -> LIST PAIR {·} , (]
-for Symbol: )
-New set: 
-[PAIR -> ( PAIR ) {·} , {eof}]
-[PAIR -> ( PAIR ) {·} , (]
-for Symbol: )
-New set: 
-[PAIR -> ( PAIR ) {·} , )]
+Action table
+For set 0 - (: 3
+For set 3 - (: 6 - ): 5
+For set 4 - ): 10
+For set 6 - ): 8
+For set 7 - ): 11
+Goto table
+For set 0 - LIST: 1 - PAIR: 2
+For set 1 - PAIR: 9
+For set 3 - PAIR: 4
+For set 6 - PAIR: 7

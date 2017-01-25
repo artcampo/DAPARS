@@ -60,5 +60,7 @@ int main(){
   std::cout << "-- CC" << std::endl;
   g.BuildTables();
   
+  g.DumpTables();
+  
   return 0;
 }
