@@ -42,6 +42,9 @@ protected:
   void ComputeFollowSets() noexcept;
   void ComputeFirstPlusSets() noexcept;
   
+  
+  //Helpers
+  std::set<Symbol> First(std::vector<Symbol> derived);
 };
 
 } //end namespace GrammarAnalyzer

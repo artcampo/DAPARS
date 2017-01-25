@@ -1,8 +1,11 @@
 #pragma once
-#include <vector>
-#include <string>
 #include "Rule.hpp"
 #include "Symbol.hpp"
+
+#include <vector>
+#include <string>
+#include <algorithm> 
+
 
 
 namespace GrammarAnalyzer{
@@ -29,6 +32,22 @@ public:
   
   const bool operator< ( const LR1_Item &s ) const{ 
     return ( rule_ < s.rule_ and symbol_ < s.symbol_);
+  }
+  
+  bool HasSymbolAfterStackTop() const noexcept{
+    auto it = std::find( rule_.derived_.begin()
+                        , rule_.derived_.end()
+                        , Symbol::StackTop() );
+    ++it;
+    return it != rule_.derived_.cend();
+  }
+  
+  Symbol SymbolAfterStackTop() const noexcept{
+    auto it = std::find( rule_.derived_.begin()
+                        , rule_.derived_.end()
+                        , Symbol::StackTop() );
+    ++it;
+    return *it;    
   }
   
 private:

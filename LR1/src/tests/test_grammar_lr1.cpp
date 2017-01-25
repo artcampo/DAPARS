@@ -36,9 +36,12 @@ int main(){
   std::cout << "-----------------------------" << std::endl;
 
   //Test initial closure
-  std::set<LR1_Item> s{g.InitLR1_Item( Rule(prog, {l}) )};
-  g.Closure(s);
+  std::set<LR1_Item> set {g.InitLR1_Item( Rule(prog, {l}) )};
+  std::set<LR1_Item> closure = g.Closure(set);
   
+  for(const auto &i : set){
+    std::cout << i.str() << "\n";
+  }
   
   return 0;
 }

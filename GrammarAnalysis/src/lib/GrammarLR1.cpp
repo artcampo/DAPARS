@@ -20,6 +20,19 @@ LR1_Item GrammarLR1::InitLR1_Item(const Rule& rule) const noexcept{
 }
 
 std::set<LR1_Item> GrammarLR1::Closure(const std::set<LR1_Item>& set) const noexcept{
+  std::set<LR1_Item> s = set;
+  bool has_changed = true;
+  while(has_changed){
+    has_changed = false;
+    for(const LR1_Item &i : set){
+      //determine C
+      if(i.HasSymbolAfterStackTop()){
+        Symbol c = i.SymbolAfterStackTop();
+        
+      }
+    }
+  }
+  return set;
 }
 
 void GrammarLR1::BuildTables() noexcept{

@@ -45,6 +45,27 @@ void Grammar::Analyze() noexcept{
   }
 }
 
+std::set<Symbol> Grammar::First(std::vector<Symbol> derived){
+  std::set<Symbol> first_set;
+  bool all_have_empty = true;
+  
+  for(const auto &symbol : derived){
+    bool symbol_has_empty_symbol = 
+        (first_[symbol].find(Symbol::Empty())!= first_[symbol].end());
+    all_have_empty = all_have_empty and symbol_has_empty_symbol;
+    std::set<Symbol> set = first_[symbol];
+    set.erase(Symbol::Empty());
+    first_set.insert(set.cbegin(), set.cend());
+    if(not symbol_has_empty_symbol){
+      break;
+    }
+  }
+  
+  if(all_have_empty)
+    first_set.insert(Symbol::Empty());  
+  return first_set;
+}
+
 void Grammar::ComputeFirstSets() noexcept{
   for(const auto &s : symbols_)
     if(s.IsTerminal())
@@ -54,31 +75,14 @@ void Grammar::ComputeFirstSets() noexcept{
   while(hasChanged){
     hasChanged = false;
     for(const auto &r : rules_){  
-      bool all_have_empty = true;
-      std::set<Symbol> new_set;
-      
-      for(const auto &symbol : r.derived_){
-        bool symbol_has_empty_symbol = 
-            (first_[symbol].find(Symbol::Empty())!= first_[symbol].end());
-        all_have_empty = all_have_empty and symbol_has_empty_symbol;
-        std::set<Symbol> set = first_[symbol];
-        set.erase(Symbol::Empty());
-        new_set.insert(set.cbegin(), set.cend());
-        if(not symbol_has_empty_symbol){
-          break;
-        }
-      }
-      
-      if(all_have_empty)
-        new_set.insert(Symbol::Empty());
+      std::set<Symbol> new_set = First(r.derived_);
       
       //check if set stays the same, and if not, update it
-      for(const auto &symbol : new_set){
+      for(const auto &symbol : new_set)
         if(first_[r.head_].find(symbol) == first_[r.head_].end()){
           first_[r.head_].insert(symbol);
           hasChanged = true;
         }
-      }
       
     }
   }
