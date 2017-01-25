@@ -55,8 +55,6 @@ std::set<Symbol> Grammar::First(const std::vector<Symbol>& derived){
   bool all_have_empty = true;
   
   for(const auto &symbol : derived){
-    
-    std::cout << "asking: " << symbol.str() << std::endl;
     bool symbol_has_empty_symbol = HasEmptySymbol(first_[symbol]);
     all_have_empty = all_have_empty and symbol_has_empty_symbol;
     std::set<Symbol> set = first_[symbol];

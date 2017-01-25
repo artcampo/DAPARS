@@ -1,7 +1,15 @@
+-----------------------------
+-----------------------------
 LIST ( 
-PAIR' ( 
+PAIR ( 
 PROG ( 
 -----------------------------
-LIST {eof} ( 
-PAIR' {eof} ( ) 
-PROG {eof} 
+[LIST -> {·} LIST PAIR , {eof}]
+[LIST -> {·} LIST PAIR , (]
+[LIST -> {·} PAIR , {eof}]
+[LIST -> {·} PAIR , (]
+[PAIR -> {·} ( PAIR ) , {eof}]
+[PAIR -> {·} ( PAIR ) , (]
+[PAIR -> {·} ( ) , {eof}]
+[PAIR -> {·} ( ) , (]
+[PROG -> {·} LIST , {eof}]

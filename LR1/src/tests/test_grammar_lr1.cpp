@@ -4,8 +4,11 @@
 #include <memory>
 #include <string>
 
+/*
+ * This produces the closure set of "engineering a compiler" 2nd ed, p128 
+ */
+
 int main(){
-  
   
   using namespace GrammarAnalyzer;
   
@@ -16,7 +19,7 @@ int main(){
   //Non-terminals
   const Symbol prog ("PROG", "PROG", false);
   const Symbol l    ("LIST", "LIST", false);
-  const Symbol p    ("PAIR'", "PAIR'", false);
+  const Symbol p    ("PAIR", "PAIR", false);
   
   std::cout << "-----------------------------" << std::endl;
   //Grammar
@@ -41,7 +44,7 @@ int main(){
   std::set<LR1_Item> set {g.InitLR1_Item( Rule(prog, {l}) )};
   std::set<LR1_Item> closure = g.Closure(set);
   
-  for(const auto &i : set){
+  for(const auto &i : closure){
     std::cout << i.str() << "\n";
   }
   
