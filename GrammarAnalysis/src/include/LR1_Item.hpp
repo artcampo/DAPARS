@@ -34,6 +34,12 @@ public:
     return ( rule_ < s.rule_ and symbol_ < s.symbol_);
   }
   
+  std::vector<Symbol>::iterator StackTop() const{
+    return std::find( rule_.derived_.begin()
+                        , rule_.derived_.end()
+                        , Symbol::StackTop() );
+  }
+  
   bool HasSymbolAfterStackTop() const noexcept{
     auto it = std::find( rule_.derived_.begin()
                         , rule_.derived_.end()
@@ -48,6 +54,10 @@ public:
                         , Symbol::StackTop() );
     ++it;
     return *it;    
+  }
+  
+  std::vector<Symbol> SymbolsAfterC() const noexcept{
+    
   }
   
 private:

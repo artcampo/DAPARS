@@ -28,7 +28,7 @@ std::set<LR1_Item> GrammarLR1::Closure(const std::set<LR1_Item>& set) const noex
       //determine C
       if(i.HasSymbolAfterStackTop()){
         Symbol c = i.SymbolAfterStackTop();
-        
+        std::vector<Symbol> delta = i.SymbolsAfterC();
       }
     }
   }
