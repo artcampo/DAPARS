@@ -30,7 +30,6 @@ public:
   
   const bool operator== ( const Rule &s ) const{
     return ( head_ == s.head_ and derived_ == s.derived_ );
-    
   }
   
 private:

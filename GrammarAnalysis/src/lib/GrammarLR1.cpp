@@ -40,7 +40,7 @@ std::set<LR1_Item> GrammarLR1::Closure(const std::set<LR1_Item>& set){
           if(r.head_ == c)
             for(const auto &b : first_Ca){
               LR1_Item item = InitLR1_Item(r, b);
-              if(s.find(item) == s.end()){}
+              if(s.find(item) == s.end()){
                 std::cout << "Insert: " << item.str() << std::endl;
                 has_changed = true;
                 s.insert(item);
