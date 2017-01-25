@@ -1,12 +1,14 @@
 #pragma once
+#include "Rule.hpp"
+#include "Symbol.hpp"
+
 #include <memory>
 #include <vector>
 #include <string>
 #include <fstream>
 #include <map>
 #include <set>
-#include "Rule.hpp"
-#include "Symbol.hpp"
+
 
 namespace GrammarAnalyzer{
 

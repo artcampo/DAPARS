@@ -13,8 +13,8 @@ public:
   : head_(head), derived_(derived)
   {}
   
-  const Symbol              head_;
-  const std::vector<Symbol> derived_;
+  const Symbol        head_;
+  std::vector<Symbol> derived_;
   
   std::string str() const noexcept{
     std::string s(head_.str());
@@ -23,6 +23,9 @@ public:
     return s;
   }
     
+  const bool operator< ( const Rule &s ) const{ 
+    return ( head_ < s.head_ and derived_ < s.derived_);
+  }
   
 private:
 

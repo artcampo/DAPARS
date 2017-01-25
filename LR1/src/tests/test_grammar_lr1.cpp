@@ -33,9 +33,12 @@ int main(){
   g.BuildTables();
   
   //Print
-  g.DumpFirst();
   std::cout << "-----------------------------" << std::endl;
-  g.DumpFollow();
+
+  //Test initial closure
+  std::set<LR1_Item> s{g.InitLR1_Item( Rule(prog, {l}) )};
+  g.Closure(s);
+  
   
   return 0;
 }

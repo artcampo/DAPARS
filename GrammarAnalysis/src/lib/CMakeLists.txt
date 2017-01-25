@@ -6,6 +6,7 @@ set(files
     Rule.cpp
     Symbol.cpp
     GrammarLR1.cpp
+    LR1_Item.cpp
 )
 
 add_definitions( -std=c++11 -g)
