@@ -15,19 +15,20 @@ class Grammar{
 public:  
   Grammar();
   
+  void AddSymbol(const Symbol& symbol) noexcept;
   void AddRule(const Rule& rule)  noexcept;
   void AddStartingRule(const Rule& rule)  noexcept;
   
-
   void Analyze() noexcept;
   
+  size_t NumSymbols() const noexcept;
   bool IsBackTrackFree() noexcept;
   
   void DumpFirst() const noexcept;
   void DumpFollow() const noexcept;
   
   
-private:
+protected:
   std::vector<Rule> rules_;
   bool analized_;
   std::set<Symbol> symbols_;

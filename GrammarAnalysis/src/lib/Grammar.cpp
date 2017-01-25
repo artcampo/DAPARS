@@ -10,15 +10,24 @@ namespace GrammarAnalyzer{
   
 Grammar::Grammar()
   : analized_(false)
-  , symbols_({Symbol::Empty(), Symbol::Eof()})
-{}
+{
+  AddSymbol(Symbol::Empty());
+  AddSymbol(Symbol::Eof());
+}
 
+void Grammar::AddSymbol(const Symbol& symbol) noexcept{
+  symbols_.insert(symbol);
+}
+
+size_t Grammar::NumSymbols() const noexcept{
+  return symbols_.size();
+}
 
 void Grammar::AddRule(const Rule& rule) noexcept{
   rules_.push_back(rule);
-  symbols_.insert(rule.head_);
+  AddSymbol(rule.head_);
   for(const auto &s : rule.derived_)
-    symbols_.insert(s);
+    AddSymbol(s);
 }
 
 void Grammar::AddStartingRule(const Rule& rule)  noexcept{

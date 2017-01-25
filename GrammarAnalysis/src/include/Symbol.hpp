@@ -25,8 +25,10 @@ public:
   bool is_terminal_; 
   bool is_empty_;
   
-  const Symbol static Empty(){ return Symbol("EMPTY","{empty}", true, true); }
-  const Symbol static Eof()  { return Symbol("EOF",  "{eof}",   true, false); }
+  const Symbol static Empty()   { return Symbol("EMPTY","{empty}",  true, true); }
+  const Symbol static Eof()     { return Symbol("EOF",  "{eof}",    true, false); }
+  const Symbol static StackTop(){ return Symbol("STACKTOP",  "{·}", true, false); }
+  
   
   const bool operator< ( const Symbol &s ) const { return ( name_ < s.name_ );}
   const bool operator== ( const Symbol &s ) const { return ( name_ == s.name_ );}

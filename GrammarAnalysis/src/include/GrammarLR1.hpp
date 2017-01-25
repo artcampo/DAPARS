@@ -1,22 +1,24 @@
 #pragma once
+#include "Grammar.hpp"
+
 #include <memory>
 #include <vector>
 #include <string>
 #include <fstream>
 #include <map>
 #include <set>
-#include "Rule.hpp"
-#include "Symbol.hpp"
-#include "Grammar.hpp"
+
 
 namespace GrammarAnalyzer{
 
 class GrammarLR1 : public Grammar{
   
 public:  
-  GrammarLR1(){};
+  GrammarLR1();
   
   void BuildTables() noexcept;
+  
+  size_t NumSymbols() const noexcept;
   
   void DumpTables() const noexcept;
   
