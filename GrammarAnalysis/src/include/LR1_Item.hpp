@@ -6,7 +6,7 @@
 #include <string>
 #include <algorithm> 
 
-
+#include <iostream>
 
 namespace GrammarAnalyzer{
 
@@ -58,6 +58,17 @@ public:
                         , Symbol::StackTop() );
     ++it; ++it;
     return std::vector<Symbol>(it, rule_.derived_.end());
+  }
+  
+  LR1_Item SwapSymbolAfterStackTop() const noexcept{
+    std::vector<Symbol> derived = rule_.derived_;
+    std::vector<Symbol>::iterator it = std::find( derived.begin()
+                       , derived.end()
+                       , Symbol::StackTop() );
+    std::vector<Symbol>::iterator next = it; 
+    ++next;
+    std::iter_swap(it, next);
+    return LR1_Item(Rule(rule_.head_, derived), symbol_);
   }
   
 private:

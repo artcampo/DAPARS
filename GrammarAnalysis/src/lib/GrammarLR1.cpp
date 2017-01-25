@@ -61,6 +61,16 @@ std::set<LR1_Item> GrammarLR1::Closure(const std::set<LR1_Item>& set){
   return s;
 }
 
+std::set<LR1_Item> GrammarLR1::Goto(const std::set<LR1_Item>& set, const Symbol& symbol){
+  std::set<LR1_Item> moved;
+  for(const LR1_Item &i : set)
+    if(i.HasSymbolAfterStackTop() and i.SymbolAfterStackTop() == symbol){
+      LR1_Item advanced = i.SwapSymbolAfterStackTop();
+      moved.insert(advanced);
+    }
+  return Closure(moved);
+}
+
 void GrammarLR1::BuildTables() noexcept{
 
 }

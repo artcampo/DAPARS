@@ -21,7 +21,7 @@ int main(){
   const Symbol l    ("LIST", "LIST", false);
   const Symbol p    ("PAIR", "PAIR", false);
   
-  std::cout << "-----------------------------" << std::endl;
+  
   //Grammar
   GrammarLR1 g;
   g.AddStartingRule(Rule(prog,  {l}));
@@ -36,17 +36,25 @@ int main(){
   g.BuildTables();
   
   //Print
-  std::cout << "-----------------------------" << std::endl;
+  std::cout << "-- FIRST" << std::endl;
   g.DumpFirst();
-  std::cout << "-----------------------------" << std::endl;
+  
 
   //Test initial closure
   std::set<LR1_Item> set {g.InitLR1_Item( Rule(prog, {l}) )};
   std::set<LR1_Item> closure = g.Closure(set);
   
+  std::cout << "-- INITIAL CLOSURE" << std::endl;
   for(const auto &i : closure){
     std::cout << i.str() << "\n";
   }
+  
+  //Test goto
+  std::set<LR1_Item> set_goto = g.Goto(closure, lpar);
+  std::cout << "-- GOTO" << std::endl;
+  for(const auto &i : set_goto){
+    std::cout << i.str() << "\n";
+  }  
   
   return 0;
 }
