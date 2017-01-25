@@ -18,7 +18,7 @@ int main(){
   const Symbol l    ("LIST", "LIST", false);
   const Symbol p    ("PAIR'", "PAIR'", false);
   
-  
+  std::cout << "-----------------------------" << std::endl;
   //Grammar
   GrammarLR1 g;
   g.AddStartingRule(Rule(prog,  {l}));
@@ -33,6 +33,8 @@ int main(){
   g.BuildTables();
   
   //Print
+  std::cout << "-----------------------------" << std::endl;
+  g.DumpFirst();
   std::cout << "-----------------------------" << std::endl;
 
   //Test initial closure
