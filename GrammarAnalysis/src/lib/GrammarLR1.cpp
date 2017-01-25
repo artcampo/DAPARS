@@ -23,7 +23,7 @@ LR1_Item GrammarLR1::InitLR1_Item(const Rule& rule, const Symbol& symbol) const 
   return LR1_Item(r, symbol);
 }
 
-std::set<LR1_Item> GrammarLR1::Closure(const std::set<LR1_Item>& set) const noexcept{
+std::set<LR1_Item> GrammarLR1::Closure(const std::set<LR1_Item>& set){
   std::set<LR1_Item> s = set;
   bool has_changed = true;
   while(has_changed){
@@ -41,8 +41,13 @@ std::set<LR1_Item> GrammarLR1::Closure(const std::set<LR1_Item>& set) const noex
             for(const auto &b : first_Ca){
               LR1_Item item = InitLR1_Item(r, b);
               if(s.find(item) == s.end()){}
+                std::cout << "Insert: " << item.str() << std::endl;
                 has_changed = true;
                 s.insert(item);
+                for(const auto &setIt : s){
+                  std::cout << "** " << setIt.str() << std::endl;
+                }
+                break;
             }
         }
       }

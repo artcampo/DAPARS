@@ -50,16 +50,16 @@ bool HasEmptySymbol(const std::set<Symbol>& set){
 }
 
 //returns first(b1,b2..bk)
-std::set<Symbol> Grammar::First(const std::vector<Symbol>& derived) const{
+std::set<Symbol> Grammar::First(const std::vector<Symbol>& derived){
   std::set<Symbol> first_set;
   bool all_have_empty = true;
   
   for(const auto &symbol : derived){
     
     std::cout << "asking: " << symbol.str() << std::endl;
-    bool symbol_has_empty_symbol = HasEmptySymbol(first_.at(symbol));
+    bool symbol_has_empty_symbol = HasEmptySymbol(first_[symbol]);
     all_have_empty = all_have_empty and symbol_has_empty_symbol;
-    std::set<Symbol> set = first_.at(symbol);
+    std::set<Symbol> set = first_[symbol];
     set.erase(Symbol::Empty());
     first_set.insert(set.cbegin(), set.cend());
     if(not symbol_has_empty_symbol){
@@ -73,7 +73,7 @@ std::set<Symbol> Grammar::First(const std::vector<Symbol>& derived) const{
 }
 
 //returns first(b1,b2..bk,s)
-std::set<Symbol> Grammar::First(const std::vector<Symbol>& derived, const Symbol& s) const{
+std::set<Symbol> Grammar::First(const std::vector<Symbol>& derived, const Symbol& s){
   if(derived.size() == 0){
     return std::set<Symbol>({s});
   }else{

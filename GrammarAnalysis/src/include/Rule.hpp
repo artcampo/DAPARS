@@ -24,7 +24,13 @@ public:
   }
     
   const bool operator< ( const Rule &s ) const{ 
-    return ( head_ < s.head_ and derived_ < s.derived_);
+    if( head_ == s.head_) return derived_ < s.derived_;
+    else                  return head_ < s.head_;
+  }
+  
+  const bool operator== ( const Rule &s ) const{
+    return ( head_ == s.head_ and derived_ == s.derived_ );
+    
   }
   
 private:

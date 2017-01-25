@@ -25,7 +25,7 @@ public:
   LR1_Item InitLR1_Item(const Rule& rule, const Symbol& symbol) const noexcept;
   LR1_Item InitLR1_Item(const Rule& rule) const noexcept;
   
-  std::set<LR1_Item> Closure(const std::set<LR1_Item>& set) const noexcept;
+  std::set<LR1_Item> Closure(const std::set<LR1_Item>& set);
   
 private:
 

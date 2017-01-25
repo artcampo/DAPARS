@@ -44,8 +44,8 @@ protected:
   
   
   //Helpers
-  std::set<Symbol> First(const std::vector<Symbol>& derived) const;
-  std::set<Symbol> First(const std::vector<Symbol>& derived, const Symbol& s) const;
+  std::set<Symbol> First(const std::vector<Symbol>& derived);
+  std::set<Symbol> First(const std::vector<Symbol>& derived, const Symbol& s);
 };
 
 } //end namespace GrammarAnalyzer

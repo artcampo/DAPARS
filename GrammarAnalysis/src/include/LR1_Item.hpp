@@ -30,8 +30,9 @@ public:
     return s;
   }
   
-  const bool operator< ( const LR1_Item &s ) const{ 
-    return ( rule_ < s.rule_ and symbol_ < s.symbol_);
+  const bool operator< ( const LR1_Item &s ) const{
+    if(rule_ == s.rule_) return symbol_ < s.symbol_;
+    else return  rule_ < s.rule_;
   }
   
   
