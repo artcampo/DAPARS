@@ -57,9 +57,13 @@ int main(){
   }  
   
   //Test CC
-  std::cout << "-- CC" << std::endl;
+  
   g.BuildTables();
   
+  std::cout << "-- CC" << std::endl;
+  g.DumpCC();
+  
+  std::cout << "-- TABLES" << std::endl;
   g.DumpTables();
   
   return 0;

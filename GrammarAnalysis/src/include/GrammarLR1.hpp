@@ -10,12 +10,32 @@
 
 
 namespace GrammarAnalyzer{
-
+  
 class GrammarLR1 : public Grammar{
 
   using SetLR1_Item       = std::set<LR1_Item>;
   using SetOfSetsLR1_Item = std::set<SetLR1_Item>;
   using SetId             = size_t;
+  
+  class Action{
+  public:    
+    enum class kAction{ shift, reduce, accept };
+    
+    kAction action_;
+    SetId   next_state_;    
+    
+    Action(){};
+    
+    Action( const kAction& action, const SetId& next_state)
+      : action_(action), next_state_(next_state){};
+
+    std::string str() const noexcept{
+      if(action_ == kAction::shift) return std::string("shift") + std::to_string(next_state_);
+      if(action_ == kAction::reduce) return std::string("reduce") + std::to_string(next_state_);
+      return std::string("accept");
+    }
+      
+  };
   
 public:  
   GrammarLR1();
@@ -24,7 +44,9 @@ public:
   
   size_t NumSymbols() const noexcept;
   
+  
   void DumpTables() const noexcept;
+  void DumpCC() const noexcept
   
   LR1_Item InitLR1_Item(const Rule& rule, const Symbol& symbol) const noexcept;
   LR1_Item InitLR1_Item(const Rule& rule) const noexcept;
@@ -35,15 +57,19 @@ public:
 private:
 
   void CanonicalCollection();
+  void BuildActionTable() noexcept;
   
   
   std::map<SetLR1_Item, bool> marked_;
   SetOfSetsLR1_Item cc_;
   std::map<SetLR1_Item, SetId> set_id_;
+//   std::map<SetId, SetLR1_Item> set_by_id_;
   SetId free_id_;
   
-  std::map<SetId, std::map<Symbol,SetId>> action_table_;
+  std::map<SetId, std::map<Symbol,Action>> action_table_;
   std::map<SetId, std::map<Symbol,SetId>> goto_table_;
+  
+  std::map<SetId, std::map<Symbol,SetId>> transition_table_;
   
   
   void NewCC    (const std::set<LR1_Item>& set);

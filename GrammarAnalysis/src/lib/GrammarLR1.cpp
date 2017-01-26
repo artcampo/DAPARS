@@ -74,6 +74,7 @@ std::set<LR1_Item> GrammarLR1::Goto(const std::set<LR1_Item>& set, const Symbol&
 
 void GrammarLR1::AssignId(const std::set<LR1_Item>& set){
   set_id_[set] = free_id_;
+//   set_by_id_[free_id_] = set;
   ++free_id_;  
 }
 
@@ -93,32 +94,33 @@ void GrammarLR1::CanonicalCollection(){
     has_changed = false;
     
     for(const auto &set : cc_){
+      const SetId cci = set_id_[set];
       if(marked_[set] == false){
         marked_[set] = true;
         
         for(const auto &item : set){
           if(item.HasSymbolAfterStackTop()){
-               const Symbol symbol = item.SymbolAfterStackTop();
-               SetLR1_Item temp  = Goto(set, symbol);
-               if(cc_.find(temp) == cc_.end()){
-                 std::cout<< "for Symbol: " << symbol.str() << "\n";
-                 has_changed = true;
-                 NewCC(temp);
+            const Symbol symbol = item.SymbolAfterStackTop();
+            SetLR1_Item temp  = Goto(set, symbol);
+            if(cc_.find(temp) == cc_.end()){
+//               std::cout<< "for Symbol: " << symbol.str() << "\n";
+              has_changed = true;
+              NewCC(temp);
 
-                 const SetId cci = set_id_[set];
-                 const SetId ccj = set_id_[temp];                 
-                 if(symbol.IsTerminal()) action_table_[cci][symbol] = ccj;
-                 else                    goto_table_[cci][symbol] = ccj;
-                  
-                
-
-                 
-                 std::cout << "New set: \n";
-                 for(const auto &i : temp)
-                   std::cout << i.str() << "\n";
-                  
+              const SetId ccj = set_id_[temp];                 
+              if(not symbol.IsTerminal()) 
+                goto_table_[cci][symbol] = ccj;
+              else{
+                std::cout << "-- Transition " << cci <<","<<symbol.str()<<" -> " << ccj << "\n";
+                transition_table_[cci][symbol] = ccj;
               }
-            } 
+              
+//               std::cout << "New set: \n";
+//               for(const auto &i : temp)
+//                 std::cout << i.str() << "\n";
+              
+          }
+        } 
         }//end for(const auto &item : set){
         
       }// end if(marked[set] == false){
@@ -128,7 +130,47 @@ void GrammarLR1::CanonicalCollection(){
 
 void GrammarLR1::BuildTables() noexcept{
   CanonicalCollection();
+  BuildActionTable();
 }
+
+
+void GrammarLR1::BuildActionTable() noexcept{
+  std::cout << "build\n";
+  for(const auto &set : cc_){
+    const SetId cci = set_id_[set];
+    for(const auto &item : set){
+      //Case 1: shift
+      if(item.HasSymbolAfterStackTop()){
+        const Symbol symbol = item.SymbolAfterStackTop();
+        if(symbol.IsTerminal()){
+          //std::cout << "Asking for " << cci << " " << symbol.str() << "\n";
+          
+          //defensive
+          auto it = transition_table_.find(cci);
+          if(it->second.find(symbol) == it->second.end() ){
+            SetLR1_Item temp  = Goto(set, symbol);
+            if(set_id_.find(temp) == set_id_.end()){
+              std::cout << "new set\n";
+              exit(1);
+              }
+          }
+          
+          SetLR1_Item temp  = Goto(set, symbol);
+          const SetId ccj = set_id_[temp];
+          action_table_[cci][symbol] = Action( Action::kAction::shift, ccj);
+          
+        } 
+
+      }
+      else{
+        
+      }
+         
+    }//end for(const auto &item : set){
+  }//end for(const auto &set : cc_){
+  
+}
+
 
 
 /*
@@ -137,11 +179,12 @@ void GrammarLR1::BuildTables() noexcept{
   
  */
 void GrammarLR1::DumpTables() const noexcept{
-  std::cout << "Action table\n";
+  std::cout << "Action table " << action_table_.size() <<"\n";
+  std::cout << "Unique sets: " << free_id_ <<"\n";
   for(const auto &it : action_table_){
     std::cout << "For set " << it.first;
     for(const auto &it2 : it.second){
-      std::cout << " - " << it2.first.str() << ": " << it2.second;
+      std::cout << " - " << it2.first.str() << ": " << it2.second.str();
     }
     std::cout << "\n";
   }
