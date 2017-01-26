@@ -22,23 +22,24 @@ class GrammarLR1 : public Grammar{
   
   class Action{
   public:    
-    enum class kAction{ shift, reduce, accept };
+    enum class kAction{ none, shift, reduce, accept };
     
     kAction action_;
     SetId   next_state_;    
     
-    Action(){};
+    Action(): action_(kAction::none){};
     
     Action( const kAction& action, const SetId& next_state)
       : action_(action), next_state_(next_state){};
 
     std::string str() const noexcept{
-      if(action_ == kAction::shift) return std::string("shift") + std::to_string(next_state_);
-      if(action_ == kAction::reduce) return std::string("reduce") + std::to_string(next_state_);
-      return std::string("accept");
+      if(action_ == kAction::shift)  return std::string("shift ") + std::to_string(next_state_);
+      if(action_ == kAction::reduce) return std::string("reduce ") + std::to_string(next_state_);
+      if(action_ == kAction::reduce) return std::string("accept");
+      else return std::string("");
     }
-      
   };
+  
   
 public:  
   GrammarLR1();
@@ -80,13 +81,15 @@ private:
   //indexed with: SetId, SymbolId (term)
   std::vector< std::vector<SetId>> transition_table_;
   
-  std::set<Symbol,SymbolId> symbol_id_;
+  std::map<Symbol,SymbolId> symbol_id_;
   
   void NewCC    (const std::set<LR1_Item>& set);
   void AssignId (const std::set<LR1_Item>& set);
   
   void InitSymbolsIds() noexcept;
   SymbolId GetSymbolId(const Symbol& symbol);
+  
+  void InitTables();
 };
 
 } //end namespace GrammarAnalyzer

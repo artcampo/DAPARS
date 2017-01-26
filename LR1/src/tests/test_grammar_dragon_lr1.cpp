@@ -5,7 +5,8 @@
 #include <string>
 
 /*
- * This produces the closure set of "engineering a compiler" 2nd ed, p128 
+ * This produces the closure, goto and tables of "Compilers, principles and
+ * techniques" 2nd ed, p263
  */
 
 int main(){
@@ -13,23 +14,23 @@ int main(){
   using namespace GrammarAnalyzer;
   
   //Terminals
-  const Symbol lpar("LPAR", "(", true);
-  const Symbol rpar("RPAR", ")", true);
+  const Symbol sc("c", "c", true);
+  const Symbol sd("d", "d", true);
   
   //Non-terminals
-  const Symbol prog ("PROG", "PROG", false);
-  const Symbol l    ("LIST", "LIST", false);
-  const Symbol p    ("PAIR", "PAIR", false);
+  const Symbol sp("S'", "S'", false);
+  const Symbol s ("S",  "S",  false);
+  const Symbol c ("C",  "C",  false);
+  
   
   
   //Grammar
   GrammarLR1 g;
-  g.AddStartingRule(Rule(prog,  {l}));
+  g.AddStartingRule(Rule(sp,  {s}));
   
-  g.AddRule(Rule(l, {l, p}));
-  g.AddRule(Rule(l, {p}));
-  g.AddRule(Rule(p, {lpar, p, rpar}));
-  g.AddRule(Rule(p, {lpar, rpar}));
+  g.AddRule(Rule(s, {c, c}));
+  g.AddRule(Rule(c, {sc, c}));
+  g.AddRule(Rule(c, {sd}));
   
   //Anaylze
   g.Analyze();
@@ -40,7 +41,7 @@ int main(){
   
 
   //Test initial closure
-  std::set<LR1_Item> set {g.InitLR1_Item( Rule(prog, {l}) )};
+  std::set<LR1_Item> set {g.InitLR1_Item( Rule(sp,  {s}) )};
   std::set<LR1_Item> closure = g.Closure(set);
   
   std::cout << "-- INITIAL CLOSURE" << std::endl;
@@ -49,13 +50,14 @@ int main(){
   }
   
   //Test goto
-  std::set<LR1_Item> set_goto = g.Goto(closure, lpar);
+  std::set<LR1_Item> set_goto = g.Goto(closure, c);
   std::cout << "-- GOTO" << std::endl;
   for(const auto &i : set_goto){
     std::cout << i.str() << "\n";
   }  
   
   //Test CC
+//   exit(1);
   
   g.BuildTables();
   

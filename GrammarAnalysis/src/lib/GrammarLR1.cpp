@@ -2,6 +2,7 @@
 #include <exception>
 #include <vector>
 #include <iostream>
+#include <stack>
 
 namespace GrammarAnalyzer{
 
@@ -84,14 +85,39 @@ void GrammarLR1::NewCC(const std::set<LR1_Item>& set){
   cc_.insert(set);
 }
 
+void GrammarLR1::InitTables(){
+  goto_table_.resize(free_symbol_id_);
+  for(auto& it : goto_table_) it.resize(free_non_term_id_);
+  
+  transition_table_.resize(free_symbol_id_);
+  for(auto& it : transition_table_) it.resize(free_term_id_);
+  
+  //indexed with: SetId, SymbolId (term)
+  action_table_.resize(free_symbol_id_);
+  for(auto& it : action_table_) it.resize(free_term_id_);
+  
+    
+}
+
 void GrammarLR1::CanonicalCollection(){
   SetLR1_Item initial_set {InitLR1_Item( starting_rule_ )};
   SetLR1_Item cc0 = Closure(initial_set);
   NewCC(cc0);
   bool has_changed = true;
+
+  class TableItem{
+  public:   
+    TableItem(const SetId& cci, const SymbolId& sym_id, const SetId& ccj):
+      cci_(cci), sym_id_(sym_id), ccj_(ccj){};
+    TableItem(){};
+    
+    SetId     cci_;
+    SymbolId  sym_id_;
+    SetId     ccj_;
+  };    
   
-  goto_table_.resize(free_symbol_id_);
-  for(auto& it : goto_table_) it.resize(free_non_term_id_);
+  std::stack<TableItem> goto_items;
+  std::stack<TableItem> transition_items;
   
   while(has_changed){
     has_changed = false;
@@ -105,6 +131,8 @@ void GrammarLR1::CanonicalCollection(){
           if(item.HasSymbolAfterStackTop()){
             const Symbol symbol = item.SymbolAfterStackTop();
             SetLR1_Item temp  = Goto(set, symbol);
+            
+//             if(temp.size() > 0)
             if(cc_.find(temp) == cc_.end()){
 //               std::cout<< "for Symbol: " << symbol.str() << "\n";
               has_changed = true;
@@ -112,11 +140,11 @@ void GrammarLR1::CanonicalCollection(){
 
               const SetId ccj       = set_id_[temp];   
               const SymbolId sym_id = GetSymbolId(symbol);
-              if(not symbol.IsTerminal()) 
-                goto_table_[cci][sym_id] = ccj;
+              if(not symbol.IsTerminal())
+                goto_items.push(TableItem(cci, sym_id, ccj));
               else{
-                std::cout << "-- Transition " << cci <<","<<symbol.str()<<" -> " << ccj << "\n";
-                transition_table_[cci][sym_id] = ccj;
+                transition_items.push(TableItem(cci, sym_id, ccj));
+//                 std::cout << "-- Transition " << cci <<","<<symbol.str()<<" -> " << ccj << "\n";
               }
               
 //               std::cout << "New set: \n";
@@ -130,6 +158,18 @@ void GrammarLR1::CanonicalCollection(){
       }// end if(marked[set] == false){
     }// end for(const auto &set : cc_)
   }
+  
+  InitTables();
+  while(not goto_items.empty()){
+    TableItem item = goto_items.top();
+    goto_items.pop();
+    goto_table_[item.cci_][item.sym_id_] = item.ccj_;
+  }
+  while(not transition_items.empty()){
+    TableItem item = transition_items.top();
+    transition_items.pop();
+    transition_table_[item.cci_][item.sym_id_] = item.ccj_;
+  }  
 }
 
 void GrammarLR1::BuildTables() noexcept{
@@ -151,6 +191,7 @@ void GrammarLR1::BuildActionTable() noexcept{
           //std::cout << "Asking for " << cci << " " << symbol.str() << "\n";
           
           //defensive
+          /*
           auto it = transition_table_.find(cci);
           if(it->second.find(symbol) == it->second.end() ){
             SetLR1_Item temp  = Goto(set, symbol);
@@ -158,7 +199,7 @@ void GrammarLR1::BuildActionTable() noexcept{
               std::cout << "new set\n";
               exit(1);
               }
-          }
+          }*/
           
           SetLR1_Item temp      = Goto(set, symbol);
           const SetId ccj       = set_id_[temp];
@@ -177,15 +218,15 @@ void GrammarLR1::BuildActionTable() noexcept{
   
 }
 
-SymbolId GrammarLR1::GetSymbolId(const Symbol& symbol){
+GrammarLR1::SymbolId GrammarLR1::GetSymbolId(const Symbol& symbol){
   if(symbol.IsTerminal()){
-    auto it = symbol_id_.find();
+    auto it = symbol_id_.find(symbol);
     if(it == symbol_id_.end()){
       symbol_id_[symbol] = free_term_id_;
       free_term_id_++;
     } 
   }else{
-    auto it = symbol_id_.find();
+    auto it = symbol_id_.find(symbol);
     if(it == symbol_id_.end()){
       symbol_id_[symbol] = free_non_term_id_;
       free_non_term_id_++;
@@ -196,35 +237,34 @@ SymbolId GrammarLR1::GetSymbolId(const Symbol& symbol){
 
 void GrammarLR1::InitSymbolsIds() noexcept{
   for(const auto &r : rules_)
-    for (const auto& it : r.derived_.)
+    for (const auto& it : r.derived_)
       GetSymbolId(it);
 }
 
 void GrammarLR1::DumpCC() const noexcept{
+  std::cout << "\nCC sets: " << cc_.size() << "\n";
+  for(const auto &set : cc_){
+    const SetId cci = set_id_.at(set);
+    std::cout << "cc"<< cci<<"\n";
+    for(const auto &item : set){ 
+      std::cout << item.str() << "\n";
+    }
+  }
 }
 
-/*
- *   std::map<SetId, std::map<Symbol,SetId>> action_table_;
-  std::map<SetId, std::map<Symbol,SetId>> goto_table_;
-  
- */
+
 void GrammarLR1::DumpTables() const noexcept{
-  std::cout << "Action table " << action_table_.size() <<"\n";
-  std::cout << "Unique sets: " << free_symbol_id_ <<"\n";
+  std::cout << "\nAction table " << action_table_.size() <<"\n";
   for(const auto &it : action_table_){
-    std::cout << "For set " << it.first;
-    for(const auto &it2 : it.second){
-      std::cout << " - " << it2.first.str() << ": " << it2.second.str();
-    }
+    for(const auto &it2 : it)
+      std::cout << " - " <<  it2.str() << " " ;
     std::cout << "\n";
   }
   
-  std::cout << "Goto table\n";
+  std::cout << "\nGoto table " << goto_table_.size() <<"\n";
   for(const auto &it : goto_table_){
-    std::cout << "For set " << it.first;
-    for(const auto &it2 : it.second){
-      std::cout << " - " << it2.first.str() << ": " << it2.second;
-    }
+    for(const auto &it2 : it)
+      std::cout << " - " << it2<< " " ;
     std::cout << "\n";
   }  
 }

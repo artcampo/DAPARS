@@ -1,55 +1,3 @@
-for Symbol: LIST
-New set: 
-[LIST -> LIST {·} PAIR , {eof}]
-[LIST -> LIST {·} PAIR , (]
-[PAIR -> {·} ( PAIR ) , {eof}]
-[PAIR -> {·} ( PAIR ) , (]
-[PAIR -> {·} ( ) , {eof}]
-[PAIR -> {·} ( ) , (]
-[PROG -> LIST {·} , {eof}]
-for Symbol: PAIR
-New set: 
-[LIST -> PAIR {·} , {eof}]
-[LIST -> PAIR {·} , (]
-for Symbol: (
-New set: 
-[PAIR -> ( {·} PAIR ) , {eof}]
-[PAIR -> ( {·} PAIR ) , (]
-[PAIR -> ( {·} ) , {eof}]
-[PAIR -> ( {·} ) , (]
-[PAIR -> {·} ( PAIR ) , )]
-[PAIR -> {·} ( ) , )]
-for Symbol: PAIR
-New set: 
-[PAIR -> ( PAIR {·} ) , {eof}]
-[PAIR -> ( PAIR {·} ) , (]
-for Symbol: )
-New set: 
-[PAIR -> ( ) {·} , {eof}]
-[PAIR -> ( ) {·} , (]
-for Symbol: (
-New set: 
-[PAIR -> ( {·} PAIR ) , )]
-[PAIR -> ( {·} ) , )]
-[PAIR -> {·} ( PAIR ) , )]
-[PAIR -> {·} ( ) , )]
-for Symbol: PAIR
-New set: 
-[PAIR -> ( PAIR {·} ) , )]
-for Symbol: )
-New set: 
-[PAIR -> ( ) {·} , )]
-for Symbol: PAIR
-New set: 
-[LIST -> LIST PAIR {·} , {eof}]
-[LIST -> LIST PAIR {·} , (]
-for Symbol: )
-New set: 
-[PAIR -> ( PAIR ) {·} , {eof}]
-[PAIR -> ( PAIR ) {·} , (]
-for Symbol: )
-New set: 
-[PAIR -> ( PAIR ) {·} , )]
 -- FIRST
 LIST ( 
 PAIR ( 
@@ -71,15 +19,87 @@ PROG (
 [PAIR -> ( {·} ) , (]
 [PAIR -> {·} ( PAIR ) , )]
 [PAIR -> {·} ( ) , )]
+build
 -- CC
-Action table
-For set 0 - (: 3
-For set 3 - (: 6 - ): 5
-For set 4 - ): 10
-For set 6 - ): 8
-For set 7 - ): 11
-Goto table
-For set 0 - LIST: 1 - PAIR: 2
-For set 1 - PAIR: 9
-For set 3 - PAIR: 4
-For set 6 - PAIR: 7
+
+CC sets: 12
+cc9
+[LIST -> LIST PAIR {·} , {eof}]
+[LIST -> LIST PAIR {·} , (]
+cc1
+[LIST -> LIST {·} PAIR , {eof}]
+[LIST -> LIST {·} PAIR , (]
+[PAIR -> {·} ( PAIR ) , {eof}]
+[PAIR -> {·} ( PAIR ) , (]
+[PAIR -> {·} ( ) , {eof}]
+[PAIR -> {·} ( ) , (]
+[PROG -> LIST {·} , {eof}]
+cc2
+[LIST -> PAIR {·} , {eof}]
+[LIST -> PAIR {·} , (]
+cc0
+[LIST -> {·} LIST PAIR , {eof}]
+[LIST -> {·} LIST PAIR , (]
+[LIST -> {·} PAIR , {eof}]
+[LIST -> {·} PAIR , (]
+[PAIR -> {·} ( PAIR ) , {eof}]
+[PAIR -> {·} ( PAIR ) , (]
+[PAIR -> {·} ( ) , {eof}]
+[PAIR -> {·} ( ) , (]
+[PROG -> {·} LIST , {eof}]
+cc10
+[PAIR -> ( PAIR ) {·} , {eof}]
+[PAIR -> ( PAIR ) {·} , (]
+cc11
+[PAIR -> ( PAIR ) {·} , )]
+cc4
+[PAIR -> ( PAIR {·} ) , {eof}]
+[PAIR -> ( PAIR {·} ) , (]
+cc7
+[PAIR -> ( PAIR {·} ) , )]
+cc5
+[PAIR -> ( ) {·} , {eof}]
+[PAIR -> ( ) {·} , (]
+cc8
+[PAIR -> ( ) {·} , )]
+cc3
+[PAIR -> ( {·} PAIR ) , {eof}]
+[PAIR -> ( {·} PAIR ) , (]
+[PAIR -> ( {·} ) , {eof}]
+[PAIR -> ( {·} ) , (]
+[PAIR -> {·} ( PAIR ) , )]
+[PAIR -> {·} ( ) , )]
+cc6
+[PAIR -> ( {·} PAIR ) , )]
+[PAIR -> ( {·} ) , )]
+[PAIR -> {·} ( PAIR ) , )]
+[PAIR -> {·} ( ) , )]
+-- TABLES
+
+Action table 12
+ - shift 3  -  
+ - shift 3  -  
+ -   -  
+ - shift 6  - shift 5 
+ -   - shift 10 
+ -   -  
+ - shift 6  - shift 8 
+ -   - shift 11 
+ -   -  
+ -   -  
+ -   -  
+ -   -  
+
+Goto table 12
+ - 1  - 2 
+ - 0  - 9 
+ - 0  - 0 
+ - 0  - 4 
+ - 0  - 0 
+ - 0  - 0 
+ - 0  - 7 
+ - 0  - 0 
+ - 0  - 0 
+ - 0  - 0 
+ - 0  - 0 
+ - 0  - 0 
