@@ -35,6 +35,9 @@ public:
     else return  rule_ < s.rule_;
   }
   
+  const bool operator== ( const LR1_Item &s ) const{
+    return (rule_ == s.rule_) and (symbol_ == s.symbol_);
+  }  
   
   bool HasSymbolAfterStackTop() const noexcept{
     auto it = std::find( rule_.derived_.begin()

@@ -13,9 +13,12 @@ namespace GrammarAnalyzer{
   
 class GrammarLR1 : public Grammar{
 
-  using SetLR1_Item       = std::set<LR1_Item>;
-  using SetOfSetsLR1_Item = std::set<SetLR1_Item>;
-  using SetId             = size_t;
+  using SetLR1_Item           = std::set<LR1_Item>;
+  using SetOfSetsLR1_Item     = std::set<SetLR1_Item>;
+  using VectorOfSetsLR1_Item  = std::vector<SetLR1_Item>;
+  using SetId                 = size_t;
+  using SymbolId              = size_t;
+  
   
   class Action{
   public:    
@@ -46,7 +49,7 @@ public:
   
   
   void DumpTables() const noexcept;
-  void DumpCC() const noexcept
+  void DumpCC() const noexcept;
   
   LR1_Item InitLR1_Item(const Rule& rule, const Symbol& symbol) const noexcept;
   LR1_Item InitLR1_Item(const Rule& rule) const noexcept;
@@ -64,16 +67,26 @@ private:
   SetOfSetsLR1_Item cc_;
   std::map<SetLR1_Item, SetId> set_id_;
 //   std::map<SetId, SetLR1_Item> set_by_id_;
-  SetId free_id_;
+  SetId    free_symbol_id_;
+  SymbolId free_term_id_;
+  SymbolId free_non_term_id_;
   
-  std::map<SetId, std::map<Symbol,Action>> action_table_;
-  std::map<SetId, std::map<Symbol,SetId>> goto_table_;
+  //indexed with: SetId, SymbolId (term)
+  std::vector< std::vector<Action>> action_table_;
   
-  std::map<SetId, std::map<Symbol,SetId>> transition_table_;
+  //indexed with: SetId, SymbolId (nonterm)
+  std::vector< std::vector<SetId>> goto_table_;
   
+  //indexed with: SetId, SymbolId (term)
+  std::vector< std::vector<SetId>> transition_table_;
+  
+  std::set<Symbol,SymbolId> symbol_id_;
   
   void NewCC    (const std::set<LR1_Item>& set);
   void AssignId (const std::set<LR1_Item>& set);
+  
+  void InitSymbolsIds() noexcept;
+  SymbolId GetSymbolId(const Symbol& symbol);
 };
 
 } //end namespace GrammarAnalyzer

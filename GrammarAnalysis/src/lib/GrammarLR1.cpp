@@ -5,7 +5,7 @@
 
 namespace GrammarAnalyzer{
 
-GrammarLR1::GrammarLR1(): free_id_(0){
+GrammarLR1::GrammarLR1(): free_symbol_id_(0), free_term_id_(0), free_non_term_id_(0){
   AddSymbol(Symbol::StackTop());
 }
 
@@ -73,9 +73,9 @@ std::set<LR1_Item> GrammarLR1::Goto(const std::set<LR1_Item>& set, const Symbol&
 }
 
 void GrammarLR1::AssignId(const std::set<LR1_Item>& set){
-  set_id_[set] = free_id_;
-//   set_by_id_[free_id_] = set;
-  ++free_id_;  
+  set_id_[set] = free_symbol_id_;
+//   set_by_id_[free_symbol_id_] = set;
+  ++free_symbol_id_;  
 }
 
 void GrammarLR1::NewCC(const std::set<LR1_Item>& set){
@@ -89,6 +89,9 @@ void GrammarLR1::CanonicalCollection(){
   SetLR1_Item cc0 = Closure(initial_set);
   NewCC(cc0);
   bool has_changed = true;
+  
+  goto_table_.resize(free_symbol_id_);
+  for(auto& it : goto_table_) it.resize(free_non_term_id_);
   
   while(has_changed){
     has_changed = false;
@@ -107,12 +110,13 @@ void GrammarLR1::CanonicalCollection(){
               has_changed = true;
               NewCC(temp);
 
-              const SetId ccj = set_id_[temp];                 
+              const SetId ccj       = set_id_[temp];   
+              const SymbolId sym_id = GetSymbolId(symbol);
               if(not symbol.IsTerminal()) 
-                goto_table_[cci][symbol] = ccj;
+                goto_table_[cci][sym_id] = ccj;
               else{
                 std::cout << "-- Transition " << cci <<","<<symbol.str()<<" -> " << ccj << "\n";
-                transition_table_[cci][symbol] = ccj;
+                transition_table_[cci][sym_id] = ccj;
               }
               
 //               std::cout << "New set: \n";
@@ -129,6 +133,7 @@ void GrammarLR1::CanonicalCollection(){
 }
 
 void GrammarLR1::BuildTables() noexcept{
+  InitSymbolsIds();
   CanonicalCollection();
   BuildActionTable();
 }
@@ -155,9 +160,10 @@ void GrammarLR1::BuildActionTable() noexcept{
               }
           }
           
-          SetLR1_Item temp  = Goto(set, symbol);
-          const SetId ccj = set_id_[temp];
-          action_table_[cci][symbol] = Action( Action::kAction::shift, ccj);
+          SetLR1_Item temp      = Goto(set, symbol);
+          const SetId ccj       = set_id_[temp];
+          const SymbolId sym_id = GetSymbolId(symbol);
+          action_table_[cci][sym_id] = Action( Action::kAction::shift, ccj);
           
         } 
 
@@ -171,7 +177,31 @@ void GrammarLR1::BuildActionTable() noexcept{
   
 }
 
+SymbolId GrammarLR1::GetSymbolId(const Symbol& symbol){
+  if(symbol.IsTerminal()){
+    auto it = symbol_id_.find();
+    if(it == symbol_id_.end()){
+      symbol_id_[symbol] = free_term_id_;
+      free_term_id_++;
+    } 
+  }else{
+    auto it = symbol_id_.find();
+    if(it == symbol_id_.end()){
+      symbol_id_[symbol] = free_non_term_id_;
+      free_non_term_id_++;
+    } 
+  }
+  return symbol_id_[symbol];
+}
 
+void GrammarLR1::InitSymbolsIds() noexcept{
+  for(const auto &r : rules_)
+    for (const auto& it : r.derived_.)
+      GetSymbolId(it);
+}
+
+void GrammarLR1::DumpCC() const noexcept{
+}
 
 /*
  *   std::map<SetId, std::map<Symbol,SetId>> action_table_;
@@ -180,7 +210,7 @@ void GrammarLR1::BuildActionTable() noexcept{
  */
 void GrammarLR1::DumpTables() const noexcept{
   std::cout << "Action table " << action_table_.size() <<"\n";
-  std::cout << "Unique sets: " << free_id_ <<"\n";
+  std::cout << "Unique sets: " << free_symbol_id_ <<"\n";
   for(const auto &it : action_table_){
     std::cout << "For set " << it.first;
     for(const auto &it2 : it.second){
