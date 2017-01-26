@@ -74,6 +74,10 @@ public:
     return LR1_Item(Rule(rule_.head_, derived), symbol_);
   }
   
+  bool IsInitialRule(const Rule& initial_rule) const{
+    return rule_.head_ == initial_rule.head_;
+  }
+  
 private:
 
 };

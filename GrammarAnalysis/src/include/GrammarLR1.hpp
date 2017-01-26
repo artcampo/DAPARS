@@ -35,8 +35,8 @@ class GrammarLR1 : public Grammar{
     std::string str() const noexcept{
       if(action_ == kAction::shift)  return std::string("shift ") + std::to_string(next_state_);
       if(action_ == kAction::reduce) return std::string("reduce ") + std::to_string(next_state_);
-      if(action_ == kAction::reduce) return std::string("accept");
-      else return std::string("");
+      if(action_ == kAction::accept) return std::string("accept");
+      return std::string("");
     }
   };
   

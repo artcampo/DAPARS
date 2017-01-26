@@ -77,18 +77,18 @@ cc6
 -- TABLES
 
 Action table 12
- - shift 3  -  
- - shift 3  -  
- -   -  
- - shift 6  - shift 5 
- -   - shift 10 
- -   -  
- - shift 6  - shift 8 
- -   - shift 11 
- -   -  
- -   -  
- -   -  
- -   -  
+ -   - shift 3  -  
+ - accept  - shift 3  -  
+ -   -   -  
+ -   - shift 6  - shift 5 
+ -   -   - shift 10 
+ -   -   -  
+ -   - shift 6  - shift 8 
+ -   -   - shift 11 
+ -   -   -  
+ -   -   -  
+ -   -   -  
+ -   -   -  
 
 Goto table 12
  - 1  - 2 

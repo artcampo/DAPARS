@@ -190,27 +190,20 @@ void GrammarLR1::BuildActionTable() noexcept{
         if(symbol.IsTerminal()){
           //std::cout << "Asking for " << cci << " " << symbol.str() << "\n";
           
-          //defensive
-          /*
-          auto it = transition_table_.find(cci);
-          if(it->second.find(symbol) == it->second.end() ){
-            SetLR1_Item temp  = Goto(set, symbol);
-            if(set_id_.find(temp) == set_id_.end()){
-              std::cout << "new set\n";
-              exit(1);
-              }
-          }*/
-          
           SetLR1_Item temp      = Goto(set, symbol);
           const SetId ccj       = set_id_[temp];
           const SymbolId sym_id = GetSymbolId(symbol);
           action_table_[cci][sym_id] = Action( Action::kAction::shift, ccj);
-          
         } 
-
       }
       else{
-        
+        if(item.IsInitialRule(starting_rule_) and item.symbol_ == Symbol::Eof()){
+          const SymbolId sym_id = GetSymbolId(Symbol::Eof());
+          action_table_[cci][sym_id] = Action( Action::kAction::accept, 0);
+        }
+        else{
+          
+        }
       }
          
     }//end for(const auto &item : set){
@@ -236,6 +229,7 @@ GrammarLR1::SymbolId GrammarLR1::GetSymbolId(const Symbol& symbol){
 }
 
 void GrammarLR1::InitSymbolsIds() noexcept{
+  GetSymbolId(Symbol::Eof());
   for(const auto &r : rules_)
     for (const auto& it : r.derived_)
       GetSymbolId(it);
