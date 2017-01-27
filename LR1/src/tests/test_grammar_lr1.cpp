@@ -46,21 +46,11 @@ int main(int argc, char **argv)
   g.Analyze();
   g.BuildTables();  
   
+  std::cout << "-- CC" << std::endl;
+  g.DumpCC();
   
-  //Create parser
-  Block* programBlock = nullptr;
-  
-  using namespace RecDescent;
-  std::unique_ptr<Parser> parser(new Parser(std::string(argv[1]), programBlock));
-
-  parser->Parse();
-  
-  if(programBlock == nullptr)
-    std::cout << "Program block is empty!" << std::endl;
-  
-  std::cout << "\nPrint AST\n";
-  ASTVisitorPrettyPrinter visitor;
-  visitor.Visit(*programBlock);
+  std::cout << "-- TABLES" << std::endl;
+  g.DumpTables();  
     
   return 0;
 }

@@ -16,10 +16,6 @@ void print(const std::set<LR1_Item>& s){
 
 int main(){
   
-  
-  
-  
-
   std::set<LR1_Item> set;
   
   //Terminals

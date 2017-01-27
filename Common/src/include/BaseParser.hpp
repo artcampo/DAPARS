@@ -5,16 +5,17 @@
 #include <fstream>
 #include "Tokenizer.hpp"
 
-namespace Common{
-  
 class Block;
 class Node;
+
+namespace Common{
+
+using namespace Tokenizer;
 
 class BaseParser{
   
 public:  
   BaseParser(std::string const &file_name, Block* &programBlock);
-  void Parse();
   
 protected:
   const static int num_characters_to_display_before_error_ = 5;

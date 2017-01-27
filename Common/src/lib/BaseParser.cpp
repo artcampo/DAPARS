@@ -30,13 +30,6 @@ BaseParser::BaseParser(std::string const &file_name, Block* &programBlock)
 }
 
 
-void BaseParser::Parse(){
-
-  if(num_errors_ != 0){
-    std::cout << "Program syntactically incorrect\n";
-  }
-}
-
 void BaseParser::NextToken() noexcept{
   Skip();
   if(current_position_ == file_data_.cend())

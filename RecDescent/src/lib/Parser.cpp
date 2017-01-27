@@ -10,6 +10,7 @@
 
 namespace RecDescent{
 
+using namespace Common;
 using namespace IRDefinition;
 using namespace SubtypesArithmetic;  
   
@@ -17,6 +18,14 @@ using namespace SubtypesArithmetic;
 Parser::Parser(std::string const &file_name, Block* &programBlock) 
   : BaseParser(file_name, programBlock)
 { 
+}
+
+
+void Parser::Parse(){
+
+  if(num_errors_ != 0){
+    std::cout << "Program syntactically incorrect\n";
+  }
 }
 
 bool Parser::Prog(){
