@@ -5,7 +5,6 @@
 #include <vector>
 #include <string>
 #include <algorithm> 
-
 #include <iostream>
 
 namespace GrammarAnalyzer{
@@ -74,8 +73,14 @@ public:
     return LR1_Item(Rule(rule_.head_, derived), symbol_);
   }
   
-  bool IsInitialRule(const Rule& initial_rule) const{
+  bool IsInitialRule(const Rule& initial_rule) const noexcept{
     return rule_.head_ == initial_rule.head_;
+  }
+  
+  Rule OriginalRule() const noexcept{
+    std::vector<Symbol> d = rule_.derived_;
+    d.erase(std::remove(d.begin(), d.end(), Symbol::StackTop()), d.end());
+    return Rule(rule_.head_, d);
   }
   
 private:

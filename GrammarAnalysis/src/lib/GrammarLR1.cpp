@@ -202,7 +202,14 @@ void GrammarLR1::BuildActionTable() noexcept{
           action_table_[cci][sym_id] = Action( Action::kAction::accept, 0);
         }
         else{
-          
+          const Rule r = item.OriginalRule();
+          if(std::find(rules_.begin(), rules_.end(), r) != rules_.end()){
+            const Symbol& a       = item.symbol_;
+//             SetLR1_Item temp      = Goto(set, a);
+//             const SetId ccj       = set_id_[temp];
+            const SymbolId sym_id = GetSymbolId(a);
+            action_table_[cci][sym_id] = Action( Action::kAction::reduce, 0);
+          }
         }
       }
          

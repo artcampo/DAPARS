@@ -79,16 +79,16 @@ cc6
 Action table 12
  -   - shift 3  -  
  - accept  - shift 3  -  
- -   -   -  
+ - reduce 0  - reduce 0  -  
  -   - shift 6  - shift 5 
  -   -   - shift 10 
- -   -   -  
+ - reduce 0  - reduce 0  -  
  -   - shift 6  - shift 8 
  -   -   - shift 11 
- -   -   -  
- -   -   -  
- -   -   -  
- -   -   -  
+ -   -   - reduce 0 
+ - reduce 0  - reduce 0  -  
+ - reduce 0  - reduce 0  -  
+ -   -   - reduce 0 
 
 Goto table 12
  - 1  - 2 

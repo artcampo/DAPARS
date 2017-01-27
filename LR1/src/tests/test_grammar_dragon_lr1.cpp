@@ -57,8 +57,6 @@ int main(){
   }  
   
   //Test CC
-//   exit(1);
-  
   g.BuildTables();
   
   std::cout << "-- CC" << std::endl;
