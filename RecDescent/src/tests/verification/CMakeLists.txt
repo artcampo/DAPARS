@@ -10,4 +10,4 @@ INSTALL(FILES test_grammar.ver
               test_parse2.input
               test_parse3.input
               test_parse4.input
-        DESTINATION tests)
+        DESTINATION tests/ll1)
