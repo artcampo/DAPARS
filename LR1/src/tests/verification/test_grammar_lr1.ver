@@ -1,24 +1,3 @@
--- FIRST
-LIST ( 
-PAIR ( 
-PROG ( 
--- INITIAL CLOSURE
-[LIST -> {·} LIST PAIR , {eof}]
-[LIST -> {·} LIST PAIR , (]
-[LIST -> {·} PAIR , {eof}]
-[LIST -> {·} PAIR , (]
-[PAIR -> {·} ( PAIR ) , {eof}]
-[PAIR -> {·} ( PAIR ) , (]
-[PAIR -> {·} ( ) , {eof}]
-[PAIR -> {·} ( ) , (]
-[PROG -> {·} LIST , {eof}]
--- GOTO
-[PAIR -> ( {·} PAIR ) , {eof}]
-[PAIR -> ( {·} PAIR ) , (]
-[PAIR -> ( {·} ) , {eof}]
-[PAIR -> ( {·} ) , (]
-[PAIR -> {·} ( PAIR ) , )]
-[PAIR -> {·} ( ) , )]
 build
 -- CC
 
