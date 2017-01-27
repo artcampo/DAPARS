@@ -1,95 +1,128 @@
 #include "Parser.hpp"
 #include "Node.hpp"
+#include "IRDefinition.hpp"
+
 #include <iterator>
 #include <fstream>
 #include <iostream>
 #include <exception>
 
+
 namespace RecDescent{
 
-  /*
-class ExceptionNotEndFile: public exception{
-  virtual const char* what() const throw()
-  {
-    return "Parsed last expression, but more ";
-  }
-};
-*/
-
+using namespace IRDefinition;
+using namespace SubtypesArithmetic;  
   
+
 Parser::Parser(std::string const &file_name, Block* &programBlock) 
-  : file_(std::ifstream (file_name.c_str(), std::ios::binary) )
-  , file_data_(std::vector<char> ((std::istreambuf_iterator<char>(file_)),
-                                   std::istreambuf_iterator<char>()) )
-  , current_position_(file_data_.cbegin())
-  , skip_symbols_ {' ','\n'}
-  , programBlock_(programBlock)
-  , num_errors_(0)
-{
- 
+  : BaseParser(file_name, programBlock)
+{ 
 }
 
-
-void Parser::Parse(){
-  if(not Prog()){
-    Error("Program malformed. ");
-  }  
-  if(num_errors_ != 0){
-    std::cout << "Program syntactically incorrect\n";
-  }
-}
-
-void Parser::NextToken() noexcept{
-  Skip();
-  if(current_position_ == file_data_.cend())
-    token_ = Tokenizer::kToken::eof;
-  else{
-    //(?) store init/end position of current token for conversion
-    previous_position_ = current_position_;
-    token_ = Tokenizer::ParseToken(current_position_);
-    if(token_ == Tokenizer::kToken::numerical){
-      token_int_value_ = atoi( std::string( previous_position_
-                                    , current_position_).c_str());
+bool Parser::Prog(){
+  programBlock_ = new Block();
+  Node* node_expr;
+  
+  NextToken();
+  node_expr = Expr();
+  if(node_expr != nullptr){
+//     std::cout << "Prog" << std::endl;
+    if(token_ != Tokenizer::kToken::eof){
+      std::cout << "More data after program.";
+      return false;
     }
   }
   
-  std::cout << "-> " <<  str(token_);
+  ExpressionStatement* exp_stmt = new ExpressionStatement(dynamic_cast<Expression*>(node_expr));
+  programBlock_->statements.push_back(exp_stmt);
+  
+  return true;
 }
 
-void Parser::Skip() noexcept{
-  bool symbol_is_no_skip = false;
-  while(not symbol_is_no_skip 
-        and current_position_ != file_data_.cend() ){
+
+// E->F E'
+Node* Parser::Expr(){
+//   std::cout << std::endl << "Exp";
+  Node* return_node;
+  Node* return_factor;
+  Node* return_prime;
+  
+  return_factor = Factor();
+  return_node   = return_factor;
+  
+  if(return_node != nullptr){
+    return_prime = ExprPrime(return_factor);
+    if(return_prime != nullptr)
+      return_node = return_prime; //return plus(F,E')
+  }else {
+    Error("Factor missing.");
+  }
+  return return_node;
+}
+
+
+// E'-> + F E' | empty
+// returns:
+// - nullptr, if E' is empty
+// - Node of plus(E_caller,F)
+//Node* Parser::ExprPrime(const Node* lhs){
+Node* Parser::ExprPrime(Node* lhs){
+//   std::cout << std::endl << "Exp'";
+  Node* return_node = nullptr;
+  
+  if(token_ == Tokenizer::kToken::plus){
+    NextToken();
+    Node* return_factor = Factor();
     
-    bool current_symbol_skipped = false;
-    for(auto const &s : skip_symbols_){
-      if(*current_position_ == s){
-        ++current_position_;
-        current_symbol_skipped = true;
-        break;
-      }
-    }
-    if(not current_symbol_skipped) symbol_is_no_skip = true;
+    /*
+    return_node = new BinaryOp( dynamic_cast<const Expression*>(lhs)
+                              , IR_ADD
+                              , dynamic_cast<Expression*>(return_factor) );
+                              */
+    
+    return_node = new BinaryOp( dynamic_cast<Expression*>(lhs)
+                              , IR_ADD
+                              , dynamic_cast<Expression*>(return_factor) );    
+    
+    //A new E' will op against current op+
+    Node* return_expprr = ExprPrime(return_node);
+    if(return_expprr != nullptr)
+      return_node = return_expprr;
+    
+  } else{
+    //check Follow(E')
+    if(not(token_ == Tokenizer::kToken::eof or token_ == Tokenizer::kToken::rpar))
+      Error("Expecting eof or rpar.");
   }
+  
+  return return_node;
 }
 
-void Parser::Error(const std::string& message){
-  ++num_errors_;
-  std::cout << "\n" << message << " at: [[";
+
+// F := ( E ) | numerical
+Node* Parser::Factor(){
+//   std::cout << std::endl << "Fact";
+  Node* return_node;
   
-  //Go back N chars
-  std::vector<char>::const_iterator start_of_error = current_position_;
-  for(int i = 0; i < num_characters_to_display_before_error_
-                and start_of_error != file_data_.cbegin(); ++i)
-    --start_of_error;
-  
-  while(start_of_error != current_position_){
-    std::cout << *start_of_error;
-    ++start_of_error;
+  if(token_ == Tokenizer::kToken::numerical){
+    return_node = new Literal(token_int_value_);
+    NextToken();
+    return return_node;
   }
-  std::cout << "]]" << std::endl;
-}
   
+  if(token_ == Tokenizer::kToken::lpar){
+    NextToken();
+    return_node = Expr();
+    if(token_ == Tokenizer::kToken::rpar)
+      NextToken();
+    else 
+      Error("Expecting rpar.");
+  }else 
+    Error("Expectinglrpar.");
+  
+  return return_node;
+}
+
   
 } //end namespace RecDescent
  

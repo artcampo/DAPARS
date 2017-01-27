@@ -3,8 +3,7 @@
 #include <fstream>
 #include <iostream>
 
-namespace RecDescent{
-
+namespace Common{
 namespace Tokenizer{
     
 bool 
@@ -43,6 +42,4 @@ std::string str(const kToken& t){
 
 
 } //end namespace Tokenizer
-
-
-} //end namespace RecDescent
+} //end namespace Common

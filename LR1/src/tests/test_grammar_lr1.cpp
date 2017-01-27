@@ -1,14 +1,25 @@
 #include "Parser.hpp"
 #include "GrammarLR1.hpp"
+#include "IRDefinition.hpp"
+#include "Node.hpp"
+#include "Utils.hpp"
+#include "ASTVisitorCodeGenerator.hpp"
+#include "ASTVisitorPrettyPrinter.hpp"
 #include <iostream>
 #include <memory>
 #include <string>
 
 /*
- * This produces the closure set of "engineering a compiler" 2nd ed, p128 
+ * This parses the pars grammar of "engineering a compiler" 2nd ed, p128 
  */
 
-int main(){
+
+int main(int argc, char **argv)
+{
+  if(argc != 2){
+    std::cout << "Missing source input file\n";
+    exit(1);
+  }
   
   using namespace GrammarAnalyzer;
   
@@ -33,37 +44,23 @@ int main(){
   
   //Anaylze
   g.Analyze();
+  g.BuildTables();  
   
-  //Print
-  std::cout << "-- FIRST" << std::endl;
-  g.DumpFirst();
   
+  //Create parser
+  Block* programBlock = nullptr;
+  
+  using namespace RecDescent;
+  std::unique_ptr<Parser> parser(new Parser(std::string(argv[1]), programBlock));
 
-  //Test initial closure
-  std::set<LR1_Item> set {g.InitLR1_Item( Rule(prog, {l}) )};
-  std::set<LR1_Item> closure = g.Closure(set);
+  parser->Parse();
   
-  std::cout << "-- INITIAL CLOSURE" << std::endl;
-  for(const auto &i : closure){
-    std::cout << i.str() << "\n";
-  }
+  if(programBlock == nullptr)
+    std::cout << "Program block is empty!" << std::endl;
   
-  //Test goto
-  std::set<LR1_Item> set_goto = g.Goto(closure, lpar);
-  std::cout << "-- GOTO" << std::endl;
-  for(const auto &i : set_goto){
-    std::cout << i.str() << "\n";
-  }  
-  
-  //Test CC
-  
-  g.BuildTables();
-  
-  std::cout << "-- CC" << std::endl;
-  g.DumpCC();
-  
-  std::cout << "-- TABLES" << std::endl;
-  g.DumpTables();
-  
+  std::cout << "\nPrint AST\n";
+  ASTVisitorPrettyPrinter visitor;
+  visitor.Visit(*programBlock);
+    
   return 0;
 }
