@@ -6,17 +6,24 @@
 namespace GrammarAnalyzer{
 
 
-
   
 Grammar::Grammar()
-  : analized_(false)
+  : analized_(false),free_term_id_(0), free_non_term_id_(0)
 {
   AddSymbol(Symbol::Empty());
-  AddSymbol(Symbol::Eof());
+  AddSymbol(Symbol::Eof(), Tokenizer::kToken::eof);
 }
 
-void Grammar::AddSymbol(const Symbol& symbol) noexcept{
+void Grammar::AddSymbol(const Symbol& symbol, const kToken& tokenId){
+  AddSymbol(symbol);
+  if(symbol !=Symbol::Empty()){
+    tokenId_of_symbolId_[GetSymbolId(symbol)] = tokenId;
+  }
+}
+
+void Grammar::AddSymbol(const Symbol& symbol){
   symbols_.insert(symbol);
+  if(symbol !=Symbol::Empty()) GetSymbolId(symbol);
 }
 
 size_t Grammar::NumSymbols() const noexcept{
@@ -180,5 +187,21 @@ void Grammar::DumpFollow() const noexcept{
   }
 }
 
+Grammar::SymbolId Grammar::GetSymbolId(const Symbol& symbol){
+  if(symbol.IsTerminal()){
+    auto it = symbol_id_.find(symbol);
+    if(it == symbol_id_.end()){
+      symbol_id_[symbol] = free_term_id_;
+      free_term_id_++;
+    } 
+  }else{
+    auto it = symbol_id_.find(symbol);
+    if(it == symbol_id_.end()){
+      symbol_id_[symbol] = free_non_term_id_;
+      free_non_term_id_++;
+    } 
+  }
+  return symbol_id_[symbol];
+}
 
 } //end namespace GrammarAnalyzer

@@ -6,7 +6,7 @@
 
 namespace GrammarAnalyzer{
 
-GrammarLR1::GrammarLR1(): free_symbol_id_(0), free_term_id_(0), free_non_term_id_(0){
+GrammarLR1::GrammarLR1(): free_symbol_id_(0){
   AddSymbol(Symbol::StackTop());
 }
 
@@ -218,22 +218,6 @@ void GrammarLR1::BuildActionTable() noexcept{
   
 }
 
-GrammarLR1::SymbolId GrammarLR1::GetSymbolId(const Symbol& symbol){
-  if(symbol.IsTerminal()){
-    auto it = symbol_id_.find(symbol);
-    if(it == symbol_id_.end()){
-      symbol_id_[symbol] = free_term_id_;
-      free_term_id_++;
-    } 
-  }else{
-    auto it = symbol_id_.find(symbol);
-    if(it == symbol_id_.end()){
-      symbol_id_[symbol] = free_non_term_id_;
-      free_non_term_id_++;
-    } 
-  }
-  return symbol_id_[symbol];
-}
 
 void GrammarLR1::InitSymbolsIds() noexcept{
   GetSymbolId(Symbol::Eof());

@@ -2,6 +2,8 @@
  * This produces the grammar of "engineering a compiler" 2nd ed, p128 
  */
 
+using namespace Tokenizer;
+
 void CreateGrammar(GrammarLR1& g){
   
   using namespace GrammarAnalyzer;
@@ -17,6 +19,9 @@ void CreateGrammar(GrammarLR1& g){
   
   
   //Grammar
+  g.AddSymbol(lpar, Tokenizer::kToken::lpar);
+  g.AddSymbol(rpar, Tokenizer::kToken::rpar);
+  
   g.AddStartingRule(Rule(prog,  {l}));
   
   g.AddRule(Rule(l, {l, p}));

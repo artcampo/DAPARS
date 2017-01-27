@@ -1,4 +1,5 @@
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../include")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../../GrammarAnalysis/src/include")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../../Common/src/include")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../../DACOMPILER/src/include")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../../DAVM/src/include")

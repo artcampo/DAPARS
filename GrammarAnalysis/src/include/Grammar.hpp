@@ -1,6 +1,7 @@
 #pragma once
 #include "Rule.hpp"
 #include "Symbol.hpp"
+#include "Tokenizer.hpp"
 
 #include <memory>
 #include <vector>
@@ -9,15 +10,29 @@
 #include <map>
 #include <set>
 
+/*
+ * Symbols depending on if they are terminals or not terminals, have unique 
+ * integer IDs. Eof has ID = 0 and Empty has no ID.
+ * 
+ * The terminals are mapped in their order of appearance, to make it
+ * convenient to map between tokens and symbols IDs.
+ */
 
 namespace GrammarAnalyzer{
 
+using namespace Common;
+using namespace Tokenizer;  
+  
 class Grammar{
   
 public:  
+  
+  using SymbolId              = size_t;
+  
   Grammar();
   
-  void AddSymbol(const Symbol& symbol) noexcept;
+  void AddSymbol(const Symbol& symbol, const kToken& tokenId);
+  void AddSymbol(const Symbol& symbol);
   void AddRule(const Rule& rule)  noexcept;
   void AddStartingRule(const Rule& rule)  noexcept;
   
@@ -29,6 +44,9 @@ public:
   void DumpFirst() const noexcept;
   void DumpFollow() const noexcept;
   
+  SymbolId GetSymbolId(const Symbol& symbol);
+  
+  
   
 protected:
   std::vector<Rule> rules_;
@@ -39,9 +57,16 @@ protected:
   Symbol start_symbol_;
   Rule   starting_rule_;
   
+  SymbolId free_term_id_;
+  SymbolId free_non_term_id_;
+  std::map<Symbol,SymbolId>  symbol_id_;
+  std::map<SymbolId, kToken> tokenId_of_symbolId_;
+  
   void ComputeFirstSets() noexcept;
   void ComputeFollowSets() noexcept;
   void ComputeFirstPlusSets() noexcept;
+  
+  
   
   
   //Helpers

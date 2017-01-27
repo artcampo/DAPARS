@@ -13,12 +13,30 @@ namespace GrammarAnalyzer{
   
 class GrammarLR1 : public Grammar{
 
+public:  
+  GrammarLR1();
+  
+  void BuildTables() noexcept;  
+  size_t NumSymbols() const noexcept;
+  
+
+  void DumpTables() const noexcept;
+  void DumpCC() const noexcept;
+  
+  LR1_Item InitLR1_Item(const Rule& rule, const Symbol& symbol) const noexcept;
+  LR1_Item InitLR1_Item(const Rule& rule) const noexcept;
+  
+  std::set<LR1_Item> Closure(const std::set<LR1_Item>& set);
+  std::set<LR1_Item> Goto(const std::set<LR1_Item>& set, const Symbol& symbol);  
+  
   using SetLR1_Item           = std::set<LR1_Item>;
   using SetOfSetsLR1_Item     = std::set<SetLR1_Item>;
   using VectorOfSetsLR1_Item  = std::vector<SetLR1_Item>;
   using SetId                 = size_t;
   using SymbolId              = size_t;
+  using StateId               = size_t;
   
+private:  
   
   class Action{
   public:    
@@ -40,25 +58,6 @@ class GrammarLR1 : public Grammar{
     }
   };
   
-  
-public:  
-  GrammarLR1();
-  
-  void BuildTables() noexcept;
-  
-  size_t NumSymbols() const noexcept;
-  
-  
-  void DumpTables() const noexcept;
-  void DumpCC() const noexcept;
-  
-  LR1_Item InitLR1_Item(const Rule& rule, const Symbol& symbol) const noexcept;
-  LR1_Item InitLR1_Item(const Rule& rule) const noexcept;
-  
-  std::set<LR1_Item> Closure(const std::set<LR1_Item>& set);
-  std::set<LR1_Item> Goto(const std::set<LR1_Item>& set, const Symbol& symbol);
-  
-private:
 
   void CanonicalCollection();
   void BuildActionTable() noexcept;
@@ -69,8 +68,6 @@ private:
   std::map<SetLR1_Item, SetId> set_id_;
 //   std::map<SetId, SetLR1_Item> set_by_id_;
   SetId    free_symbol_id_;
-  SymbolId free_term_id_;
-  SymbolId free_non_term_id_;
   
   //indexed with: SetId, SymbolId (term)
   std::vector< std::vector<Action>> action_table_;
@@ -81,13 +78,10 @@ private:
   //indexed with: SetId, SymbolId (term)
   std::vector< std::vector<SetId>> transition_table_;
   
-  std::map<Symbol,SymbolId> symbol_id_;
-  
   void NewCC    (const std::set<LR1_Item>& set);
   void AssignId (const std::set<LR1_Item>& set);
   
   void InitSymbolsIds() noexcept;
-  SymbolId GetSymbolId(const Symbol& symbol);
   
   void InitTables();
 };
