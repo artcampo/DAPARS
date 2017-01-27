@@ -14,8 +14,8 @@ Grammar::Grammar()
   AddSymbol(Symbol::Eof(), Tokenizer::kToken::eof);
 }
 
-SymbolId GetSymbolId(const kToken& token) const{
-  return symbolId_of_tokenId_.at(symbol);
+Grammar::SymbolId Grammar::GetSymbolId(const kToken& token) const{
+  return symbolId_of_tokenId_.at(token);
 }
 
 void Grammar::AddSymbol(const Symbol& symbol, const kToken& tokenId){

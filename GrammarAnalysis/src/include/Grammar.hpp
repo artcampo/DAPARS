@@ -27,7 +27,7 @@ class Grammar{
   
 public:  
   
-  using SymbolId              = size_t;
+  using SymbolId = size_t;
   
   Grammar();
   
@@ -45,7 +45,7 @@ public:
   void DumpFollow() const noexcept;
   
   SymbolId GetSymbolId(const Symbol& symbol);
-  SymbolId GetSymbolId(const kToken& token);
+  SymbolId GetSymbolId(const kToken& token) const;
   
 protected:
   std::vector<Rule> rules_;
@@ -59,7 +59,7 @@ protected:
   SymbolId free_term_id_;
   SymbolId free_non_term_id_;
   std::map<Symbol,SymbolId>  symbol_id_;
-  std::map<kToken, SymbolId> tokenId_of_symbolId_;
+  std::map<kToken, SymbolId> symbolId_of_tokenId_;
   
   void ComputeFirstSets() noexcept;
   void ComputeFollowSets() noexcept;

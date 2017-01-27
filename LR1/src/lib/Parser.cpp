@@ -1,5 +1,6 @@
 #include "Parser.hpp"
 #include "Node.hpp"
+#include "Action.hpp"
 #include <iterator>
 #include <fstream>
 #include <iostream>
@@ -27,24 +28,43 @@ Parser::Parser(std::string const &file_name, Block* &programBlock
 }
 
 
+
 void Parser::Parse(){
+  
+  using kAction = Action::kAction;
   
   class ShiftedSymbol{
   public:  
-    ShiftedSymbol(const Symbol& symbol, const StateId& state)
+    ShiftedSymbol(const SymbolId& symbol, const StateId& state)
       : symbol_(symbol), state_(state){};
-    Symbol  symbol_;
-    StateId state_;
+    SymbolId  symbol_;
+    StateId   state_;
   };
   
   std::stack<ShiftedSymbol> context;
-  context.push( ShiftedSymbol(Symbol::Eof(), 0));
+  context.push( ShiftedSymbol( grammar_.GetSymbolId(Symbol::Eof()), 0));
   bool finished = false;
   NextToken();
   
   while(not finished){
-    const StateId state = context.top().state_;
-    std::cout << "State: " << state << "\n";
+    const StateId  state  = context.top().state_;
+    const SymbolId symbol = grammar_.GetSymbolId(token_);
+    const Action action   = grammar_.GetAction(state, symbol);
+    std::cout << "State: " << state 
+              << " token: " << str(token_)
+              << " symbol: " << symbol
+              << " action: " << action.str()
+              << "\n";
+              
+    if(action.action_ == kAction::shift){
+      context.push( ShiftedSymbol(symbol, state));
+      NextToken();
+    }else if(action.action_ == kAction::reduce){
+    }else if(action.action_ == kAction::accept){
+      finished = true;
+    }else{
+      std::cout << "Nosferatu\n";
+    }
   }
 }
 

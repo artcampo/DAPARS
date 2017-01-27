@@ -6,6 +6,7 @@
 #include "BaseParser.hpp"
 #include "Tokenizer.hpp"
 #include "GrammarLR1.hpp"
+#include "Identifiers.hpp"
 
 using namespace Common;
 using namespace Tokenizer;
@@ -13,8 +14,6 @@ using namespace GrammarAnalyzer;
 
 namespace LR1{
 
-using StateId = GrammarLR1::StateId;
-  
   
 class Parser : public BaseParser{
   
@@ -25,6 +24,7 @@ public:
 private:
   GrammarLR1& grammar_;
   
+  void NextWord();
   
 };
 
