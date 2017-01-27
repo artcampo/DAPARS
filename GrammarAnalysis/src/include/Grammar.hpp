@@ -45,8 +45,7 @@ public:
   void DumpFollow() const noexcept;
   
   SymbolId GetSymbolId(const Symbol& symbol);
-  
-  
+  SymbolId GetSymbolId(const kToken& token);
   
 protected:
   std::vector<Rule> rules_;
@@ -60,7 +59,7 @@ protected:
   SymbolId free_term_id_;
   SymbolId free_non_term_id_;
   std::map<Symbol,SymbolId>  symbol_id_;
-  std::map<SymbolId, kToken> tokenId_of_symbolId_;
+  std::map<kToken, SymbolId> tokenId_of_symbolId_;
   
   void ComputeFirstSets() noexcept;
   void ComputeFollowSets() noexcept;

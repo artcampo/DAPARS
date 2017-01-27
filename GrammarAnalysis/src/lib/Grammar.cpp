@@ -14,10 +14,14 @@ Grammar::Grammar()
   AddSymbol(Symbol::Eof(), Tokenizer::kToken::eof);
 }
 
+SymbolId GetSymbolId(const kToken& token) const{
+  return symbolId_of_tokenId_.at(symbol);
+}
+
 void Grammar::AddSymbol(const Symbol& symbol, const kToken& tokenId){
   AddSymbol(symbol);
   if(symbol !=Symbol::Empty()){
-    tokenId_of_symbolId_[GetSymbolId(symbol)] = tokenId;
+    symbolId_of_tokenId_[tokenId] = GetSymbolId(symbol);
   }
 }
 
