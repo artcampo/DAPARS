@@ -1,0 +1,58 @@
+build
+
+Action table 12
+|  _  |  _  | s 3 |  _  |
+| acc |  _  | s 3 |  _  |
+| r 0 |  _  | r 0 |  _  |
+|  _  |  _  | s 6 | s 5 |
+|  _  |  _  |  _  | s 10 |
+| r 0 |  _  | r 0 |  _  |
+|  _  |  _  | s 6 | s 8 |
+|  _  |  _  |  _  | s 11 |
+|  _  |  _  |  _  | r 0 |
+| r 0 |  _  | r 0 |  _  |
+| r 0 |  _  | r 0 |  _  |
+|  _  |  _  |  _  | r 0 |
+
+Goto table 12
+| 1 | 2 |
+| 0 | 9 |
+| 0 | 0 |
+| 0 | 4 |
+| 0 | 0 |
+| 0 | 0 |
+| 0 | 7 |
+| 0 | 0 |
+| 0 | 0 |
+| 0 | 0 |
+| 0 | 0 |
+| 0 | 0 |
+<0,0>
+ State: 0 token: lpar symbol: 2 action: s 3
+<0,0><3,2>
+ State: 3 token: lpar symbol: 2 action: s 6
+<0,0><3,2><6,2>
+ State: 6 token: rpar symbol: 3 action: s 8
+<0,0><3,2><6,2><8,3>
+ State: 8 token: rpar symbol: 3 action: r 0
+Parsed: PAIR -> ( ) 
+<0,0><3,2><4,1>
+ State: 4 token: rpar symbol: 3 action: s 10
+<0,0><3,2><4,1><10,3>
+ State: 10 token: lpar symbol: 2 action: r 0
+Parsed: PAIR -> ( PAIR ) 
+<0,0><2,1>
+ State: 2 token: lpar symbol: 2 action: r 0
+Parsed: LIST -> PAIR 
+<0,0><1,0>
+ State: 1 token: lpar symbol: 2 action: s 3
+<0,0><1,0><3,2>
+ State: 3 token: rpar symbol: 3 action: s 5
+<0,0><1,0><3,2><5,3>
+ State: 5 token: eof symbol: 0 action: r 0
+Parsed: PAIR -> ( ) 
+<0,0><1,0><9,1>
+ State: 9 token: eof symbol: 0 action: r 0
+Parsed: LIST -> LIST PAIR 
+<0,0><1,0>
+ State: 1 token: eof symbol: 0 action: acc

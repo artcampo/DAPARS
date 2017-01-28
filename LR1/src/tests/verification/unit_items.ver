@@ -1,0 +1,22 @@
+find before insert:  not found.
+** [PAIR' -> {·} LIST , {eof}]
+
+find before insert:  not found.
+** [LIST -> {·} LIST PAIR' , {eof}]
+** [PAIR' -> {·} LIST , {eof}]
+
+find before insert:  not found.
+** [LIST -> {·} LIST PAIR' , {eof}]
+** [LIST -> {·} PAIR' , {eof}]
+** [PAIR' -> {·} LIST , {eof}]
+
+find before insert:  found.
+** [LIST -> {·} LIST PAIR' , {eof}]
+** [LIST -> {·} PAIR' , {eof}]
+** [PAIR' -> {·} LIST , {eof}]
+
+find before insert:  found.
+** [LIST -> {·} LIST PAIR' , {eof}]
+** [LIST -> {·} PAIR' , {eof}]
+** [PAIR' -> {·} LIST , {eof}]
+

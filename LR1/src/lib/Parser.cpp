@@ -69,6 +69,7 @@ void Parser::Parse(){
     const StateId  state  = context.top().state_;
     const SymbolId symbol = grammar_.GetSymbolId(token_);
     const Action action   = grammar_.GetAction(state, symbol);
+    
     std::cout << " State: " << state 
               << " token: " << str(token_)
               << " symbol: " << symbol
@@ -81,12 +82,13 @@ void Parser::Parse(){
       
     }else if(action.action_ == kAction::reduce){
       const Rule& r = grammar_.GetRule(action.rule_id_);
+      std::cout << "Parsed: " << r.str() << "\n";
       for(size_t i = 0; i < r.NumberDerivedSymbols(); ++i)
         context.pop();
       const SymbolId& a_id    = grammar_.GetSymbolId(r.head_);
       const StateId&  state   = context.top().state_;
       const StateId&  state_a = grammar_.GetGoto(state, a_id);
-      context.push( ShiftedSymbol( a_id, 0));
+      context.push( ShiftedSymbol( a_id, state_a));
     }else if(action.action_ == kAction::accept){
       finished = true;
     }else{

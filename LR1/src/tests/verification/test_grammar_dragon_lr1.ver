@@ -1,0 +1,52 @@
+-- FIRST
+C 
+S 
+-- INITIAL CLOSURE
+[S -> {·} C C , {eof}]
+[S' -> {·} S , {eof}]
+-- GOTO
+[C -> {·} c C , {eof}]
+[C -> {·} d , {eof}]
+[S -> C {·} C , {eof}]
+build
+-- CC
+
+CC sets: 7
+cc3
+[C -> {·} c C , {eof}]
+[C -> {·} d , {eof}]
+[C -> c {·} C , {eof}]
+cc1
+[C -> {·} c C , {eof}]
+[C -> {·} d , {eof}]
+[S -> C {·} C , {eof}]
+cc6
+[C -> c C {·} , {eof}]
+cc4
+[C -> d {·} , {eof}]
+cc5
+[S -> C C {·} , {eof}]
+cc0
+[S -> {·} C C , {eof}]
+[S' -> {·} S , {eof}]
+cc2
+[S' -> S {·} , {eof}]
+-- TABLES
+
+Action table 7
+|  _  |  _  |  _  |  _  |
+|  _  |  _  | s 3 | s 4 |
+| acc |  _  |  _  |  _  |
+|  _  |  _  | s 3 | s 4 |
+| r 0 |  _  |  _  |  _  |
+| r 0 |  _  |  _  |  _  |
+| r 0 |  _  |  _  |  _  |
+
+Goto table 7
+| 2 | 1 |
+| 0 | 5 |
+| 0 | 0 |
+| 0 | 6 |
+| 0 | 0 |
+| 0 | 0 |
+| 0 | 0 |

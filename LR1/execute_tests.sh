@@ -7,8 +7,9 @@ test_standalone(){
     rm $1.out 
 }
 
+test_standalone unit_items
 test_standalone test_grammar_lr1
-
+test_standalone test_grammar_dragon_lr1
 
 
 test_with_input(){
@@ -18,3 +19,5 @@ test_with_input(){
     rm $2.out 
 }
 
+test_with_input test_parse_g1 g1
+test_with_input test_parse_g1 g1_2

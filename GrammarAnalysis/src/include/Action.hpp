@@ -32,14 +32,14 @@ namespace GrammarAnalyzer{
 
     std::string str() const noexcept{
       if(action_ == kAction::shift)
-        return std::string("shift ") + std::to_string(next_state_);
+        return std::string("s ") + std::to_string(next_state_);
       
       if(action_ == kAction::reduce) 
-        return  std::string("reduce ") + std::to_string(next_state_)
-              + std::string(" rule: ") + std::to_string(rule_id_) ;
+        return  std::string("r ") + std::to_string(next_state_);
+              //+ std::string(" rule: ") + std::to_string(rule_id_) ;
       
-      if(action_ == kAction::accept) return std::string("accept");
-      return std::string("");
+      if(action_ == kAction::accept) return std::string("acc");
+      return std::string(" _ ");
     }
   };
   

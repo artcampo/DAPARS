@@ -26,6 +26,7 @@ int main(int argc, char **argv)
   //Grammar
   GrammarLR1 g;
   CreateGrammar(g);
+  g.DumpTables();  
   
   Block* programBlock = nullptr;
   

@@ -56,29 +56,29 @@ cc6
 -- TABLES
 
 Action table 12
- -   - shift 3  -  
- - accept  - shift 3  -  
- - reduce 0  - reduce 0  -  
- -   - shift 6  - shift 5 
- -   -   - shift 10 
- - reduce 0  - reduce 0  -  
- -   - shift 6  - shift 8 
- -   -   - shift 11 
- -   -   - reduce 0 
- - reduce 0  - reduce 0  -  
- - reduce 0  - reduce 0  -  
- -   -   - reduce 0 
+|  _  |  _  | s 3 |  _  |
+| acc |  _  | s 3 |  _  |
+| r 0 |  _  | r 0 |  _  |
+|  _  |  _  | s 6 | s 5 |
+|  _  |  _  |  _  | s 10 |
+| r 0 |  _  | r 0 |  _  |
+|  _  |  _  | s 6 | s 8 |
+|  _  |  _  |  _  | s 11 |
+|  _  |  _  |  _  | r 0 |
+| r 0 |  _  | r 0 |  _  |
+| r 0 |  _  | r 0 |  _  |
+|  _  |  _  |  _  | r 0 |
 
 Goto table 12
- - 1  - 2 
- - 0  - 9 
- - 0  - 0 
- - 0  - 4 
- - 0  - 0 
- - 0  - 0 
- - 0  - 7 
- - 0  - 0 
- - 0  - 0 
- - 0  - 0 
- - 0  - 0 
- - 0  - 0 
+| 1 | 2 |
+| 0 | 9 |
+| 0 | 0 |
+| 0 | 4 |
+| 0 | 0 |
+| 0 | 0 |
+| 0 | 7 |
+| 0 | 0 |
+| 0 | 0 |
+| 0 | 0 |
+| 0 | 0 |
+| 0 | 0 |

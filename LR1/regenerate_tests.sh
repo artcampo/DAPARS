@@ -6,8 +6,9 @@ regenerate_test_standalone(){
   cp $1.ver ../../../src/tests/verification/.
 }
 
+regenerate_test_standalone unit_items
 regenerate_test_standalone test_grammar_lr1
-
+regenerate_test_standalone test_grammar_dragon_lr1
 
 ###################################################################
 regenerate_test_with_input(){
@@ -15,7 +16,8 @@ regenerate_test_with_input(){
   cp $2.ver ../../../src/tests/verification/.
 }
 
-
+regenerate_test_with_input test_parse_g1 g1
+regenerate_test_with_input test_parse_g1 g1_2
 
 
 #end

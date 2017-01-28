@@ -242,15 +242,15 @@ void GrammarLR1::DumpTables() const noexcept{
   std::cout << "\nAction table " << action_table_.size() <<"\n";
   for(const auto &it : action_table_){
     for(const auto &it2 : it)
-      std::cout << " - " <<  it2.str() << " " ;
-    std::cout << "\n";
+      std::cout << "| " <<  it2.str() << " " ;
+    std::cout << "|\n";
   }
   
   std::cout << "\nGoto table " << goto_table_.size() <<"\n";
   for(const auto &it : goto_table_){
     for(const auto &it2 : it)
-      std::cout << " - " << it2<< " " ;
-    std::cout << "\n";
+      std::cout << "| " << it2<< " " ;
+    std::cout << "|\n";
   }  
 }
 
