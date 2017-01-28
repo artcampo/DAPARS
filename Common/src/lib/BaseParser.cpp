@@ -44,7 +44,7 @@ void BaseParser::NextToken() noexcept{
     }
   }
   
-  std::cout << "-> " <<  str(token_);
+//   std::cout << "NextToken: " <<  str(token_)<<"\n";
 }
 
 void BaseParser::Skip() noexcept{

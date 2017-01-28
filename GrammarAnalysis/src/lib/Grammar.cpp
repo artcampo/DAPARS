@@ -16,7 +16,6 @@ Grammar::Grammar()
 
 
 RuleId Grammar::GetRuleId(const Rule& rule) const{
-  std::cout << "rule id: " << rule.str()<< "\n";
   return ruleId_of_rule_.at(rule);
 }
 
@@ -44,10 +43,6 @@ void Grammar::AddRule(const Rule& rule) noexcept{
   rules_.push_back(rule);
   ruleId_of_rule_[rule] = free_rule_id_;
   ++free_rule_id_;
-  std::cout << "rule added: " << free_rule_id_ << ": " << rule.str()<< "\n";
-//   AddSymbol(rule.head_);
-//   for(const auto &s : rule.derived_)
-//     AddSymbol(s);
 }
 
 void Grammar::AddStartingRule(const Rule& rule)  noexcept{

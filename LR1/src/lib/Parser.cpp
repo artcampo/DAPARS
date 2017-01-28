@@ -27,19 +27,37 @@ Parser::Parser(std::string const &file_name, Block* &programBlock
  
 }
 
-
-
-void Parser::Parse(){
-  
-  using kAction = Action::kAction;
-  
   class ShiftedSymbol{
   public:  
     ShiftedSymbol(const SymbolId& symbol, const StateId& state)
       : symbol_(symbol), state_(state){};
     SymbolId  symbol_;
     StateId   state_;
+    
+    std::string str() const{ 
+      return std::string("<") + std::to_string(state_)
+           + std::string(",") + std::to_string(symbol_) 
+           + std::string(">");
+    }
   };
+
+void printStackRec(std::stack<ShiftedSymbol>& c){
+  if(c.empty()) return;
+  ShiftedSymbol s = c.top();
+  c.pop();
+  printStackRec(c);
+  std::cout << s.str();
+}
+  
+void printStack(std::stack<ShiftedSymbol>& context){
+  std::stack<ShiftedSymbol> c = context;
+  printStackRec(c);
+}
+
+
+
+void Parser::Parse(){
+  using kAction = Action::kAction;
   
   std::stack<ShiftedSymbol> context;
   context.push( ShiftedSymbol( grammar_.GetSymbolId(Symbol::Eof()), 0));
@@ -47,17 +65,18 @@ void Parser::Parse(){
   NextToken();
   
   while(not finished){
+    printStack(context); std::cout << "\n";
     const StateId  state  = context.top().state_;
     const SymbolId symbol = grammar_.GetSymbolId(token_);
     const Action action   = grammar_.GetAction(state, symbol);
-    std::cout << "State: " << state 
+    std::cout << " State: " << state 
               << " token: " << str(token_)
               << " symbol: " << symbol
               << " action: " << action.str()
               << "\n";
               
     if(action.action_ == kAction::shift){
-      context.push( ShiftedSymbol(symbol, state));
+      context.push( ShiftedSymbol(symbol, action.next_state_));
       NextToken();
       
     }else if(action.action_ == kAction::reduce){
