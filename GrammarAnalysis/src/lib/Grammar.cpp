@@ -8,13 +8,18 @@ namespace GrammarAnalyzer{
 
   
 Grammar::Grammar()
-  : analized_(false),free_term_id_(0), free_non_term_id_(0)
+  : analized_(false),free_term_id_(0), free_non_term_id_(0), free_rule_id_(0)
 {
   AddSymbol(Symbol::Empty());
   AddSymbol(Symbol::Eof(), Tokenizer::kToken::eof);
 }
 
-Grammar::SymbolId Grammar::GetSymbolId(const kToken& token) const{
+
+RuleId Grammar::GetRuleId(const Rule& rule) const{
+  return ruleId_of_rule_.at(rule);
+}
+
+SymbolId Grammar::GetSymbolId(const kToken& token) const{
   return symbolId_of_tokenId_.at(token);
 }
 
@@ -36,9 +41,11 @@ size_t Grammar::NumSymbols() const noexcept{
 
 void Grammar::AddRule(const Rule& rule) noexcept{
   rules_.push_back(rule);
-  AddSymbol(rule.head_);
-  for(const auto &s : rule.derived_)
-    AddSymbol(s);
+  ruleId_of_rule_[rule] = free_rule_id_;
+  ++free_rule_id_;
+//   AddSymbol(rule.head_);
+//   for(const auto &s : rule.derived_)
+//     AddSymbol(s);
 }
 
 void Grammar::AddStartingRule(const Rule& rule)  noexcept{
@@ -191,7 +198,7 @@ void Grammar::DumpFollow() const noexcept{
   }
 }
 
-Grammar::SymbolId Grammar::GetSymbolId(const Symbol& symbol){
+SymbolId Grammar::GetSymbolId(const Symbol& symbol){
   if(symbol.IsTerminal()){
     auto it = symbol_id_.find(symbol);
     if(it == symbol_id_.end()){

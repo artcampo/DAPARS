@@ -35,10 +35,10 @@ int main(){
   Rule r3(p, {lpar, rpar});  
   
   
-  LR1_Item item1 ( Rule(p, {Symbol::StackTop(), l} ), Symbol::Eof());
-  LR1_Item item2 ( Rule(l, {Symbol::StackTop(), l, p} ), Symbol::Eof());
-  LR1_Item item3 ( Rule(l, {Symbol::StackTop(), p} ), Symbol::Eof());
-  LR1_Item item4 ( Rule(l, {Symbol::StackTop(), l, p} ), Symbol::Eof());
+  LR1_Item item1 ( Rule(p, {Symbol::StackTop(), l} ),     Symbol::Eof(), 0);
+  LR1_Item item2 ( Rule(l, {Symbol::StackTop(), l, p} ),  Symbol::Eof(), 1);
+  LR1_Item item3 ( Rule(l, {Symbol::StackTop(), p} ),     Symbol::Eof(), 2);
+  LR1_Item item4 ( Rule(l, {Symbol::StackTop(), l, p} ),  Symbol::Eof(), 3);
   
   std::cout << "find before insert: ";
   if(set.find(item1) == set.end())

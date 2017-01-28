@@ -1,6 +1,7 @@
 #pragma once
 #include "Rule.hpp"
 #include "Symbol.hpp"
+#include "Identifiers.hpp"
 
 #include <vector>
 #include <string>
@@ -12,13 +13,13 @@ namespace GrammarAnalyzer{
 class LR1_Item{
   
 public:  
-  LR1_Item(const Rule& rule, const Symbol& symbol)
-  : rule_(rule), symbol_(symbol)
+  LR1_Item(const Rule& rule, const Symbol& symbol, const RuleId& rule_id)
+  : rule_(rule), symbol_(symbol), rule_id_(rule_id)
   {}
   
   const Rule                rule_;
   const Symbol              symbol_;
-  
+  const RuleId              rule_id_;
   
   std::string str() const noexcept{
     std::string s("[");
@@ -70,7 +71,7 @@ public:
     std::vector<Symbol>::iterator next = it; 
     ++next;
     std::iter_swap(it, next);
-    return LR1_Item(Rule(rule_.head_, derived), symbol_);
+    return LR1_Item(Rule(rule_.head_, derived), symbol_, rule_id_);
   }
   
   bool IsInitialRule(const Rule& initial_rule) const noexcept{

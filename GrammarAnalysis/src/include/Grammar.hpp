@@ -2,7 +2,7 @@
 #include "Rule.hpp"
 #include "Symbol.hpp"
 #include "Tokenizer.hpp"
-
+#include "Identifiers.hpp"
 #include <memory>
 #include <vector>
 #include <string>
@@ -27,7 +27,6 @@ class Grammar{
   
 public:  
   
-  using SymbolId = size_t;
   
   Grammar();
   
@@ -46,6 +45,10 @@ public:
   
   SymbolId GetSymbolId(const Symbol& symbol);
   SymbolId GetSymbolId(const kToken& token) const;
+  RuleId   GetRuleId(const Rule& rule) const;
+  
+  const Rule& GetRule(const RuleId& rule_id) const {return rules_[rule_id];};
+  Rule&       GetRule(const RuleId& rule_id) {return rules_[rule_id];};
   
 protected:
   std::vector<Rule> rules_;
@@ -58,8 +61,11 @@ protected:
   
   SymbolId free_term_id_;
   SymbolId free_non_term_id_;
+  RuleId   free_rule_id_;
   std::map<Symbol,SymbolId>  symbol_id_;
   std::map<kToken, SymbolId> symbolId_of_tokenId_;
+  std::map<Rule, RuleId> ruleId_of_rule_;
+  
   
   void ComputeFirstSets() noexcept;
   void ComputeFollowSets() noexcept;

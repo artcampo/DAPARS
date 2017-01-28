@@ -60,6 +60,7 @@ void Parser::Parse(){
       context.push( ShiftedSymbol(symbol, state));
       NextToken();
     }else if(action.action_ == kAction::reduce){
+      const Rule& r = grammar_.GetRule(action.rule_id_);
     }else if(action.action_ == kAction::accept){
       finished = true;
     }else{
