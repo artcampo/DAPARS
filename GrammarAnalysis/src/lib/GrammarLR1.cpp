@@ -21,7 +21,7 @@ LR1_Item GrammarLR1::InitLR1_Item(const Rule& rule) const noexcept{
 LR1_Item GrammarLR1::InitLR1_Item(const Rule& rule, const Symbol& symbol) const noexcept{
   Rule r = rule;
   r.derived_.insert( r.derived_.begin(), Symbol::StackTop() );
-  return LR1_Item(r, symbol, GetRuleId(r));
+  return LR1_Item(r, symbol, GetRuleId(rule));
 }
 
 std::set<LR1_Item> GrammarLR1::Closure(const std::set<LR1_Item>& set){
@@ -92,7 +92,7 @@ void GrammarLR1::InitTables(){
   transition_table_.resize(free_symbol_id_);
   for(auto& it : transition_table_) it.resize(free_term_id_);
   
-  //indexed with: SetId, SymbolId (term)
+  //indexed with: StateId, SymbolId (term)
   action_table_.resize(free_symbol_id_);
   for(auto& it : action_table_) it.resize(free_term_id_);
   
@@ -107,13 +107,13 @@ void GrammarLR1::CanonicalCollection(){
 
   class TableItem{
   public:   
-    TableItem(const SetId& cci, const SymbolId& sym_id, const SetId& ccj):
+    TableItem(const StateId& cci, const SymbolId& sym_id, const StateId& ccj):
       cci_(cci), sym_id_(sym_id), ccj_(ccj){};
     TableItem(){};
     
-    SetId     cci_;
+    StateId   cci_;
     SymbolId  sym_id_;
-    SetId     ccj_;
+    StateId   ccj_;
   };    
   
   std::stack<TableItem> goto_items;
@@ -123,7 +123,7 @@ void GrammarLR1::CanonicalCollection(){
     has_changed = false;
     
     for(const auto &set : cc_){
-      const SetId cci = set_id_[set];
+      const StateId cci = set_id_[set];
       if(marked_[set] == false){
         marked_[set] = true;
         
@@ -138,7 +138,7 @@ void GrammarLR1::CanonicalCollection(){
               has_changed = true;
               NewCC(temp);
 
-              const SetId ccj       = set_id_[temp];   
+              const StateId ccj       = set_id_[temp];   
               const SymbolId sym_id = GetSymbolId(symbol);
               if(not symbol.IsTerminal())
                 goto_items.push(TableItem(cci, sym_id, ccj));
@@ -182,7 +182,7 @@ void GrammarLR1::BuildTables() noexcept{
 void GrammarLR1::BuildActionTable() noexcept{
   std::cout << "build\n";
   for(const auto &set : cc_){
-    const SetId cci = set_id_[set];
+    const StateId cci = set_id_[set];
     for(const auto &item : set){
       //Case 1: shift
       if(item.HasSymbolAfterStackTop()){
@@ -191,7 +191,7 @@ void GrammarLR1::BuildActionTable() noexcept{
           //std::cout << "Asking for " << cci << " " << symbol.str() << "\n";
           
           SetLR1_Item temp      = Goto(set, symbol);
-          const SetId ccj       = set_id_[temp];
+          const StateId ccj       = set_id_[temp];
           const SymbolId sym_id = GetSymbolId(symbol);
           action_table_[cci][sym_id] = Action( Action::kAction::shift, ccj);
         } 
@@ -206,8 +206,7 @@ void GrammarLR1::BuildActionTable() noexcept{
           const Rule&  r    = GetRule(r_id);
           if(std::find(rules_.begin(), rules_.end(), r) != rules_.end()){
             const Symbol& a       = item.symbol_;
-//             SetLR1_Item temp      = Goto(set, a);
-//             const SetId ccj       = set_id_[temp];
+
             const SymbolId sym_id = GetSymbolId(a);
             action_table_[cci][sym_id] = Action( Action::kAction::reduce, 0, r_id);
           }
@@ -230,7 +229,7 @@ void GrammarLR1::InitSymbolsIds() noexcept{
 void GrammarLR1::DumpCC() const noexcept{
   std::cout << "\nCC sets: " << cc_.size() << "\n";
   for(const auto &set : cc_){
-    const SetId cci = set_id_.at(set);
+    const StateId cci = set_id_.at(set);
     std::cout << "cc"<< cci<<"\n";
     for(const auto &item : set){ 
       std::cout << item.str() << "\n";

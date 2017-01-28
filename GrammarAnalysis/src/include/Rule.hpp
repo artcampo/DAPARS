@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <cstddef>
 #include "Symbol.hpp"
 
 
@@ -32,6 +33,8 @@ public:
   const bool operator== ( const Rule &s ) const{
     return ( head_ == s.head_ and derived_ == s.derived_ );
   }
+  
+  const size_t NumberDerivedSymbols() const{return derived_.size();}
   
 private:
 

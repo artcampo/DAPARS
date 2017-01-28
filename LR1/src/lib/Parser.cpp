@@ -59,8 +59,15 @@ void Parser::Parse(){
     if(action.action_ == kAction::shift){
       context.push( ShiftedSymbol(symbol, state));
       NextToken();
+      
     }else if(action.action_ == kAction::reduce){
       const Rule& r = grammar_.GetRule(action.rule_id_);
+      for(size_t i = 0; i < r.NumberDerivedSymbols(); ++i)
+        context.pop();
+      const SymbolId& a_id    = grammar_.GetSymbolId(r.head_);
+      const StateId&  state   = context.top().state_;
+      const StateId&  state_a = grammar_.GetGoto(state, a_id);
+      context.push( ShiftedSymbol( a_id, 0));
     }else if(action.action_ == kAction::accept){
       finished = true;
     }else{

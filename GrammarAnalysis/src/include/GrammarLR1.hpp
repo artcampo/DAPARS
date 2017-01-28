@@ -37,6 +37,9 @@ public:
   Action GetAction(const StateId& state, const SymbolId& terminal_symbol)
   {return action_table_[state][terminal_symbol];}
   
+  StateId GetGoto(const StateId& state, const SymbolId& non_terminal_symbol)
+  {return goto_table_[state][non_terminal_symbol];}  
+  
 private:  
 
   void CanonicalCollection();
@@ -45,18 +48,18 @@ private:
   
   std::map<SetLR1_Item, bool> marked_;
   SetOfSetsLR1_Item cc_;
-  std::map<SetLR1_Item, SetId> set_id_;
-//   std::map<SetId, SetLR1_Item> set_by_id_;
-  SetId    free_symbol_id_;
+  std::map<SetLR1_Item, StateId> set_id_;
+//   std::map<StateId, SetLR1_Item> set_by_id_;
+  StateId    free_symbol_id_;
   
-  //indexed with: SetId, SymbolId (term)
+  //indexed with: StateId, SymbolId (term)
   std::vector< std::vector<Action>> action_table_;
   
-  //indexed with: SetId, SymbolId (nonterm)
-  std::vector< std::vector<SetId>> goto_table_;
+  //indexed with: StateId, SymbolId (nonterm)
+  std::vector< std::vector<StateId>> goto_table_;
   
-  //indexed with: SetId, SymbolId (term)
-  std::vector< std::vector<SetId>> transition_table_;
+  //indexed with: StateId, SymbolId (term)
+  std::vector< std::vector<StateId>> transition_table_;
   
   void NewCC    (const std::set<LR1_Item>& set);
   void AssignId (const std::set<LR1_Item>& set);

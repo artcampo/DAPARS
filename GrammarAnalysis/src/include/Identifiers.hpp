@@ -1,10 +1,9 @@
 #pragma once
+#include <cstddef>
 
 namespace GrammarAnalyzer{
   
-  using SetId     = size_t;
   using SymbolId  = size_t;
-  using StateId   = size_t;
   using StateId   = size_t;
   using RuleId    = size_t;
 
