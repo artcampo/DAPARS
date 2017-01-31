@@ -17,7 +17,7 @@ using SetLR1_Item           = std::set<LR1_Item>;
 using SetOfSetsLR1_Item     = std::set<SetLR1_Item>;
 using VectorOfSetsLR1_Item  = std::vector<SetLR1_Item>;  
 
-LR1_Item GetKernel(const SetLR1_Item& set);
+const LR1_Item GetKernel(const SetLR1_Item& set);
   
 class GrammarLR1 : public Grammar{
 
@@ -34,7 +34,7 @@ public:
   LR1_Item InitLR1_Item(const Rule& rule) const noexcept;
   
   std::set<LR1_Item> Closure(const std::set<LR1_Item>& set);
-  std::set<LR1_Item> Goto(const std::set<LR1_Item>& set, const Symbol& symbol);  
+  std::set<LR1_Item> Goto(const SetLR1_Item& set, const Symbol& symbol);  
   
   
   Action GetAction(const StateId& state, const SymbolId& terminal_symbol)

@@ -26,7 +26,7 @@ public:
   
 
   
-  std::set<LR1_Item> Goto(const std::set<LR1_Item>& set, const Symbol& symbol);  
+  std::set<LR1_Item> Goto(const SetLR1_Item& set, const Symbol& symbol);  
   
 
   
@@ -36,12 +36,19 @@ private:
   void BuildActionTable() noexcept;
   
   
-  std::map<SetLR1_Item, StateId> merged_set;
+  SetOfSetsLR1_Item cc_;
+  std::map<SetLR1_Item, StateId> set_id_;
+  //std::map<SetLR1_Item, StateId> merged_set;
+  
   
   void MergeLR1SetsIntoLALRSets() noexcept;
+  SetLR1_Item MergeSets(std::vector<const SetLR1_Item*> sets) noexcept;
   
-  void AssignId (const std::set<LR1_Item>& set);
+  void AssignId (const SetLR1_Item& set);
+  void NewCC(const SetLR1_Item& set);
   StateId    free_state_id_;
+  
+
 /*
   std::map<SetLR1_Item, StateId> set_id_;
 //   std::map<StateId, SetLR1_Item> set_by_id_;

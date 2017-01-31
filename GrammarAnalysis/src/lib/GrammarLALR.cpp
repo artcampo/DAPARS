@@ -1,4 +1,5 @@
 #include "GrammarLALR.hpp"
+#include "GrammarLR1.hpp" //GetKernel
 #include <exception>
 #include <vector>
 #include <iostream>
@@ -15,7 +16,7 @@ GrammarLALR::GrammarLALR(): free_state_id_(0){
 
 
 
-std::set<LR1_Item> GrammarLALR::Goto(const std::set<LR1_Item>& set, const Symbol& symbol){
+std::set<LR1_Item> GrammarLALR::Goto(const SetLR1_Item& set, const Symbol& symbol){
   std::set<LR1_Item> moved;
 
   return moved;
@@ -28,11 +29,27 @@ void GrammarLALR::BuildTables() noexcept{
   MergeLR1SetsIntoLALRSets();
 }
 
+SetLR1_Item GrammarLALR::MergeSets(std::vector<const SetLR1_Item*> sets) noexcept{
+  return SetLR1_Item();
+}
 
+/*
+ * Following algorithm in the dragon book, p268
+ */
 void GrammarLALR::MergeLR1SetsIntoLALRSets() noexcept{
   const SetOfSetsLR1_Item& setsLR1 = GrammarLR1::CC();
+  std::map<const LR1_Item, 
+           std::vector<const SetLR1_Item*> 
+          > merged_states;
+          
   for(const auto& set : setsLR1){
-    
+    const LR1_Item kernel = GetKernel(set);
+    merged_states[kernel].push_back(&set);
+  }
+  
+  for(const auto& it : merged_states){
+    SetLR1_Item merged = MergeSets(it.second);
+    NewCC(merged);
   }
 }
 
@@ -41,7 +58,16 @@ void GrammarLALR::BuildActionTable() noexcept{
   
 }
 
+void GrammarLALR::AssignId(const SetLR1_Item& set){
+  set_id_[set] = free_state_id_;
+  ++free_state_id_;  
+}
 
+void GrammarLALR::NewCC(const SetLR1_Item& set){
+
+  AssignId(set);
+  cc_.insert(set);
+}
 
 
 
