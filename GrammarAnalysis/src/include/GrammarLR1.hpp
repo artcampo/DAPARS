@@ -43,7 +43,10 @@ public:
   StateId GetGoto(const StateId& state, const SymbolId& non_terminal_symbol)
   {return goto_table_[state][non_terminal_symbol];}  
   
-protected:  
+protected:
+  const SetOfSetsLR1_Item& CC() const{ return cc_;}
+  
+private:  
 
   void CanonicalCollection();
   void BuildActionTable() noexcept;
@@ -51,6 +54,7 @@ protected:
   
   std::map<SetLR1_Item, bool> marked_; //todo: inefficient
   SetOfSetsLR1_Item cc_;
+  
   std::map<SetLR1_Item, StateId> set_id_;
 //   std::map<StateId, SetLR1_Item> set_by_id_;
   StateId    free_state_id_;

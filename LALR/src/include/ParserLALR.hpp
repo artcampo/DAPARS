@@ -6,7 +6,6 @@
 #include "ParserLR1.hpp"
 #include "BaseParser.hpp"
 #include "Tokenizer.hpp"
-#include "GrammarLR1.hpp"
 #include "GrammarLALR.hpp"
 #include "Identifiers.hpp"
 

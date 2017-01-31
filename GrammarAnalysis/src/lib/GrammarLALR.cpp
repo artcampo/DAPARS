@@ -25,9 +25,16 @@ std::set<LR1_Item> GrammarLALR::Goto(const std::set<LR1_Item>& set, const Symbol
 
 void GrammarLALR::BuildTables() noexcept{
   GrammarLR1::BuildTables();
-  BuildActionTable();
+  MergeLR1SetsIntoLALRSets();
 }
 
+
+void GrammarLALR::MergeLR1SetsIntoLALRSets() noexcept{
+  const SetOfSetsLR1_Item& setsLR1 = GrammarLR1::CC();
+  for(const auto& set : setsLR1){
+    
+  }
+}
 
 void GrammarLALR::BuildActionTable() noexcept{
 
