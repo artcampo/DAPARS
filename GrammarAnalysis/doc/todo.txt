@@ -1,1 +1,9 @@
+GrammarAnalysis todo
+
 - program that prints all the strings produced by the grammar with length <= k
+- does grammar fulfill: ll1, lr1, lalr1?
+- print tables sizes
+- return parse tables so grammar object can be deleted
+- each grammar to different lib
+- grammar transformation: left recursion
+- grammar transformation: left factoring

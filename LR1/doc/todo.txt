@@ -1,2 +1,6 @@
+LR1 todo
+
 -solve const poisoning with at(), probably by initializing each first set to empty
 -handling conflicts with precedence
+- detection of conflicts
+-error recovery
