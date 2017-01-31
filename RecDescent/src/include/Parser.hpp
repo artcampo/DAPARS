@@ -6,11 +6,12 @@
 #include "BaseParser.hpp"
 #include "Tokenizer.hpp"
 
-using namespace Common;
-using namespace Tokenizer;
+
 
 namespace RecDescent{
   
+using namespace Common;
+using namespace Tokenizer;  
 
 class Parser : public BaseParser{
   
