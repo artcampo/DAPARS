@@ -1,4 +1,4 @@
-#include "Parser.hpp"
+#include "ParserLR1.hpp"
 #include "Node.hpp"
 #include "Action.hpp"
 #include <iterator>
@@ -19,7 +19,7 @@ class ExceptionNotEndFile: public exception{
 */
 
   
-Parser::Parser(std::string const &file_name, Block* &programBlock
+ParserLR1::ParserLR1(std::string const &file_name, Block* &programBlock
               , GrammarLR1& grammar) 
   : BaseParser(file_name, programBlock)
   , grammar_(grammar)
@@ -56,7 +56,7 @@ void printStack(std::stack<ShiftedSymbol>& context){
 
 
 
-void Parser::Parse(){
+void ParserLR1::Parse(){
   using kAction = Action::kAction;
   
   std::stack<ShiftedSymbol> context;

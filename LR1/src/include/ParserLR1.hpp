@@ -8,22 +8,24 @@
 #include "GrammarLR1.hpp"
 #include "Identifiers.hpp"
 
-using namespace Common;
-using namespace Tokenizer;
-using namespace GrammarAnalyzer;
+
 
 namespace LR1{
 
+using namespace Common;
+using namespace Tokenizer;
+using namespace GrammarAnalyzer;  
   
-class Parser : public BaseParser{
+class ParserLR1 : public BaseParser{
   
 public:  
-  Parser(std::string const &file_name, Block* &programBlock, GrammarLR1& grammar);
+  ParserLR1(std::string const &file_name, Block* &programBlock, GrammarLR1& grammar);
   void Parse();
   
-private:
+protected:
   GrammarLR1& grammar_;
   
+private:  
   void NextWord();
   
 };

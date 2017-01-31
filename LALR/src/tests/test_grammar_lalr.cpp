@@ -1,4 +1,4 @@
-#include "ParserLR1.hpp"
+#include "ParserLALR.hpp"
 #include "GrammarLR1.hpp"
 #include <iostream>
 #include <memory>

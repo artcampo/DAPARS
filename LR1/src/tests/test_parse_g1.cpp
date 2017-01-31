@@ -1,4 +1,4 @@
-#include "Parser.hpp"
+#include "ParserLR1.hpp"
 #include "GrammarLR1.hpp"
 #include "IRDefinition.hpp"
 #include "Node.hpp"
@@ -31,8 +31,8 @@ int main(int argc, char **argv)
   Block* programBlock = nullptr;
   
   using namespace LR1;
-  std::unique_ptr<Parser> parser(new 
-                Parser(std::string(argv[1]), programBlock, g));
+  std::unique_ptr<ParserLR1> parser(new 
+                ParserLR1(std::string(argv[1]), programBlock, g));
 
   parser->Parse();
   

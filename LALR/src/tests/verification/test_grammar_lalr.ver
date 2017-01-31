@@ -1,0 +1,84 @@
+build
+-- CC
+
+CC sets: 12
+cc9
+[LIST -> LIST PAIR {·} , {eof}]
+[LIST -> LIST PAIR {·} , (]
+cc1
+[LIST -> LIST {·} PAIR , {eof}]
+[LIST -> LIST {·} PAIR , (]
+[PAIR -> {·} ( PAIR ) , {eof}]
+[PAIR -> {·} ( PAIR ) , (]
+[PAIR -> {·} ( ) , {eof}]
+[PAIR -> {·} ( ) , (]
+[PROG -> LIST {·} , {eof}]
+cc2
+[LIST -> PAIR {·} , {eof}]
+[LIST -> PAIR {·} , (]
+cc0
+[LIST -> {·} LIST PAIR , {eof}]
+[LIST -> {·} LIST PAIR , (]
+[LIST -> {·} PAIR , {eof}]
+[LIST -> {·} PAIR , (]
+[PAIR -> {·} ( PAIR ) , {eof}]
+[PAIR -> {·} ( PAIR ) , (]
+[PAIR -> {·} ( ) , {eof}]
+[PAIR -> {·} ( ) , (]
+[PROG -> {·} LIST , {eof}]
+cc10
+[PAIR -> ( PAIR ) {·} , {eof}]
+[PAIR -> ( PAIR ) {·} , (]
+cc11
+[PAIR -> ( PAIR ) {·} , )]
+cc4
+[PAIR -> ( PAIR {·} ) , {eof}]
+[PAIR -> ( PAIR {·} ) , (]
+cc7
+[PAIR -> ( PAIR {·} ) , )]
+cc5
+[PAIR -> ( ) {·} , {eof}]
+[PAIR -> ( ) {·} , (]
+cc8
+[PAIR -> ( ) {·} , )]
+cc3
+[PAIR -> ( {·} PAIR ) , {eof}]
+[PAIR -> ( {·} PAIR ) , (]
+[PAIR -> ( {·} ) , {eof}]
+[PAIR -> ( {·} ) , (]
+[PAIR -> {·} ( PAIR ) , )]
+[PAIR -> {·} ( ) , )]
+cc6
+[PAIR -> ( {·} PAIR ) , )]
+[PAIR -> ( {·} ) , )]
+[PAIR -> {·} ( PAIR ) , )]
+[PAIR -> {·} ( ) , )]
+-- TABLES
+
+Action table 12
+|  _  |  _  | s 3 |  _  |
+| acc |  _  | s 3 |  _  |
+| r 0 |  _  | r 0 |  _  |
+|  _  |  _  | s 6 | s 5 |
+|  _  |  _  |  _  | s 10 |
+| r 0 |  _  | r 0 |  _  |
+|  _  |  _  | s 6 | s 8 |
+|  _  |  _  |  _  | s 11 |
+|  _  |  _  |  _  | r 0 |
+| r 0 |  _  | r 0 |  _  |
+| r 0 |  _  | r 0 |  _  |
+|  _  |  _  |  _  | r 0 |
+
+Goto table 12
+| 1 | 2 |
+| 0 | 9 |
+| 0 | 0 |
+| 0 | 4 |
+| 0 | 0 |
+| 0 | 0 |
+| 0 | 7 |
+| 0 | 0 |
+| 0 | 0 |
+| 0 | 0 |
+| 0 | 0 |
+| 0 | 0 |
