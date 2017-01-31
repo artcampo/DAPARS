@@ -179,10 +179,14 @@ void GrammarLR1::BuildTables() noexcept{
 }
 
 
-void GrammarLR1::BuildActionTable() noexcept{
-  std::cout << "build\n";
-  for(const auto &set : cc_){
-    const StateId cci = set_id_[set];
+/*
+ * Uses as input: starting_rule_, rules_
+ */
+void GrammarLR1::BuildActionTable(SetOfSetsLR1_Item& cc,
+                 std::map<SetLR1_Item, StateId>& set_id,
+                 std::vector< std::vector<Action>>& action_table){
+  for(const auto &set : cc){
+    const StateId cci = set_id[set];
     for(const auto &item : set){
       //Case 1: shift
       if(item.HasSymbolAfterStackTop()){
@@ -191,15 +195,15 @@ void GrammarLR1::BuildActionTable() noexcept{
           //std::cout << "Asking for " << cci << " " << symbol.str() << "\n";
           
           SetLR1_Item temp      = Goto(set, symbol);
-          const StateId ccj       = set_id_[temp];
+          const StateId ccj       = set_id[temp];
           const SymbolId sym_id = GetSymbolId(symbol);
-          action_table_[cci][sym_id] = Action( Action::kAction::shift, ccj);
+          action_table[cci][sym_id] = Action( Action::kAction::shift, ccj);
         } 
       }
       else{
         if(item.IsInitialRule(starting_rule_) and item.symbol_ == Symbol::Eof()){
           const SymbolId sym_id = GetSymbolId(Symbol::Eof());
-          action_table_[cci][sym_id] = Action( Action::kAction::accept, 0);
+          action_table[cci][sym_id] = Action( Action::kAction::accept, 0);
         }
         else{
           const RuleId r_id = item.rule_id_;
@@ -208,14 +212,18 @@ void GrammarLR1::BuildActionTable() noexcept{
             const Symbol& a       = item.symbol_;
 
             const SymbolId sym_id = GetSymbolId(a);
-            action_table_[cci][sym_id] = Action( Action::kAction::reduce, 0, r_id);
+            action_table[cci][sym_id] = Action( Action::kAction::reduce, 0, r_id);
           }
         }
       }
          
     }//end for(const auto &item : set){
-  }//end for(const auto &set : cc_){
-  
+  }//end for(const auto &set : cc){                   
+}
+
+void GrammarLR1::BuildActionTable() noexcept{
+  std::cout << "build\n";
+  BuildActionTable(cc_, set_id_, action_table_);
 }
 
 

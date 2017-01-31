@@ -74,6 +74,10 @@ private:
   void InitSymbolsIds() noexcept;
   
   void InitTables();
+  
+  void BuildActionTable(SetOfSetsLR1_Item& cc,
+                 std::map<SetLR1_Item, StateId>& set_id,
+                 std::vector< std::vector<Action>>& action_table_);
 };
 
 } //end namespace GrammarAnalyzer
