@@ -7,6 +7,7 @@
 #include "BaseParser.hpp"
 #include "Tokenizer.hpp"
 #include "GrammarLR1.hpp"
+#include "GrammarLALR.hpp"
 #include "Identifiers.hpp"
 
 
@@ -19,10 +20,11 @@ using namespace GrammarAnalyzer;
 class ParserLALR : public LR1::ParserLR1{
   
 public:  
-  ParserLALR(std::string const &file_name, Block* &programBlock, GrammarLR1& grammar);
+  ParserLALR(std::string const &file_name, Block* &programBlock, GrammarLALR& grammar);
 //   void Parse();
   
 private:
+  
   
   
 };

@@ -6,7 +6,7 @@
 
 namespace GrammarAnalyzer{
 
-GrammarLR1::GrammarLR1(): free_symbol_id_(0){
+GrammarLR1::GrammarLR1(): free_state_id_(0){
   AddSymbol(Symbol::StackTop());
 }
 
@@ -74,9 +74,9 @@ std::set<LR1_Item> GrammarLR1::Goto(const std::set<LR1_Item>& set, const Symbol&
 }
 
 void GrammarLR1::AssignId(const std::set<LR1_Item>& set){
-  set_id_[set] = free_symbol_id_;
-//   set_by_id_[free_symbol_id_] = set;
-  ++free_symbol_id_;  
+  set_id_[set] = free_state_id_;
+//   set_by_id_[free_state_id_] = set;
+  ++free_state_id_;  
 }
 
 void GrammarLR1::NewCC(const std::set<LR1_Item>& set){
@@ -86,14 +86,14 @@ void GrammarLR1::NewCC(const std::set<LR1_Item>& set){
 }
 
 void GrammarLR1::InitTables(){
-  goto_table_.resize(free_symbol_id_);
+  goto_table_.resize(free_state_id_);
   for(auto& it : goto_table_) it.resize(free_non_term_id_);
   
-  transition_table_.resize(free_symbol_id_);
+  transition_table_.resize(free_state_id_);
   for(auto& it : transition_table_) it.resize(free_term_id_);
   
   //indexed with: StateId, SymbolId (term)
-  action_table_.resize(free_symbol_id_);
+  action_table_.resize(free_state_id_);
   for(auto& it : action_table_) it.resize(free_term_id_);
   
     

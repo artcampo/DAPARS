@@ -6,6 +6,7 @@ set(files
     Rule.cpp
     Symbol.cpp
     GrammarLR1.cpp
+    GrammarLALR.cpp
     LR1_Item.cpp
 )
 

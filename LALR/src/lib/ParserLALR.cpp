@@ -20,7 +20,7 @@ class ExceptionNotEndFile: public exception{
 
   
 ParserLALR::ParserLALR(std::string const &file_name, Block* &programBlock
-              , GrammarLR1& grammar) 
+              , GrammarLALR& grammar) 
   : ParserLR1(file_name, programBlock, grammar)
 {
  

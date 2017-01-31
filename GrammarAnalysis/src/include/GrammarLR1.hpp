@@ -13,6 +13,12 @@
 
 namespace GrammarAnalyzer{
   
+using SetLR1_Item           = std::set<LR1_Item>;
+using SetOfSetsLR1_Item     = std::set<SetLR1_Item>;
+using VectorOfSetsLR1_Item  = std::vector<SetLR1_Item>;  
+
+LR1_Item GetKernel(const SetLR1_Item& set);
+  
 class GrammarLR1 : public Grammar{
 
 public:  
@@ -30,9 +36,6 @@ public:
   std::set<LR1_Item> Closure(const std::set<LR1_Item>& set);
   std::set<LR1_Item> Goto(const std::set<LR1_Item>& set, const Symbol& symbol);  
   
-  using SetLR1_Item           = std::set<LR1_Item>;
-  using SetOfSetsLR1_Item     = std::set<SetLR1_Item>;
-  using VectorOfSetsLR1_Item  = std::vector<SetLR1_Item>;
   
   Action GetAction(const StateId& state, const SymbolId& terminal_symbol)
   {return action_table_[state][terminal_symbol];}
@@ -40,17 +43,17 @@ public:
   StateId GetGoto(const StateId& state, const SymbolId& non_terminal_symbol)
   {return goto_table_[state][non_terminal_symbol];}  
   
-private:  
+protected:  
 
   void CanonicalCollection();
   void BuildActionTable() noexcept;
   
   
-  std::map<SetLR1_Item, bool> marked_;
+  std::map<SetLR1_Item, bool> marked_; //todo: inefficient
   SetOfSetsLR1_Item cc_;
   std::map<SetLR1_Item, StateId> set_id_;
 //   std::map<StateId, SetLR1_Item> set_by_id_;
-  StateId    free_symbol_id_;
+  StateId    free_state_id_;
   
   //indexed with: StateId, SymbolId (term)
   std::vector< std::vector<Action>> action_table_;

@@ -13,6 +13,9 @@ namespace GrammarAnalyzer{
 
 std::vector<std::string> 
 GenerateGrammarStrings(const Grammar& g, const size_t k);
+
+LR1_Item GetKernel(const SetLR1_Item& set){
   
+}
 
 } //end namespace GrammarAnalyzer
