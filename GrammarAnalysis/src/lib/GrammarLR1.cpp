@@ -64,9 +64,9 @@ std::set<LR1_Item> GrammarLR1::Closure(const std::set<LR1_Item>& set){
             
             }
           }//for(const auto &r : rules_)
-      }
-    }
-  }
+      }//if(i.HasSymbolAfterStackTop())
+    }//for(const LR1_Item &i : s)
+  }//while(has_changed) 
   return s;
 }
 
@@ -93,18 +93,21 @@ void GrammarLR1::NewCC(const std::set<LR1_Item>& set){
   cc_.insert(set);
 }
 
-void GrammarLR1::InitTables(){
-  goto_table_.resize(free_state_id_);
-  for(auto& it : goto_table_) it.resize(free_non_term_id_);
+void GrammarLR1::InitTables(LR_Tables& tables, const size_t num_states
+                           ,const size_t num_nonterm, const size_t num_term){
+  tables.goto_table_.resize(num_states);
+  for(auto& it : tables.goto_table_) it.resize(num_nonterm);
   
-  transition_table_.resize(free_state_id_);
-  for(auto& it : transition_table_) it.resize(free_term_id_);
+  tables.transition_table_.resize(num_states);
+  for(auto& it : tables.transition_table_) it.resize(num_term);
   
   //indexed with: StateId, SymbolId (term)
-  action_table_.resize(free_state_id_);
-  for(auto& it : action_table_) it.resize(free_term_id_);
-  
-    
+  tables.action_table_.resize(num_states);
+  for(auto& it : tables.action_table_) it.resize(num_term);  
+}
+
+void GrammarLR1::InitTables(){
+  InitTables(tables_, free_state_id_, free_non_term_id_, free_term_id_);  
 }
 
 void GrammarLR1::CanonicalCollection(){
@@ -171,18 +174,18 @@ void GrammarLR1::CanonicalCollection(){
   while(not goto_items.empty()){
     TableItem item = goto_items.top();
     goto_items.pop();
-    goto_table_[item.cci_][item.sym_id_] = item.ccj_;
+    tables_.goto_table_[item.cci_][item.sym_id_] = item.ccj_;
   }
   while(not transition_items.empty()){
     TableItem item = transition_items.top();
     transition_items.pop();
-    transition_table_[item.cci_][item.sym_id_] = item.ccj_;
+    tables_.transition_table_[item.cci_][item.sym_id_] = item.ccj_;
   }  
 }
 
 void GrammarLR1::BuildTables() noexcept{
   InitSymbolsIds();
-  CanonicalCollection();
+  CanonicalCollection();  //inits tables
   BuildActionTable();
 }
 
@@ -231,7 +234,7 @@ void GrammarLR1::BuildActionTable(SetOfSetsLR1_Item& cc,
 
 void GrammarLR1::BuildActionTable() noexcept{
   std::cout << "build\n";
-  BuildActionTable(cc_, set_id_, action_table_);
+  BuildActionTable(cc_, set_id_, tables_.action_table_);
 }
 
 
@@ -255,15 +258,15 @@ void GrammarLR1::DumpCC() const noexcept{
 
 
 void GrammarLR1::DumpTables() const noexcept{
-  std::cout << "\nAction table " << action_table_.size() <<"\n";
-  for(const auto &it : action_table_){
+  std::cout << "\nAction table " << tables_.action_table_.size() <<"\n";
+  for(const auto &it : tables_.action_table_){
     for(const auto &it2 : it)
       std::cout << "| " <<  it2.str() << " " ;
     std::cout << "|\n";
   }
   
-  std::cout << "\nGoto table " << goto_table_.size() <<"\n";
-  for(const auto &it : goto_table_){
+  std::cout << "\nGoto table " << tables_.goto_table_.size() <<"\n";
+  for(const auto &it : tables_.goto_table_){
     for(const auto &it2 : it)
       std::cout << "| " << it2<< " " ;
     std::cout << "|\n";

@@ -9,3 +9,4 @@ GrammarAnalysis todo
 - each grammar to different lib
 - grammar transformation: left recursion
 - grammar transformation: left factoring
+- howto: have different tokenizers (examples, working project)

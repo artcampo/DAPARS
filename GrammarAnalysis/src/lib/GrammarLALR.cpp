@@ -29,6 +29,7 @@ void GrammarLALR::BuildTables() noexcept{
   GrammarLR1::BuildTables();
   std::cout << "LALR build\n";
   MergeLR1SetsIntoLALRSets();
+  BuildActionTable();
 }
 
 SetLR1_Item GrammarLALR::MergeSets(std::vector<const SetLR1_Item*> sets) noexcept{
@@ -64,7 +65,7 @@ void GrammarLALR::MergeLR1SetsIntoLALRSets() noexcept{
 
 void GrammarLALR::BuildActionTable() noexcept{
 
-  
+  GrammarLR1::BuildActionTable(
 }
 
 void GrammarLALR::AssignId(const SetLR1_Item& set){

@@ -4,6 +4,7 @@
 #include "LR0_Item.hpp"
 #include "Action.hpp"
 #include "Identifiers.hpp"
+#include "LR_Tables.hpp"
 #include <memory>
 #include <vector>
 #include <string>
@@ -35,13 +36,20 @@ public:
   
   
   Action GetAction(const StateId& state, const SymbolId& terminal_symbol)
-  {return action_table_[state][terminal_symbol];}
+  {return tables_.action_table_[state][terminal_symbol];}
   
   StateId GetGoto(const StateId& state, const SymbolId& non_terminal_symbol)
-  {return goto_table_[state][non_terminal_symbol];}  
+  {return tables_.goto_table_[state][non_terminal_symbol];}  
   
 protected:
   const SetOfSetsLR1_Item& CC() const{ return cc_;}
+  
+  void BuildActionTable(SetOfSetsLR1_Item& cc,
+                 std::map<SetLR1_Item, StateId>& set_id,
+                 std::vector< std::vector<Action>>& action_table_);
+
+  void InitTables(LR_Tables& tables, const size_t num_states
+                 ,const size_t num_nonterm, const size_t num_term);
   
 private:  
 
@@ -53,17 +61,9 @@ private:
   SetOfSetsLR1_Item cc_;
   
   std::map<SetLR1_Item, StateId> set_id_;
-//   std::map<StateId, SetLR1_Item> set_by_id_;
   StateId    free_state_id_;
   
-  //indexed with: StateId, SymbolId (term)
-  std::vector< std::vector<Action>> action_table_;
-  
-  //indexed with: StateId, SymbolId (nonterm)
-  std::vector< std::vector<StateId>> goto_table_;
-  
-  //indexed with: StateId, SymbolId (term)
-  std::vector< std::vector<StateId>> transition_table_;
+  LR_Tables tables_;
   
   void NewCC    (const std::set<LR1_Item>& set);
   void AssignId (const std::set<LR1_Item>& set);
@@ -72,9 +72,8 @@ private:
   
   void InitTables();
   
-  void BuildActionTable(SetOfSetsLR1_Item& cc,
-                 std::map<SetLR1_Item, StateId>& set_id,
-                 std::vector< std::vector<Action>>& action_table_);
+
 };
+
 
 } //end namespace GrammarAnalyzer
