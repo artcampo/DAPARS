@@ -8,6 +8,7 @@ set(files
     GrammarLR1.cpp
     GrammarLALR.cpp
     LR1_Item.cpp
+    Output.cpp
 )
 
 add_definitions( -std=c++11 -g)

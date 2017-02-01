@@ -7,6 +7,7 @@
 #include <string>
 #include <algorithm> 
 #include <iostream>
+#include <set>
 
 namespace GrammarAnalyzer{
 
@@ -37,6 +38,14 @@ public:
   
   const bool operator== ( const LR1_Item &s ) const{
     return (rule_ == s.rule_) and (symbol_ == s.symbol_);
+  }  
+  
+  bool IsStackTopAtBeginning() const noexcept{
+    auto it = std::find( rule_.derived_.begin()
+                        , rule_.derived_.end()
+                        , Symbol::StackTop() );
+    ++it;
+    return it == rule_.derived_.cbegin();
   }  
   
   bool HasSymbolAfterStackTop() const noexcept{
@@ -74,7 +83,7 @@ public:
     return LR1_Item(Rule(rule_.head_, derived), symbol_, rule_id_);
   }
   
-  bool IsInitialRule() const noexcept{
+  const bool IsInitialRule() const noexcept{
     return rule_.IsInitialRule();
   }
   
@@ -87,5 +96,9 @@ public:
 private:
 
 };
+
+using SetLR1_Item           = std::set<LR1_Item>;
+using SetOfSetsLR1_Item     = std::set<SetLR1_Item>;
+using VectorOfSetsLR1_Item  = std::vector<SetLR1_Item>;  
 
 } //end namespace GrammarAnalyzer

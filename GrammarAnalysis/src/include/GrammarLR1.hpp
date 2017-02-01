@@ -12,10 +12,6 @@
 
 
 namespace GrammarAnalyzer{
-  
-using SetLR1_Item           = std::set<LR1_Item>;
-using SetOfSetsLR1_Item     = std::set<SetLR1_Item>;
-using VectorOfSetsLR1_Item  = std::vector<SetLR1_Item>;  
 
 const SetLR1_Item GetKernel(const SetLR1_Item& set);
   

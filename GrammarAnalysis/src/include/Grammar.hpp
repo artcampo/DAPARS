@@ -3,6 +3,7 @@
 #include "Symbol.hpp"
 #include "Tokenizer.hpp"
 #include "Identifiers.hpp"
+#include "Output.hpp"
 #include <memory>
 #include <vector>
 #include <string>
