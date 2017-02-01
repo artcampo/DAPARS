@@ -38,8 +38,12 @@ public:
   
   void Analyze() noexcept;
   
-  size_t NumSymbols() const noexcept;
-  bool IsBackTrackFree() noexcept;
+  size_t NumRules() const noexcept {return rules_.size();};
+  size_t NumSymbols() const noexcept {return symbols_.size();};
+  size_t NumTerminals() const noexcept {return free_term_id_;};
+  size_t NumNonTerminals() const noexcept {return free_non_term_id_;};
+  
+  bool IsBackTrackFree() noexcept; //todo
   
   void DumpFirst() const noexcept;
   void DumpFollow() const noexcept;

@@ -23,7 +23,9 @@ public:
   GrammarLR1();
   
   void BuildTables() noexcept;  
-  size_t NumSymbols() const noexcept;
+  
+  size_t NumStates() const noexcept{ return free_state_id_;};
+  size_t NumNonTerminals() const noexcept{return symbols_.size() - 1;};
 
   void DumpTables() const noexcept;
   void DumpCC() const noexcept;

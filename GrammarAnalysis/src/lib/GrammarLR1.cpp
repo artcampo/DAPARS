@@ -14,13 +14,11 @@ const SetLR0_Item GetKernel(const SetLR1_Item& set){
   return s;
 };
   
+
 GrammarLR1::GrammarLR1(): free_state_id_(0){
   AddSymbol(Symbol::StackTop());
 }
 
-size_t GrammarLR1::NumSymbols() const noexcept{
-  return symbols_.size() - 1;
-}  
 
 LR1_Item GrammarLR1::InitLR1_Item(const Rule& rule) const noexcept{
   return InitLR1_Item(rule, Symbol::Eof());
@@ -107,8 +105,10 @@ void GrammarLR1::InitTables(LR_Tables& tables, const size_t num_states
 }
 
 void GrammarLR1::InitTables(){
-  InitTables(tables_, free_state_id_, free_non_term_id_, free_term_id_);  
+  std::cout << "Init tables for " << NumNonTerminals() << " non-terminals\n";
+  InitTables(tables_, NumStates(), NumNonTerminals(), NumTerminals());  
 }
+
 
 void GrammarLR1::CanonicalCollection(){
   SetLR1_Item initial_set {InitLR1_Item( starting_rule_ )};
@@ -233,7 +233,7 @@ void GrammarLR1::BuildActionTable(SetOfSetsLR1_Item& cc,
 }
 
 void GrammarLR1::BuildActionTable() noexcept{
-  std::cout << "build\n";
+//   std::cout << "build\n";
   BuildActionTable(cc_, set_id_, tables_.action_table_);
 }
 
@@ -258,19 +258,7 @@ void GrammarLR1::DumpCC() const noexcept{
 
 
 void GrammarLR1::DumpTables() const noexcept{
-  std::cout << "\nAction table " << tables_.action_table_.size() <<"\n";
-  for(const auto &it : tables_.action_table_){
-    for(const auto &it2 : it)
-      std::cout << "| " <<  it2.str() << " " ;
-    std::cout << "|\n";
-  }
-  
-  std::cout << "\nGoto table " << tables_.goto_table_.size() <<"\n";
-  for(const auto &it : tables_.goto_table_){
-    for(const auto &it2 : it)
-      std::cout << "| " << it2<< " " ;
-    std::cout << "|\n";
-  }  
+  std::cout << tables_;
 }
 
 

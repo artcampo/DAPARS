@@ -2,7 +2,7 @@
 #include "Action.hpp"
 #include "Identifiers.hpp"
 #include <vector>
-
+#include <ostream>
 
 namespace GrammarAnalyzer{
 
@@ -15,7 +15,8 @@ public:
   std::vector< std::vector<StateId>> goto_table_;
   
   //indexed with: StateId, SymbolId (term)
-  std::vector< std::vector<StateId>> transition_table_;  
+  std::vector< std::vector<StateId>> transition_table_;
+  
 };
 
 } //end namespace GrammarAnalyzer

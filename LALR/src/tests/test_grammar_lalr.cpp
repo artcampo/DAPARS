@@ -22,6 +22,9 @@ int main(){
   
 //   std::cout << "-- TABLES" << std::endl;
 //   g.DumpTables();  
+  
+  std::cout << "-- TABLES" << std::endl;
+  g.DumpTables();
     
   return 0;
 }

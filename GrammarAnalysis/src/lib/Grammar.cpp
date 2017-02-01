@@ -26,19 +26,19 @@ SymbolId Grammar::GetSymbolId(const kToken& token) const{
 
 void Grammar::AddSymbol(const Symbol& symbol, const kToken& tokenId){
   AddSymbol(symbol);
-  if(symbol !=Symbol::Empty()){
+  if(symbol != Symbol::Empty()){
     symbolId_of_tokenId_[tokenId] = GetSymbolId(symbol);
   }
 }
 
 void Grammar::AddSymbol(const Symbol& symbol){
   symbols_.insert(symbol);
-  if(symbol !=Symbol::Empty()) GetSymbolId(symbol);
+  if(symbol != Symbol::Empty() and symbol != Symbol::StackTop()){
+    //assign id 
+    GetSymbolId(symbol);
+  }
 }
 
-size_t Grammar::NumSymbols() const noexcept{
-  return symbols_.size();
-}
 
 void Grammar::AddRule(const Rule& rule) noexcept{
   rules_.push_back(rule);

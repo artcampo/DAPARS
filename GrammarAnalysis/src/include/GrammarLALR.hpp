@@ -3,6 +3,7 @@
 #include "LR1_Item.hpp"
 #include "Action.hpp"
 #include "Identifiers.hpp"
+#include "LR_Tables.hpp"
 #include <memory>
 #include <vector>
 #include <string>
@@ -20,22 +21,22 @@ public:
   GrammarLALR();
   
   void BuildTables() noexcept;  
+  size_t NumStates() const noexcept{ return free_state_id_;};
   
+  void DumpTables() const noexcept;
 
+private:  
   
   std::set<LR1_Item> Goto(const SetLR1_Item& set, const Symbol& symbol);  
-  
-
-  
-private:  
 
   void CanonicalCollection();
   void BuildActionTable() noexcept;
-  
+  void InitTables();
   
   SetOfSetsLR1_Item cc_;
   std::map<SetLR1_Item, StateId> set_id_;
-  //std::map<SetLR1_Item, StateId> merged_set;
+
+  LR_Tables tables_;
   
   
   void MergeLR1SetsIntoLALRSets() noexcept;
@@ -46,22 +47,7 @@ private:
   StateId    free_state_id_;
   
 
-/*
-  std::map<SetLR1_Item, StateId> set_id_;
-//   std::map<StateId, SetLR1_Item> set_by_id_;
-  
-  
-  //indexed with: StateId, SymbolId (term)
-  std::vector< std::vector<Action>> action_table_;
-  
-  //indexed with: StateId, SymbolId (nonterm)
-  std::vector< std::vector<StateId>> goto_table_;
-  
-  //indexed with: StateId, SymbolId (term)
-  std::vector< std::vector<StateId>> transition_table_; 
-  
-  void InitTables();
-  */
+
 };
 
 } //end namespace GrammarAnalyzer

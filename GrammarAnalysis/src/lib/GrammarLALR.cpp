@@ -12,11 +12,6 @@ GrammarLALR::GrammarLALR(): free_state_id_(0){
   
 }
 
-
-
-
-
-
 std::set<LR1_Item> GrammarLALR::Goto(const SetLR1_Item& set, const Symbol& symbol){
   std::set<LR1_Item> moved;
 
@@ -24,12 +19,24 @@ std::set<LR1_Item> GrammarLALR::Goto(const SetLR1_Item& set, const Symbol& symbo
 }
 
 
-
 void GrammarLALR::BuildTables() noexcept{
   GrammarLR1::BuildTables();
   std::cout << "LALR build\n";
   MergeLR1SetsIntoLALRSets();
+  InitTables();
   BuildActionTable();
+}
+
+void GrammarLALR::InitTables(){
+  GrammarLR1::InitTables(GrammarLALR::tables_, 
+                         GrammarLALR::NumStates(), 
+                         GrammarLR1::NumNonTerminals(), 
+                         GrammarLR1::NumTerminals() );  
+}
+
+
+void GrammarLALR::BuildActionTable() noexcept{
+  GrammarLR1::BuildActionTable(cc_, set_id_, tables_.action_table_);
 }
 
 SetLR1_Item GrammarLALR::MergeSets(std::vector<const SetLR1_Item*> sets) noexcept{
@@ -63,10 +70,6 @@ void GrammarLALR::MergeLR1SetsIntoLALRSets() noexcept{
   }
 }
 
-void GrammarLALR::BuildActionTable() noexcept{
-
-  GrammarLR1::BuildActionTable(
-}
 
 void GrammarLALR::AssignId(const SetLR1_Item& set){
   set_id_[set] = free_state_id_;
@@ -74,11 +77,16 @@ void GrammarLALR::AssignId(const SetLR1_Item& set){
 }
 
 void GrammarLALR::NewCC(const SetLR1_Item& set){
-
   AssignId(set);
   cc_.insert(set);
 }
 
+void GrammarLALR::DumpTables() const noexcept{
+  std::cout << "LR1 Tables:\n";
+  GrammarLR1::DumpTables();
+  std::cout << "LALR Tables:\n";
+  std::cout << tables_;
+}
 
 
 } //end namespace GrammarAnalyzer

@@ -1,7 +1,7 @@
-build
+Init tables for 4 non-terminals
 LALR build
 kernel set:
-[C -> c {·} C , {eof}]
+[C -> c {·} C ]
 
 to set:
 [C -> {·} c C , {eof}]
@@ -9,7 +9,7 @@ to set:
 [C -> c {·} C , {eof}]
 
 kernel set:
-[S -> C {·} C , {eof}]
+[S -> C {·} C ]
 
 to set:
 [C -> {·} c C , {eof}]
@@ -17,8 +17,7 @@ to set:
 [S -> C {·} C , {eof}]
 
 kernel set:
-[C -> c {·} C , c]
-[C -> c {·} C , d]
+[C -> c {·} C ]
 
 to set:
 [C -> {·} c C , c]
@@ -29,7 +28,7 @@ to set:
 [C -> c {·} C , d]
 
 kernel set:
-[S' -> {·} S , {eof}]
+[S' -> {·} S ]
 
 to set:
 [C -> {·} c C , c]
@@ -40,69 +39,61 @@ to set:
 [S' -> {·} S , {eof}]
 
 kernel set:
-[C -> c C {·} , {eof}]
+[C -> c C {·} ]
 
 to set:
 [C -> c C {·} , {eof}]
 
 kernel set:
-[C -> c C {·} , c]
-[C -> c C {·} , d]
+[C -> c C {·} ]
 
 to set:
 [C -> c C {·} , c]
 [C -> c C {·} , d]
 
 kernel set:
-[C -> d {·} , {eof}]
+[C -> d {·} ]
 
 to set:
 [C -> d {·} , {eof}]
 
 kernel set:
+[C -> d {·} ]
+
+to set:
 [C -> d {·} , c]
 [C -> d {·} , d]
 
-to set:
-[C -> d {·} , c]
-[C -> d {·} , d]
-
 kernel set:
-[S -> C C {·} , {eof}]
+[S -> C C {·} ]
 
 to set:
 [S -> C C {·} , {eof}]
 
 kernel set:
-[S' -> S {·} , {eof}]
+[S' -> S {·} ]
 
 to set:
 [S' -> S {·} , {eof}]
 
-1  merged set:
+2  merged set:
 [C -> c C {·} , {eof}]
-
-1  merged set:
 [C -> c C {·} , c]
 [C -> c C {·} , d]
 
-1  merged set:
+2  merged set:
 [C -> {·} c C , {eof}]
-[C -> {·} d , {eof}]
-[C -> c {·} C , {eof}]
-
-1  merged set:
 [C -> {·} c C , c]
 [C -> {·} c C , d]
+[C -> {·} d , {eof}]
 [C -> {·} d , c]
 [C -> {·} d , d]
+[C -> c {·} C , {eof}]
 [C -> c {·} C , c]
 [C -> c {·} C , d]
 
-1  merged set:
+2  merged set:
 [C -> d {·} , {eof}]
-
-1  merged set:
 [C -> d {·} , c]
 [C -> d {·} , d]
 
@@ -125,3 +116,48 @@ to set:
 [S -> {·} C C , {eof}]
 [S' -> {·} S , {eof}]
 
+-- TABLES
+LR1 Tables:
+
+Action table 10
+|  _  | s 1 | s 2 |
+|  _  | s 1 | s 2 |
+|  _  | r 0 | r 0 |
+|  _  | s 5 | s 6 |
+| r 0 |  _  |  _  |
+|  _  | s 5 | s 6 |
+| r 0 |  _  |  _  |
+| r 0 |  _  |  _  |
+|  _  | r 0 | r 0 |
+| r 0 |  _  |  _  |
+
+Goto table 10
+| 4 | 3 | 0 | 0 |
+| 0 | 8 | 0 | 0 |
+| 0 | 0 | 0 | 0 |
+| 0 | 7 | 0 | 0 |
+| 0 | 0 | 0 | 0 |
+| 0 | 9 | 0 | 0 |
+| 0 | 0 | 0 | 0 |
+| 0 | 0 | 0 | 0 |
+| 0 | 0 | 0 | 0 |
+| 0 | 0 | 0 | 0 |
+LALR Tables:
+
+Action table 7
+| r 0 | r 0 | r 0 |
+|  _  | s 1 | s 2 |
+| r 0 | r 0 | r 0 |
+| r 0 |  _  |  _  |
+|  _  | s 0 | s 0 |
+| r 0 |  _  |  _  |
+|  _  | s 0 | s 0 |
+
+Goto table 7
+| 0 | 0 | 0 | 0 |
+| 0 | 0 | 0 | 0 |
+| 0 | 0 | 0 | 0 |
+| 0 | 0 | 0 | 0 |
+| 0 | 0 | 0 | 0 |
+| 0 | 0 | 0 | 0 |
+| 0 | 0 | 0 | 0 |
