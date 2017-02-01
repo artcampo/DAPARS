@@ -1,6 +1,7 @@
 GrammarAnalysis todo
 
-- delete AddStartingRule
+- simplify symbol creation
+- put all grammar tests in /GrammarAnalysis/src/tests
 - program that prints all the strings produced by the grammar with length <= k
 - does grammar fulfill: ll1, lr1, lalr1?
 - print tables sizes

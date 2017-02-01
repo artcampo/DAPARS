@@ -25,6 +25,8 @@ ParseToken(std::vector<char>::const_iterator& current_position) noexcept{
   if(*current_position == '('){ ++current_position; return kToken::lpar; }
   if(*current_position == ')'){ ++current_position; return kToken::rpar; }
   if(*current_position == '+'){ ++current_position; return kToken::plus; }
+  if(*current_position == 'c'){ ++current_position; return kToken::token_c; }
+  if(*current_position == 'd'){ ++current_position; return kToken::token_d; }
   if(ParseNumerical(current_position))              return kToken::numerical;
 }
 
@@ -35,6 +37,8 @@ std::string str(const kToken& t){
     case kToken::rpar:      return std::string("rpar"); break;
     case kToken::plus:      return std::string("plus"); break;
     case kToken::numerical: return std::string("num");  break;
+    case kToken::token_c:   return std::string("c");  break;
+    case kToken::token_d:   return std::string("d");  break;
     default:                break;
   }
   return std::string("error");

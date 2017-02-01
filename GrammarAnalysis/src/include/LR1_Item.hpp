@@ -44,7 +44,6 @@ public:
     auto it = std::find( rule_.derived_.begin()
                         , rule_.derived_.end()
                         , Symbol::StackTop() );
-    ++it;
     return it == rule_.derived_.cbegin();
   }  
   

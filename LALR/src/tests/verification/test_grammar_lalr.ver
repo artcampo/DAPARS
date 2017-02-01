@@ -1,84 +1,81 @@
 build
--- CC
+LALR build
+kernel set:
+[C -> c {·} C , {eof}]
 
-CC sets: 12
-cc9
-[LIST -> LIST PAIR {·} , {eof}]
-[LIST -> LIST PAIR {·} , (]
-cc1
-[LIST -> LIST {·} PAIR , {eof}]
-[LIST -> LIST {·} PAIR , (]
-[PAIR -> {·} ( PAIR ) , {eof}]
-[PAIR -> {·} ( PAIR ) , (]
-[PAIR -> {·} ( ) , {eof}]
-[PAIR -> {·} ( ) , (]
-[PROG -> LIST {·} , {eof}]
-cc2
-[LIST -> PAIR {·} , {eof}]
-[LIST -> PAIR {·} , (]
-cc0
-[LIST -> {·} LIST PAIR , {eof}]
-[LIST -> {·} LIST PAIR , (]
-[LIST -> {·} PAIR , {eof}]
-[LIST -> {·} PAIR , (]
-[PAIR -> {·} ( PAIR ) , {eof}]
-[PAIR -> {·} ( PAIR ) , (]
-[PAIR -> {·} ( ) , {eof}]
-[PAIR -> {·} ( ) , (]
-[PROG -> {·} LIST , {eof}]
-cc10
-[PAIR -> ( PAIR ) {·} , {eof}]
-[PAIR -> ( PAIR ) {·} , (]
-cc11
-[PAIR -> ( PAIR ) {·} , )]
-cc4
-[PAIR -> ( PAIR {·} ) , {eof}]
-[PAIR -> ( PAIR {·} ) , (]
-cc7
-[PAIR -> ( PAIR {·} ) , )]
-cc5
-[PAIR -> ( ) {·} , {eof}]
-[PAIR -> ( ) {·} , (]
-cc8
-[PAIR -> ( ) {·} , )]
-cc3
-[PAIR -> ( {·} PAIR ) , {eof}]
-[PAIR -> ( {·} PAIR ) , (]
-[PAIR -> ( {·} ) , {eof}]
-[PAIR -> ( {·} ) , (]
-[PAIR -> {·} ( PAIR ) , )]
-[PAIR -> {·} ( ) , )]
-cc6
-[PAIR -> ( {·} PAIR ) , )]
-[PAIR -> ( {·} ) , )]
-[PAIR -> {·} ( PAIR ) , )]
-[PAIR -> {·} ( ) , )]
--- TABLES
+kernel set:
+[S -> C {·} C , {eof}]
 
-Action table 12
-|  _  |  _  | s 3 |  _  |
-| acc |  _  | s 3 |  _  |
-| r 0 |  _  | r 0 |  _  |
-|  _  |  _  | s 6 | s 5 |
-|  _  |  _  |  _  | s 10 |
-| r 0 |  _  | r 0 |  _  |
-|  _  |  _  | s 6 | s 8 |
-|  _  |  _  |  _  | s 11 |
-|  _  |  _  |  _  | r 0 |
-| r 0 |  _  | r 0 |  _  |
-| r 0 |  _  | r 0 |  _  |
-|  _  |  _  |  _  | r 0 |
+kernel set:
+[C -> c {·} C , c]
+[C -> c {·} C , d]
 
-Goto table 12
-| 1 | 2 |
-| 0 | 9 |
-| 0 | 0 |
-| 0 | 4 |
-| 0 | 0 |
-| 0 | 0 |
-| 0 | 7 |
-| 0 | 0 |
-| 0 | 0 |
-| 0 | 0 |
-| 0 | 0 |
-| 0 | 0 |
+kernel set:
+[S' -> {·} S , {eof}]
+
+kernel set:
+[C -> c C {·} , {eof}]
+
+kernel set:
+[C -> c C {·} , c]
+[C -> c C {·} , d]
+
+kernel set:
+[C -> d {·} , {eof}]
+
+kernel set:
+[C -> d {·} , c]
+[C -> d {·} , d]
+
+kernel set:
+[S -> C C {·} , {eof}]
+
+kernel set:
+[S' -> S {·} , {eof}]
+
+merged set:
+[C -> c C {·} , {eof}]
+
+merged set:
+[C -> c C {·} , c]
+[C -> c C {·} , d]
+
+merged set:
+[C -> {·} c C , {eof}]
+[C -> {·} d , {eof}]
+[C -> c {·} C , {eof}]
+
+merged set:
+[C -> {·} c C , c]
+[C -> {·} c C , d]
+[C -> {·} d , c]
+[C -> {·} d , d]
+[C -> c {·} C , c]
+[C -> c {·} C , d]
+
+merged set:
+[C -> d {·} , {eof}]
+
+merged set:
+[C -> d {·} , c]
+[C -> d {·} , d]
+
+merged set:
+[S -> C C {·} , {eof}]
+
+merged set:
+[C -> {·} c C , {eof}]
+[C -> {·} d , {eof}]
+[S -> C {·} C , {eof}]
+
+merged set:
+[S' -> S {·} , {eof}]
+
+merged set:
+[C -> {·} c C , c]
+[C -> {·} c C , d]
+[C -> {·} d , c]
+[C -> {·} d , d]
+[S -> {·} C C , {eof}]
+[S' -> {·} S , {eof}]
+

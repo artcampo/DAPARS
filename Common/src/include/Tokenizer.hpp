@@ -8,7 +8,9 @@ namespace Common{
 namespace Tokenizer{
   
   
-enum class kToken{ eof, lpar, rpar, plus, numerical };
+enum class kToken{ eof, lpar, rpar, plus, numerical,
+                   token_c, token_d   //grammar: dragon
+};
 
 kToken ParseToken(std::vector<char>::const_iterator& current_position) noexcept;
 
