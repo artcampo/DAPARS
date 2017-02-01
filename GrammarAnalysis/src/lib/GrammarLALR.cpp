@@ -50,12 +50,14 @@ void GrammarLALR::MergeLR1SetsIntoLALRSets() noexcept{
     const SetLR1_Item kernel = GetKernel(set);
     merged_states[kernel].push_back(&set);
     std::cout << "kernel set:\n" << kernel << "\n";
+    std::cout << "to set:\n" << set << "\n";
   }
   
   for(const auto& it : merged_states){
     SetLR1_Item merged = MergeSets(it.second);
     NewCC(merged);
-    std::cout << "merged set:\n" << merged << "\n";
+    //if(it.second.size() > 1)
+    std::cout << it.second.size()<<"  merged set:\n" << merged << "\n";
   }
 }
 

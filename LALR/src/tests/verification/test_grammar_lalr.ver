@@ -3,49 +3,24 @@ LALR build
 kernel set:
 [C -> c {·} C , {eof}]
 
+to set:
+[C -> {·} c C , {eof}]
+[C -> {·} d , {eof}]
+[C -> c {·} C , {eof}]
+
 kernel set:
+[S -> C {·} C , {eof}]
+
+to set:
+[C -> {·} c C , {eof}]
+[C -> {·} d , {eof}]
 [S -> C {·} C , {eof}]
 
 kernel set:
 [C -> c {·} C , c]
 [C -> c {·} C , d]
 
-kernel set:
-[S' -> {·} S , {eof}]
-
-kernel set:
-[C -> c C {·} , {eof}]
-
-kernel set:
-[C -> c C {·} , c]
-[C -> c C {·} , d]
-
-kernel set:
-[C -> d {·} , {eof}]
-
-kernel set:
-[C -> d {·} , c]
-[C -> d {·} , d]
-
-kernel set:
-[S -> C C {·} , {eof}]
-
-kernel set:
-[S' -> S {·} , {eof}]
-
-merged set:
-[C -> c C {·} , {eof}]
-
-merged set:
-[C -> c C {·} , c]
-[C -> c C {·} , d]
-
-merged set:
-[C -> {·} c C , {eof}]
-[C -> {·} d , {eof}]
-[C -> c {·} C , {eof}]
-
-merged set:
+to set:
 [C -> {·} c C , c]
 [C -> {·} c C , d]
 [C -> {·} d , c]
@@ -53,25 +28,96 @@ merged set:
 [C -> c {·} C , c]
 [C -> c {·} C , d]
 
-merged set:
+kernel set:
+[S' -> {·} S , {eof}]
+
+to set:
+[C -> {·} c C , c]
+[C -> {·} c C , d]
+[C -> {·} d , c]
+[C -> {·} d , d]
+[S -> {·} C C , {eof}]
+[S' -> {·} S , {eof}]
+
+kernel set:
+[C -> c C {·} , {eof}]
+
+to set:
+[C -> c C {·} , {eof}]
+
+kernel set:
+[C -> c C {·} , c]
+[C -> c C {·} , d]
+
+to set:
+[C -> c C {·} , c]
+[C -> c C {·} , d]
+
+kernel set:
 [C -> d {·} , {eof}]
 
-merged set:
+to set:
+[C -> d {·} , {eof}]
+
+kernel set:
 [C -> d {·} , c]
 [C -> d {·} , d]
 
-merged set:
+to set:
+[C -> d {·} , c]
+[C -> d {·} , d]
+
+kernel set:
 [S -> C C {·} , {eof}]
 
-merged set:
+to set:
+[S -> C C {·} , {eof}]
+
+kernel set:
+[S' -> S {·} , {eof}]
+
+to set:
+[S' -> S {·} , {eof}]
+
+1  merged set:
+[C -> c C {·} , {eof}]
+
+1  merged set:
+[C -> c C {·} , c]
+[C -> c C {·} , d]
+
+1  merged set:
+[C -> {·} c C , {eof}]
+[C -> {·} d , {eof}]
+[C -> c {·} C , {eof}]
+
+1  merged set:
+[C -> {·} c C , c]
+[C -> {·} c C , d]
+[C -> {·} d , c]
+[C -> {·} d , d]
+[C -> c {·} C , c]
+[C -> c {·} C , d]
+
+1  merged set:
+[C -> d {·} , {eof}]
+
+1  merged set:
+[C -> d {·} , c]
+[C -> d {·} , d]
+
+1  merged set:
+[S -> C C {·} , {eof}]
+
+1  merged set:
 [C -> {·} c C , {eof}]
 [C -> {·} d , {eof}]
 [S -> C {·} C , {eof}]
 
-merged set:
+1  merged set:
 [S' -> S {·} , {eof}]
 
-merged set:
+1  merged set:
 [C -> {·} c C , c]
 [C -> {·} c C , d]
 [C -> {·} d , c]
