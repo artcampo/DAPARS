@@ -26,6 +26,7 @@ std::set<LR1_Item> GrammarLALR::Goto(const SetLR1_Item& set, const Symbol& symbo
 
 void GrammarLALR::BuildTables() noexcept{
   GrammarLR1::BuildTables();
+  std::cout << "LALR build\n";
   MergeLR1SetsIntoLALRSets();
 }
 

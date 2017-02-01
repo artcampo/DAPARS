@@ -4,7 +4,7 @@
 
 using namespace Tokenizer;
 
-void CreateGrammar(GrammarLR1& g){
+void CreateGrammar(GrammarLALR& g){
   
   using namespace GrammarAnalyzer;
   

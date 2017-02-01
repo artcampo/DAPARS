@@ -1,5 +1,5 @@
 #include "ParserLALR.hpp"
-#include "GrammarLR1.hpp"
+#include "GrammarLALR.hpp"
 #include <iostream>
 #include <memory>
 #include <string>
@@ -14,14 +14,14 @@ using namespace GrammarAnalyzer;
 int main(){
   
   //Grammar
-  GrammarLR1 g;
+  GrammarLALR g;
   CreateGrammar(g);
   
-  std::cout << "-- CC" << std::endl;
-  g.DumpCC();
+//   std::cout << "-- CC" << std::endl;
+//   g.DumpCC();
   
-  std::cout << "-- TABLES" << std::endl;
-  g.DumpTables();  
+//   std::cout << "-- TABLES" << std::endl;
+//   g.DumpTables();  
     
   return 0;
 }
