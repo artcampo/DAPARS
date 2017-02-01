@@ -2,6 +2,7 @@
 #include <exception>
 #include <vector>
 #include <iostream>
+#include <cassert>
 
 namespace GrammarAnalyzer{
 
@@ -46,6 +47,7 @@ void Grammar::AddRule(const Rule& rule) noexcept{
 }
 
 void Grammar::AddStartingRule(const Rule& rule)  noexcept{
+  assert(rule.IsInitialRule() == true);
   AddRule(rule);
   start_symbol_  = rule.head_;
   starting_rule_ = rule;

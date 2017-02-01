@@ -17,7 +17,7 @@ using SetLR1_Item           = std::set<LR1_Item>;
 using SetOfSetsLR1_Item     = std::set<SetLR1_Item>;
 using VectorOfSetsLR1_Item  = std::vector<SetLR1_Item>;  
 
-const LR1_Item GetKernel(const SetLR1_Item& set);
+const SetLR1_Item GetKernel(const SetLR1_Item& set);
   
 class GrammarLR1 : public Grammar{
 

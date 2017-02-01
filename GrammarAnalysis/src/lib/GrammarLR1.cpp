@@ -6,6 +6,14 @@
 
 namespace GrammarAnalyzer{
 
+const SetLR1_Item GetKernel(const SetLR1_Item& set){
+  SetLR1_Item s;
+  for(const auto& item : set){
+    
+  }
+  return s;
+};
+  
 GrammarLR1::GrammarLR1(): free_state_id_(0){
   AddSymbol(Symbol::StackTop());
 }
@@ -201,7 +209,7 @@ void GrammarLR1::BuildActionTable(SetOfSetsLR1_Item& cc,
         } 
       }
       else{
-        if(item.IsInitialRule(starting_rule_) and item.symbol_ == Symbol::Eof()){
+        if(item.IsInitialRule() and item.symbol_ == Symbol::Eof()){
           const SymbolId sym_id = GetSymbolId(Symbol::Eof());
           action_table[cci][sym_id] = Action( Action::kAction::accept, 0);
         }

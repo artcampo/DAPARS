@@ -35,7 +35,7 @@ int main(){
   
   //Grammar
   Grammar g;
-  g.AddStartingRule(Rule(p,  {e}));
+  g.AddStartingRule(Rule(p,  {e}, true));
   
   g.AddRule(Rule(e,  {t, ep}));
   g.AddRule(Rule(ep, {plus, t, ep}));

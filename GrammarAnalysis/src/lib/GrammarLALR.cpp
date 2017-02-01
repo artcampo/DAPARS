@@ -30,7 +30,10 @@ void GrammarLALR::BuildTables() noexcept{
 }
 
 SetLR1_Item GrammarLALR::MergeSets(std::vector<const SetLR1_Item*> sets) noexcept{
-  return SetLR1_Item();
+  SetLR1_Item s;
+  for(const auto& set : sets)
+    s.insert( set->cbegin(), set->cend() );
+  return s;
 }
 
 /*
@@ -38,12 +41,12 @@ SetLR1_Item GrammarLALR::MergeSets(std::vector<const SetLR1_Item*> sets) noexcep
  */
 void GrammarLALR::MergeLR1SetsIntoLALRSets() noexcept{
   const SetOfSetsLR1_Item& setsLR1 = GrammarLR1::CC();
-  std::map<const LR1_Item, 
+  std::map<const SetLR1_Item, 
            std::vector<const SetLR1_Item*> 
           > merged_states;
           
   for(const auto& set : setsLR1){
-    const LR1_Item kernel = GetKernel(set);
+    const SetLR1_Item kernel = GetKernel(set);
     merged_states[kernel].push_back(&set);
   }
   

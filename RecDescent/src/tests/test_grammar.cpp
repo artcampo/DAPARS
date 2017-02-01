@@ -23,7 +23,7 @@ int main(){
   
   //Grammar
   Grammar g;
-  g.AddStartingRule(Rule(p,  {e}));
+  g.AddStartingRule(Rule(p,  {e}, true));
   
   g.AddRule(Rule(e,  {f, ep}));
   g.AddRule(Rule(ep, {plus, f}));

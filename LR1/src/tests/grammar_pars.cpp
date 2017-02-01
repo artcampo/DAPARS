@@ -22,7 +22,7 @@ void CreateGrammar(GrammarLR1& g){
   g.AddSymbol(lpar, Tokenizer::kToken::lpar);
   g.AddSymbol(rpar, Tokenizer::kToken::rpar);
   
-  g.AddStartingRule(Rule(prog,  {l}));
+  g.AddStartingRule(Rule(prog,  {l}, true));
   
   g.AddRule(Rule(l, {l, p}));
   g.AddRule(Rule(l, {p}));

@@ -27,7 +27,7 @@ int main(){
   const Symbol l    ("LIST", "LIST", false);
   const Symbol p    ("PAIR'", "PAIR'", false);  
   
-  Rule(prog,  {l});
+  Rule(prog,  {l}, true);
   
   Rule r0(l, {l, p});
   Rule r1(l, {p});

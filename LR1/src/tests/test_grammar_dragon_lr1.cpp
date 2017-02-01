@@ -26,7 +26,7 @@ int main(){
   
   //Grammar
   GrammarLR1 g;
-  g.AddStartingRule(Rule(sp,  {s}));
+  g.AddStartingRule(Rule(sp,  {s}, true));
   
   g.AddRule(Rule(s, {c, c}));
   g.AddRule(Rule(c, {sc, c}));

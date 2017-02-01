@@ -11,12 +11,16 @@ class Rule{
   
 public:  
   Rule(){};
-  Rule(const Symbol& head, const std::vector<Symbol>& derived)
-  : head_(head), derived_(derived)
+  Rule(const Symbol& head, const std::vector<Symbol>& derived,
+       const bool is_initial_rule = false)
+  : head_(head), derived_(derived), is_initial_rule_(is_initial_rule)
   {}
   
   Symbol        head_;
   std::vector<Symbol> derived_;
+  bool          is_initial_rule_;
+  
+  const bool IsInitialRule() const noexcept{ return is_initial_rule_;}
   
   std::string str() const noexcept{
     std::string s(head_.str());

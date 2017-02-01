@@ -74,14 +74,14 @@ public:
     return LR1_Item(Rule(rule_.head_, derived), symbol_, rule_id_);
   }
   
-  bool IsInitialRule(const Rule& initial_rule) const noexcept{
-    return rule_.head_ == initial_rule.head_;
+  bool IsInitialRule() const noexcept{
+    return rule_.IsInitialRule();
   }
   
   Rule OriginalRule() const noexcept{
     std::vector<Symbol> d = rule_.derived_;
     d.erase(std::remove(d.begin(), d.end(), Symbol::StackTop()), d.end());
-    return Rule(rule_.head_, d);
+    return Rule(rule_.head_, d, rule_.IsInitialRule());
   }
   
 private:
