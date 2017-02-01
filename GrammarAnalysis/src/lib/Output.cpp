@@ -21,4 +21,16 @@ operator<<(std::ostream &os, const SetLR1_Item& c) {
   return os;
 }
 
+std::ostream&
+operator<<(std::ostream &os, const LR0_Item& c) { 
+  return os << c.str();
+}
+
+std::ostream&
+operator<<(std::ostream &os, const SetLR0_Item& c) { 
+  for(const auto& it : c)
+    os << it << "\n";
+  return os;
+}
+
 } //end namespace GrammarAnalyzer

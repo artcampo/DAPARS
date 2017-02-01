@@ -1,6 +1,7 @@
 #pragma once
 #include "Grammar.hpp"
 #include "LR1_Item.hpp"
+#include "LR0_Item.hpp"
 #include "Action.hpp"
 #include "Identifiers.hpp"
 #include <memory>
@@ -13,7 +14,7 @@
 
 namespace GrammarAnalyzer{
 
-const SetLR1_Item GetKernel(const SetLR1_Item& set);
+const SetLR0_Item GetKernel(const SetLR1_Item& set);
   
 class GrammarLR1 : public Grammar{
 

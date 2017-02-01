@@ -6,11 +6,11 @@
 
 namespace GrammarAnalyzer{
 
-const SetLR1_Item GetKernel(const SetLR1_Item& set){
-  SetLR1_Item s;
+const SetLR0_Item GetKernel(const SetLR1_Item& set){
+  SetLR0_Item s;
   for(const auto& item : set)
     if(item.IsInitialRule() or not item.IsStackTopAtBeginning())
-      s.insert(item);
+      s.insert(item.ToLR0_Item());
   return s;
 };
   

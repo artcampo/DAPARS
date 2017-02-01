@@ -1,5 +1,6 @@
 #include "GrammarLALR.hpp"
 #include "GrammarLR1.hpp" //GetKernel
+#include "LR0_Item.hpp"
 #include <exception>
 #include <vector>
 #include <iostream>
@@ -42,12 +43,12 @@ SetLR1_Item GrammarLALR::MergeSets(std::vector<const SetLR1_Item*> sets) noexcep
  */
 void GrammarLALR::MergeLR1SetsIntoLALRSets() noexcept{
   const SetOfSetsLR1_Item& setsLR1 = GrammarLR1::CC();
-  std::map<const SetLR1_Item, 
+  std::map<const SetLR0_Item, 
            std::vector<const SetLR1_Item*> 
           > merged_states;
           
   for(const auto& set : setsLR1){
-    const SetLR1_Item kernel = GetKernel(set);
+    const SetLR0_Item kernel = GetKernel(set);
     merged_states[kernel].push_back(&set);
     std::cout << "kernel set:\n" << kernel << "\n";
     std::cout << "to set:\n" << set << "\n";
