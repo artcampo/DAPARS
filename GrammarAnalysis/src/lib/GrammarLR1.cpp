@@ -31,13 +31,13 @@ LR1_Item GrammarLR1::InitLR1_Item(const Rule& rule, const Symbol& symbol) const 
 }
 
 std::set<LR1_Item> GrammarLR1::Closure(const std::set<LR1_Item>& set){
-  std::set<LR1_Item> s = set;
+  std::set<LR1_Item> s(set);
   bool has_changed = true;
   while(has_changed){
 //     std::cout << "another spin\n";
     has_changed = false;
     for(const LR1_Item &i : s){
-//       std::cout << "Inspect " << i.str() << "\n";
+      std::cout << "Inspect " << i << "\n";
       //determine C
       if(i.HasSymbolAfterStackTop()){
         Symbol c = i.SymbolAfterStackTop();
@@ -47,17 +47,18 @@ std::set<LR1_Item> GrammarLR1::Closure(const std::set<LR1_Item>& set){
         //For each rule C->Y
         for(const auto &r : rules_){
           if(r.head_ == c){
-//             std::cout << "For head " << c.str() << " b has " << first_Ca.size() << "\n";
+            std::cout << "For head " << c.str() << " B  " << first_Ca.size() << "\n";
             for(const auto &b : first_Ca){
               LR1_Item item = InitLR1_Item(r, b);
               if(s.find(item) == s.end()){
-//                 std::cout << "Insert: " << item << std::endl;
+                std::cout << "Insert: " << item << std::endl;
                 has_changed = true;
                 s.insert(item);
 //              for(const auto &setIt : s)std::cout << "** " << setIt.str() << std::endl;
                 
                 break;
               }//end if(s.find(item)
+              else std::cout << "element already in set\n";
             }//end for(const auto &b : first_Ca)
             
             }
@@ -89,6 +90,7 @@ void GrammarLR1::NewCC(const std::set<LR1_Item>& set){
   marked_[set] = false;
   AssignId(set);
   cc_.insert(set);
+  std::cout << "New col: "<< set_id_[set] << ":\n" << set << "\n";
 }
 
 void GrammarLR1::InitTables(LR_Tables& tables, const size_t num_states

@@ -72,6 +72,7 @@ bool HasEmptySymbol(const std::set<Symbol>& set){
 std::set<Symbol> Grammar::First(const std::vector<Symbol>& derived){
   std::set<Symbol> first_set;
   bool all_have_empty = true;
+  std::cout << "Computing first(" << derived << "): ";
   
   for(const auto &symbol : derived){
     bool symbol_has_empty_symbol = HasEmptySymbol(first_[symbol]);
@@ -86,6 +87,7 @@ std::set<Symbol> Grammar::First(const std::vector<Symbol>& derived){
   
   if(all_have_empty)
     first_set.insert(Symbol::Empty());  
+  std::cout << first_set << "\n";
   return first_set;
 }
 
@@ -108,6 +110,7 @@ void Grammar::ComputeFirstSets() noexcept{
   bool hasChanged = true;
   while(hasChanged){
     hasChanged = false;
+    std::cout << "Already on first:" << first_ <<"\n";
     for(const auto &r : rules_){  
       std::set<Symbol> new_set = First(r.derived_);
       
@@ -115,6 +118,7 @@ void Grammar::ComputeFirstSets() noexcept{
       for(const auto &symbol : new_set)
         if(first_[r.head_].find(symbol) == first_[r.head_].end()){
           first_[r.head_].insert(symbol);
+          std::cout << "first(" << r.head_ << ") += " << symbol << "\n";
           hasChanged = true;
         }
       
@@ -173,9 +177,10 @@ bool Grammar::IsBackTrackFree() noexcept{
 }
 
 void Grammar::DumpFirst() const noexcept{
+  std::cout << "First Table\n";
   for(const auto &entry : first_){
     if(not entry.first.IsTerminal()){
-      std::cout << entry.first.str() << " ";
+      std::cout << entry.first.str() << ": ";
       
       for(const auto &s : entry.second){
         std::cout << s.str() << " ";

@@ -25,10 +25,8 @@ int main(){
   
   
   //Grammar
-  Rule start(sp,  {s}, true);
-  
   GrammarLR1 g;
-  g.AddStartingRule(start);
+  g.AddStartingRule(Rule(sp,  {s}, true));
   
   g.AddRule(Rule(s, {c, c}));
   g.AddRule(Rule(c, {sc, c}));
@@ -37,9 +35,11 @@ int main(){
   //Anaylze
   g.Analyze();
   
-  //Print
-  std::cout << "-- FIRST" << std::endl;
   g.DumpFirst();
+  //Print
+  /*
+  std::cout << "-- FIRST" << std::endl;
+  
   
 
   //Test initial closure
@@ -57,6 +57,7 @@ int main(){
   for(const auto &i : set_goto){
     std::cout << i.str() << "\n";
   }  
+  */
   
   //Test CC
   g.BuildTables();
