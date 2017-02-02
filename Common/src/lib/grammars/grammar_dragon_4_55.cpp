@@ -21,8 +21,13 @@ void CreateGrammar(G& g){
   
   
   //Grammar
-  g.AddSymbol(symb_c, Tokenizer::kToken::token_c);
-  g.AddSymbol(symb_d, Tokenizer::kToken::token_d);
+  g.AddTerminal(symb_c, Tokenizer::kToken::token_c);
+  g.AddTerminal(symb_d, Tokenizer::kToken::token_d);
+  
+  g.AddNonTerminal(sp);
+  g.AddNonTerminal(s);
+  g.AddNonTerminal(c);
+  
   
   g.AddStartingRule(Rule(sp,  {s}, true));
   

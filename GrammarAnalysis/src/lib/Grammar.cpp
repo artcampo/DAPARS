@@ -10,9 +10,10 @@ namespace GrammarAnalyzer{
   
 Grammar::Grammar()
   : analized_(false),free_term_id_(0), free_non_term_id_(0), free_rule_id_(0)
+  , num_terminals_(0), num_nonterminals_(0)
 {
-  AddSymbol(Symbol::Empty());
-  AddSymbol(Symbol::Eof(), Tokenizer::kToken::eof);
+  AddTerminal(Symbol::Empty(), Tokenizer::kToken::eof);
+  AddTerminal(Symbol::Eof(), Tokenizer::kToken::eof);
 }
 
 
@@ -24,11 +25,17 @@ SymbolId Grammar::GetSymbolId(const kToken& token) const{
   return symbolId_of_tokenId_.at(token);
 }
 
-void Grammar::AddSymbol(const Symbol& symbol, const kToken& tokenId){
+void Grammar::AddTerminal(const Symbol& symbol, const kToken& tokenId){
+  ++num_terminals_;
   AddSymbol(symbol);
   if(symbol != Symbol::Empty()){
     symbolId_of_tokenId_[tokenId] = GetSymbolId(symbol);
   }
+}
+
+void Grammar::AddNonTerminal(const Symbol& symbol){
+  ++num_nonterminals_;
+  AddSymbol(symbol);
 }
 
 void Grammar::AddSymbol(const Symbol& symbol){
@@ -36,7 +43,7 @@ void Grammar::AddSymbol(const Symbol& symbol){
   symbols_.insert(symbol);
   if(symbol != Symbol::Empty() and symbol != Symbol::StackTop()){
     //assign id 
-    GetSymbolId(symbol);
+    CreateSymbolId(symbol);
   }
   std::cout << "\n";
 }
@@ -205,7 +212,7 @@ void Grammar::DumpFollow() const noexcept{
   }
 }
 
-SymbolId Grammar::GetSymbolId(const Symbol& symbol){
+void Grammar::CreateSymbolId(const Symbol& symbol){
   if(symbol.IsTerminal()){
     auto it = symbol_id_.find(symbol);
     if(it == symbol_id_.end()){
@@ -222,8 +229,23 @@ SymbolId Grammar::GetSymbolId(const Symbol& symbol){
       free_non_term_id_++;
       std::cout << " new non terminal";
     } 
+  }  
+}
+
+SymbolId Grammar::GetSymbolId(const Symbol& symbol){
+  if(symbol.IsTerminal()){
+    auto it = symbol_id_.find(symbol);
+    if(it == symbol_id_.end()){
+      std::cout << "terminal not registered" << symbol;
+      exit(1);
+    }else return it->second;
+  }else{
+    auto it = symbol_id_.find(symbol);
+    if(it == symbol_id_.end()){
+      std::cout << "nonterminal not registered" << symbol;
+      exit(1);
+    }else return it->second;
   }
-  return symbol_id_[symbol];
 }
 
 } //end namespace GrammarAnalyzer

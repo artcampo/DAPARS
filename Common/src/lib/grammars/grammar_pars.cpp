@@ -20,8 +20,12 @@ void CreateGrammar(G& g){
   
   
   //Grammar
-  g.AddSymbol(lpar, Tokenizer::kToken::lpar);
-  g.AddSymbol(rpar, Tokenizer::kToken::rpar);
+  g.AddTerminal(lpar, Tokenizer::kToken::lpar);
+  g.AddTerminal(rpar, Tokenizer::kToken::rpar);
+  
+  g.AddNonTerminal(prog);
+  g.AddNonTerminal(l);
+  g.AddNonTerminal(p);
   
   g.AddStartingRule(Rule(prog,  {l}, true));
   

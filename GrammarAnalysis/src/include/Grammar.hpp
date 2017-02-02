@@ -31,8 +31,9 @@ public:
   
   Grammar();
   
-  void AddSymbol(const Symbol& symbol, const kToken& tokenId);
-  void AddSymbol(const Symbol& symbol);
+  void AddTerminal(const Symbol& symbol, const kToken& tokenId);
+  void AddNonTerminal(const Symbol& symbol);
+  
   void AddRule(const Rule& rule)  noexcept;
   void AddStartingRule(const Rule& rule)  noexcept;
   
@@ -40,8 +41,8 @@ public:
   
   size_t NumRules() const noexcept {return rules_.size();};
   size_t NumSymbols() const noexcept {return symbols_.size();};
-  size_t NumTerminals() const noexcept {return free_term_id_;};
-  size_t NumNonTerminals() const noexcept {return free_non_term_id_;};
+  size_t NumTerminals() const noexcept {return num_terminals_;};
+  size_t NumNonTerminals() const noexcept {return num_nonterminals_;};
   
   bool IsBackTrackFree() noexcept; //todo
   
@@ -73,12 +74,15 @@ protected:
   std::map<SymbolId, Symbol>  id_to_terminal_;
   std::map<SymbolId, Symbol>  id_to_nonterminal_;
   
+  size_t num_terminals_;
+  size_t num_nonterminals_;
   
   void ComputeFirstSets() noexcept;
   void ComputeFollowSets() noexcept;
   void ComputeFirstPlusSets() noexcept;
   
-  
+  void CreateSymbolId(const Symbol& symbol);
+  void AddSymbol(const Symbol& symbol);
   
   
   //Helpers

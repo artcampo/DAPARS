@@ -94,6 +94,8 @@ void GrammarLR1::NewCC(const std::set<LR1_Item>& set){
 
 void GrammarLR1::InitTables(LR_Tables& tables, const size_t num_states
                            ,const size_t num_nonterm, const size_t num_term){
+  std::cout << "INIT TABLES: sta/nonter/ter" 
+            << num_states << " "<< num_nonterm << " " << num_term << "\n"; 
   tables.goto_table_.resize(num_states);
   for(auto& it : tables.goto_table_) it.resize(num_nonterm);
   
