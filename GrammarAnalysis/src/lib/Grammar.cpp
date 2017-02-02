@@ -26,7 +26,11 @@ SymbolId Grammar::GetSymbolId(const kToken& token) const{
 }
 
 void Grammar::AddTerminal(const Symbol& symbol, const kToken& tokenId){
-  ++num_terminals_;
+  if(symbol != Symbol::Empty() and symbol != Symbol::Eof() and
+     symbol != Symbol::StackTop()){
+    ++num_terminals_;
+  std::cout << "added terminal: "<< symbol;
+  }
   AddSymbol(symbol);
   if(symbol != Symbol::Empty()){
     symbolId_of_tokenId_[tokenId] = GetSymbolId(symbol);
