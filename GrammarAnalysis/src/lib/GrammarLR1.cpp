@@ -51,7 +51,7 @@ std::set<LR1_Item> GrammarLR1::Closure(const std::set<LR1_Item>& set){
             for(const auto &b : first_Ca){
               LR1_Item item = InitLR1_Item(r, b);
               if(s.find(item) == s.end()){
-//                 std::cout << "Insert: " << item.str() << std::endl;
+//                 std::cout << "Insert: " << item << std::endl;
                 has_changed = true;
                 s.insert(item);
 //              for(const auto &setIt : s)std::cout << "** " << setIt.str() << std::endl;
@@ -113,6 +113,7 @@ void GrammarLR1::InitTables(){
 void GrammarLR1::CanonicalCollection(){
   SetLR1_Item initial_set {InitLR1_Item( starting_rule_ )};
   SetLR1_Item cc0 = Closure(initial_set);
+//   std::cout << "Initial closure: " << cc0 << "\n";
   NewCC(cc0);
   bool has_changed = true;
 
@@ -148,6 +149,7 @@ void GrammarLR1::CanonicalCollection(){
 //               std::cout<< "for Symbol: " << symbol.str() << "\n";
               has_changed = true;
               NewCC(temp);
+//               std::cout << "New collection: " << temp << "\n";
 
               const StateId ccj       = set_id_[temp];   
               const SymbolId sym_id = GetSymbolId(symbol);
@@ -203,7 +205,7 @@ void GrammarLR1::BuildActionTable(SetOfSetsLR1_Item& cc,
       if(item.HasSymbolAfterStackTop()){
         const Symbol symbol = item.SymbolAfterStackTop();
         if(symbol.IsTerminal()){
-          //std::cout << "Asking for " << cci << " " << symbol.str() << "\n";
+          //std::cout << "Asking for " << cci << " " << symbol << "\n";
           
           SetLR1_Item temp      = Goto(set, symbol);
           const StateId ccj       = set_id[temp];
@@ -212,6 +214,7 @@ void GrammarLR1::BuildActionTable(SetOfSetsLR1_Item& cc,
         } 
       }
       else{
+//         std::cout << "Checking item: " << item << "\n";
         if(item.IsInitialRule() and item.symbol_ == Symbol::Eof()){
           const SymbolId sym_id = GetSymbolId(Symbol::Eof());
           action_table[cci][sym_id] = Action( Action::kAction::accept, 0);
@@ -258,6 +261,16 @@ void GrammarLR1::DumpCC() const noexcept{
 
 
 void GrammarLR1::DumpTables() const noexcept{
+  std::cout << "term: ";
+  for(const auto &symbolId : symbol_id_){
+    if(symbolId.first.IsTerminal())
+      std::cout << "[" << symbolId.first << "," << symbolId.second << "] ";
+  }
+  std::cout << "\nnonterm: ";
+  for(const auto &symbolId : symbol_id_){
+    if(not symbolId.first.IsTerminal())
+      std::cout << "[" << symbolId.first << "," << symbolId.second << "] ";   
+  }  
   std::cout << tables_;
 }
 

@@ -13,6 +13,9 @@
 
 namespace GrammarAnalyzer{
 
+std::ostream& operator<<(std::ostream &os, const Symbol& s);
+std::ostream& operator<<(std::ostream &os, const Rule& r);
+  
 std::ostream& operator<<(std::ostream &os, const LR1_Item& c);
 std::ostream& operator<<(std::ostream &os, const LR0_Item& c);
 
@@ -20,6 +23,5 @@ std::ostream& operator<<(std::ostream &os, const SetLR1_Item& c);
 std::ostream& operator<<(std::ostream &os, const SetLR0_Item& c);
 
 std::ostream& operator<<(std::ostream& os, const LR_Tables& t);
-
 
 } //end namespace GrammarAnalyzer

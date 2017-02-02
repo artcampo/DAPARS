@@ -51,6 +51,7 @@ void Grammar::AddStartingRule(const Rule& rule)  noexcept{
   AddRule(rule);
   start_symbol_  = rule.head_;
   starting_rule_ = rule;
+//   std::cout << "initial rule:" << rule << "\n";
 }
 
 

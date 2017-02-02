@@ -48,7 +48,7 @@ public:
     std::vector<Symbol>::iterator next = it; 
     ++next;
     std::iter_swap(it, next);
-    return LR1_Item(Rule(rule_.head_, derived), symbol_, rule_id_);
+    return LR1_Item(Rule(rule_.head_, derived, rule_.IsInitialRule()), symbol_, rule_id_);
   }  
   
   LR0_Item ToLR0_Item() const noexcept{

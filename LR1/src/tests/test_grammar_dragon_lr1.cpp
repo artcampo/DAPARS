@@ -25,8 +25,10 @@ int main(){
   
   
   //Grammar
+  Rule start(sp,  {s}, true);
+  
   GrammarLR1 g;
-  g.AddStartingRule(Rule(sp,  {s}, true));
+  g.AddStartingRule(start);
   
   g.AddRule(Rule(s, {c, c}));
   g.AddRule(Rule(c, {sc, c}));
@@ -41,7 +43,7 @@ int main(){
   
 
   //Test initial closure
-  std::set<LR1_Item> set {g.InitLR1_Item( Rule(sp,  {s}) )};
+  std::set<LR1_Item> set {g.InitLR1_Item( start )};
   std::set<LR1_Item> closure = g.Closure(set);
   
   std::cout << "-- INITIAL CLOSURE" << std::endl;

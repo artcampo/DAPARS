@@ -26,6 +26,7 @@ public:
     std::string s(head_.str());
     s += " -> ";
     for(const auto &symbol : derived_) { s += symbol.str(); s+= " ";} 
+    if(is_initial_rule_) s+= " init ";
     return s;
   }
     
