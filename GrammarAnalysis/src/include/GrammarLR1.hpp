@@ -70,8 +70,6 @@ private:
   void NewCC    (const std::set<LR1_Item>& set);
   void AssignId (const std::set<LR1_Item>& set);
   
-  void InitSymbolsIds() noexcept;
-  
   void InitTables();
   
 

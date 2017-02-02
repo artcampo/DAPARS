@@ -82,9 +82,17 @@ void GrammarLALR::NewCC(const SetLR1_Item& set){
 }
 
 void GrammarLALR::DumpTables() const noexcept{
-  std::cout << "LR1 Tables:\n";
   GrammarLR1::DumpTables();
   std::cout << "LALR Tables:\n";
+  
+  std::cout << "term: ";
+  for(const auto &symbolId : id_to_terminal_)
+    std::cout << "[" << symbolId.first << ":" << symbolId.second << "] ";   
+  
+  std::cout << "\nnonterm: ";
+  for(const auto &symbolId : id_to_nonterminal_)
+    std::cout << "[" << symbolId.first << ":" << symbolId.second << "] ";   
+  
   std::cout << tables_;
 }
 

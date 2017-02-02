@@ -5,7 +5,8 @@
 #include <string>
 
 using namespace GrammarAnalyzer;
-#include "grammar_dragon_4_55.cpp"
+#include "../../../Common/src/lib/grammars/grammar_dragon_4_55.cpp"
+
 
 /*
  * This produces the closure set of "engineering a compiler" 2nd ed, p128 

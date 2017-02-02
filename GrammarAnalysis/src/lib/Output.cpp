@@ -75,6 +75,7 @@ operator<<(std::ostream &os, const std::map<Symbol, std::set<Symbol>>& c){
     std::cout << it.first << ": ";
     for(const auto &it2 : it.second) os << it2 << ", ";
   }
+  return os;
 }
 
 } //end namespace GrammarAnalyzer

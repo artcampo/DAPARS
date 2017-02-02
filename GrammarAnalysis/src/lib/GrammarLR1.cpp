@@ -37,7 +37,7 @@ std::set<LR1_Item> GrammarLR1::Closure(const std::set<LR1_Item>& set){
 //     std::cout << "another spin\n";
     has_changed = false;
     for(const LR1_Item &i : s){
-      std::cout << "Inspect " << i << "\n";
+//       std::cout << "Inspect " << i << "\n";
       //determine C
       if(i.HasSymbolAfterStackTop()){
         Symbol c = i.SymbolAfterStackTop();
@@ -47,18 +47,17 @@ std::set<LR1_Item> GrammarLR1::Closure(const std::set<LR1_Item>& set){
         //For each rule C->Y
         for(const auto &r : rules_){
           if(r.head_ == c){
-            std::cout << "For head " << c.str() << " B  " << first_Ca.size() << "\n";
+//             std::cout << "For head " << c.str() << " B  " << first_Ca.size() << "\n";
             for(const auto &b : first_Ca){
               LR1_Item item = InitLR1_Item(r, b);
               if(s.find(item) == s.end()){
-                std::cout << "Insert: " << item << std::endl;
+//                 std::cout << "Insert: " << item << std::endl;
                 has_changed = true;
                 s.insert(item);
 //              for(const auto &setIt : s)std::cout << "** " << setIt.str() << std::endl;
                 
                 break;
               }//end if(s.find(item)
-              else std::cout << "element already in set\n";
             }//end for(const auto &b : first_Ca)
             
             }
@@ -90,7 +89,7 @@ void GrammarLR1::NewCC(const std::set<LR1_Item>& set){
   marked_[set] = false;
   AssignId(set);
   cc_.insert(set);
-  std::cout << "New col: "<< set_id_[set] << ":\n" << set << "\n";
+//   std::cout << "New col: "<< set_id_[set] << ":\n" << set << "\n";
 }
 
 void GrammarLR1::InitTables(LR_Tables& tables, const size_t num_states
@@ -188,7 +187,6 @@ void GrammarLR1::CanonicalCollection(){
 }
 
 void GrammarLR1::BuildTables() noexcept{
-  InitSymbolsIds();
   CanonicalCollection();  //inits tables
   BuildActionTable();
 }
@@ -243,12 +241,6 @@ void GrammarLR1::BuildActionTable() noexcept{
 }
 
 
-void GrammarLR1::InitSymbolsIds() noexcept{
-  GetSymbolId(Symbol::Eof());
-  for(const auto &r : rules_)
-    for (const auto& it : r.derived_)
-      GetSymbolId(it);
-}
 
 void GrammarLR1::DumpCC() const noexcept{
   std::cout << "\nCC sets: " << cc_.size() << "\n";
@@ -263,16 +255,14 @@ void GrammarLR1::DumpCC() const noexcept{
 
 
 void GrammarLR1::DumpTables() const noexcept{
+  std::cout << "LR1 Tables:\n";
   std::cout << "term: ";
-  for(const auto &symbolId : symbol_id_){
-    if(symbolId.first.IsTerminal())
-      std::cout << "[" << symbolId.first << "," << symbolId.second << "] ";
-  }
+  for(const auto &symbolId : id_to_terminal_)
+    std::cout << "[" << symbolId.first << ":" << symbolId.second << "] ";   
+  
   std::cout << "\nnonterm: ";
-  for(const auto &symbolId : symbol_id_){
-    if(not symbolId.first.IsTerminal())
-      std::cout << "[" << symbolId.first << "," << symbolId.second << "] ";   
-  }  
+  for(const auto &symbolId : id_to_nonterminal_)
+    std::cout << "[" << symbolId.first << ":" << symbolId.second << "] ";   
   std::cout << tables_;
 }
 

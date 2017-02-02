@@ -5,7 +5,7 @@
 #include <string>
 
 using namespace GrammarAnalyzer;
-#include "grammar_pars.cpp"
+#include "../../../Common/src/lib/grammars/grammar_pars.cpp"
 
 /*
  * This produces the closure set of "engineering a compiler" 2nd ed, p128 

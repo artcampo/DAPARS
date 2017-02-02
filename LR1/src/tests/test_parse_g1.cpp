@@ -10,7 +10,7 @@
 #include <string>
 
 using namespace GrammarAnalyzer;
-#include "grammar_pars.cpp"
+#include "../../../Common/src/lib/grammars/grammar_pars.cpp"
 
 /*
  * This parses the pars grammar of "engineering a compiler" 2nd ed, p128 
