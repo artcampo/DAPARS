@@ -1,41 +1,55 @@
-build
-
+Adding symbol: {empty}
+added terminal: {eof} 1
+Adding symbol: {eof} new terminal
+Adding symbol: {·}
+added terminal: ( 2
+Adding symbol: ( new terminal
+added terminal: ) 3
+Adding symbol: ) new terminal
+Adding symbol: PROG new non terminal
+Adding symbol: LIST new non terminal
+Adding symbol: PAIR new non terminal
+Init tables for 3 non-terminals
+INIT TABLES: sta/nonter/ter12 3 3
+LR1 Tables:
+term: [0:{eof}] [1:(] [2:)] 
+nonterm: [0:PROG] [1:LIST] [2:PAIR] 
 Action table 12
-|  _  |  _  | s 3 |  _  |
-| acc |  _  | s 3 |  _  |
-| r 0 |  _  | r 0 |  _  |
-|  _  |  _  | s 6 | s 5 |
-|  _  |  _  |  _  | s 10 |
-| r 0 |  _  | r 0 |  _  |
-|  _  |  _  | s 6 | s 8 |
-|  _  |  _  |  _  | s 11 |
-|  _  |  _  |  _  | r 0 |
-| r 0 |  _  | r 0 |  _  |
-| r 0 |  _  | r 0 |  _  |
-|  _  |  _  |  _  | r 0 |
+|  _  | s 3 |  _  |
+| acc | s 3 |  _  |
+| r 0 | r 0 |  _  |
+|  _  | s 6 | s 5 |
+|  _  |  _  | s 10 |
+| r 0 | r 0 |  _  |
+|  _  | s 6 | s 8 |
+|  _  |  _  | s 11 |
+|  _  |  _  | r 0 |
+| r 0 | r 0 |  _  |
+| r 0 | r 0 |  _  |
+|  _  |  _  | r 0 |
 
 Goto table 12
-| 1 | 2 |
-| 0 | 9 |
-| 0 | 0 |
-| 0 | 4 |
-| 0 | 0 |
-| 0 | 0 |
-| 0 | 7 |
-| 0 | 0 |
-| 0 | 0 |
-| 0 | 0 |
-| 0 | 0 |
-| 0 | 0 |
+| 0 | 1 | 2 |
+| 0 | 0 | 9 |
+| 0 | 0 | 0 |
+| 0 | 0 | 4 |
+| 0 | 0 | 0 |
+| 0 | 0 | 0 |
+| 0 | 0 | 7 |
+| 0 | 0 | 0 |
+| 0 | 0 | 0 |
+| 0 | 0 | 0 |
+| 0 | 0 | 0 |
+| 0 | 0 | 0 |
 <0,0>
- State: 0 token: lpar symbol: 2 action: s 3
-<0,0><3,2>
- State: 3 token: rpar symbol: 3 action: s 5
-<0,0><3,2><5,3>
+ State: 0 token: lpar symbol: 1 action: s 3
+<0,0><3,1>
+ State: 3 token: rpar symbol: 2 action: s 5
+<0,0><3,1><5,2>
  State: 5 token: eof symbol: 0 action: r 0
 Parsed: PAIR -> ( ) 
-<0,0><2,1>
+<0,0><2,2>
  State: 2 token: eof symbol: 0 action: r 0
 Parsed: LIST -> PAIR 
-<0,0><1,0>
+<0,0><1,1>
  State: 1 token: eof symbol: 0 action: acc

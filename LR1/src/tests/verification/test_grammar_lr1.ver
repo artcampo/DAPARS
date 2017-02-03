@@ -1,4 +1,16 @@
-build
+Adding symbol: {empty}
+added terminal: {eof} 1
+Adding symbol: {eof} new terminal
+Adding symbol: {·}
+added terminal: ( 2
+Adding symbol: ( new terminal
+added terminal: ) 3
+Adding symbol: ) new terminal
+Adding symbol: PROG new non terminal
+Adding symbol: LIST new non terminal
+Adding symbol: PAIR new non terminal
+Init tables for 3 non-terminals
+INIT TABLES: sta/nonter/ter12 3 3
 -- CC
 
 CC sets: 12
@@ -12,7 +24,7 @@ cc1
 [PAIR -> {·} ( PAIR ) , (]
 [PAIR -> {·} ( ) , {eof}]
 [PAIR -> {·} ( ) , (]
-[PROG -> LIST {·} , {eof}]
+[PROG -> LIST {·}  init , {eof}]
 cc2
 [LIST -> PAIR {·} , {eof}]
 [LIST -> PAIR {·} , (]
@@ -25,7 +37,7 @@ cc0
 [PAIR -> {·} ( PAIR ) , (]
 [PAIR -> {·} ( ) , {eof}]
 [PAIR -> {·} ( ) , (]
-[PROG -> {·} LIST , {eof}]
+[PROG -> {·} LIST  init , {eof}]
 cc10
 [PAIR -> ( PAIR ) {·} , {eof}]
 [PAIR -> ( PAIR ) {·} , (]
@@ -54,31 +66,33 @@ cc6
 [PAIR -> {·} ( PAIR ) , )]
 [PAIR -> {·} ( ) , )]
 -- TABLES
-
+LR1 Tables:
+term: [0:{eof}] [1:(] [2:)] 
+nonterm: [0:PROG] [1:LIST] [2:PAIR] 
 Action table 12
-|  _  |  _  | s 3 |  _  |
-| acc |  _  | s 3 |  _  |
-| r 0 |  _  | r 0 |  _  |
-|  _  |  _  | s 6 | s 5 |
-|  _  |  _  |  _  | s 10 |
-| r 0 |  _  | r 0 |  _  |
-|  _  |  _  | s 6 | s 8 |
-|  _  |  _  |  _  | s 11 |
-|  _  |  _  |  _  | r 0 |
-| r 0 |  _  | r 0 |  _  |
-| r 0 |  _  | r 0 |  _  |
-|  _  |  _  |  _  | r 0 |
+|  _  | s 3 |  _  |
+| acc | s 3 |  _  |
+| r 0 | r 0 |  _  |
+|  _  | s 6 | s 5 |
+|  _  |  _  | s 10 |
+| r 0 | r 0 |  _  |
+|  _  | s 6 | s 8 |
+|  _  |  _  | s 11 |
+|  _  |  _  | r 0 |
+| r 0 | r 0 |  _  |
+| r 0 | r 0 |  _  |
+|  _  |  _  | r 0 |
 
 Goto table 12
-| 1 | 2 |
-| 0 | 9 |
-| 0 | 0 |
-| 0 | 4 |
-| 0 | 0 |
-| 0 | 0 |
-| 0 | 7 |
-| 0 | 0 |
-| 0 | 0 |
-| 0 | 0 |
-| 0 | 0 |
-| 0 | 0 |
+| 0 | 1 | 2 |
+| 0 | 0 | 9 |
+| 0 | 0 | 0 |
+| 0 | 0 | 4 |
+| 0 | 0 | 0 |
+| 0 | 0 | 0 |
+| 0 | 0 | 7 |
+| 0 | 0 | 0 |
+| 0 | 0 | 0 |
+| 0 | 0 | 0 |
+| 0 | 0 | 0 |
+| 0 | 0 | 0 |
