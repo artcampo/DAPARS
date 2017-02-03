@@ -1,0 +1,6 @@
+Grammar
+
+Terminals that appear in the grammar are expanded with 3 more terminals:
+eof, empty and StackTop.
+Unique IDs are not created for empty and StackTop.
+Eof is given the first unique Id.
