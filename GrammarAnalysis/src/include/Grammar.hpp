@@ -57,6 +57,9 @@ public:
   Rule&       GetRule(const RuleId& rule_id) {return rules_[rule_id];};
   
 protected:
+  size_t num_terminals_;
+  size_t num_nonterminals_;  
+  
   std::vector<Rule> rules_;
   bool analized_;
   std::set<Symbol> symbols_;
@@ -74,8 +77,7 @@ protected:
   std::map<SymbolId, Symbol>  id_to_terminal_;
   std::map<SymbolId, Symbol>  id_to_nonterminal_;
   
-  size_t num_terminals_;
-  size_t num_nonterminals_;
+
   
   void ComputeFirstSets() noexcept;
   void ComputeFollowSets() noexcept;

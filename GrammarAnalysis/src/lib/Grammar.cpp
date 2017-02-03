@@ -228,7 +228,7 @@ void Grammar::CreateSymbolId(const Symbol& symbol){
     auto it = symbol_id_.find(symbol);
     if(it == symbol_id_.end()){
       symbol_id_[symbol] = free_non_term_id_;
-      id_to_nonterminal_[free_term_id_] = symbol;
+      id_to_nonterminal_[free_non_term_id_] = symbol;
       free_non_term_id_++;
       std::cout << " new non terminal";
     } 

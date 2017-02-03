@@ -265,6 +265,7 @@ void GrammarLR1::DumpTables() const noexcept{
   std::cout << "\nnonterm: ";
   for(const auto &symbolId : id_to_nonterminal_)
     std::cout << "[" << symbolId.first << ":" << symbolId.second << "] ";   
+  
   std::cout << tables_;
 }
 
