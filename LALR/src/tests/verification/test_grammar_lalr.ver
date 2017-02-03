@@ -1,4 +1,16 @@
-Init tables for 4 non-terminals
+Adding symbol: {empty}
+added terminal: {eof} 1
+Adding symbol: {eof} new terminal
+Adding symbol: {·}
+added terminal: c 2
+Adding symbol: c new terminal
+added terminal: d 3
+Adding symbol: d new terminal
+Adding symbol: S' new non terminal
+Adding symbol: S new non terminal
+Adding symbol: C new non terminal
+Init tables for 3 non-terminals
+INIT TABLES: sta/nonter/ter10 3 3
 LALR build
 kernel set:
 [C -> c {·} C ]
@@ -28,7 +40,7 @@ to set:
 [C -> c {·} C , d]
 
 kernel set:
-[S' -> {·} S ]
+[S' -> {·} S  init ]
 
 to set:
 [C -> {·} c C , c]
@@ -36,7 +48,7 @@ to set:
 [C -> {·} d , c]
 [C -> {·} d , d]
 [S -> {·} C C , {eof}]
-[S' -> {·} S , {eof}]
+[S' -> {·} S  init , {eof}]
 
 kernel set:
 [C -> c C {·} ]
@@ -71,10 +83,10 @@ to set:
 [S -> C C {·} , {eof}]
 
 kernel set:
-[S' -> S {·} ]
+[S' -> S {·}  init ]
 
 to set:
-[S' -> S {·} , {eof}]
+[S' -> S {·}  init , {eof}]
 
 2  merged set:
 [C -> c C {·} , {eof}]
@@ -106,7 +118,7 @@ to set:
 [S -> C {·} C , {eof}]
 
 1  merged set:
-[S' -> S {·} , {eof}]
+[S' -> S {·}  init , {eof}]
 
 1  merged set:
 [C -> {·} c C , c]
@@ -114,17 +126,19 @@ to set:
 [C -> {·} d , c]
 [C -> {·} d , d]
 [S -> {·} C C , {eof}]
-[S' -> {·} S , {eof}]
+[S' -> {·} S  init , {eof}]
 
+INIT TABLES: sta/nonter/ter7 3 3
 -- TABLES
 LR1 Tables:
-
+term: [0:{eof}] [1:c] [2:d] 
+nonterm: [0:S'] [1:S] [2:C] 
 Action table 10
 |  _  | s 1 | s 2 |
 |  _  | s 1 | s 2 |
 |  _  | r 0 | r 0 |
 |  _  | s 5 | s 6 |
-| r 0 |  _  |  _  |
+| acc |  _  |  _  |
 |  _  | s 5 | s 6 |
 | r 0 |  _  |  _  |
 | r 0 |  _  |  _  |
@@ -132,32 +146,33 @@ Action table 10
 | r 0 |  _  |  _  |
 
 Goto table 10
-| 4 | 3 | 0 | 0 |
-| 0 | 8 | 0 | 0 |
-| 0 | 0 | 0 | 0 |
-| 0 | 7 | 0 | 0 |
-| 0 | 0 | 0 | 0 |
-| 0 | 9 | 0 | 0 |
-| 0 | 0 | 0 | 0 |
-| 0 | 0 | 0 | 0 |
-| 0 | 0 | 0 | 0 |
-| 0 | 0 | 0 | 0 |
+| 0 | 4 | 3 |
+| 0 | 0 | 8 |
+| 0 | 0 | 0 |
+| 0 | 0 | 7 |
+| 0 | 0 | 0 |
+| 0 | 0 | 9 |
+| 0 | 0 | 0 |
+| 0 | 0 | 0 |
+| 0 | 0 | 0 |
+| 0 | 0 | 0 |
 LALR Tables:
-
+term: [0:{eof}] [1:c] [2:d] 
+nonterm: [0:S'] [1:S] [2:C] 
 Action table 7
 | r 0 | r 0 | r 0 |
 |  _  | s 1 | s 2 |
 | r 0 | r 0 | r 0 |
 | r 0 |  _  |  _  |
 |  _  | s 0 | s 0 |
-| r 0 |  _  |  _  |
+| acc |  _  |  _  |
 |  _  | s 0 | s 0 |
 
 Goto table 7
-| 0 | 0 | 0 | 0 |
-| 0 | 0 | 0 | 0 |
-| 0 | 0 | 0 | 0 |
-| 0 | 0 | 0 | 0 |
-| 0 | 0 | 0 | 0 |
-| 0 | 0 | 0 | 0 |
-| 0 | 0 | 0 | 0 |
+| 0 | 0 | 0 |
+| 0 | 0 | 0 |
+| 0 | 0 | 0 |
+| 0 | 0 | 0 |
+| 0 | 0 | 0 |
+| 0 | 0 | 0 |
+| 0 | 0 | 0 |
