@@ -209,9 +209,9 @@ void GrammarLR1::BuildActionTable(SetOfSetsLR1_Item& cc,
         if(symbol.IsTerminal()){
           //std::cout << "Asking for " << cci << " " << symbol << "\n";
           
-          SetLR1_Item temp      = Goto(set, symbol);
-          const StateId ccj       = set_id[temp];
-          const SymbolId sym_id = GetSymbolId(symbol);
+          SetLR1_Item temp          = Goto(set, symbol);
+          const StateId ccj         = set_id[temp];
+          const SymbolId sym_id     = GetSymbolId(symbol);
           action_table[cci][sym_id] = Action( Action::kAction::shift, ccj);
         } 
       }

@@ -20,6 +20,7 @@ class ParserLR1 : public BaseParser{
   
 public:  
   ParserLR1(std::string const &file_name, Block* &programBlock, GrammarLR1& grammar);
+  ParserLR1(const std::vector<char>& parse_data, Block* &programBlock, GrammarLR1& grammar);
   void Parse();
   
 protected:

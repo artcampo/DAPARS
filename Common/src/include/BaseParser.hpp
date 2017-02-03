@@ -16,6 +16,8 @@ class BaseParser{
   
 public:  
   BaseParser(std::string const &file_name, Block* &programBlock);
+  BaseParser(const std::vector<char>& parse_data, Block* &programBlock);
+  
   
 protected:
   const static int num_characters_to_display_before_error_ = 5;

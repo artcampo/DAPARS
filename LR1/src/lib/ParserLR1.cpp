@@ -17,15 +17,17 @@ class ExceptionNotEndFile: public exception{
   }
 };
 */
-
   
 ParserLR1::ParserLR1(std::string const &file_name, Block* &programBlock
               , GrammarLR1& grammar) 
   : BaseParser(file_name, programBlock)
-  , grammar_(grammar)
-{
- 
-}
+  , grammar_(grammar){}
+  
+ParserLR1::ParserLR1(const std::vector<char>& parse_data, Block* &programBlock
+              , GrammarLR1& grammar) 
+  : BaseParser(parse_data, programBlock)
+  , grammar_(grammar){}  
+  
 
   class ShiftedSymbol{
   public:  
@@ -65,16 +67,18 @@ void ParserLR1::Parse(){
   NextToken();
   
   while(not finished){
-    printStack(context); std::cout << "\n";
+    //printStack(context); std::cout << "\n";
     const StateId  state  = context.top().state_;
     const SymbolId symbol = grammar_.GetSymbolId(token_);
     const Action action   = grammar_.GetAction(state, symbol);
     
+    /*
     std::cout << " State: " << state 
               << " token: " << str(token_)
               << " symbol: " << symbol
               << " action: " << action.str()
               << "\n";
+              */
               
     if(action.action_ == kAction::shift){
       context.push( ShiftedSymbol(symbol, action.next_state_));

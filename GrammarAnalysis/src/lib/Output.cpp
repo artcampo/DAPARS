@@ -1,6 +1,7 @@
 #include "Output.hpp"
 #include "Symbol.hpp"
 #include "Tokenizer.hpp"
+#include "Grammar.hpp"
 #include "GrammarLR1.hpp"
 #include "LR1_Item.hpp"
 #include <string>
@@ -75,6 +76,12 @@ operator<<(std::ostream &os, const std::map<Symbol, std::set<Symbol>>& c){
     std::cout << it.first << ": ";
     for(const auto &it2 : it.second) os << it2 << ", ";
   }
+  return os;
+}
+
+std::ostream&
+operator<<(std::ostream &os, const Grammar& g){
+  os << g.str() << "\n";
   return os;
 }
 

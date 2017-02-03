@@ -25,6 +25,12 @@ SymbolId Grammar::GetSymbolId(const kToken& token) const{
   return symbolId_of_tokenId_.at(token);
 }
 
+std::string Grammar::str() const noexcept{
+  std::string s("Grammar:\n");
+  for(const auto it : rules_) s += it.str();
+  return s;
+}
+
 void Grammar::AddTerminal(const Symbol& symbol, const kToken& tokenId){
   if(symbol != Symbol::Empty() and symbol != Symbol::StackTop()){
     ++num_terminals_;

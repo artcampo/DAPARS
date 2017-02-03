@@ -16,6 +16,18 @@ class ExceptionNotEndFile: public exception{
 };
 */
 
+BaseParser::BaseParser(const std::vector<char>& parse_data, 
+                       Block* &programBlock)
+  : file_data_(parse_data)
+  , current_position_(file_data_.cbegin())
+  , skip_symbols_ {' ','\n'}
+  , programBlock_(programBlock)
+  , num_errors_(0)
+{
+  std::cout << "Parsing: \"";
+  for(const auto& it : parse_data ) std::cout << it;
+  std::cout << "\"\n";
+}
   
 BaseParser::BaseParser(std::string const &file_name, Block* &programBlock) 
   : file_(std::ifstream (file_name.c_str(), std::ios::binary) )

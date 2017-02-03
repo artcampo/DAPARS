@@ -56,6 +56,8 @@ public:
   const Rule& GetRule(const RuleId& rule_id) const {return rules_[rule_id];};
   Rule&       GetRule(const RuleId& rule_id) {return rules_[rule_id];};
   
+  std::string str() const noexcept;
+  
 protected:
   size_t num_terminals_;
   size_t num_nonterminals_;  
@@ -91,5 +93,8 @@ protected:
   std::set<Symbol> First(const std::vector<Symbol>& derived);
   std::set<Symbol> First(const std::vector<Symbol>& derived, const Symbol& s);
 };
+
+std::ostream&
+operator<<(std::ostream &os, const Grammar& g);
 
 } //end namespace GrammarAnalyzer
