@@ -78,7 +78,7 @@ void BaseParser::Skip() noexcept{
 
 void BaseParser::Error(const std::string& message){
   ++num_errors_;
-  std::cout << "\n" << message << " at: [[";
+  std::cout << "\n" << message << " at: [[ ";
   
   //Go back N chars
   std::vector<char>::const_iterator start_of_error = current_position_;
@@ -90,7 +90,7 @@ void BaseParser::Error(const std::string& message){
     std::cout << *start_of_error;
     ++start_of_error;
   }
-  std::cout << "]]" << std::endl;
+  std::cout << " ]]" << std::endl;
 }
   
   

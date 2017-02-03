@@ -96,7 +96,8 @@ void ParserLR1::Parse(){
     }else if(action.action_ == kAction::accept){
       finished = true;
     }else{
-      std::cout << "Nosferatu\n";
+      Error("eof not found");
+      finished = true;
     }
   }
 }

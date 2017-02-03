@@ -25,7 +25,7 @@ void parse(const std::string& str, G& g)
   
   
   std::unique_ptr<ParserLR1> parser(new 
-                ParserLR1(str, programBlock, g));
+                ParserLR1(std::vector<char> (str.begin(), str.end()), programBlock, g));
 
   parser->Parse();
 }
@@ -38,10 +38,15 @@ int main()
   CreateGrammar(g);
   std::cout << g;
   
-  parse( std::string("()"), g);
-  parse( std::string("()()()"), g);
-  parse( std::string("(())"), g);
-//   parse( std::string("((()()))"), g);
+  //pass
+  parse( std::string("()"), g); std::cout << "\n";
+  parse( std::string("()()()"), g); std::cout << "\n";
+  parse( std::string("(())"), g); std::cout << "\n";
+  
+  //no pass
+  parse( std::string("((()()))"), g); std::cout << "\n";
+  parse( std::string("(()"), g); std::cout << "\n";
+  parse( std::string("())"), g); std::cout << "\n";
 
   return 0;
 }

@@ -41,15 +41,5 @@ Goto table 12
 | 0 | 0 | 0 |
 | 0 | 0 | 0 |
 | 0 | 0 | 0 |
-<0,0>
- State: 0 token: lpar symbol: 1 action: s 3
-<0,0><3,1>
- State: 3 token: rpar symbol: 2 action: s 5
-<0,0><3,1><5,2>
- State: 5 token: eof symbol: 0 action: r 0
 Parsed: PAIR -> ( ) 
-<0,0><2,2>
- State: 2 token: eof symbol: 0 action: r 0
 Parsed: LIST -> PAIR 
-<0,0><1,1>
- State: 1 token: eof symbol: 0 action: acc

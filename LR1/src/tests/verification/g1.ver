@@ -41,32 +41,8 @@ Goto table 12
 | 0 | 0 | 0 |
 | 0 | 0 | 0 |
 | 0 | 0 | 0 |
-<0,0>
- State: 0 token: lpar symbol: 1 action: s 3
-<0,0><3,1>
- State: 3 token: lpar symbol: 1 action: s 6
-<0,0><3,1><6,1>
- State: 6 token: rpar symbol: 2 action: s 8
-<0,0><3,1><6,1><8,2>
- State: 8 token: rpar symbol: 2 action: r 0
 Parsed: PAIR -> ( ) 
-<0,0><3,1><4,2>
- State: 4 token: rpar symbol: 2 action: s 10
-<0,0><3,1><4,2><10,2>
- State: 10 token: lpar symbol: 1 action: r 0
 Parsed: PAIR -> ( PAIR ) 
-<0,0><2,2>
- State: 2 token: lpar symbol: 1 action: r 0
 Parsed: LIST -> PAIR 
-<0,0><1,1>
- State: 1 token: lpar symbol: 1 action: s 3
-<0,0><1,1><3,1>
- State: 3 token: rpar symbol: 2 action: s 5
-<0,0><1,1><3,1><5,2>
- State: 5 token: eof symbol: 0 action: r 0
 Parsed: PAIR -> ( ) 
-<0,0><1,1><9,2>
- State: 9 token: eof symbol: 0 action: r 0
 Parsed: LIST -> LIST PAIR 
-<0,0><1,1>
- State: 1 token: eof symbol: 0 action: acc
