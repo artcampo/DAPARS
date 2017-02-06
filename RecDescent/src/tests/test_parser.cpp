@@ -36,6 +36,8 @@ int main()
   
   //pass
   parse<Grammar,ParserLL1RecDesc>( std::string("(1)"), g); std::cout << "\n";
+  parse<Grammar,ParserLL1RecDesc>( std::string("2+3+4"), g); std::cout << "\n";
+  parse<Grammar,ParserLL1RecDesc>( std::string("2++3+4"), g); std::cout << "\n";
   /*
   parse( std::string("()()()"), g); std::cout << "\n";
   parse( std::string("(())"), g); std::cout << "\n";
