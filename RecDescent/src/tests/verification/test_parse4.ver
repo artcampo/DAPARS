@@ -1,7 +1,6 @@
--> num-> plus-> lpar-> lpar-> num-> rpar-> eof
-Expecting rpar. at: [[((2)
-]]
-Program syntactically incorrect
 
+Expecting rpar. at: [[ ((2)
+ ]]
+Program syntactically incorrect
 Print AST
  ( 4 + 2 ) 

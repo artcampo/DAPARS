@@ -4,6 +4,7 @@ Prog  := E          ** P.node   = E.synt
 E     := T E'       ** E.node   = E'.synt
                        E'.inht  = T.node
 E'    := + T E'     ** E'1.inht = new Node(+, E'.inht, T.node)
+                       E'.synt  = E'1.synt
       |  empty      ** E'.synt  = E'.inht
 T     := F          ** T.synt   = F.node
 F     := ( E )      ** F.node   = E.node

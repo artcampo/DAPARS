@@ -23,113 +23,106 @@ Parser::Parser(std::string const &file_name, Block* &programBlock)
 
 void Parser::Parse(){
 
+  Prog();
   if(num_errors_ != 0){
     std::cout << "Program syntactically incorrect\n";
   }
 }
 
-bool Parser::Prog(){
-  programBlock_ = new Block();
-  Node* node_expr;
-  
+
+void Parser::Prog(){
   NextToken();
-  node_expr = Expr();
-  if(node_expr != nullptr){
+  Node* e_synt = Expr();
+  
+  if(e_synt != nullptr){
 //     std::cout << "Prog" << std::endl;
     if(token_ != Tokenizer::kToken::eof){
-      std::cout << "More data after program.";
-      return false;
+      Error("More data after program.");
     }
   }
   
-  ExpressionStatement* exp_stmt = new ExpressionStatement(dynamic_cast<Expression*>(node_expr));
+  programBlock_ = new Block();
+  ExpressionStatement* exp_stmt = new ExpressionStatement(dynamic_cast<Expression*>(e_synt));
   programBlock_->statements.push_back(exp_stmt);
   
-  return true;
 }
 
 
-// E->F E'
 Node* Parser::Expr(){
 //   std::cout << std::endl << "Exp";
-  Node* return_node;
-  Node* return_factor;
-  Node* return_prime;
+  Node* eprime_synt = nullptr;
+  Node* term_synth  = Term();
   
-  return_factor = Factor();
-  return_node   = return_factor;
-  
-  if(return_node != nullptr){
-    return_prime = ExprPrime(return_factor);
-    if(return_prime != nullptr)
-      return_node = return_prime; //return plus(F,E')
+  if(term_synth != nullptr){
+    eprime_synt = ExprPrime(term_synth);
+    if(eprime_synt == nullptr)
+      Error("E' missing");
   }else {
-    Error("Factor missing.");
+    Error("Term missing.");
   }
-  return return_node;
+  return eprime_synt;
 }
 
 
-// E'-> + F E' | empty
-// returns:
-// - nullptr, if E' is empty
-// - Node of plus(E_caller,F)
-//Node* Parser::ExprPrime(const Node* lhs){
-Node* Parser::ExprPrime(Node* lhs){
+Node* Parser::Term(){
+  return Factor();
+}
+
+
+// E'    := + T E'     ** E'1.inht = new Node(+, E'.inht, T.node)
+//                        E'.synt  = E'1.synt
+//       |  empty      ** E'.synt  = E'1.synt
+Node* Parser::ExprPrime(Node* eprime_inht){
 //   std::cout << std::endl << "Exp'";
-  Node* return_node = nullptr;
+  Node* eprime_synt = nullptr;
   
   if(token_ == Tokenizer::kToken::plus){
     NextToken();
-    Node* return_factor = Factor();
+    Node* t_synt = Term();
     
-    /*
-    return_node = new BinaryOp( dynamic_cast<const Expression*>(lhs)
+    // todo: dynamic_cast<const Expression*>(lhs)
+    Node* eprime1_inht = new BinaryOp( dynamic_cast<Expression*>(eprime_inht)
                               , IR_ADD
-                              , dynamic_cast<Expression*>(return_factor) );
-                              */
-    
-    return_node = new BinaryOp( dynamic_cast<Expression*>(lhs)
-                              , IR_ADD
-                              , dynamic_cast<Expression*>(return_factor) );    
+                              , dynamic_cast<Expression*>(t_synt) );    
     
     //A new E' will op against current op+
-    Node* return_expprr = ExprPrime(return_node);
-    if(return_expprr != nullptr)
-      return_node = return_expprr;
+    eprime_synt = ExprPrime(eprime1_inht);
+    if(eprime_synt == nullptr)
+      Error("E' error");
     
   } else{
     //check Follow(E')
     if(not(token_ == Tokenizer::kToken::eof or token_ == Tokenizer::kToken::rpar))
       Error("Expecting eof or rpar.");
+    eprime_synt = eprime_inht;
   }
   
-  return return_node;
+  return eprime_synt;
 }
 
 
 // F := ( E ) | numerical
 Node* Parser::Factor(){
 //   std::cout << std::endl << "Fact";
-  Node* return_node;
+  Node* f_synt;
   
   if(token_ == Tokenizer::kToken::numerical){
-    return_node = new Literal(token_int_value_);
+    f_synt = new Literal(token_int_value_);
     NextToken();
-    return return_node;
+    return f_synt;
   }
   
   if(token_ == Tokenizer::kToken::lpar){
     NextToken();
-    return_node = Expr();
+    f_synt = Expr();
     if(token_ == Tokenizer::kToken::rpar)
       NextToken();
     else 
       Error("Expecting rpar.");
   }else 
-    Error("Expectinglrpar.");
+    Error("Expecting lpar.");
   
-  return return_node;
+  return f_synt;
 }
 
   

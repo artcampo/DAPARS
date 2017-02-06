@@ -1,9 +1,12 @@
-EXP' {empty} + 
-EXPR ( {num} 
-FACT ( {num} 
-PROG ( {num} 
+Adding symbol: {empty}
+added terminal: {eof} 1
+Adding symbol: {eof} new terminal
+First Table
+EXP': {empty} 
+EXPR: 
+FACT: 
 -----------------------------
-EXP' {eof} ) 
-EXPR {eof} ) 
-FACT {eof} + ) 
+EXP' {eof} 
+EXPR {eof} 
+FACT {eof} 
 PROG {eof} 

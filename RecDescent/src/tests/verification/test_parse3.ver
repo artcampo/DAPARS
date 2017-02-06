@@ -1,3 +1,2 @@
--> num-> plus-> lpar-> num-> plus-> num-> rpar-> eof
 Print AST
  ( 4 +  ( 2 + 3 )  ) 

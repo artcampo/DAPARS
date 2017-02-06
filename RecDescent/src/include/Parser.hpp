@@ -21,11 +21,12 @@ public:
   
 private:
   
-  bool  Prog();
+  void  Prog();
   Node* Expr();
-  //Node* ExprPrime(const Node* lhs);
-  Node* ExprPrime(Node* lhs);
+  Node* ExprPrime(Node* eprime_inht); // make it const
+  Node* Term();
   Node* Factor();
+  
   
   
 };
