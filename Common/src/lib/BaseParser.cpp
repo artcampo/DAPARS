@@ -96,11 +96,32 @@ void BaseParser::Error(const std::string& message){
   }
   std::cout << " ]]" << std::endl;
 }
+
+void BaseParser::ErrorCritical(const std::string& message){
+  Error(message);
+  exit(1);
+}
   
 Node* BaseParser::NewBinaryOp(Node* const lhs, const int op, Node* const rhs){
+  if(lhs == nullptr) ErrorCritical("lhs invalid");
+  if(rhs == nullptr) ErrorCritical("rhs invalid");
+  
   Expression* const lhs_exp = dynamic_cast<Expression*>(lhs);
   Expression* const rhs_exp = dynamic_cast<Expression*>(rhs);
   Node* new_node = new BinaryOp(lhs_exp, op, rhs_exp );        
+  return new_node; 
+}
+
+ExpressionStatement*  BaseParser::NewExpressionStatement(Node* const node_expr){
+  if(node_expr == nullptr) ErrorCritical("node_expr invalid");
+  
+  Expression* const exp = dynamic_cast<Expression*>(node_expr);
+  ExpressionStatement* new_node = new ExpressionStatement(exp);
+  return new_node; 
+}
+
+Node* BaseParser::NewLiteral(const uint32_t &value){
+  Literal* new_node = new Literal(value);
   return new_node; 
 }
   

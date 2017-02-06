@@ -46,7 +46,7 @@ void ParserLL1RecDesc::Prog(){
   }
   
   programBlock_ = new Block();
-  ExpressionStatement* exp_stmt = new ExpressionStatement(dynamic_cast<Expression*>(e_synt));
+  ExpressionStatement* exp_stmt = NewExpressionStatement(e_synt);
   programBlock_->statements.push_back(exp_stmt);
   
 }
@@ -109,7 +109,7 @@ Node* ParserLL1RecDesc::Factor(){
   Node* f_synt;
   
   if(token_ == Tokenizer::kToken::numerical){
-    f_synt = new Literal(token_int_value_);
+    f_synt = NewLiteral(token_int_value_);
     NextToken();
     return f_synt;
   }

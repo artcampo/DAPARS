@@ -8,6 +8,8 @@
 class Block;
 class Node;
 class Expression;
+class ExpressionStatement;
+class Literal;
 
 namespace Common{
 
@@ -19,7 +21,7 @@ public:
   BaseParser(std::string const &file_name, Block* &programBlock);
   BaseParser(const std::vector<char>& parse_data, Block* &programBlock);
   
-  Node* NewBinaryOp(Node* const lhs, const int op, Node* const rhs);
+  
   
 protected:
   const static int num_characters_to_display_before_error_ = 5;
@@ -39,7 +41,14 @@ protected:
   void Skip() noexcept;
   void NextToken() noexcept;
   
+  //Error handling
   void Error(const std::string& message);
+  void ErrorCritical(const std::string& message);
+  
+  //Creation of AST nodes with error checking
+  Node* NewBinaryOp(Node* const lhs, const int op, Node* const rhs);
+  ExpressionStatement* NewExpressionStatement(Node* const node_expr);
+  Node* NewLiteral(const uint32_t &value);
   
   
 };
