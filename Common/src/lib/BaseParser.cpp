@@ -44,9 +44,13 @@ BaseParser::BaseParser(std::string const &file_name, Block* &programBlock)
 
 void BaseParser::NextToken() noexcept{
   Skip();
-  if(current_position_ == file_data_.cend())
+  if(current_position_ == file_data_.cend()){
+    if(token_ == Tokenizer::kToken::eof){
+      std::cout << "NextToken performed after reaching eof"; 
+      exit(1);
+    }
     token_ = Tokenizer::kToken::eof;
-  else{
+  }else{
     //(?) store init/end position of current token for conversion
     previous_position_ = current_position_;
     token_ = Tokenizer::ParseToken(current_position_);
