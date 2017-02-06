@@ -121,8 +121,11 @@ Node* ParserLL1RecDesc::Factor(){
       NextToken();
     else 
       Error("Expecting rpar.");
-  }else 
+  }else{
     Error("Expecting lpar.");
+    NextToken();
+    return Factor();
+  }
   
   return f_synt;
 }

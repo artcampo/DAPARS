@@ -27,7 +27,7 @@ SymbolId Grammar::GetSymbolId(const kToken& token) const{
 
 std::string Grammar::str() const noexcept{
   std::string s("Grammar:\n");
-  for(const auto it : rules_) s += it.str();
+  for(const auto it : rules_) {s += it.str(); s+= std::string("\n");}
   return s;
 }
 
