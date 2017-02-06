@@ -1,4 +1,5 @@
-#include "Parser.hpp"
+#include "ParserLL1RecDesc.hpp"
+#include "Grammar.hpp"
 #include "IRDefinition.hpp"
 #include "Node.hpp"
 #include "Utils.hpp"
@@ -10,6 +11,9 @@
 #include <memory>
 #include <string>
 
+using namespace RecDescent;
+using namespace GrammarAnalyzer;
+#include "../../../Common/src/lib/grammars/grammar_expr.cpp"
 
 int main(int argc, char **argv)
 {
@@ -21,7 +25,8 @@ int main(int argc, char **argv)
   Block* programBlock = nullptr;
   
   using namespace RecDescent;
-  std::unique_ptr<Parser> parser(new Parser(std::string(argv[1]), programBlock));
+  std::unique_ptr<ParserLL1RecDesc> parser(
+    new ParserLL1RecDesc(std::string(argv[1]), programBlock));
 
   parser->Parse();
   

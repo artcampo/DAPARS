@@ -34,7 +34,7 @@ std::string Grammar::str() const noexcept{
 void Grammar::AddTerminal(const Symbol& symbol, const kToken& tokenId){
   if(symbol != Symbol::Empty() and symbol != Symbol::StackTop()){
     ++num_terminals_;
-    std::cout << "added terminal: "<< symbol << " " << num_terminals_ <<"\n";
+//     std::cout << "added terminal: "<< symbol << " " << num_terminals_ <<"\n";
   }
   AddSymbol(symbol);
   if(symbol != Symbol::Empty()){
@@ -48,13 +48,13 @@ void Grammar::AddNonTerminal(const Symbol& symbol){
 }
 
 void Grammar::AddSymbol(const Symbol& symbol){
-  std::cout << "Adding symbol: " << symbol ;
+//   std::cout << "Adding symbol: " << symbol ;
   symbols_.insert(symbol);
   if(symbol != Symbol::Empty() and symbol != Symbol::StackTop()){
     //assign id 
     CreateSymbolId(symbol);
   }
-  std::cout << "\n";
+//   std::cout << "\n";
 }
 
 
@@ -228,7 +228,7 @@ void Grammar::CreateSymbolId(const Symbol& symbol){
       symbol_id_[symbol] = free_term_id_;
       id_to_terminal_[free_term_id_] = symbol;
       free_term_id_++;
-      std::cout << " new terminal";
+//       std::cout << " new terminal";
     } 
   }else{
     auto it = symbol_id_.find(symbol);
@@ -236,7 +236,7 @@ void Grammar::CreateSymbolId(const Symbol& symbol){
       symbol_id_[symbol] = free_non_term_id_;
       id_to_nonterminal_[free_non_term_id_] = symbol;
       free_non_term_id_++;
-      std::cout << " new non terminal";
+//       std::cout << " new non terminal";
     } 
   }  
 }

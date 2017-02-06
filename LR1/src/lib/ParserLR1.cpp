@@ -9,6 +9,20 @@
 
 namespace LR1{
 
+  class ShiftedSymbol{
+  public:  
+    ShiftedSymbol(const SymbolId& symbol, const StateId& state)
+      : symbol_(symbol), state_(state){};
+    SymbolId  symbol_;
+    StateId   state_;
+    
+    std::string str() const{ 
+      return std::string("<") + std::to_string(state_)
+           + std::string(",") + std::to_string(symbol_) 
+           + std::string(">");
+    }
+  };  
+  
   /*
 class ExceptionNotEndFile: public exception{
   virtual const char* what() const throw()
@@ -27,21 +41,6 @@ ParserLR1::ParserLR1(const std::vector<char>& parse_data, Block* &programBlock
               , GrammarLR1& grammar) 
   : BaseParser(parse_data, programBlock)
   , grammar_(grammar){}  
-  
-
-  class ShiftedSymbol{
-  public:  
-    ShiftedSymbol(const SymbolId& symbol, const StateId& state)
-      : symbol_(symbol), state_(state){};
-    SymbolId  symbol_;
-    StateId   state_;
-    
-    std::string str() const{ 
-      return std::string("<") + std::to_string(state_)
-           + std::string(",") + std::to_string(symbol_) 
-           + std::string(">");
-    }
-  };
 
 void printStackRec(std::stack<ShiftedSymbol>& c){
   if(c.empty()) return;

@@ -1,39 +1,17 @@
-#include "Parser.hpp"
+#include "ParserLL1RecDesc.hpp"
 #include "Grammar.hpp"
 #include <iostream>
 #include <memory>
 #include <string>
 
+using namespace RecDescent;
+using namespace GrammarAnalyzer;
+#include "../../../Common/src/lib/grammars/grammar_expr_simple.cpp"
+
 int main(){
-  
-  
-  using namespace GrammarAnalyzer;
-  
-  //Terminals
-  const Symbol plus("PLUS", "+", true);
-  const Symbol lpar("LPAR", "(", true);
-  const Symbol rpar("RPAR", ")", true);
-  const Symbol numr("NUM", "{num}", true);
-  
-  //Non-terminals
-  const Symbol p ("PROG", "PROG", false);
-  const Symbol e ("EXPR", "EXPR", false);
-  const Symbol ep("EXP'", "EXP'", false);
-  const Symbol f ("FACT", "FACT", false);
-  
-  //Grammar
   Grammar g;
-  g.AddStartingRule(Rule(p,  {e}, true));
-  
-  g.AddRule(Rule(e,  {f, ep}));
-  g.AddRule(Rule(ep, {plus, f}));
-  g.AddRule(Rule(ep, {Symbol::Empty()}));
-  g.AddRule(Rule(f,  {lpar, e, rpar}));
-  g.AddRule(Rule(f,  {numr}));
-  
-  //Anaylze
-  g.Analyze();
-  
+  CreateGrammar(g);
+
   //Print
   g.DumpFirst();
   std::cout << "-----------------------------" << std::endl;
