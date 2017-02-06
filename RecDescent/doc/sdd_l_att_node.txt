@@ -1,0 +1,10 @@
+L-attributed SDD for node creation.
+
+Prog  := E          ** P.node   = E.synt
+E     := T E'       ** E.node   = E'.synt
+                       E'.inht  = T.node
+E'    := + T E'     ** E'1.inht = new Node(+, E'.inht, T.node)
+      |  empty      ** E'.synt  = E'.inht
+T     := F          ** T.synt   = F.node
+F     := ( E )      ** F.node   = E.node
+      |  numerical  ** F.node   = new Node(num_val)  
