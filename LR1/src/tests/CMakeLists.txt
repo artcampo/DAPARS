@@ -10,8 +10,8 @@ add_definitions( -std=c++11 -g)
 set(lib_parser_comp
     PARSER_LR1
     GRAMMAR
-    BARECOMPILER 
     BASE_PARSER
+    BARECOMPILER 
 )
 
 add_executable(unit_items unit_items.cpp)
