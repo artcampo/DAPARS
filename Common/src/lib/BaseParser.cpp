@@ -93,6 +93,12 @@ void BaseParser::Error(const std::string& message){
   std::cout << " ]]" << std::endl;
 }
   
+Node* BaseParser::NewBinaryOp(Node* const lhs, const int op, Node* const rhs){
+  Expression* const lhs_exp = dynamic_cast<Expression*>(lhs);
+  Expression* const rhs_exp = dynamic_cast<Expression*>(rhs);
+  Node* new_node = new BinaryOp(lhs_exp, op, rhs_exp );        
+  return new_node; 
+}
   
 } //end namespace Common
  

@@ -7,6 +7,7 @@
 
 class Block;
 class Node;
+class Expression;
 
 namespace Common{
 
@@ -18,6 +19,7 @@ public:
   BaseParser(std::string const &file_name, Block* &programBlock);
   BaseParser(const std::vector<char>& parse_data, Block* &programBlock);
   
+  Node* NewBinaryOp(Node* const lhs, const int op, Node* const rhs);
   
 protected:
   const static int num_characters_to_display_before_error_ = 5;

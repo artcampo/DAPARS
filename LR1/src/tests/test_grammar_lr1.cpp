@@ -1,5 +1,6 @@
 #include "ParserLR1.hpp"
 #include "GrammarLR1.hpp"
+#include "Node.hpp"
 #include <iostream>
 #include <memory>
 #include <string>

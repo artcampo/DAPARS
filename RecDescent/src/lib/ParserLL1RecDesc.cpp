@@ -73,6 +73,7 @@ Node* ParserLL1RecDesc::Term(){
 }
 
 
+
 // E'    := + T E'     ** E'1.inht = new Node(+, E'.inht, T.node)
 //                        E'.synt  = E'1.synt
 //       |  empty      ** E'.synt  = E'1.synt
@@ -84,10 +85,7 @@ Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
     NextToken();
     Node* t_synt = Term();
     
-    // todo: dynamic_cast<const Expression*>(lhs)
-    Node* eprime1_inht = new BinaryOp( dynamic_cast<Expression*>(eprime_inht)
-                              , IR_ADD
-                              , dynamic_cast<Expression*>(t_synt) );    
+    Node* eprime1_inht = NewBinaryOp(eprime_inht, IR_ADD, t_synt);  
     
     //A new E' will op against current op+
     eprime_synt = ExprPrime(eprime1_inht);
