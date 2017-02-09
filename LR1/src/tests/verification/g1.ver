@@ -1,14 +1,3 @@
-Adding symbol: {empty}
-added terminal: {eof} 1
-Adding symbol: {eof} new terminal
-Adding symbol: {·}
-added terminal: ( 2
-Adding symbol: ( new terminal
-added terminal: ) 3
-Adding symbol: ) new terminal
-Adding symbol: PROG new non terminal
-Adding symbol: LIST new non terminal
-Adding symbol: PAIR new non terminal
 Init tables for 3 non-terminals
 INIT TABLES: sta/nonter/ter12 3 3
 LR1 Tables:
