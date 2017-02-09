@@ -1,4 +1,4 @@
-cd install/tests/lr1
+cd ../install/tests/lr1
 
 test_standalone(){
     echo "Test: $1"

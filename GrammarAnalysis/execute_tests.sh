@@ -1,4 +1,4 @@
-cd install/tests/grammar
+cd ../install/tests/grammar
 
 test_standalone(){
     echo "Test: $1"
