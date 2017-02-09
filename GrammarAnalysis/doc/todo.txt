@@ -7,6 +7,6 @@ GrammarAnalysis todo
 - print tables sizes
 - return parse tables so grammar object can be deleted
 - each grammar to different lib
-- grammar transformation: left recursion
+- grammar transformation: left recursion (assume no cycles, no {empty} prods)
 - grammar transformation: left factoring
 - howto: have different tokenizers (examples, working project)
