@@ -5,3 +5,24 @@ E'    := + T E'
 T     := F      
 F     := ( E )
       |  numerical
+
+-------------
+
+conditional flow
+Prog  := STMTS
+
+STMTS := STMT; STMTS
+      |  {empty}
+STMT  := if(E){STMTS}
+      |  if(E){STMTS}else{STMTS}
+      |  E
+
+E     := T E'
+E'    := + T E'
+      |  empty
+T     := F      
+F     := ( E )
+      |  numerical
+      
+      
+sdd, check that E in if(E) is boolean 

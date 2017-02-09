@@ -9,7 +9,7 @@
 using namespace RecDescent;
 using namespace GrammarAnalyzer;
 #include "../../../Common/src/lib/grammars/grammar_expr.cpp"
-
+#include "../../../Common/src/lib/grammars/grammar_control_flow.cpp"
 
 /*
  * Uses pars grammar of "engineering a compiler" 2nd ed, p128.
@@ -38,16 +38,25 @@ void parse(const std::string& str, G& g)
 
 int main()
 {
-    
+  {    
   //Grammar
   Grammar g;
-  CreateGrammar(g);
+  CreateGrammarExpr(g);
   std::cout << g;
   
   //pass
-  parse<Grammar,ParserLL1RecDesc>( std::string("(1)"), g); 
-  parse<Grammar,ParserLL1RecDesc>( std::string("2+3+4"), g); std::cout << "\n";
-  parse<Grammar,ParserLL1RecDesc>( std::string("2++3+4"), g); std::cout << "\n";
+  parse<Grammar,ParserLL1RecDesc>( std::string("(1);"), g); 
+  parse<Grammar,ParserLL1RecDesc>( std::string("2+3+4;"), g); std::cout << "\n";
+  parse<Grammar,ParserLL1RecDesc>( std::string("2++3+4;"), g); std::cout << "\n";
+    
+  }
+  
+  {
+  Grammar g;
+  CreateGrammarExpr(g);
+  std::cout << g;    
+  }
+  
   /*
   parse( std::string("()()()"), g); std::cout << "\n";
   parse( std::string("(())"), g); std::cout << "\n";

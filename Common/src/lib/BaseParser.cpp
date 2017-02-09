@@ -125,5 +125,14 @@ Node* BaseParser::NewLiteral(const uint32_t &value){
   return new_node; 
 }
   
+Block* BaseParser::NewBlock(Statement* const stmt){
+  Block* new_block;
+  new_block = new Block();
+  new_block->statements.push_back(stmt);  
+  return new_block;
+}
+
+  
+  
 } //end namespace Common
  

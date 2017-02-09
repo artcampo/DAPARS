@@ -10,7 +10,7 @@ using namespace GrammarAnalyzer;
 
 int main(){
   Grammar g;
-  CreateGrammar(g);
+  CreateGrammarExpr(g);
 
   //Print
   g.DumpFirst();

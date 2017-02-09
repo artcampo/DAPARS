@@ -36,18 +36,16 @@ void ParserLL1RecDesc::Parse(){
 
 void ParserLL1RecDesc::Prog(){
   NextToken();
-  Node* e_synt = Expr();
+  Block* stmts_synt = Stmts();
   
-  if(e_synt != nullptr){
+  if(stmts_synt != nullptr){
 //     std::cout << "Prog" << std::endl;
     if(token_ != Tokenizer::kToken::eof){
       Error("More data after program.");
     }
   }
   
-  programBlock_ = new Block();
-  ExpressionStatement* exp_stmt = NewExpressionStatement(e_synt);
-  programBlock_->statements.push_back(exp_stmt);
+  programBlock_ = stmts_synt;
   
 }
 
@@ -130,6 +128,33 @@ Node* ParserLL1RecDesc::Factor(){
   return f_synt;
 }
 
+Statement* ParserLL1RecDesc::Stmt(){
+  Statement* stmt_synt = nullptr;
+  
+  Node* expr_synt = Expr();
+  stmt_synt       = NewExpressionStatement(expr_synt);
+  return stmt_synt;
+}
+
+Block* ParserLL1RecDesc::Stmts(){
+  Block* stmts_synt = nullptr;
+  
+  if(  token_ == Tokenizer::kToken::numerical
+    or token_ == Tokenizer::kToken::lpar
+    or token_ == Tokenizer::kToken::kwd_if){
+      Statement* stmt_synth = Stmt();
+      NextToken();
+      
+      if(token_ == Tokenizer::kToken::semicolon) NextToken();
+      else Error("Expecting semicolon.");
+      
+      stmts_synt = NewBlock(stmt_synth);
+    }
+  else{
+    //check follow(Stmts)
+  }  
+  return stmts_synt;
+}
   
 } //end namespace RecDescent
  

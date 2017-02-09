@@ -25,12 +25,17 @@ private:
 //   Grammar& grammar_;
   
   void  Prog();
+  
+  //Expressions
   Node* Expr();
   Node* ExprPrime(Node* eprime_inht); // make it const
   Node* Term();
   Node* Factor();
   
-  
+  //Control Flow
+  Block*      Stmts();
+  Statement*  Stmt();
+
   
 };
 

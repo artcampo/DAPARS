@@ -10,6 +10,7 @@ class Node;
 class Expression;
 class ExpressionStatement;
 class Literal;
+class Statement;
 
 namespace Common{
 
@@ -49,7 +50,7 @@ protected:
   Node* NewBinaryOp(Node* const lhs, const int op, Node* const rhs);
   ExpressionStatement* NewExpressionStatement(Node* const node_expr);
   Node* NewLiteral(const uint32_t &value);
-  
+  Block* NewBlock(Statement* const stmt);
   
 };
 

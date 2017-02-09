@@ -5,7 +5,7 @@
 using namespace Tokenizer;
 
 template <class G>
-void CreateGrammar(G& g){
+void CreateGrammarExpr(G& g){
   
   using namespace GrammarAnalyzer;
   
