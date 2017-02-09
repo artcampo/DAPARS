@@ -51,7 +51,7 @@ void ParserLL1RecDesc::Prog(){
 
 
 Node* ParserLL1RecDesc::Expr(){
-//   std::cout << std::endl << "Exp";
+//   std::cout << "Exp\n";
   Node* eprime_synt = nullptr;
   Node* term_synth  = Term();
   
@@ -76,7 +76,7 @@ Node* ParserLL1RecDesc::Term(){
 //                        E'.synt  = E'1.synt
 //       |  empty      ** E'.synt  = E'1.synt
 Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
-//   std::cout << std::endl << "Exp'";
+//   std::cout << "Exp'\n";
   Node* eprime_synt = nullptr;
   
   if(token_ == Tokenizer::kToken::plus){
@@ -107,7 +107,7 @@ Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
 
 // F := ( E ) | numerical
 Node* ParserLL1RecDesc::Factor(){
-//   std::cout << std::endl << "Fact";
+//   std::cout << "Fact\n";
   Node* f_synt;
   
   if(token_ == Tokenizer::kToken::numerical){
@@ -133,6 +133,7 @@ Node* ParserLL1RecDesc::Factor(){
 }
 
 Statement* ParserLL1RecDesc::Stmt(){
+//   std::cout << "stmt\n";
   Statement* stmt_synt = nullptr;
   
   Node* expr_synt = Expr();
@@ -141,6 +142,7 @@ Statement* ParserLL1RecDesc::Stmt(){
 }
 
 Block* ParserLL1RecDesc::Stmts(){
+//   std::cout << "stmts\n";
   Block* stmts_synt = nullptr;
   
   if(  token_ == Tokenizer::kToken::numerical
@@ -148,7 +150,7 @@ Block* ParserLL1RecDesc::Stmts(){
     or token_ == Tokenizer::kToken::plus
     or token_ == Tokenizer::kToken::kwd_if){
       Statement* stmt_synth = Stmt();
-      NextToken();
+//       NextToken();
       
       if(token_ == Tokenizer::kToken::semicolon) NextToken();
       else Error("Expecting semicolon.");

@@ -14,17 +14,11 @@ F -> {nam}
 
 ---------------------------------------------------
 Parsing: "(1);"
-
-Expecting semicolon. at: [[ (1); ]]
-Program syntactically incorrect
 Print AST
 1
 
 ---------------------------------------------------
 Parsing: "2+3+4;"
-
-Expecting semicolon. at: [[ +3+4; ]]
-Program syntactically incorrect
 Print AST
  (  ( 2 + 3 )  + 4 ) 
 
@@ -33,8 +27,6 @@ Print AST
 Parsing: "2++3+4;"
 
 Expecting lpar. at: [[ 2++ ]]
-
-Expecting semicolon. at: [[ +3+4; ]]
 Program syntactically incorrect
 Print AST
  (  ( 2 + 3 )  + 4 ) 
@@ -42,11 +34,6 @@ Print AST
 
 ---------------------------------------------------
 Parsing: "1+2;3+4;"
-
-Expecting semicolon. at: [[ 1+2;3 ]]
-
-Expecting semicolon. at: [[ ;3+4; ]]
-Program syntactically incorrect
 Print AST
  ( 1 + 2 ) 
  ( 3 + 4 ) 
