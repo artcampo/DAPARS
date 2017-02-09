@@ -15,8 +15,6 @@ F -> {nam}
 ---------------------------------------------------
 Parsing: "(1);"
 
-Expecting eof or rpar. at: [[ (1); ]]
-
 Expecting semicolon. at: [[ (1); ]]
 Program syntactically incorrect
 Print AST
@@ -24,8 +22,6 @@ Print AST
 
 ---------------------------------------------------
 Parsing: "2+3+4;"
-
-Expecting eof or rpar. at: [[ +3+4; ]]
 
 Expecting semicolon. at: [[ +3+4; ]]
 Program syntactically incorrect
@@ -38,12 +34,22 @@ Parsing: "2++3+4;"
 
 Expecting lpar. at: [[ 2++ ]]
 
-Expecting eof or rpar. at: [[ +3+4; ]]
-
 Expecting semicolon. at: [[ +3+4; ]]
 Program syntactically incorrect
 Print AST
  (  ( 2 + 3 )  + 4 ) 
+
+
+---------------------------------------------------
+Parsing: "1+2;3+4;"
+
+Expecting semicolon. at: [[ 1+2;3 ]]
+
+Expecting semicolon. at: [[ ;3+4; ]]
+Program syntactically incorrect
+Print AST
+ ( 1 + 2 ) 
+ ( 3 + 4 ) 
 
 
 Grammar:

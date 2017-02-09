@@ -92,7 +92,11 @@ Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
     
   } else{
     //check Follow(E')
-    if(not(token_ == Tokenizer::kToken::eof or token_ == Tokenizer::kToken::rpar))
+    if(not(token_ == Tokenizer::kToken::eof 
+        or token_ == Tokenizer::kToken::rpar
+        or token_ == Tokenizer::kToken::kwd_if
+        or token_ == Tokenizer::kToken::semicolon
+          ))
       Error("Expecting eof or rpar.");
     eprime_synt = eprime_inht;
   }
@@ -141,6 +145,7 @@ Block* ParserLL1RecDesc::Stmts(){
   
   if(  token_ == Tokenizer::kToken::numerical
     or token_ == Tokenizer::kToken::lpar
+    or token_ == Tokenizer::kToken::plus
     or token_ == Tokenizer::kToken::kwd_if){
       Statement* stmt_synth = Stmt();
       NextToken();
@@ -149,6 +154,11 @@ Block* ParserLL1RecDesc::Stmts(){
       else Error("Expecting semicolon.");
       
       stmts_synt = NewBlock(stmt_synth);
+      
+      //TODO: Block::AddStatement
+      Block* stmts1_synt = Stmts();
+      if(stmts1_synt != nullptr) stmts_synt->AddStatement(stmts1_synt->FirstStatement());
+      
     }
   else{
     //check follow(Stmts)

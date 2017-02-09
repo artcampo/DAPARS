@@ -48,7 +48,7 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string("(1);"), g); 
   parse<Grammar,ParserLL1RecDesc>( std::string("2+3+4;"), g); std::cout << "\n";
   parse<Grammar,ParserLL1RecDesc>( std::string("2++3+4;"), g); std::cout << "\n";
-    
+  parse<Grammar,ParserLL1RecDesc>( std::string("1+2;3+4;"), g); std::cout << "\n";
   }
   
   {
