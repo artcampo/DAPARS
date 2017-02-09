@@ -1,14 +1,16 @@
+Adding symbol: {empty}
+added terminal: {eof} 1
+Adding symbol: {eof} new terminal
 First Table
-E: ( {nam} {num} 
-E': {empty} - + 
-F: ( {nam} {num} 
-PROG: ( {nam} {num} 
-T: ( {nam} {num} 
-T': / {empty} * 
+EXP': {empty} 
+EXPR: 
+FACT: 
+TER': {empty} 
+TERM: 
 -----------------------------
-E {eof} ) 
-E' {eof} ) 
-F / {eof} - * + ) 
+EXP' {eof} 
+EXPR {eof} 
+FACT {eof} 
 PROG {eof} 
-T {eof} - + ) 
-T' {eof} - + ) 
+TER' {eof} 
+TERM {eof} 

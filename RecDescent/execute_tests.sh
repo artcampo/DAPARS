@@ -1,4 +1,4 @@
-cd install/tests/ll1
+cd ../install/tests/ll1
 
 test_standalone(){
     echo "Test: $1"
@@ -19,8 +19,8 @@ test_with_input(){
     rm $2.out 
 }
 
-test_with_input test_parser_compiler test_parse1
-test_with_input test_parser_compiler test_parse2
-test_with_input test_parser_compiler test_parse3
-test_with_input test_parser_compiler test_parse4
+# test_with_input test_parser_compiler test_parse1
+# test_with_input test_parser_compiler test_parse2
+# test_with_input test_parser_compiler test_parse3
+# test_with_input test_parser_compiler test_parse4
 

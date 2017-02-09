@@ -1,7 +1,7 @@
 test_folder(){
     cd $1
     printf $1
-    ./execute_tests.sh
+    ./regenerate_tests.sh
     cd .. 
 }
 
