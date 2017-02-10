@@ -20,6 +20,9 @@ target_link_libraries(test_grammar ${lib_parser_comp})
 add_executable(test_grammar2 test_grammar2.cpp)
 target_link_libraries(test_grammar2 ${lib_parser_comp})
 
+add_executable(test_grammar_dalang test_grammar_dalang.cpp)
+target_link_libraries(test_grammar_dalang ${lib_parser_comp})
+
 add_executable(test_parser test_parser.cpp)
 target_link_libraries(test_parser ${lib_parser_comp})
 
@@ -29,5 +32,7 @@ target_link_libraries(test_parser_compiler ${lib_parser_comp})
 
 INSTALL(TARGETS test_grammar DESTINATION tests/ll1)
 INSTALL(TARGETS test_grammar2 DESTINATION tests/ll1)
+INSTALL(TARGETS test_grammar_dalang DESTINATION tests/ll1)
 INSTALL(TARGETS test_parser DESTINATION tests/ll1)
 INSTALL(TARGETS test_parser_compiler DESTINATION tests/ll1)
+

@@ -11,11 +11,11 @@ F     := ( E )
 conditional flow
 Prog  := STMTS
 
-STMTS := STMT; STMTS
+STMTS := STMT STMTS
       |  {empty}
 STMT  := if(E){STMTS}
       |  if(E){STMTS}else{STMTS}
-      |  E
+      |  E;
 
 E     := T E'
 E'    := + T E'

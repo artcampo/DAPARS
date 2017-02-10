@@ -6,12 +6,11 @@
 
 using namespace RecDescent;
 using namespace GrammarAnalyzer;
-#include "../../../Common/src/lib/grammars/grammar_expr.cpp"
+#include "../../../Common/src/lib/grammars/grammar_dalang.cpp"
 
-//TODO: merge with test_grammar
 int main(){
   Grammar g;
-  CreateGrammarExpr(g);
+  CreateGrammarDalang(g);
 
   //Print
   g.DumpFirst();
