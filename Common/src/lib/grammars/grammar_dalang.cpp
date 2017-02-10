@@ -19,6 +19,11 @@ void CreateGrammarDalang(G& g){
   const Symbol div  = g.AddTerminal("DIVI", "/", Tokenizer::kToken::div);
   const Symbol numr = g.AddTerminal("NUM", "{num}", Tokenizer::kToken::numerical);
   const Symbol name = g.AddTerminal("NAM", "{nam}", Tokenizer::kToken::name);    
+  const Symbol lcbr = g.AddTerminal("LCBR", "{", Tokenizer::kToken::lcbr);
+  const Symbol rcbr = g.AddTerminal("RCBR", "}", Tokenizer::kToken::rcbr);
+  
+  const Symbol kwd_if   = g.AddTerminalKeyword("IF", "if", Tokenizer::kToken::kwd_if);    
+  const Symbol kwd_else = g.AddTerminalKeyword("ELSE", "else", Tokenizer::kToken::kwd_else);    
   
   const Symbol P      = g.AddNonTerminal("PROG");
   
@@ -40,7 +45,10 @@ void CreateGrammarDalang(G& g){
   g.AddRule(Rule(STMTS, {STMT, STMTS}));
   g.AddRule(Rule(STMTS, {Symbol::Empty()}));
   g.AddRule(Rule(STMT,  {E, semi}));
+  g.AddRule(Rule(STMT,  {kwd_if, lpar, E, rpar, lcbr, STMTS, rcbr}));
+  g.AddRule(Rule(STMT,  {kwd_if, lpar, E, rpar, lcbr, STMTS, rcbr, kwd_else, lcbr, STMTS, rcbr}));
   
+
   //Expressions
   g.AddRule(Rule(E,  {T, EP}));
   g.AddRule(Rule(E,  {T, EP}));

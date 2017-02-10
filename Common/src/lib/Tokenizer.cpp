@@ -25,6 +25,12 @@ ParseKeyword(std::vector<char>::const_iterator& current_position
   if(*current_position == 'i' and *(current_position + 1) == 'f'){
     current_position += 2; t = kToken::kwd_if; return true;
   }
+  //TODO check +3 still valid
+  if(*current_position == 'e' and *(current_position + 1) == 'l'
+     and *current_position == 's' and *(current_position + 1) == 'e'
+  ){
+    current_position += 4; t = kToken::kwd_else; return true;
+  }  
   return false;
 }
 
@@ -34,6 +40,8 @@ kToken
 ParseToken(std::vector<char>::const_iterator& current_position) noexcept{
   if(*current_position == '('){ ++current_position; return kToken::lpar; }
   if(*current_position == ')'){ ++current_position; return kToken::rpar; }
+  if(*current_position == '{'){ ++current_position; return kToken::lcbr; }
+  if(*current_position == '}'){ ++current_position; return kToken::rcbr; }  
   if(*current_position == '+'){ ++current_position; return kToken::plus; }
   if(*current_position == ';'){ ++current_position; return kToken::semicolon; }
   if(*current_position == 'c'){ ++current_position; return kToken::token_c; }

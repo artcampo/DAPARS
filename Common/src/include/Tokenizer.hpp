@@ -9,10 +9,10 @@ namespace Tokenizer{
   
   
 enum class kToken{ eof, numerical, name
-                 , lpar, rpar 
+                 , lpar, rpar, lcbr, rcbr
                  , plus, minus, mult, div
                  , token_c, token_d   //grammar: dragon
-                 , kwd_if
+                 , kwd_if, kwd_else
                  , semicolon
                   
 };
