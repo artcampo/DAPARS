@@ -60,7 +60,7 @@ void BaseParser::NextToken() noexcept{
     }
   }
   
-  std::cout << "NextToken: " <<  str(token_)<<"\n";
+//   std::cout << "NextToken: " <<  str(token_)<<"\n";
 }
 
 void BaseParser::Skip() noexcept{

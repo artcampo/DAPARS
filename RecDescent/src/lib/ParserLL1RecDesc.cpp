@@ -51,7 +51,7 @@ void ParserLL1RecDesc::Prog(){
 
 //TODO: should return Expr*
 Node* ParserLL1RecDesc::Expr(){
-  std::cout << "Exp\n";
+//   std::cout << "Exp\n";
   Node* eprime_synt = nullptr;
   Node* term_synth  = Term();
   
@@ -76,7 +76,7 @@ Node* ParserLL1RecDesc::Term(){
 //                        E'.synt  = E'1.synt
 //       |  empty      ** E'.synt  = E'1.synt
 Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
-  std::cout << "Exp'\n";
+//   std::cout << "Exp'\n";
   Node* eprime_synt = nullptr;
   
   if(token_ == Tokenizer::kToken::plus){
@@ -107,7 +107,7 @@ Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
 
 // F := ( E ) | numerical
 Node* ParserLL1RecDesc::Factor(){
-  std::cout << "Fact\n";
+//   std::cout << "Fact\n";
   Node* f_synt;
   
   if(token_ == Tokenizer::kToken::numerical){
@@ -133,7 +133,7 @@ Node* ParserLL1RecDesc::Factor(){
 }
 
 Statement* ParserLL1RecDesc::Stmt(){
-  std::cout << "stmt\n";
+//   std::cout << "stmt\n";
   Statement* stmt_synt = nullptr;
   
   if(token_ == Tokenizer::kToken::kwd_if){
@@ -167,7 +167,7 @@ Statement* ParserLL1RecDesc::Stmt(){
 }
 
 Block* ParserLL1RecDesc::Stmts(){
-  std::cout << "stmts\n";
+//   std::cout << "stmts\n";
   Block* stmts_synt = nullptr;
   
   if(  token_ == Tokenizer::kToken::numerical

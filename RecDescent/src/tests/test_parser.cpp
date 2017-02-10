@@ -57,6 +57,8 @@ int main()
   std::cout << g;
   parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3;}"), g); 
   parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3+4+5;}"), g); 
+  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){if(3){4;if(5){6;}}}"), g); 
+  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){if(3){4+5;if(6){7+8;}}}"), g); 
   }
   
   /*

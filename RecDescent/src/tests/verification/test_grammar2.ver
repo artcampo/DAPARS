@@ -6,6 +6,7 @@ PROG: ( {nam} {num}
 T: ( {nam} {num} 
 T': / {empty} * 
 -----------------------------
+Follow Table
 E {eof} ) 
 E' {eof} ) 
 F / {eof} - * + ) 
