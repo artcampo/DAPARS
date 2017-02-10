@@ -10,47 +10,29 @@ void CreateGrammarDalang(G& g){
   using namespace GrammarAnalyzer;
   
   //Terminals
-  const Symbol semi("SEMC", ";", true);
-  const Symbol lpar("LPAR", "(", true);
-  const Symbol rpar("RPAR", ")", true);
-  const Symbol plus("PLUS", "+", true);
-  const Symbol minu("MINU", "-", true);
-  const Symbol mult("MULT", "*", true);
-  const Symbol div ("DIVI", "/", true);
-  const Symbol numr("NUM", "{num}", true);
-  const Symbol name("NAM", "{nam}", true);  
+  const Symbol semi = g.AddTerminal("SEMC", ";", Tokenizer::kToken::semicolon);
+  const Symbol lpar = g.AddTerminal("LPAR", "(", Tokenizer::kToken::lpar);
+  const Symbol rpar = g.AddTerminal("RPAR", ")", Tokenizer::kToken::rpar);
+  const Symbol plus = g.AddTerminal("PLUS", "+", Tokenizer::kToken::plus);
+  const Symbol minu = g.AddTerminal("MINU", "-", Tokenizer::kToken::minus);
+  const Symbol mult = g.AddTerminal("MULT", "*", Tokenizer::kToken::mult);
+  const Symbol div  = g.AddTerminal("DIVI", "/", Tokenizer::kToken::div);
+  const Symbol numr = g.AddTerminal("NUM", "{num}", Tokenizer::kToken::numerical);
+  const Symbol name = g.AddTerminal("NAM", "{nam}", Tokenizer::kToken::name);    
   
+  const Symbol P      = g.AddNonTerminal("PROG");
+  
+  const Symbol STMTS  = g.AddNonTerminal("STMTS");
+  const Symbol STMT   = g.AddNonTerminal("STMT");
+  
+  const Symbol E      = g.AddNonTerminal("E");
+  const Symbol EP     = g.AddNonTerminal("E'");
+  const Symbol T      = g.AddNonTerminal("T");
+  const Symbol TP     = g.AddNonTerminal("T''");
+  const Symbol F      = g.AddNonTerminal("F");  
+  
+
   //Non-terminals
-  const Symbol P  ("PROG", "PROG", false);
-  
-  const Symbol STMTS ("STMTS", "STMTS", false);
-  const Symbol STMT ("STMT", "STMT", false);
-  
-  
-  
-  const Symbol E  ("E", "E", false);
-  const Symbol EP ("E'", "E'", false);
-  const Symbol T  ("T", "T", false);
-  const Symbol TP ("T''", "T'", false);
-  const Symbol F  ("F", "F", false);
-  
-  
-  //Grammar
-  g.AddTerminal(semi, Tokenizer::kToken::semicolon);
-  g.AddTerminal(lpar, Tokenizer::kToken::lpar);
-  g.AddTerminal(rpar, Tokenizer::kToken::rpar);
-  g.AddTerminal(plus, Tokenizer::kToken::plus);
-  g.AddTerminal(minu, Tokenizer::kToken::minus);
-  g.AddTerminal(mult, Tokenizer::kToken::mult);
-  g.AddTerminal(div,  Tokenizer::kToken::div);
-  g.AddTerminal(numr, Tokenizer::kToken::numerical);
-  g.AddTerminal(name, Tokenizer::kToken::name);
-  
-  g.AddNonTerminal(P);
-  g.AddNonTerminal(E);
-  g.AddNonTerminal(EP);
-  g.AddNonTerminal(T);
-  g.AddNonTerminal(F);
   
   g.AddStartingRule(Rule(P,  {STMTS}, true));
   
@@ -72,6 +54,7 @@ void CreateGrammarDalang(G& g){
   g.AddRule(Rule(F,  {lpar, E, rpar}));
   g.AddRule(Rule(F,  {numr}));
   g.AddRule(Rule(F,  {name}));
+  
   
   //Anaylze
   g.Analyze();

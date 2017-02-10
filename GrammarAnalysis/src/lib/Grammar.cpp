@@ -262,4 +262,28 @@ SymbolId Grammar::GetSymbolId(const Symbol& symbol){
   }
 }
 
+const Symbol 
+Grammar::AddTerminalKeyword(const std::string& name, 
+                     const std::string& display_name, const kToken& tokenId){
+  const Symbol s(name, display_name, true);
+  AddTerminal(s, tokenId);
+  std::cout << "NOT IMPLEMENTED\n";exit(1);
+  return s;
+}
+
+const Symbol 
+Grammar::AddTerminal(const std::string& name, 
+                     const std::string& display_name, const kToken& tokenId){
+  const Symbol s(name, display_name, true);
+  AddTerminal(s, tokenId);
+  return s;
+}
+
+const Symbol
+Grammar::AddNonTerminal(const std::string& name){
+  const Symbol s(name, name, false);
+  AddNonTerminal(s);
+  return s;
+}
+
 } //end namespace GrammarAnalyzer

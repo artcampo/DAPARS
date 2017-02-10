@@ -31,11 +31,16 @@ public:
   
   Grammar();
   
-  void AddTerminal(const Symbol& symbol, const kToken& tokenId);
-  void AddNonTerminal(const Symbol& symbol);
+  const Symbol AddTerminal(const std::string& name, const std::string& display_name, const kToken& tokenId);
+  const Symbol AddTerminalKeyword(const std::string& name, const std::string& display_name, const kToken& tokenId);
+  const Symbol AddNonTerminal(const std::string& name);
   
   void AddRule(const Rule& rule)  noexcept;
   void AddStartingRule(const Rule& rule)  noexcept;
+  
+  //TODO:hide those two
+  void AddTerminal(const Symbol& symbol, const kToken& tokenId);
+  void AddNonTerminal(const Symbol& symbol);  
   
   void Analyze() noexcept;
   
