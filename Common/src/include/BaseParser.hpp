@@ -11,6 +11,7 @@ class Expression;
 class ExpressionStatement;
 class Literal;
 class Statement;
+class StmtIf;
 
 namespace Common{
 
@@ -51,6 +52,7 @@ protected:
   ExpressionStatement* NewExpressionStatement(Node* const node_expr);
   Node* NewLiteral(const uint32_t &value);
   Block* NewBlock(Statement* const stmt);
+  StmtIf* NewStmtIf(Expression* const condition, Block* block1);
   
 };
 

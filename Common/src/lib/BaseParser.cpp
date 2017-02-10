@@ -60,7 +60,7 @@ void BaseParser::NextToken() noexcept{
     }
   }
   
-//   std::cout << "NextToken: " <<  str(token_)<<"\n";
+  std::cout << "NextToken: " <<  str(token_)<<"\n";
 }
 
 void BaseParser::Skip() noexcept{
@@ -82,7 +82,7 @@ void BaseParser::Skip() noexcept{
 
 void BaseParser::Error(const std::string& message){
   ++num_errors_;
-  std::cout << "\n" << message << " at: [[ ";
+  std::cout << "\n" << message << " at: \"";
   
   //Go back N chars
   std::vector<char>::const_iterator start_of_error = current_position_;
@@ -94,7 +94,7 @@ void BaseParser::Error(const std::string& message){
     std::cout << *start_of_error;
     ++start_of_error;
   }
-  std::cout << " ]]" << std::endl;
+  std::cout << "\"" << std::endl;
 }
 
 void BaseParser::ErrorCritical(const std::string& message){
@@ -132,7 +132,10 @@ Block* BaseParser::NewBlock(Statement* const stmt){
   return new_block;
 }
 
-  
+StmtIf* BaseParser::NewStmtIf(Expression* const condition, Block* block1){
+  StmtIf* new_stmt_if = new StmtIf(condition, block1);
+  return new_stmt_if;
+}
   
 } //end namespace Common
  

@@ -54,7 +54,9 @@ int main()
   {
   Grammar g;
   CreateGrammarExpr(g);
-  std::cout << g;    
+  std::cout << g;
+  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3;}"), g); 
+  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3+4+5;}"), g); 
   }
   
   /*

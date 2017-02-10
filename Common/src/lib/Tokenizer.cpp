@@ -59,12 +59,15 @@ std::string str(const kToken& t){
     case kToken::eof:       return std::string("eof");  break;
     case kToken::lpar:      return std::string("lpar"); break;
     case kToken::rpar:      return std::string("rpar"); break;
+    case kToken::lcbr:      return std::string("lcbr"); break;
+    case kToken::rcbr:      return std::string("rcbr"); break;    
     case kToken::plus:      return std::string("plus"); break;
     case kToken::numerical: return std::string("num");  break;
     case kToken::token_c:   return std::string("c");  break;
     case kToken::token_d:   return std::string("d");  break;
     case kToken::semicolon: return std::string(";");  break;
     case kToken::kwd_if:    return std::string("if");  break;
+    case kToken::kwd_else:  return std::string("else");  break;
     
     default:                break;
   }
