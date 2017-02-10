@@ -195,7 +195,7 @@ bool Grammar::IsBackTrackFree() noexcept{
 }
 
 void Grammar::DumpFirst() const noexcept{
-  std::cout << "First Table\n";
+  std::cout << "First Table\n";  
   for(const auto &entry : first_){
     if(not entry.first.IsTerminal()){
       std::cout << entry.first.str() << ": ";
@@ -209,6 +209,7 @@ void Grammar::DumpFirst() const noexcept{
 }
 
 void Grammar::DumpFollow() const noexcept{
+  std::cout << "Follow Table\n";
   for(const auto &entry : follow_){
     if(not entry.first.IsTerminal()){
       std::cout << entry.first.str() << " ";
@@ -220,6 +221,11 @@ void Grammar::DumpFollow() const noexcept{
     }
   }
 }
+
+
+void Grammar::DumpFirstPlus() const noexcept{
+}
+
 
 void Grammar::CreateSymbolId(const Symbol& symbol){
   if(symbol.IsTerminal()){
@@ -284,6 +290,11 @@ Grammar::AddNonTerminal(const std::string& name){
   const Symbol s(name, name, false);
   AddNonTerminal(s);
   return s;
+}
+
+
+void Grammar::DumpPropierties() const noexcept{
+  std::cout << "Is backtrack free: " << IsBackTrackFree() <<"\n";
 }
 
 } //end namespace GrammarAnalyzer

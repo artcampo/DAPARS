@@ -53,6 +53,10 @@ public:
   
   void DumpFirst() const noexcept;
   void DumpFollow() const noexcept;
+  void DumpFirstPlus() const noexcept;
+  
+  void DumpPropierties() const noexcept;
+  
   
   SymbolId GetSymbolId(const Symbol& symbol);
   SymbolId GetSymbolId(const kToken& token) const;

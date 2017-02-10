@@ -13,13 +13,19 @@ int main(){
   CreateGrammarDalang(g);
 
   //Print
-  std::cout << "Dalang grammar v0.3"\n;
+  std::cout << "Dalang grammar v0.3\n";
   std::cout << "-----------------------------" << std::endl;
   g.DumpFirst();
+  
   std::cout << "-----------------------------" << std::endl;
   g.DumpFollow();
+  
   std::cout << "-----------------------------" << std::endl;
   g.DumpFirstPlus();
+  
+  std::cout << "-----------------------------" << std::endl;
+  g.DumpPropierties();
+  
   
   return 0;
 }
