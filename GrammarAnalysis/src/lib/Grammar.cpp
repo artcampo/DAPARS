@@ -293,8 +293,8 @@ Grammar::AddNonTerminal(const std::string& name){
 }
 
 
-void Grammar::DumpPropierties() const noexcept{
-  std::cout << "Is backtrack free: " << IsBackTrackFree() <<"\n";
+void Grammar::DumpPropierties() noexcept{
+  std::cout << "Is backtrack free: " << IsBackTrackFree()<<"\n";
 }
 
 } //end namespace GrammarAnalyzer

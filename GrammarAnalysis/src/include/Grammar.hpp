@@ -55,7 +55,7 @@ public:
   void DumpFollow() const noexcept;
   void DumpFirstPlus() const noexcept;
   
-  void DumpPropierties() const noexcept;
+  void DumpPropierties() noexcept;
   
   
   SymbolId GetSymbolId(const Symbol& symbol);
