@@ -75,9 +75,11 @@ void Grammar::AddStartingRule(const Rule& rule)  noexcept{
 
 void Grammar::Analyze() noexcept{
   if(not analized_){
+    Initialize();
     ComputeFirstSets();
     ComputeFollowSets();
     ComputeFirstPlusSets();
+    is_back_track_free_ = ComputeBackTrackFree();
     analized_ = true;
   }
 }
@@ -187,8 +189,6 @@ void Grammar::ComputeFollowSets() noexcept{
   }// end while   
 }
 
-void Grammar::ComputeFirstPlusSets() noexcept{
-}
 
 bool Grammar::IsBackTrackFree() noexcept{
   if(not analized_) Analyze();
@@ -296,6 +296,32 @@ Grammar::AddNonTerminal(const std::string& name){
 
 void Grammar::DumpPropierties() noexcept{
   std::cout << "Is backtrack free: " << IsBackTrackFree()<<"\n";
+}
+
+
+void Grammar::ComputeFirstPlusSets() noexcept{
+  for(const auto &r : rules_){
+    const Symbol& b = r.derived_[0];
+    const Symbol& a = r.head_;    
+    first_plus_[r] = first_[b];
+
+    if(r.FirstDerivedCanBeEmpty()){
+      for(const auto &symbol : follow_[a])
+        first_plus_[r].insert(symbol);
+    }
+  }
+}
+
+void Grammar::Initialize(){
+  //std::map<Symbol, Rule*> rule_of_head_;
+  for(const auto &r : rules_){
+    rules_of_head_[r.head_].push_back(&r);
+  }  
+}
+
+bool Grammar::ComputeBackTrackFree(){
+  bool   is_back_track_free_ = true;
+  return is_back_track_free_;  
 }
 
 } //end namespace GrammarAnalyzer

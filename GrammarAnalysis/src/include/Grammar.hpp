@@ -70,12 +70,15 @@ public:
 protected:
   size_t num_terminals_;
   size_t num_nonterminals_;  
+  bool   is_back_track_free_;
   
   std::vector<Rule> rules_;
   bool analized_;
   std::set<Symbol> symbols_;
   std::map<Symbol, std::set<Symbol>> first_;
   std::map<Symbol, std::set<Symbol>> follow_;
+  std::map<Rule, std::set<Symbol>> first_plus_;
+  std::map<Symbol, std::vector<Rule const*>> rules_of_head_;
   Symbol start_symbol_;
   Rule   starting_rule_;
   
@@ -89,10 +92,11 @@ protected:
   std::map<SymbolId, Symbol>  id_to_nonterminal_;
   
 
-  
+  void Initialize();
   void ComputeFirstSets() noexcept;
   void ComputeFollowSets() noexcept;
   void ComputeFirstPlusSets() noexcept;
+  bool ComputeBackTrackFree();
   
   void CreateSymbolId(const Symbol& symbol);
   void AddSymbol(const Symbol& symbol);

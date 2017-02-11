@@ -41,6 +41,10 @@ public:
   
   const size_t NumberDerivedSymbols() const{return derived_.size();}
   
+  const bool FirstDerivedCanBeEmpty() const{
+    return derived_[0] == Symbol::Empty();
+  }
+  
 private:
 
 };
