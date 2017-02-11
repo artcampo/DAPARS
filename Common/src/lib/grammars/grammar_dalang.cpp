@@ -51,7 +51,6 @@ void CreateGrammarDalang(G& g){
 
   //Expressions
   g.AddRule(Rule(E,  {T, EP}));
-  g.AddRule(Rule(E,  {T, EP}));
   g.AddRule(Rule(EP, {plus, T, EP}));
   g.AddRule(Rule(EP, {minu, T, EP}));
   g.AddRule(Rule(EP, {Symbol::Empty()}));

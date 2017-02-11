@@ -1,3 +1,11 @@
+Backtrack free violation. Rules:
+LIST -> LIST PAIR 
+LIST -> PAIR 
+Offending symbol: (
+Backtrack free violation. Rules:
+PAIR -> ( PAIR ) 
+PAIR -> ( ) 
+Offending symbol: (
 Init tables for 3 non-terminals
 INIT TABLES: sta/nonter/ter12 3 3
 LR1 Tables:
