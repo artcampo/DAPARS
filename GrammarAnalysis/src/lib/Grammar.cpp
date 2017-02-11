@@ -274,7 +274,7 @@ Grammar::AddTerminalKeyword(const std::string& name,
   const Symbol s(name, display_name, true);
   AddTerminal(s, tokenId);
   //TODO: extra information about kwds
-  std::cout << "NOT IMPLEMENTED\n";//exit(1);
+  std::cout << "KEYWORD EXTRA INFO NOT IMPLEMENTED\n";//exit(1);
   return s;
 }
 

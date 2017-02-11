@@ -29,6 +29,7 @@ void CreateGrammarDalang(G& g){
   
   const Symbol STMTS  = g.AddNonTerminal("STMTS");
   const Symbol STMT   = g.AddNonTerminal("STMT");
+  const Symbol IFELSE = g.AddNonTerminal("IFELSE");
   
   const Symbol E      = g.AddNonTerminal("E");
   const Symbol EP     = g.AddNonTerminal("E'");
@@ -45,8 +46,9 @@ void CreateGrammarDalang(G& g){
   g.AddRule(Rule(STMTS, {STMT, STMTS}));
   g.AddRule(Rule(STMTS, {Symbol::Empty()}));
   g.AddRule(Rule(STMT,  {E, semi}));
-  g.AddRule(Rule(STMT,  {kwd_if, lpar, E, rpar, lcbr, STMTS, rcbr}));
-  g.AddRule(Rule(STMT,  {kwd_if, lpar, E, rpar, lcbr, STMTS, rcbr, kwd_else, lcbr, STMTS, rcbr}));
+  g.AddRule(Rule(STMT,  {kwd_if, lpar, E, rpar, lcbr, STMTS, rcbr, IFELSE}));
+  g.AddRule(Rule(IFELSE,{kwd_else, lcbr, STMTS, rcbr}));
+  g.AddRule(Rule(IFELSE,{Symbol::Empty()}));
   
 
   //Expressions

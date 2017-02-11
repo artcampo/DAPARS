@@ -63,6 +63,11 @@ void BaseParser::NextToken() noexcept{
 //   std::cout << "NextToken: " <<  str(token_)<<"\n";
 }
 
+void BaseParser::Accept(const kToken& token, const std::string& error) noexcept{
+  if(token_ != token) Error(error);
+  NextToken();  
+}
+
 void BaseParser::Skip() noexcept{
   bool symbol_is_no_skip = false;
   while(not symbol_is_no_skip 
@@ -136,6 +141,11 @@ StmtIf* BaseParser::NewStmtIf(Expression* const condition, Block* block1){
   StmtIf* new_stmt_if = new StmtIf(condition, block1);
   return new_stmt_if;
 }
-  
+
+StmtIf* BaseParser::NewStmtIf(Expression* const condition, Block* block1, Block* block2){
+  StmtIf* new_stmt_if = new StmtIf(condition, block1, block2);
+  return new_stmt_if;
+}
+
 } //end namespace Common
  

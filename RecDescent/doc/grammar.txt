@@ -13,9 +13,11 @@ Prog  := STMTS
 
 STMTS := STMT STMTS
       |  {empty}
-STMT  := if(E){STMTS}
-      |  if(E){STMTS}else{STMTS}
+STMT  := if(E){STMTS} IFELSE
       |  E;
+      
+IFELSE:= else{STMTS}
+      |  {empty}
 
 E     := T E'
 E'    := + T E'

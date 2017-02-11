@@ -41,6 +41,8 @@ protected:
   int               num_errors_;
   
   void Skip() noexcept;
+  
+  void Accept(const kToken& token, const std::string& error) noexcept;
   void NextToken() noexcept;
   
   //Error handling
@@ -53,6 +55,7 @@ protected:
   Node* NewLiteral(const uint32_t &value);
   Block* NewBlock(Statement* const stmt);
   StmtIf* NewStmtIf(Expression* const condition, Block* block1);
+  StmtIf* NewStmtIf(Expression* const condition, Block* block1, Block* block2);
   
 };
 
