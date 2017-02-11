@@ -51,7 +51,7 @@ void ParserLL1RecDesc::Prog(){
 
 //TODO: should return Expr*
 Node* ParserLL1RecDesc::Expr(){
-//   std::cout << "Exp\n";
+  std::cout << "Exp\n";
   Node* eprime_synt = nullptr;
   Node* term_synth  = Term();
   
@@ -135,7 +135,7 @@ Node* ParserLL1RecDesc::Factor(){
 
 
 Statement* ParserLL1RecDesc::Stmt(){
-//   std::cout << "stmt\n";
+  std::cout << "stmt\n";
   Statement* stmt_synt = nullptr;
   
   if(token_ == Tokenizer::kToken::kwd_if){
@@ -146,14 +146,13 @@ Statement* ParserLL1RecDesc::Stmt(){
     if(expr_synt == nullptr) Error("if condition wrong.");
     
     Accept(kToken::rpar, "if missing rpar.");
+    
     Accept(kToken::lcbr, "if missing lcbr.");
-
     Block* stmts_synt = Stmts();
-
     Accept(kToken::rcbr, "if missing rcbr.");
     
     Block* ifelse_synt = IfElse();
-    //StmtIf* stmt_if = NewStmtIf(expr_synt, stmts_synt);
+    
     if(ifelse_synt == nullptr)
       stmt_synt = NewStmtIf(dynamic_cast<Expression*>(expr_synt), stmts_synt);
     else
@@ -165,16 +164,26 @@ Statement* ParserLL1RecDesc::Stmt(){
     
     Accept(kToken::semicolon, "Expecting semicolon.");
   }
+  std::cout << "<-stmt\n";
   return stmt_synt;
 }
 
 Block* ParserLL1RecDesc::IfElse(){
+  std::cout << "IfElse\n";
   Block* ifelse_synt = nullptr;
+  if(token_ == Tokenizer::kToken::kwd_else){
+    Accept(kToken::lcbr, "if missing lcbr.");
+    Block* stmts_synt = Stmts();
+    if(stmts_synt == nullptr) Error("Statements within else wrong.");
+    ifelse_synt = stmts_synt;
+    Accept(kToken::rcbr, "if missing rcbr.");
+  }
+  std::cout << "<-IfElse\n";
   return ifelse_synt;
 }
 
 Block* ParserLL1RecDesc::Stmts(){
-//   std::cout << "stmts\n";
+  std::cout << "stmts\n";
   Block* stmts_synt = nullptr;
   
   if(  token_ == Tokenizer::kToken::numerical
@@ -195,6 +204,7 @@ Block* ParserLL1RecDesc::Stmts(){
   else{
     //check follow(Stmts)
   }  
+  std::cout << "<-stmts\n";
   return stmts_synt;
 }
   

@@ -26,8 +26,8 @@ ParseKeyword(std::vector<char>::const_iterator& current_position
     current_position += 2; t = kToken::kwd_if; return true;
   }
   //TODO check +3 still valid
-  if(*current_position == 'e' and *(current_position + 1) == 'l'
-     and *current_position == 's' and *(current_position + 1) == 'e'
+  if(    *current_position == 'e'       and *(current_position + 1) == 'l'
+     and *(current_position + 2) == 's' and *(current_position + 3) == 'e'
   ){
     current_position += 4; t = kToken::kwd_else; return true;
   }  

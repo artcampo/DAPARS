@@ -49,6 +49,7 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string("2+3+4;"), g); std::cout << "\n";
   parse<Grammar,ParserLL1RecDesc>( std::string("2++3+4;"), g); std::cout << "\n";
   parse<Grammar,ParserLL1RecDesc>( std::string("1+2;3+4;"), g); std::cout << "\n";
+  parse<Grammar,ParserLL1RecDesc>( std::string("1+2;3+4;5+6;"), g); std::cout << "\n";
   }
   
   {
@@ -56,9 +57,13 @@ int main()
   CreateGrammarExpr(g);
   std::cout << g;
   parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3;}"), g); 
+  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3;} 4;"), g); 
   parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3+4+5;}"), g); 
   parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){if(3){4;if(5){6;}}}"), g); 
   parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){if(3){4+5;if(6){7+8;}}}"), g); 
+  
+  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3;}else{4;}"), g); 
+  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3;}if(4){5;}else{6;}"), g); 
   }
   
   /*
