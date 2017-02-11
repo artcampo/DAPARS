@@ -321,6 +321,31 @@ void Grammar::Initialize(){
 
 bool Grammar::ComputeBackTrackFree(){
   bool   is_back_track_free_ = true;
+  for(const auto &it_heads : rules_of_head_){
+    const std::vector<Rule const*>& rules = it_heads.second;
+
+    for(std::vector<Rule const*>::const_iterator it_ri = rules.cbegin()
+      , it_ri_end = rules.cend(); it_ri != it_ri_end; ++it_ri){
+      
+      const std::set<Symbol>& ri_set = first_plus_.at(**it_ri);
+      for(std::vector<Rule const*>::const_iterator it_rj = it_ri + 1
+        ; it_rj != it_ri_end; ++it_rj){
+          const std::set<Symbol>& rj_set = first_plus_.at(**it_rj);
+          
+          //check if sets are disjoint
+          for(const auto &symbol : ri_set){
+            if(rj_set.find(symbol) != rj_set.end()){
+              is_back_track_free_ = false;
+              std::cout << "Backtrack free violation. Rules:\n";
+              std::cout << **it_ri <<"\n";
+              std::cout << **it_rj <<"\n";
+              std::cout << "Offending symbol: " << symbol << "\n";
+              break;
+            }
+          }
+        }
+      }
+  }
   return is_back_track_free_;  
 }
 
