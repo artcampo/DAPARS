@@ -176,6 +176,7 @@ Block* ParserLL1RecDesc::IfElse(){
   std::cout << "IfElse\n";
   Block* ifelse_synt = nullptr;
   if(token_ == Tokenizer::kToken::kwd_else){
+    Accept(kToken::kwd_else, "else missing kwd_else.");
     Accept(kToken::lcbr, "else missing lcbr.");
     std::vector<Statement*> stmts_inht;
     Block* stmts_synt = Stmts(stmts_inht);
