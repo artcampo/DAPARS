@@ -60,9 +60,9 @@ void BaseParser::NextToken() noexcept{
     }
   }
   
-  std::cout << "NextToken: " <<  str(token_);
-  if(token_ == Tokenizer::kToken::numerical) std::cout << ": " << token_int_value_;
-  std::cout << "\n";
+//   std::cout << "NextToken: " <<  str(token_);
+//   if(token_ == Tokenizer::kToken::numerical) std::cout << ": " << token_int_value_;
+//   std::cout << "\n";
 }
 
 void BaseParser::Accept(const kToken& token, const std::string& error) noexcept{

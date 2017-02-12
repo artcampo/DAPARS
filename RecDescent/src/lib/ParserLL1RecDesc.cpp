@@ -51,7 +51,7 @@ void ParserLL1RecDesc::Prog(){
 
 //TODO: should return Expr*
 Node* ParserLL1RecDesc::Expr(){
-  std::cout << "Exp\n";
+//   std::cout << "Exp\n";
   Node* eprime_synt = nullptr;
   Node* term_synth  = Term();
   
@@ -62,7 +62,7 @@ Node* ParserLL1RecDesc::Expr(){
   }else {
     Error("Term missing.");
   }
-  std::cout << "<-Exp\n";
+//   std::cout << "<-Exp\n";
   return eprime_synt;
 }
 
@@ -78,7 +78,7 @@ Node* ParserLL1RecDesc::Term(){
 //                        E'.synt  = E'1.synt
 //       |  empty      ** E'.synt  = E'1.synt
 Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
-  std::cout << "Exp'\n";
+//   std::cout << "Exp'\n";
   Node* eprime_synt = nullptr;
   
   if(token_ == Tokenizer::kToken::plus){
@@ -104,14 +104,14 @@ Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
     eprime_synt = eprime_inht;
   }
   
-  std::cout << "<-Exp'\n";
+//   std::cout << "<-Exp'\n";
   return eprime_synt;
 }
 
 
 // F := ( E ) | numerical
 Node* ParserLL1RecDesc::Factor(){
-  std::cout << "Fact\n";
+//   std::cout << "Fact\n";
   Node* f_synt;
   
   if(token_ == Tokenizer::kToken::numerical){
@@ -128,19 +128,19 @@ Node* ParserLL1RecDesc::Factor(){
     return Factor();
   }
   
-  std::cout << "<-Fact\n";
+//   std::cout << "<-Fact\n";
   return f_synt;
 }
 
 
 
 Statement* ParserLL1RecDesc::Stmt(){
-  std::cout << "stmt\n";
+//   std::cout << "stmt\n";
   Statement* stmt_synt = nullptr;
   
   if(token_ == Tokenizer::kToken::kwd_if){
     //if(E){STMTS}
-    std::cout << "stmt::if\n";
+//     std::cout << "stmt::if\n";
     
     Accept(kToken::kwd_if, "Expecting if.");
     Accept(kToken::lpar, "if missing lpar.");
@@ -162,18 +162,18 @@ Statement* ParserLL1RecDesc::Stmt(){
       stmt_synt = NewStmtIf(dynamic_cast<Expression*>(expr_synt), stmts_synt, ifelse_synt);
     
   }else{
-    std::cout << "stmt::exp stmt\n";
+//     std::cout << "stmt::exp stmt\n";
     Node* expr_synt = Expr();
     stmt_synt       = NewExpressionStatement(expr_synt);
     
     Accept(kToken::semicolon, "Expecting semicolon.");
   }
-  std::cout << "<-stmt\n";
+//   std::cout << "<-stmt\n";
   return stmt_synt;
 }
 
 Block* ParserLL1RecDesc::IfElse(){
-  std::cout << "IfElse\n";
+//   std::cout << "IfElse\n";
   Block* ifelse_synt = nullptr;
   if(token_ == Tokenizer::kToken::kwd_else){
     Accept(kToken::kwd_else, "else missing kwd_else.");
@@ -184,12 +184,12 @@ Block* ParserLL1RecDesc::IfElse(){
     ifelse_synt = stmts_synt;
     Accept(kToken::rcbr, "else missing rcbr.");
   }
-  std::cout << "<-IfElse\n";
+//   std::cout << "<-IfElse\n";
   return ifelse_synt;
 }
 
 Block* ParserLL1RecDesc::Stmts(std::vector<Statement*>& stmts_inht){
-  std::cout << "stmts\n";
+//   std::cout << "stmts\n";
   Block* stmts_synt = nullptr;
   
   if(  token_ == Tokenizer::kToken::numerical
@@ -209,7 +209,7 @@ Block* ParserLL1RecDesc::Stmts(std::vector<Statement*>& stmts_inht){
       Error("Block not finishing in eof or rcbr");
     stmts_synt = NewBlock(stmts_inht);
   }  
-  std::cout << "<-stmts\n";
+//   std::cout << "<-stmts\n";
   return stmts_synt;
 }
   
