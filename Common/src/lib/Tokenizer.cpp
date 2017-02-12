@@ -27,10 +27,20 @@ ParseKeyword(std::vector<char>::const_iterator& current_position
   }
   //TODO check +3 still valid
   if(    *current_position == 'e'       and *(current_position + 1) == 'l'
-     and *(current_position + 2) == 's' and *(current_position + 3) == 'e'
-  ){
+     and *(current_position + 2) == 's' and *(current_position + 3) == 'e'){
     current_position += 4; t = kToken::kwd_else; return true;
   }  
+  //TODO check +2 still valid
+  if(    *current_position == 'i'       and *(current_position + 1) == 'n'
+     and *(current_position + 2) == 't'){
+    current_position += 3; t = kToken::kwd_int; return true;
+  }    
+  //TODO check +3 still valid
+  if(    *current_position == 'b'       and *(current_position + 1) == 'o'
+     and *(current_position + 2) == 'o' and *(current_position + 3) == 'l'){
+    current_position += 4; t = kToken::kwd_bool; return true;
+  }    
+  
   return false;
 }
 
@@ -68,6 +78,8 @@ std::string str(const kToken& t){
     case kToken::semicolon: return std::string(";");  break;
     case kToken::kwd_if:    return std::string("if");  break;
     case kToken::kwd_else:  return std::string("else");  break;
+    case kToken::kwd_int:   return std::string("int");  break;
+    case kToken::kwd_bool:  return std::string("bool");  break;
     
     default:                break;
   }

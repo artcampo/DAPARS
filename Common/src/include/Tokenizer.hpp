@@ -13,6 +13,7 @@ enum class kToken{ eof, numerical, name
                  , plus, minus, mult, div
                  , token_c, token_d   //grammar: dragon
                  , kwd_if, kwd_else
+                 , kwd_int, kwd_bool
                  , semicolon
                   
 };

@@ -1,5 +1,6 @@
 LL1 todo
 
+-sdd, check that E in if(E) is boolean 
 - Inspect commit 6eb5f9c1e98e2d4c225c03f66503c703616df444
 where presumably the set is forcing Symbol's default ctor
 - detection of conflicts

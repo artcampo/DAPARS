@@ -1,23 +1,14 @@
-Prog  := E
-E     := T E'
-E'    := + T E'
-      |  empty
-T     := F      
-F     := ( E )
-      |  numerical
-
--------------
-
 conditional flow
 Prog  := STMTS
 
 STMTS := STMT STMTS
-      |  {empty}
+      |  empty
 STMT  := if(E){STMTS} IFELSE
+      |  DECL
       |  E;
       
 IFELSE:= else{STMTS}
-      |  {empty}
+      |  empty
 
 E     := T E'
 E'    := + T E'
@@ -26,5 +17,11 @@ T     := F
 F     := ( E )
       |  numerical
       
+DECL  := TYPE NAME_LIST;
+
+TYPE  := int
+      |  bool
       
-sdd, check that E in if(E) is boolean 
+NAME_LIST := name NAME_LIST
+          | empty
+
