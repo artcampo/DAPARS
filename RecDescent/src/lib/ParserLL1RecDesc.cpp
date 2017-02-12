@@ -26,7 +26,6 @@ ParserLL1RecDesc::ParserLL1RecDesc(const std::vector<char>& parse_data, Block* &
 //   , grammar_(grammar){}    
 
 void ParserLL1RecDesc::Parse(){
-
   Prog();
   if(num_errors_ != 0){
     std::cout << "Program syntactically incorrect\n";
@@ -63,11 +62,13 @@ Node* ParserLL1RecDesc::Expr(){
   }else {
     Error("Term missing.");
   }
+  std::cout << "<-Exp\n";
   return eprime_synt;
 }
 
 
 Node* ParserLL1RecDesc::Term(){
+//   std::cout << "T\n";
   return Factor();
 }
 
@@ -77,7 +78,7 @@ Node* ParserLL1RecDesc::Term(){
 //                        E'.synt  = E'1.synt
 //       |  empty      ** E'.synt  = E'1.synt
 Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
-//   std::cout << "Exp'\n";
+  std::cout << "Exp'\n";
   Node* eprime_synt = nullptr;
   
   if(token_ == Tokenizer::kToken::plus){
@@ -95,6 +96,7 @@ Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
     //check Follow(E')
     if(not(token_ == Tokenizer::kToken::eof 
         or token_ == Tokenizer::kToken::rpar
+        or token_ == Tokenizer::kToken::rcbr
         or token_ == Tokenizer::kToken::kwd_if
         or token_ == Tokenizer::kToken::semicolon
           ))
@@ -102,34 +104,31 @@ Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
     eprime_synt = eprime_inht;
   }
   
+  std::cout << "<-Exp'\n";
   return eprime_synt;
 }
 
 
 // F := ( E ) | numerical
 Node* ParserLL1RecDesc::Factor(){
-//   std::cout << "Fact\n";
+  std::cout << "Fact\n";
   Node* f_synt;
   
   if(token_ == Tokenizer::kToken::numerical){
     f_synt = NewLiteral(token_int_value_);
     NextToken();
-    return f_synt;
-  }
-  
+  }else //TODO: Accept returning bool
   if(token_ == Tokenizer::kToken::lpar){
     NextToken();
     f_synt = Expr();
-    if(token_ == Tokenizer::kToken::rpar)
-      NextToken();
-    else 
-      Error("Expecting rpar.");
+    Accept(kToken::rpar, "Expecting rpar.");
   }else{
     Error("Expecting lpar.");
     NextToken();
     return Factor();
   }
   
+  std::cout << "<-Fact\n";
   return f_synt;
 }
 
@@ -162,6 +161,7 @@ Statement* ParserLL1RecDesc::Stmt(){
       stmt_synt = NewStmtIf(dynamic_cast<Expression*>(expr_synt), stmts_synt, ifelse_synt);
     
   }else{
+    std::cout << "stmt::exp stmt\n";
     Node* expr_synt = Expr();
     stmt_synt       = NewExpressionStatement(expr_synt);
     
@@ -198,15 +198,13 @@ Block* ParserLL1RecDesc::Stmts(std::vector<Statement*>& stmts_inht){
       
       stmts_inht.push_back(stmt_synth);
       stmts_synt = Stmts(stmts_inht);
-      /*
-      stmts_synt = NewBlock(stmt_synth);
-      //TODO: Block::AddStatement
-      Block* stmts1_synt = 
-      if(stmts1_synt != nullptr) stmts_synt->AddStatement(stmts1_synt->FirstStatement());
-      */
+
     }
   else{
     //check follow(Stmts)
+    if(not (token_ == Tokenizer::kToken::eof
+         or token_ == Tokenizer::kToken::rcbr))
+      Error("Block not finishing in eof or rcbr");
     stmts_synt = NewBlock(stmts_inht);
   }  
   std::cout << "<-stmts\n";
