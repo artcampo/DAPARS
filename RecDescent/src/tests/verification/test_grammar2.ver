@@ -1,15 +1,15 @@
 First Table
-E: ( {nam} {num} 
-E': {empty} - + 
-F: ( {nam} {num} 
-PROG: ( {nam} {num} 
-T: ( {nam} {num} 
-T': / {empty} * 
+E => ( {nam} {num} 
+E' => {empty} - + 
+F => ( {nam} {num} 
+PROG => ( {nam} {num} 
+T => ( {nam} {num} 
+T' => / {empty} * 
 -----------------------------
 Follow Table
-E {eof} ) 
-E' {eof} ) 
-F / {eof} - * + ) 
-PROG {eof} 
-T {eof} - + ) 
-T' {eof} - + ) 
+E => {eof} ) 
+E' => {eof} ) 
+F => / {eof} - * + ) 
+PROG => {eof} 
+T => {eof} - + ) 
+T' => {eof} - + ) 

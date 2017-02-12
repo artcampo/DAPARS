@@ -1,13 +1,13 @@
 First Table
-E: ( {num} 
-E': {empty} + 
-F: ( {num} 
-PROG: ( {num} 
-T: ( {num} 
+E => ( {num} 
+E' => {empty} + 
+F => ( {num} 
+PROG => ( {num} 
+T => ( {num} 
 -----------------------------
 Follow Table
-E {eof} ) 
-E' {eof} ) 
-F {eof} + ) 
-PROG {eof} 
-T {eof} + ) 
+E => {eof} ) 
+E' => {eof} ) 
+F => {eof} + ) 
+PROG => {eof} 
+T => {eof} + ) 

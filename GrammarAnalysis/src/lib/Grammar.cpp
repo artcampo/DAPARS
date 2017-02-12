@@ -198,7 +198,7 @@ void Grammar::DumpFirst() const noexcept{
   std::cout << "First Table\n";  
   for(const auto &entry : first_){
     if(not entry.first.IsTerminal()){
-      std::cout << entry.first.str() << ": ";
+      std::cout << entry.first.str() << " => ";
       
       for(const auto &s : entry.second){
         std::cout << s.str() << " ";
@@ -212,7 +212,7 @@ void Grammar::DumpFollow() const noexcept{
   std::cout << "Follow Table\n";
   for(const auto &entry : follow_){
     if(not entry.first.IsTerminal()){
-      std::cout << entry.first.str() << " ";
+      std::cout << entry.first.str() << " => ";
       
       for(const auto &s : entry.second){
         std::cout << s.str() << " ";
