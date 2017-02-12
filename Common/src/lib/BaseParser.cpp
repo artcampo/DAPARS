@@ -60,7 +60,9 @@ void BaseParser::NextToken() noexcept{
     }
   }
   
-  std::cout << "NextToken: " <<  str(token_)<<"\n";
+  std::cout << "NextToken: " <<  str(token_);
+  if(token_ == Tokenizer::kToken::numerical) std::cout << ": " << token_int_value_;
+  std::cout << "\n";
 }
 
 void BaseParser::Accept(const kToken& token, const std::string& error) noexcept{
@@ -130,10 +132,11 @@ Node* BaseParser::NewLiteral(const uint32_t &value){
   return new_node; 
 }
   
-Block* BaseParser::NewBlock(Statement* const stmt){
+Block* BaseParser::NewBlock(const std::vector<Statement*>& stmts_inht){
   Block* new_block;
   new_block = new Block();
-  new_block->statements.push_back(stmt);  
+  for(const auto stmt : stmts_inht)
+    new_block->AddStatement(stmt);  
   return new_block;
 }
 

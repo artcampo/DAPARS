@@ -33,7 +33,7 @@ private:
   Node* Factor();
   
   //Control Flow
-  Block*      Stmts();
+  Block*      Stmts(std::vector<Statement*>& stmts_inht);
   Statement*  Stmt();
   Block*      IfElse();
 

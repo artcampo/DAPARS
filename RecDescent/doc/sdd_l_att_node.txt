@@ -9,3 +9,12 @@ E'    := + T E'     ** E'1.inht = new Node(+, E'.inht, T.node)
 T     := F          ** T.synt   = F.node
 F     := ( E )      ** F.node   = E.node
       |  numerical  ** F.node   = new Node(num_val)  
+
+L-attributed SDD for stmts creation.
+
+Prog  := STMTS      ** STMTS.inht  = {}
+STMTS := STMT STMTS ** STMTS1.inht = {STMTS1.inht, STMT.synt}
+                    ** STMTS.synt = STMTS1.synt
+      |  {empty}    ** STMTS.synt = new Block( {Stmt_i... Stmt_j})
+STMT  := if(E){STMTS} IFELSE  ** STMT.synt = 
+      |  E;

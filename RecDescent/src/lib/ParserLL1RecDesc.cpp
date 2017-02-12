@@ -36,7 +36,8 @@ void ParserLL1RecDesc::Parse(){
 
 void ParserLL1RecDesc::Prog(){
   NextToken();
-  Block* stmts_synt = Stmts();
+  std::vector<Statement*> stmts_inht;
+  Block* stmts_synt = Stmts(stmts_inht);
   
   if(stmts_synt != nullptr){
 //     std::cout << "Prog" << std::endl;
@@ -140,6 +141,7 @@ Statement* ParserLL1RecDesc::Stmt(){
   
   if(token_ == Tokenizer::kToken::kwd_if){
     //if(E){STMTS}
+    std::cout << "stmt::if\n";
     NextToken();
     Accept(kToken::lpar, "if missing lpar.");
     Node* expr_synt = Expr();
@@ -148,7 +150,8 @@ Statement* ParserLL1RecDesc::Stmt(){
     Accept(kToken::rpar, "if missing rpar.");
     
     Accept(kToken::lcbr, "if missing lcbr.");
-    Block* stmts_synt = Stmts();
+    std::vector<Statement*> stmts_inht;
+    Block* stmts_synt = Stmts(stmts_inht);
     Accept(kToken::rcbr, "if missing rcbr.");
     
     Block* ifelse_synt = IfElse();
@@ -172,17 +175,18 @@ Block* ParserLL1RecDesc::IfElse(){
   std::cout << "IfElse\n";
   Block* ifelse_synt = nullptr;
   if(token_ == Tokenizer::kToken::kwd_else){
-    Accept(kToken::lcbr, "if missing lcbr.");
-    Block* stmts_synt = Stmts();
+    Accept(kToken::lcbr, "else missing lcbr.");
+    std::vector<Statement*> stmts_inht;
+    Block* stmts_synt = Stmts(stmts_inht);
     if(stmts_synt == nullptr) Error("Statements within else wrong.");
     ifelse_synt = stmts_synt;
-    Accept(kToken::rcbr, "if missing rcbr.");
+    Accept(kToken::rcbr, "else missing rcbr.");
   }
   std::cout << "<-IfElse\n";
   return ifelse_synt;
 }
 
-Block* ParserLL1RecDesc::Stmts(){
+Block* ParserLL1RecDesc::Stmts(std::vector<Statement*>& stmts_inht){
   std::cout << "stmts\n";
   Block* stmts_synt = nullptr;
   
@@ -191,18 +195,19 @@ Block* ParserLL1RecDesc::Stmts(){
     or token_ == Tokenizer::kToken::plus
     or token_ == Tokenizer::kToken::kwd_if){
       Statement* stmt_synth = Stmt();
-//       NextToken();
       
-      
+      stmts_inht.push_back(stmt_synth);
+      stmts_synt = Stmts(stmts_inht);
+      /*
       stmts_synt = NewBlock(stmt_synth);
-      
       //TODO: Block::AddStatement
-      Block* stmts1_synt = Stmts();
+      Block* stmts1_synt = 
       if(stmts1_synt != nullptr) stmts_synt->AddStatement(stmts1_synt->FirstStatement());
-      
+      */
     }
   else{
     //check follow(Stmts)
+    stmts_synt = NewBlock(stmts_inht);
   }  
   std::cout << "<-stmts\n";
   return stmts_synt;

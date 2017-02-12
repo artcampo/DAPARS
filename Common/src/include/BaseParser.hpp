@@ -53,7 +53,7 @@ protected:
   Node* NewBinaryOp(Node* const lhs, const int op, Node* const rhs);
   ExpressionStatement* NewExpressionStatement(Node* const node_expr);
   Node* NewLiteral(const uint32_t &value);
-  Block* NewBlock(Statement* const stmt);
+  Block* NewBlock(const std::vector<Statement*>& stmts_inht);
   StmtIf* NewStmtIf(Expression* const condition, Block* block1);
   StmtIf* NewStmtIf(Expression* const condition, Block* block1, Block* block2);
   
