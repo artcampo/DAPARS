@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include "Tokenizer.hpp"
+#include "PolicyDebugLog.hpp"
 
 class Block;
 class Node;
@@ -16,8 +17,10 @@ class StmtIf;
 namespace Common{
 
 using namespace Tokenizer;
+using namespace DebugLog;
 
-class BaseParser{
+template<class PolicyDebugLog = DebugLogNull>
+class BaseParser : public PolicyDebugLog{
   
 public:  
   BaseParser(std::string const &file_name, Block* &programBlock);

@@ -15,8 +15,9 @@ class ExceptionNotEndFile: public exception{
   }
 };
 */
-
-BaseParser::BaseParser(const std::vector<char>& parse_data, 
+  
+template<class PolicyDebugLog>
+BaseParser<PolicyDebugLog>::BaseParser(const std::vector<char>& parse_data, 
                        Block* &programBlock)
   : file_data_(parse_data)
   , current_position_(file_data_.cbegin())
@@ -29,7 +30,8 @@ BaseParser::BaseParser(const std::vector<char>& parse_data,
   std::cout << "\"\n";
 }
   
-BaseParser::BaseParser(std::string const &file_name, Block* &programBlock) 
+template<class PolicyDebugLog>  
+BaseParser<PolicyDebugLog>::BaseParser(std::string const &file_name, Block* &programBlock) 
   : file_(std::ifstream (file_name.c_str(), std::ios::binary) )
   , file_data_(std::vector<char> ((std::istreambuf_iterator<char>(file_)),
                                    std::istreambuf_iterator<char>()) )
@@ -41,8 +43,8 @@ BaseParser::BaseParser(std::string const &file_name, Block* &programBlock)
  
 }
 
-
-void BaseParser::NextToken() noexcept{
+template<class PolicyDebugLog>
+void BaseParser<PolicyDebugLog>::NextToken() noexcept{
   Skip();
   if(current_position_ == file_data_.cend()){
     if(token_ == Tokenizer::kToken::eof){
@@ -65,12 +67,14 @@ void BaseParser::NextToken() noexcept{
 //   std::cout << "\n";
 }
 
-void BaseParser::Accept(const kToken& token, const std::string& error) noexcept{
+template<class PolicyDebugLog>
+void BaseParser<PolicyDebugLog>::Accept(const kToken& token, const std::string& error) noexcept{
   if(token_ != token) Error(error);
   NextToken();  
 }
 
-void BaseParser::Skip() noexcept{
+template<class PolicyDebugLog>
+void BaseParser<PolicyDebugLog>::Skip() noexcept{
   bool symbol_is_no_skip = false;
   while(not symbol_is_no_skip 
         and current_position_ != file_data_.cend() ){
@@ -87,7 +91,8 @@ void BaseParser::Skip() noexcept{
   }
 }
 
-void BaseParser::Error(const std::string& message){
+template<class PolicyDebugLog>
+void BaseParser<PolicyDebugLog>::Error(const std::string& message){
   ++num_errors_;
   std::cout << "\n" << message << " at: \"";
   
@@ -104,12 +109,14 @@ void BaseParser::Error(const std::string& message){
   std::cout << "\"" << std::endl;
 }
 
-void BaseParser::ErrorCritical(const std::string& message){
+template<class PolicyDebugLog>
+void BaseParser<PolicyDebugLog>::ErrorCritical(const std::string& message){
   Error(message);
   exit(1);
 }
   
-Node* BaseParser::NewBinaryOp(Node* const lhs, const int op, Node* const rhs){
+template<class PolicyDebugLog>  
+Node* BaseParser<PolicyDebugLog>::NewBinaryOp(Node* const lhs, const int op, Node* const rhs){
   if(lhs == nullptr) ErrorCritical("lhs invalid");
   if(rhs == nullptr) ErrorCritical("rhs invalid");
   
@@ -119,7 +126,8 @@ Node* BaseParser::NewBinaryOp(Node* const lhs, const int op, Node* const rhs){
   return new_node; 
 }
 
-ExpressionStatement*  BaseParser::NewExpressionStatement(Node* const node_expr){
+template<class PolicyDebugLog>
+ExpressionStatement*  BaseParser<PolicyDebugLog>::NewExpressionStatement(Node* const node_expr){
   if(node_expr == nullptr) ErrorCritical("node_expr invalid");
   
   Expression* const exp = dynamic_cast<Expression*>(node_expr);
@@ -127,12 +135,14 @@ ExpressionStatement*  BaseParser::NewExpressionStatement(Node* const node_expr){
   return new_node; 
 }
 
-Node* BaseParser::NewLiteral(const uint32_t &value){
+template<class PolicyDebugLog>
+Node* BaseParser<PolicyDebugLog>::NewLiteral(const uint32_t &value){
   Literal* new_node = new Literal(value);
   return new_node; 
 }
   
-Block* BaseParser::NewBlock(const std::vector<Statement*>& stmts_inht){
+template<class PolicyDebugLog>  
+Block* BaseParser<PolicyDebugLog>::NewBlock(const std::vector<Statement*>& stmts_inht){
   Block* new_block;
   new_block = new Block();
   for(const auto stmt : stmts_inht)
@@ -140,12 +150,14 @@ Block* BaseParser::NewBlock(const std::vector<Statement*>& stmts_inht){
   return new_block;
 }
 
-StmtIf* BaseParser::NewStmtIf(Expression* const condition, Block* block1){
+template<class PolicyDebugLog>
+StmtIf* BaseParser<PolicyDebugLog>::NewStmtIf(Expression* const condition, Block* block1){
   StmtIf* new_stmt_if = new StmtIf(condition, block1);
   return new_stmt_if;
 }
 
-StmtIf* BaseParser::NewStmtIf(Expression* const condition, Block* block1, Block* block2){
+template<class PolicyDebugLog>
+StmtIf* BaseParser<PolicyDebugLog>::NewStmtIf(Expression* const condition, Block* block1, Block* block2){
   StmtIf* new_stmt_if = new StmtIf(condition, block1, block2);
   return new_stmt_if;
 }

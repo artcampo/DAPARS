@@ -15,25 +15,28 @@ using namespace IRDefinition;
 using namespace SubtypesArithmetic;  
   
 
-ParserLL1RecDesc::ParserLL1RecDesc(std::string const &file_name, Block* &programBlock)
+template<class PolicyDebugLog>
+ParserLL1RecDesc<PolicyDebugLog>::ParserLL1RecDesc(std::string const &file_name, Block* &programBlock)
 //   , Grammar& grammar) 
-  : BaseParser(file_name, programBlock){}
+  : BaseParser<PolicyDebugLog>(file_name, programBlock){}
 //   , grammar_(grammar){}
 
-ParserLL1RecDesc::ParserLL1RecDesc(const std::vector<char>& parse_data, Block* &programBlock)
+template<class PolicyDebugLog>
+ParserLL1RecDesc<PolicyDebugLog>::ParserLL1RecDesc(const std::vector<char>& parse_data, Block* &programBlock)
 //   , Grammar& grammar) 
-  : BaseParser(parse_data, programBlock){}
+  : BaseParser<PolicyDebugLog>(parse_data, programBlock){}
 //   , grammar_(grammar){}    
 
-void ParserLL1RecDesc::Parse(){
+template<class PolicyDebugLog>
+void ParserLL1RecDesc<PolicyDebugLog>::Parse(){
   Prog();
   if(num_errors_ != 0){
     std::cout << "Program syntactically incorrect\n";
   }
 }
 
-
-void ParserLL1RecDesc::Prog(){
+template<class PolicyDebugLog>
+void ParserLL1RecDesc<PolicyDebugLog>::Prog(){
   NextToken();
   std::vector<Statement*> stmts_inht;
   Block* stmts_synt = Stmts(stmts_inht);
@@ -50,7 +53,8 @@ void ParserLL1RecDesc::Prog(){
 }
 
 //TODO: should return Expr*
-Node* ParserLL1RecDesc::Expr(){
+template<class PolicyDebugLog>
+Node* ParserLL1RecDesc<PolicyDebugLog>::Expr(){
 //   std::cout << "Exp\n";
   Node* eprime_synt = nullptr;
   Node* term_synth  = Term();
@@ -66,8 +70,8 @@ Node* ParserLL1RecDesc::Expr(){
   return eprime_synt;
 }
 
-
-Node* ParserLL1RecDesc::Term(){
+template<class PolicyDebugLog>
+Node* ParserLL1RecDesc<PolicyDebugLog>::Term(){
 //   std::cout << "T\n";
   return Factor();
 }
@@ -77,7 +81,8 @@ Node* ParserLL1RecDesc::Term(){
 // E'    := + T E'     ** E'1.inht = new Node(+, E'.inht, T.node)
 //                        E'.synt  = E'1.synt
 //       |  empty      ** E'.synt  = E'1.synt
-Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
+template<class PolicyDebugLog>
+Node* ParserLL1RecDesc<PolicyDebugLog>::ExprPrime(Node* eprime_inht){
 //   std::cout << "Exp'\n";
   Node* eprime_synt = nullptr;
   
@@ -110,7 +115,8 @@ Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
 
 
 // F := ( E ) | numerical
-Node* ParserLL1RecDesc::Factor(){
+template<class PolicyDebugLog>
+Node* ParserLL1RecDesc<PolicyDebugLog>::Factor(){
 //   std::cout << "Fact\n";
   Node* f_synt;
   
@@ -133,8 +139,8 @@ Node* ParserLL1RecDesc::Factor(){
 }
 
 
-
-Statement* ParserLL1RecDesc::Stmt(){
+template<class PolicyDebugLog>
+Statement* ParserLL1RecDesc<PolicyDebugLog>::Stmt(){
 //   std::cout << "stmt\n";
   Statement* stmt_synt = nullptr;
   
@@ -172,7 +178,8 @@ Statement* ParserLL1RecDesc::Stmt(){
   return stmt_synt;
 }
 
-Block* ParserLL1RecDesc::IfElse(){
+template<class PolicyDebugLog>
+Block* ParserLL1RecDesc<PolicyDebugLog>::IfElse(){
 //   std::cout << "IfElse\n";
   Block* ifelse_synt = nullptr;
   if(token_ == Tokenizer::kToken::kwd_else){
@@ -188,7 +195,8 @@ Block* ParserLL1RecDesc::IfElse(){
   return ifelse_synt;
 }
 
-Block* ParserLL1RecDesc::Stmts(std::vector<Statement*>& stmts_inht){
+template<class PolicyDebugLog>
+Block* ParserLL1RecDesc<PolicyDebugLog>::Stmts(std::vector<Statement*>& stmts_inht){
 //   std::cout << "stmts\n";
   Block* stmts_synt = nullptr;
   
