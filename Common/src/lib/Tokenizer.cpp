@@ -9,7 +9,7 @@ namespace Tokenizer{
 bool 
 ParseNumerical(std::vector<char>::const_iterator& current_position) noexcept{
   bool matched = false;
-  if(*current_position >= '1' and *current_position <= '9'){
+  if(*current_position >= '0' and *current_position <= '9'){
     matched = true;
     ++current_position;
     while(*current_position >= '0' and *current_position <= '9')

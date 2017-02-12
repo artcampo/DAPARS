@@ -1,7 +1,6 @@
 #include "ParserLL1RecDesc.hpp"
 #include "Grammar.hpp"
-#include "ASTVisitorCodeGenerator.hpp"
-#include "ASTVisitorPrettyPrinter.hpp"
+#include "ASTVisitorDump.hpp"
 #include <iostream>
 #include <memory>
 #include <string>
@@ -29,7 +28,7 @@ void parse(const std::string& str, G& g)
   parser->Parse();
   if(programBlock != nullptr){
     std::cout << "Print AST\n";
-    ASTVisitorPrettyPrinter visitor;
+    ASTVisitorDump visitor;
     visitor.Visit(*programBlock);  
   }
   
@@ -46,6 +45,7 @@ int main()
   
   //pass
   parse<Grammar,ParserLL1RecDesc>( std::string("(1);"), g); 
+  parse<Grammar,ParserLL1RecDesc>( std::string("1;2;3;"), g); 
   parse<Grammar,ParserLL1RecDesc>( std::string("2+3+4;"), g); std::cout << "\n";
   parse<Grammar,ParserLL1RecDesc>( std::string("2++3+4;"), g); std::cout << "\n";
   parse<Grammar,ParserLL1RecDesc>( std::string("1+2;3+4;"), g); std::cout << "\n";
@@ -59,6 +59,7 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3;}"), g); 
   parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3;} 4;"), g); 
   parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3+4+5;}"), g); 
+  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3+4+5;} 6;"), g); 
   parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){if(3){4;if(5){6;}}}"), g); 
   parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){if(3){4+5;if(6){7+8;}}}"), g); 
   

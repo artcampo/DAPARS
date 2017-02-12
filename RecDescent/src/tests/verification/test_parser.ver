@@ -15,12 +15,23 @@ F -> {nam}
 ---------------------------------------------------
 Parsing: "(1);"
 Print AST
-1
+Literal: 1
+
+---------------------------------------------------
+Parsing: "1;2;3;"
+Print AST
+Literal: 1
+Literal: 2
+Literal: 3
 
 ---------------------------------------------------
 Parsing: "2+3+4;"
 Print AST
-( ( 2 + 3 ) + 4 )
+Op: + 
+-Op: + 
+--Literal: 2
+--Literal: 3
+-Literal: 4
 
 
 ---------------------------------------------------
@@ -29,14 +40,36 @@ Parsing: "2++3+4;"
 Expecting lpar. at: "2++"
 Program syntactically incorrect
 Print AST
-( ( 2 + 3 ) + 4 )
+Op: + 
+-Op: + 
+--Literal: 2
+--Literal: 3
+-Literal: 4
 
 
 ---------------------------------------------------
 Parsing: "1+2;3+4;"
 Print AST
-( 1 + 2 )
-( 3 + 4 )
+Op: + 
+-Literal: 1
+-Literal: 2
+Op: + 
+-Literal: 3
+-Literal: 4
+
+
+---------------------------------------------------
+Parsing: "1+2;3+4;5+6;"
+Print AST
+Op: + 
+-Literal: 1
+-Literal: 2
+Op: + 
+-Literal: 3
+-Literal: 4
+Op: + 
+-Literal: 5
+-Literal: 6
 
 
 Grammar:
@@ -56,42 +89,121 @@ F -> {nam}
 ---------------------------------------------------
 Parsing: "1; if(2){3;}"
 Print AST
-1
-if(2){
-  3
-  }
-  
+Literal: 1
+StmtIf:
+-Cond: Literal: 2
+-Then:
+--Literal: 3
+
+
+---------------------------------------------------
+Parsing: "1; if(2){3;} 4;"
+Print AST
+Literal: 1
+StmtIf:
+-Cond: Literal: 2
+-Then:
+--Literal: 3
+
+Literal: 4
+
 ---------------------------------------------------
 Parsing: "1; if(2){3+4+5;}"
 Print AST
-1
-if(2){
-  ( ( 3 + 4 ) + 5 )
-  }
-  
+Literal: 1
+StmtIf:
+-Cond: Literal: 2
+-Then:
+--Op: + 
+---Op: + 
+----Literal: 3
+----Literal: 4
+---Literal: 5
+
+
+---------------------------------------------------
+Parsing: "1; if(2){3+4+5;} 6;"
+Print AST
+Literal: 1
+StmtIf:
+-Cond: Literal: 2
+-Then:
+--Op: + 
+---Op: + 
+----Literal: 3
+----Literal: 4
+---Literal: 5
+
+Literal: 6
+
 ---------------------------------------------------
 Parsing: "1; if(2){if(3){4;if(5){6;}}}"
 Print AST
-1
-if(2){
-  if(3){
-    4
-    if(5){
-      6
-      }
-    }
-  }
-  
+Literal: 1
+StmtIf:
+-Cond: Literal: 2
+-Then:
+--StmtIf:
+---Cond: Literal: 3
+---Then:
+----Literal: 4
+----StmtIf:
+-----Cond: Literal: 5
+-----Then:
+------Literal: 6
+
+
+
+
 ---------------------------------------------------
 Parsing: "1; if(2){if(3){4+5;if(6){7+8;}}}"
 Print AST
-1
-if(2){
-  if(3){
-    ( 4 + 5 )
-    if(6){
-      ( 7 + 8 )
-      }
-    }
-  }
-  
+Literal: 1
+StmtIf:
+-Cond: Literal: 2
+-Then:
+--StmtIf:
+---Cond: Literal: 3
+---Then:
+----Op: + 
+-----Literal: 4
+-----Literal: 5
+----StmtIf:
+-----Cond: Literal: 6
+-----Then:
+------Op: + 
+-------Literal: 7
+-------Literal: 8
+
+
+
+
+---------------------------------------------------
+Parsing: "1; if(2){3;}else{4;}"
+Print AST
+Literal: 1
+StmtIf:
+-Cond: Literal: 2
+-Then:
+--Literal: 3
+-Else:
+--Literal: 4
+
+
+---------------------------------------------------
+Parsing: "1; if(2){3;}if(4){5;}else{6;}"
+Print AST
+Literal: 1
+StmtIf:
+-Cond: Literal: 2
+-Then:
+--Literal: 3
+
+StmtIf:
+-Cond: Literal: 4
+-Then:
+--Literal: 5
+-Else:
+--Literal: 6
+
+
