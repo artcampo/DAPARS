@@ -82,7 +82,7 @@ Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
   Node* eprime_synt = nullptr;
   
   if(token_ == Tokenizer::kToken::plus){
-    NextToken();
+    Accept(kToken::plus, "Expecting +.");
     Node* t_synt = Term();
     
     Node* eprime1_inht = NewBinaryOp(eprime_inht, IR_ADD, t_synt);  
@@ -116,10 +116,10 @@ Node* ParserLL1RecDesc::Factor(){
   
   if(token_ == Tokenizer::kToken::numerical){
     f_synt = NewLiteral(token_int_value_);
-    NextToken();
+    Accept(kToken::numerical, "Expecting numerical.");
   }else //TODO: Accept returning bool
   if(token_ == Tokenizer::kToken::lpar){
-    NextToken();
+    Accept(kToken::lpar, "Expecting lpar.");
     f_synt = Expr();
     Accept(kToken::rpar, "Expecting rpar.");
   }else{
@@ -141,7 +141,8 @@ Statement* ParserLL1RecDesc::Stmt(){
   if(token_ == Tokenizer::kToken::kwd_if){
     //if(E){STMTS}
     std::cout << "stmt::if\n";
-    NextToken();
+    
+    Accept(kToken::kwd_if, "Expecting if.");
     Accept(kToken::lpar, "if missing lpar.");
     Node* expr_synt = Expr();
     if(expr_synt == nullptr) Error("if condition wrong.");
