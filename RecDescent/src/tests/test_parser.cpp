@@ -1,6 +1,7 @@
 #include "ParserLL1RecDesc.hpp"
 #include "Grammar.hpp"
 #include "ASTVisitorDump.hpp"
+#include "ASTVisitorPrettyPrinter.hpp"
 #include <iostream>
 #include <memory>
 #include <string>
@@ -27,9 +28,12 @@ void parse(const std::string& str, G& g)
 
   parser->Parse();
   if(programBlock != nullptr){
-    std::cout << "Print AST\n";
-    ASTVisitorDump visitor;
+    std::cout << "\nAST\n";
+    ASTVisitorPrettyPrinter visitor;
     visitor.Visit(*programBlock);  
+    std::cout << "\nAST nodes\n";
+    ASTVisitorDump visitor_dump;
+    visitor_dump.Visit(*programBlock);      
   }
   
   std::cout << "\n";

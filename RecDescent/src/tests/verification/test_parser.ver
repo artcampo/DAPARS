@@ -14,19 +14,33 @@ F -> {nam}
 
 ---------------------------------------------------
 Parsing: "(1);"
-Print AST
+
+AST
+1
+
+AST nodes
 Literal: 1
 
 ---------------------------------------------------
 Parsing: "1;2;3;"
-Print AST
+
+AST
+1
+2
+3
+
+AST nodes
 Literal: 1
 Literal: 2
 Literal: 3
 
 ---------------------------------------------------
 Parsing: "2+3+4;"
-Print AST
+
+AST
+( ( 2 + 3 ) + 4 )
+
+AST nodes
 Op: + 
 -Op: + 
 --Literal: 2
@@ -39,7 +53,11 @@ Parsing: "2++3+4;"
 
 Expecting lpar. at: "2++"
 Program syntactically incorrect
-Print AST
+
+AST
+( ( 2 + 3 ) + 4 )
+
+AST nodes
 Op: + 
 -Op: + 
 --Literal: 2
@@ -49,7 +67,12 @@ Op: +
 
 ---------------------------------------------------
 Parsing: "1+2;3+4;"
-Print AST
+
+AST
+( 1 + 2 )
+( 3 + 4 )
+
+AST nodes
 Op: + 
 -Literal: 1
 -Literal: 2
@@ -60,7 +83,13 @@ Op: +
 
 ---------------------------------------------------
 Parsing: "1+2;3+4;5+6;"
-Print AST
+
+AST
+( 1 + 2 )
+( 3 + 4 )
+( 5 + 6 )
+
+AST nodes
 Op: + 
 -Literal: 1
 -Literal: 2
@@ -88,7 +117,14 @@ F -> {nam}
 
 ---------------------------------------------------
 Parsing: "1; if(2){3;}"
-Print AST
+
+AST
+1
+if(2){
+  3
+  }
+
+AST nodes
 Literal: 1
 StmtIf:
 -Cond: Literal: 2
@@ -98,7 +134,15 @@ StmtIf:
 
 ---------------------------------------------------
 Parsing: "1; if(2){3;} 4;"
-Print AST
+
+AST
+1
+if(2){
+  3
+  }
+4
+
+AST nodes
 Literal: 1
 StmtIf:
 -Cond: Literal: 2
@@ -109,7 +153,14 @@ Literal: 4
 
 ---------------------------------------------------
 Parsing: "1; if(2){3+4+5;}"
-Print AST
+
+AST
+1
+if(2){
+  ( ( 3 + 4 ) + 5 )
+  }
+
+AST nodes
 Literal: 1
 StmtIf:
 -Cond: Literal: 2
@@ -123,7 +174,15 @@ StmtIf:
 
 ---------------------------------------------------
 Parsing: "1; if(2){3+4+5;} 6;"
-Print AST
+
+AST
+1
+if(2){
+  ( ( 3 + 4 ) + 5 )
+  }
+6
+
+AST nodes
 Literal: 1
 StmtIf:
 -Cond: Literal: 2
@@ -138,7 +197,19 @@ Literal: 6
 
 ---------------------------------------------------
 Parsing: "1; if(2){if(3){4;if(5){6;}}}"
-Print AST
+
+AST
+1
+if(2){
+  if(3){
+    4
+    if(5){
+      6
+      }
+    }
+  }
+
+AST nodes
 Literal: 1
 StmtIf:
 -Cond: Literal: 2
@@ -157,7 +228,19 @@ StmtIf:
 
 ---------------------------------------------------
 Parsing: "1; if(2){if(3){4+5;if(6){7+8;}}}"
-Print AST
+
+AST
+1
+if(2){
+  if(3){
+    ( 4 + 5 )
+    if(6){
+      ( 7 + 8 )
+      }
+    }
+  }
+
+AST nodes
 Literal: 1
 StmtIf:
 -Cond: Literal: 2
@@ -180,7 +263,17 @@ StmtIf:
 
 ---------------------------------------------------
 Parsing: "1; if(2){3;}else{4;}"
-Print AST
+
+AST
+1
+if(2){
+  3
+  }
+else{
+  4
+  }
+
+AST nodes
 Literal: 1
 StmtIf:
 -Cond: Literal: 2
@@ -192,7 +285,20 @@ StmtIf:
 
 ---------------------------------------------------
 Parsing: "1; if(2){3;}if(4){5;}else{6;}"
-Print AST
+
+AST
+1
+if(2){
+  3
+  }
+if(4){
+  5
+  }
+else{
+  6
+  }
+
+AST nodes
 Literal: 1
 StmtIf:
 -Cond: Literal: 2
