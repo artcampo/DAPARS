@@ -161,7 +161,10 @@ Statement* ParserLL1RecDesc::Stmt(){
     else
       stmt_synt = NewStmtIf(dynamic_cast<Expression*>(expr_synt), stmts_synt, ifelse_synt);
     
-  }else{
+  }else if(token_ == kToken::kwd_int or token_ == kToken::kwd_bool){
+    stmt_synt = Decl();
+  }
+  else{
 //     std::cout << "stmt::exp stmt\n";
     Node* expr_synt = Expr();
     stmt_synt       = NewExpressionStatement(expr_synt);

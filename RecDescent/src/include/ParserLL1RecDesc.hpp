@@ -36,6 +36,7 @@ private:
   Block*      Stmts(std::vector<Statement*>& stmts_inht);
   Statement*  Stmt();
   Block*      IfElse();
+  Decl*  Decl();
 
   
 };

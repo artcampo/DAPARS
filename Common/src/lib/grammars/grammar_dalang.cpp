@@ -56,14 +56,17 @@ void CreateGrammarDalang(G& g){
   //Statements
   g.AddRule(Rule(STMTS,  {STMT, STMTS}));
   g.AddRule(Rule(STMTS,  {empty}));
+  
   g.AddRule(Rule(STMT,   {E, semi}));
+  g.AddRule(Rule(STMT,   {DECL, semi}));
   g.AddRule(Rule(STMT,   {kwd_if, lpar, E, rpar, lcbr, STMTS, rcbr, IFELSE}));
+  
   g.AddRule(Rule(IFELSE, {kwd_else, lcbr, STMTS, rcbr}));
   g.AddRule(Rule(IFELSE, {empty}));
   
 
   //Types
-  g.AddRule(Rule(DECL, {TYPE,NAME_LIST,semi}));
+  g.AddRule(Rule(DECL, {TYPE,NAME_LIST}));
   g.AddRule(Rule(TYPE, {kwd_type_int}));
   g.AddRule(Rule(TYPE, {kwd_type_bool}));
   g.AddRule(Rule(NAME_LIST, {name, NAME_LIST}));

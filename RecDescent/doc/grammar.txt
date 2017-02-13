@@ -4,7 +4,7 @@ Prog  := STMTS
 STMTS := STMT STMTS
       |  empty
 STMT  := if(E){STMTS} IFELSE
-      |  DECL
+      |  DECL;
       |  E;
       
 IFELSE:= else{STMTS}
@@ -17,7 +17,7 @@ T     := F
 F     := ( E )
       |  numerical
       
-DECL  := TYPE NAME_LIST;
+DECL  := TYPE NAME_LIST
 
 TYPE  := int
       |  bool

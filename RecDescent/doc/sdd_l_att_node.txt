@@ -14,7 +14,20 @@ L-attributed SDD for stmts creation.
 
 Prog  := STMTS      ** STMTS.inht  = {}
 STMTS := STMT STMTS ** STMTS1.inht = {STMTS1.inht, STMT.synt}
-                    ** STMTS.synt = STMTS1.synt
-      |  {empty}    ** STMTS.synt = new Block( {Stmt_i... Stmt_j})
+                    ** STMTS.synt  = STMTS1.synt
+      |  {empty}    ** STMTS.synt  = new Block( {Stmt_i... Stmt_j})
 STMT  := if(E){STMTS} IFELSE  ** STMT.synt = 
       |  E;
+      
+      
+L-attributed SDD for VarDecl creation.
+
+DECL  := TYPE NAME_LIST ** DECL.synt      = New VarDeclList
+                        ** NAME_LIST.inht = {}
+
+TYPE  := int
+      |  bool
+      
+NAME_LIST := name NAME_LIST ** NAME_LIST1.inht = {NAME_LIST.inht, new VarDecl(name)}
+                            ** NAME_LIST.synt = NAME_LIST1.synt
+          | empty           ** NAME_LIST.synt = new VarDeclList(NAME_LIST.inht)}
