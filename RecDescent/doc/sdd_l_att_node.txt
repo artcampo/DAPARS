@@ -23,11 +23,11 @@ STMT  := if(E){STMTS} IFELSE  ** STMT.synt =
 L-attributed SDD for VarDecl creation.
 
 DECL  := TYPE NAME_LIST ** DECL.synt      = New VarDeclList
-                        ** NAME_LIST.inht = {}
+                        ** NAME_LIST.inht = {}, TYPE.synt
 
-TYPE  := int
-      |  bool
+TYPE  := int      ** TYPE.synt = typeId(int)
+      |  bool     ** TYPE.synt = typeId(bool)
       
-NAME_LIST := name NAME_LIST ** NAME_LIST1.inht = {NAME_LIST.inht, new VarDecl(name)}
+NAME_LIST := name NAME_LIST ** NAME_LIST1.inht = {NAME_LIST.inht, new VarDecl(name,type)}
                             ** NAME_LIST.synt = NAME_LIST1.synt
           | empty           ** NAME_LIST.synt = new VarDeclList(NAME_LIST.inht)}

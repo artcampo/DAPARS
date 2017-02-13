@@ -15,7 +15,6 @@ enum class kToken{ eof, numerical, name
                  , kwd_if, kwd_else
                  , kwd_int, kwd_bool
                  , semicolon
-                  
 };
 
 kToken ParseToken(std::vector<char>::const_iterator& current_position) noexcept;

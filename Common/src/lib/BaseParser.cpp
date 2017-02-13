@@ -28,7 +28,7 @@ BaseParser::BaseParser(const std::vector<char>& parse_data,
   for(const auto& it : parse_data ) std::cout << it;
   std::cout << "\"\n";
 }
-  
+
 BaseParser::BaseParser(std::string const &file_name, Block* &programBlock) 
   : file_(std::ifstream (file_name.c_str(), std::ios::binary) )
   , file_data_(std::vector<char> ((std::istreambuf_iterator<char>(file_)),
@@ -37,10 +37,7 @@ BaseParser::BaseParser(std::string const &file_name, Block* &programBlock)
   , skip_symbols_ {' ','\n'}
   , programBlock_(programBlock)
   , num_errors_(0)
-{
- 
-}
-
+  {}
 
 void BaseParser::NextToken() noexcept{
   Skip();
