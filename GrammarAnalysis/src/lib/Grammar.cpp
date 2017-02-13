@@ -224,6 +224,10 @@ void Grammar::DumpFollow() const noexcept{
 
 
 void Grammar::DumpFirstPlus() const noexcept{
+  std::cout << "First+ Table\n";
+  for(const auto &entry : first_plus_){
+    std::cout << entry.first << " => " << entry.second << "\n";
+  }
 }
 
 

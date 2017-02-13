@@ -7,6 +7,7 @@ test_standalone(){
     rm $1.out 
 }
 
+test_standalone test_grammar_dalang
 test_standalone test_grammar
 test_standalone test_grammar2
 test_standalone test_parser

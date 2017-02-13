@@ -6,6 +6,7 @@ regenerate_test_standalone(){
   cp $1.ver ../../../RecDescent/src/tests/verification/.
 }
 
+regenerate_test_standalone test_grammar_dalang
 regenerate_test_standalone test_grammar
 regenerate_test_standalone test_grammar2
 regenerate_test_standalone test_parser

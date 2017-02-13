@@ -85,9 +85,9 @@ protected:
   SymbolId free_term_id_;
   SymbolId free_non_term_id_;
   RuleId   free_rule_id_;
-  std::map<Symbol,SymbolId>  symbol_id_;
-  std::map<kToken, SymbolId> symbolId_of_tokenId_;
-  std::map<Rule, RuleId>     ruleId_of_rule_;
+  std::map<Symbol,SymbolId>   symbol_id_;
+  std::map<kToken, SymbolId>  symbolId_of_tokenId_;
+  std::map<Rule, RuleId>      ruleId_of_rule_;
   std::map<SymbolId, Symbol>  id_to_terminal_;
   std::map<SymbolId, Symbol>  id_to_nonterminal_;
   
