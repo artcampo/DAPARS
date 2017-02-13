@@ -162,5 +162,9 @@ StmtIf* BaseParser<PolicyDebugLog>::NewStmtIf(Expression* const condition, Block
   return new_stmt_if;
 }
 
+template class BaseParser<DebugLogNull>;
+template class BaseParser<DebugLogWriteToCout>;
+
+
 } //end namespace Common
  

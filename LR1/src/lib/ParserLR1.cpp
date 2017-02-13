@@ -32,16 +32,19 @@ class ExceptionNotEndFile: public exception{
 };
 */
   
-ParserLR1::ParserLR1(std::string const &file_name, Block* &programBlock
+template<class PolicyDebugLog>  
+ParserLR1<PolicyDebugLog>::ParserLR1(std::string const &file_name, Block* &programBlock
               , GrammarLR1& grammar) 
-  : BaseParser(file_name, programBlock)
+  : BaseParser<PolicyDebugLog>(file_name, programBlock)
   , grammar_(grammar){}
   
-ParserLR1::ParserLR1(const std::vector<char>& parse_data, Block* &programBlock
+template<class PolicyDebugLog>  
+ParserLR1<PolicyDebugLog>::ParserLR1(const std::vector<char>& parse_data, Block* &programBlock
               , GrammarLR1& grammar) 
-  : BaseParser(parse_data, programBlock)
+  : BaseParser<PolicyDebugLog>(parse_data, programBlock)
   , grammar_(grammar){}  
 
+  
 void printStackRec(std::stack<ShiftedSymbol>& c){
   if(c.empty()) return;
   ShiftedSymbol s = c.top();
@@ -50,6 +53,7 @@ void printStackRec(std::stack<ShiftedSymbol>& c){
   std::cout << s.str();
 }
   
+
 void printStack(std::stack<ShiftedSymbol>& context){
   std::stack<ShiftedSymbol> c = context;
   printStackRec(c);
@@ -57,18 +61,19 @@ void printStack(std::stack<ShiftedSymbol>& context){
 
 
 
-void ParserLR1::Parse(){
+template<class PolicyDebugLog>
+void ParserLR1<PolicyDebugLog>::Parse(){
   using kAction = Action::kAction;
   
   std::stack<ShiftedSymbol> context;
   context.push( ShiftedSymbol( grammar_.GetSymbolId(Symbol::Eof()), 0));
   bool finished = false;
-  NextToken();
+  this->NextToken();
   
   while(not finished){
     //printStack(context); std::cout << "\n";
     const StateId  state  = context.top().state_;
-    const SymbolId symbol = grammar_.GetSymbolId(token_);
+    const SymbolId symbol = grammar_.GetSymbolId(this->token_);
     const Action action   = grammar_.GetAction(state, symbol);
     
     /*
@@ -81,7 +86,7 @@ void ParserLR1::Parse(){
               
     if(action.action_ == kAction::shift){
       context.push( ShiftedSymbol(symbol, action.next_state_));
-      NextToken();
+      this->NextToken();
       
     }else if(action.action_ == kAction::reduce){
       const Rule& r = grammar_.GetRule(action.rule_id_);
@@ -95,12 +100,14 @@ void ParserLR1::Parse(){
     }else if(action.action_ == kAction::accept){
       finished = true;
     }else{
-      Error("eof not found");
+      this->Error("eof not found");
       finished = true;
     }
   }
 }
 
+template class ParserLR1<DebugLogNull>;
+template class ParserLR1<DebugLogWriteToCout>;  
   
 } //end namespace LR1
  

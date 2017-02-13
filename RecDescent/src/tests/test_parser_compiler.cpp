@@ -25,8 +25,8 @@ int main(int argc, char **argv)
   Block* programBlock = nullptr;
   
   using namespace RecDescent;
-  std::unique_ptr<ParserLL1RecDesc> parser(
-    new ParserLL1RecDesc(std::string(argv[1]), programBlock));
+  std::unique_ptr<ParserLL1RecDesc<>> parser(
+    new ParserLL1RecDesc<>(std::string(argv[1]), programBlock));
 
   parser->Parse();
   

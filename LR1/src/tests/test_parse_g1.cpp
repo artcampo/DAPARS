@@ -31,8 +31,8 @@ int main(int argc, char **argv)
   Block* programBlock = nullptr;
   
   using namespace LR1;
-  std::unique_ptr<ParserLR1> parser(new 
-                ParserLR1(std::string(argv[1]), programBlock, g));
+  std::unique_ptr<ParserLR1<>> parser(new 
+                ParserLR1<>(std::string(argv[1]), programBlock, g));
 
   parser->Parse();
   

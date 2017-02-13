@@ -19,12 +19,16 @@ class ExceptionNotEndFile: public exception{
 */
 
   
-ParserLALR::ParserLALR(std::string const &file_name, Block* &programBlock
+template<class PolicyDebugLog>    
+ParserLALR<PolicyDebugLog>::ParserLALR(std::string const &file_name, Block* &programBlock
               , GrammarLALR& grammar) 
-  : ParserLR1(file_name, programBlock, grammar)
+  : LR1::ParserLR1<PolicyDebugLog>(file_name, programBlock, grammar)
 {
  
 }
+  
+template class ParserLALR<DebugLogNull>;
+template class ParserLALR<DebugLogWriteToCout>;    
   
 } //end namespace LALR
  

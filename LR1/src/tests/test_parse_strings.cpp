@@ -18,14 +18,17 @@ using namespace GrammarAnalyzer;
  * Parses multiple strings, one at a time.
  */
 
-template <class G>
+template <template<class> class P, class G, class Policy>
 void parse(const std::string& str, G& g)
 {
   Block* programBlock = nullptr;
   
-  
+/*  
   std::unique_ptr<ParserLR1> parser(new 
                 ParserLR1(std::vector<char> (str.begin(), str.end()), programBlock, g));
+*/
+  std::unique_ptr< P<Policy> > parser = 
+    std::make_unique<P<Policy>>(str.begin(), str.end()), programBlock, g);
 
   parser->Parse();
 }

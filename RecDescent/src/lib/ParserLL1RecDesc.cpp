@@ -30,25 +30,25 @@ ParserLL1RecDesc<PolicyDebugLog>::ParserLL1RecDesc(const std::vector<char>& pars
 template<class PolicyDebugLog>
 void ParserLL1RecDesc<PolicyDebugLog>::Parse(){
   Prog();
-  if(num_errors_ != 0){
+  if(this->num_errors_ != 0){
     std::cout << "Program syntactically incorrect\n";
   }
 }
 
 template<class PolicyDebugLog>
 void ParserLL1RecDesc<PolicyDebugLog>::Prog(){
-  NextToken();
+  this->NextToken();
   std::vector<Statement*> stmts_inht;
   Block* stmts_synt = Stmts(stmts_inht);
   
   if(stmts_synt != nullptr){
 //     std::cout << "Prog" << std::endl;
-    if(token_ != Tokenizer::kToken::eof){
-      Error("More data after program.");
+    if(this->token_ != Tokenizer::kToken::eof){
+      this->Error("More data after program.");
     }
   }
   
-  programBlock_ = stmts_synt;
+  this->programBlock_ = stmts_synt;
   
 }
 
@@ -62,9 +62,9 @@ Node* ParserLL1RecDesc<PolicyDebugLog>::Expr(){
   if(term_synth != nullptr){
     eprime_synt = ExprPrime(term_synth);
     if(eprime_synt == nullptr)
-      Error("E' missing");
+      this->Error("E' missing");
   }else {
-    Error("Term missing.");
+    this->Error("Term missing.");
   }
 //   std::cout << "<-Exp\n";
   return eprime_synt;
@@ -86,26 +86,26 @@ Node* ParserLL1RecDesc<PolicyDebugLog>::ExprPrime(Node* eprime_inht){
 //   std::cout << "Exp'\n";
   Node* eprime_synt = nullptr;
   
-  if(token_ == Tokenizer::kToken::plus){
-    Accept(kToken::plus, "Expecting +.");
+  if(this->token_ == Tokenizer::kToken::plus){
+    this->Accept(kToken::plus, "Expecting +.");
     Node* t_synt = Term();
     
-    Node* eprime1_inht = NewBinaryOp(eprime_inht, IR_ADD, t_synt);  
+    Node* eprime1_inht = this->NewBinaryOp(eprime_inht, IR_ADD, t_synt);  
     
     //A new E' will op against current op+
     eprime_synt = ExprPrime(eprime1_inht);
     if(eprime_synt == nullptr)
-      Error("E' error");
+      this->Error("E' error");
     
   } else{
     //check Follow(E')
-    if(not(token_ == Tokenizer::kToken::eof 
-        or token_ == Tokenizer::kToken::rpar
-        or token_ == Tokenizer::kToken::rcbr
-        or token_ == Tokenizer::kToken::kwd_if
-        or token_ == Tokenizer::kToken::semicolon
+    if(not(this->token_ == Tokenizer::kToken::eof 
+        or this->token_ == Tokenizer::kToken::rpar
+        or this->token_ == Tokenizer::kToken::rcbr
+        or this->token_ == Tokenizer::kToken::kwd_if
+        or this->token_ == Tokenizer::kToken::semicolon
           ))
-      Error("Expecting eof or rpar.");
+      this->Error("Expecting eof or rpar.");
     eprime_synt = eprime_inht;
   }
   
@@ -120,17 +120,17 @@ Node* ParserLL1RecDesc<PolicyDebugLog>::Factor(){
 //   std::cout << "Fact\n";
   Node* f_synt;
   
-  if(token_ == Tokenizer::kToken::numerical){
-    f_synt = NewLiteral(token_int_value_);
-    Accept(kToken::numerical, "Expecting numerical.");
+  if(this->token_ == Tokenizer::kToken::numerical){
+    f_synt = this->NewLiteral(this->token_int_value_);
+    this->Accept(kToken::numerical, "Expecting numerical.");
   }else //TODO: Accept returning bool
-  if(token_ == Tokenizer::kToken::lpar){
-    Accept(kToken::lpar, "Expecting lpar.");
+  if(this->token_ == Tokenizer::kToken::lpar){
+    this->Accept(kToken::lpar, "Expecting lpar.");
     f_synt = Expr();
-    Accept(kToken::rpar, "Expecting rpar.");
+    this->Accept(kToken::rpar, "Expecting rpar.");
   }else{
-    Error("Expecting lpar.");
-    NextToken();
+    this->Error("Expecting lpar.");
+    this->NextToken();
     return Factor();
   }
   
@@ -144,35 +144,35 @@ Statement* ParserLL1RecDesc<PolicyDebugLog>::Stmt(){
 //   std::cout << "stmt\n";
   Statement* stmt_synt = nullptr;
   
-  if(token_ == Tokenizer::kToken::kwd_if){
+  if(this->token_ == Tokenizer::kToken::kwd_if){
     //if(E){STMTS}
 //     std::cout << "stmt::if\n";
     
-    Accept(kToken::kwd_if, "Expecting if.");
-    Accept(kToken::lpar, "if missing lpar.");
+    this->Accept(kToken::kwd_if, "Expecting if.");
+    this->Accept(kToken::lpar, "if missing lpar.");
     Node* expr_synt = Expr();
-    if(expr_synt == nullptr) Error("if condition wrong.");
+    if(expr_synt == nullptr) this->Error("if condition wrong.");
     
-    Accept(kToken::rpar, "if missing rpar.");
+    this->Accept(kToken::rpar, "if missing rpar.");
     
-    Accept(kToken::lcbr, "if missing lcbr.");
+    this->Accept(kToken::lcbr, "if missing lcbr.");
     std::vector<Statement*> stmts_inht;
     Block* stmts_synt = Stmts(stmts_inht);
-    Accept(kToken::rcbr, "if missing rcbr.");
+    this->Accept(kToken::rcbr, "if missing rcbr.");
     
     Block* ifelse_synt = IfElse();
     
     if(ifelse_synt == nullptr)
-      stmt_synt = NewStmtIf(dynamic_cast<Expression*>(expr_synt), stmts_synt);
+      stmt_synt = this->NewStmtIf(dynamic_cast<Expression*>(expr_synt), stmts_synt);
     else
-      stmt_synt = NewStmtIf(dynamic_cast<Expression*>(expr_synt), stmts_synt, ifelse_synt);
+      stmt_synt = this->NewStmtIf(dynamic_cast<Expression*>(expr_synt), stmts_synt, ifelse_synt);
     
   }else{
 //     std::cout << "stmt::exp stmt\n";
     Node* expr_synt = Expr();
-    stmt_synt       = NewExpressionStatement(expr_synt);
+    stmt_synt       = this->NewExpressionStatement(expr_synt);
     
-    Accept(kToken::semicolon, "Expecting semicolon.");
+    this->Accept(kToken::semicolon, "Expecting semicolon.");
   }
 //   std::cout << "<-stmt\n";
   return stmt_synt;
@@ -182,14 +182,14 @@ template<class PolicyDebugLog>
 Block* ParserLL1RecDesc<PolicyDebugLog>::IfElse(){
 //   std::cout << "IfElse\n";
   Block* ifelse_synt = nullptr;
-  if(token_ == Tokenizer::kToken::kwd_else){
-    Accept(kToken::kwd_else, "else missing kwd_else.");
-    Accept(kToken::lcbr, "else missing lcbr.");
+  if(this->token_ == Tokenizer::kToken::kwd_else){
+    this->Accept(kToken::kwd_else, "else missing kwd_else.");
+    this->Accept(kToken::lcbr, "else missing lcbr.");
     std::vector<Statement*> stmts_inht;
     Block* stmts_synt = Stmts(stmts_inht);
-    if(stmts_synt == nullptr) Error("Statements within else wrong.");
+    if(stmts_synt == nullptr) this->Error("Statements within else wrong.");
     ifelse_synt = stmts_synt;
-    Accept(kToken::rcbr, "else missing rcbr.");
+    this->Accept(kToken::rcbr, "else missing rcbr.");
   }
 //   std::cout << "<-IfElse\n";
   return ifelse_synt;
@@ -200,10 +200,10 @@ Block* ParserLL1RecDesc<PolicyDebugLog>::Stmts(std::vector<Statement*>& stmts_in
 //   std::cout << "stmts\n";
   Block* stmts_synt = nullptr;
   
-  if(  token_ == Tokenizer::kToken::numerical
-    or token_ == Tokenizer::kToken::lpar
-    or token_ == Tokenizer::kToken::plus
-    or token_ == Tokenizer::kToken::kwd_if){
+  if(  this->token_ == Tokenizer::kToken::numerical
+    or this->token_ == Tokenizer::kToken::lpar
+    or this->token_ == Tokenizer::kToken::plus
+    or this->token_ == Tokenizer::kToken::kwd_if){
       Statement* stmt_synth = Stmt();
       
       stmts_inht.push_back(stmt_synth);
@@ -212,14 +212,17 @@ Block* ParserLL1RecDesc<PolicyDebugLog>::Stmts(std::vector<Statement*>& stmts_in
     }
   else{
     //check follow(Stmts)
-    if(not (token_ == Tokenizer::kToken::eof
-         or token_ == Tokenizer::kToken::rcbr))
-      Error("Block not finishing in eof or rcbr");
-    stmts_synt = NewBlock(stmts_inht);
+    if(not (this->token_ == Tokenizer::kToken::eof
+         or this->token_ == Tokenizer::kToken::rcbr))
+      this->Error("Block not finishing in eof or rcbr");
+    stmts_synt = this->NewBlock(stmts_inht);
   }  
 //   std::cout << "<-stmts\n";
   return stmts_synt;
 }
+  
+template class ParserLL1RecDesc<DebugLogNull>;
+template class ParserLL1RecDesc<DebugLogWriteToCout>;  
   
 } //end namespace RecDescent
  

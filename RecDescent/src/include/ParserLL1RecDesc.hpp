@@ -13,12 +13,11 @@ namespace RecDescent{
 using namespace Common;
 using namespace Tokenizer;  
 using namespace GrammarAnalyzer;
-using namespace PolicyDebugLog;
+using namespace DebugLog;
 
 template<class PolicyDebugLog = DebugLogNull>
 class ParserLL1RecDesc 
-  : public BaseParser<PolicyDebugLog>
-  , public PolicyDebugLog{
+  : public BaseParser<PolicyDebugLog>{
   
 public:  
   ParserLL1RecDesc(std::string const &file_name, Block* &programBlock);

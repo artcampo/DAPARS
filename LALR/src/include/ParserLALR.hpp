@@ -15,8 +15,10 @@ namespace LALR{
 using namespace Common;
 using namespace Tokenizer;
 using namespace GrammarAnalyzer;  
+using namespace DebugLog;
   
-class ParserLALR : public LR1::ParserLR1{
+template<class PolicyDebugLog = DebugLogNull>
+class ParserLALR : public LR1::ParserLR1<PolicyDebugLog>{
   
 public:  
   ParserLALR(std::string const &file_name, Block* &programBlock, GrammarLALR& grammar);
