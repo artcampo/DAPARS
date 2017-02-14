@@ -14,12 +14,15 @@ enum class kToken{ eof, numerical, name
                  , kwd_if, kwd_else
                  , kwd_int, kwd_bool
                  , semicolon
+                 , error 
                  
                  //not used by dalang
                  , token_c, token_d   //grammar: dragon
 };
 
-kToken ParseToken(std::vector<char>::const_iterator& current_position) noexcept;
+//pass end_position as reference
+kToken ParseToken(std::vector<char>::const_iterator& current_position
+                , std::vector<char>::const_iterator end_position) noexcept;
 
 std::string str(const kToken& t);
 

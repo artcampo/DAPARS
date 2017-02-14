@@ -7,12 +7,14 @@ namespace Common{
 namespace Tokenizer{
     
 bool 
-ParseNumerical(std::vector<char>::const_iterator& current_position) noexcept{
+ParseNumerical(std::vector<char>::const_iterator& current_position
+             , std::vector<char>::const_iterator end_position) noexcept{
   bool matched = false;
   if(*current_position >= '0' and *current_position <= '9'){
     matched = true;
     ++current_position;
-    while(*current_position >= '0' and *current_position <= '9')
+    while(*current_position >= '0' and *current_position <= '9'
+      and current_position != end_position)
       ++current_position;
   }
   return matched;
@@ -20,43 +22,53 @@ ParseNumerical(std::vector<char>::const_iterator& current_position) noexcept{
 
 bool 
 ParseKeyword(std::vector<char>::const_iterator& current_position
+             , std::vector<char>::const_iterator end_position
            , kToken& t) noexcept{
-  //TODO check +1 still valid
-  if(*current_position == 'i' and *(current_position + 1) == 'f'){
+  int chars_left = std::distance(current_position, end_position);
+  
+  if(chars_left >= 2 and
+    *current_position == 'i' and *(current_position + 1) == 'f'){
     current_position += 2; t = kToken::kwd_if; return true;
   }
-  //TODO check +3 still valid
-  if(    *current_position == 'e'       and *(current_position + 1) == 'l'
+  
+  if( chars_left >= 4 and 
+    *current_position == 'e'       and *(current_position + 1) == 'l'
      and *(current_position + 2) == 's' and *(current_position + 3) == 'e'){
     current_position += 4; t = kToken::kwd_else; return true;
   }  
-  //TODO check +2 still valid
-  if(    *current_position == 'i'       and *(current_position + 1) == 'n'
+  
+  if( chars_left >= 3 and
+    *current_position == 'i'       and *(current_position + 1) == 'n'
      and *(current_position + 2) == 't'){
     current_position += 3; t = kToken::kwd_int; return true;
   }    
   //TODO check +3 still valid
-  if(    *current_position == 'b'       and *(current_position + 1) == 'o'
+  if( chars_left >= 4 and
+    *current_position == 'b'       and *(current_position + 1) == 'o'
      and *(current_position + 2) == 'o' and *(current_position + 3) == 'l'){
     current_position += 4; t = kToken::kwd_bool; return true;
   }
   
-  if(*current_position == '_' and *(current_position + 1) == 'c')
-    { current_position += 2; t = kToken::token_c; return true;}
-  if(*current_position == '_' and *(current_position + 1) == 'd')
-    { current_position += 2; t = kToken::token_d; return true;}  
+  if(chars_left >= 2){
+    if(*current_position == '_' and *(current_position + 1) == 'c')
+      { current_position += 2; t = kToken::token_c; return true;}
+    if(*current_position == '_' and *(current_position + 1) == 'd')
+      { current_position += 2; t = kToken::token_d; return true;}  
+  }
   
   return false;
 }
 
 bool 
-ParseName(std::vector<char>::const_iterator& current_position) noexcept{
+ParseName(std::vector<char>::const_iterator& current_position
+             , std::vector<char>::const_iterator end_position) noexcept{
   //TODO check +1 still valid
   if(*current_position >= 'a' and *current_position <= 'z')
   {
     ++current_position;
-    while( (*current_position >= '0' and *current_position <= '9')
+    while( ((*current_position >= '0' and *current_position <= '9')
         or (*current_position >= 'a' and *current_position <= 'z'))
+         and current_position != end_position)
       ++current_position;
     return true;
   }
@@ -66,7 +78,8 @@ ParseName(std::vector<char>::const_iterator& current_position) noexcept{
 // returns current token starting at current_position, and
 // updates current_position after it
 kToken 
-ParseToken(std::vector<char>::const_iterator& current_position) noexcept{
+ParseToken(std::vector<char>::const_iterator& current_position
+             , std::vector<char>::const_iterator end_position) noexcept{
   if(*current_position == '('){ ++current_position; return kToken::lpar; }
   if(*current_position == ')'){ ++current_position; return kToken::rpar; }
   if(*current_position == '{'){ ++current_position; return kToken::lcbr; }
@@ -74,12 +87,13 @@ ParseToken(std::vector<char>::const_iterator& current_position) noexcept{
   if(*current_position == '+'){ ++current_position; return kToken::plus; }
   if(*current_position == ';'){ ++current_position; return kToken::semicolon; }
 
-  if(ParseNumerical(current_position))              return kToken::numerical;
+  if(ParseNumerical(current_position, end_position)) return kToken::numerical;
   
   kToken t;
-  if(ParseKeyword(current_position, t)) return t;
-  if(ParseName(current_position)) return kToken::name;
-  std::cout << "Tokenizer could not recognize input"; exit(1);
+  if(ParseKeyword(current_position, end_position, t)) return t;
+  if(ParseName(current_position, end_position)) return kToken::name;
+  
+  return kToken::error;
 }
 
 

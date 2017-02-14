@@ -52,12 +52,16 @@ void BaseParser::NextToken() noexcept{
     prev_token_int_value_     = token_int_value_;
     prev_token_string_value_  = token_string_value_;
     previous_position_        = current_position_;
-    token_ = Tokenizer::ParseToken(current_position_);
+    token_ = Tokenizer::ParseToken(current_position_, file_data_.cend());
     if(token_ == Tokenizer::kToken::numerical){
       token_int_value_ = atoi( std::string( previous_position_
                                     , current_position_).c_str());
     }else if(token_ == Tokenizer::kToken::name){
       token_string_value_ = std::string( previous_position_, current_position_);
+    }
+    
+    if(token_ == kToken::error){
+      ErrorCritical("Token not recognized");
     }
   }
   /*

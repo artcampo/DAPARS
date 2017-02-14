@@ -14,18 +14,6 @@ F -> {nam}
 
 ---------------------------------------------------
 Parsing: "(1);"
-NextToken: lpar
-stmt
-Exp
-Fact
-NextToken: num: 1
-Exp
-Fact
-NextToken: rpar
-Exp'
-NextToken: ;
-Exp'
-NextToken: eof
 
 AST
 1
@@ -35,25 +23,6 @@ Literal: 1
 
 ---------------------------------------------------
 Parsing: "1;2;3;"
-NextToken: num: 1
-stmt
-Exp
-Fact
-NextToken: ;
-Exp'
-NextToken: num: 2
-stmt
-Exp
-Fact
-NextToken: ;
-Exp'
-NextToken: num: 3
-stmt
-Exp
-Fact
-NextToken: ;
-Exp'
-NextToken: eof
 
 AST
 1
@@ -67,21 +36,6 @@ Literal: 3
 
 ---------------------------------------------------
 Parsing: "2+3+4;"
-NextToken: num: 2
-stmt
-Exp
-Fact
-NextToken: plus
-Exp'
-NextToken: num: 3
-Fact
-NextToken: plus
-Exp'
-NextToken: num: 4
-Fact
-NextToken: ;
-Exp'
-NextToken: eof
 
 AST
 ( ( 2 + 3 ) + 4 )
@@ -96,25 +50,8 @@ Op: +
 
 ---------------------------------------------------
 Parsing: "2++3+4;"
-NextToken: num: 2
-stmt
-Exp
-Fact
-NextToken: plus
-Exp'
-NextToken: plus
-Fact
 
-Expecting lpar. at: "2++"
-NextToken: num: 3
-Fact
-NextToken: plus
-Exp'
-NextToken: num: 4
-Fact
-NextToken: ;
-Exp'
-NextToken: eof
+Expecting numerical or lpar at: "2++" -> "3+4;"
 Program syntactically incorrect
 
 AST
@@ -130,27 +67,6 @@ Op: +
 
 ---------------------------------------------------
 Parsing: "1+2;3+4;"
-NextToken: num: 1
-stmt
-Exp
-Fact
-NextToken: plus
-Exp'
-NextToken: num: 2
-Fact
-NextToken: ;
-Exp'
-NextToken: num: 3
-stmt
-Exp
-Fact
-NextToken: plus
-Exp'
-NextToken: num: 4
-Fact
-NextToken: ;
-Exp'
-NextToken: eof
 
 AST
 ( 1 + 2 )
@@ -167,37 +83,6 @@ Op: +
 
 ---------------------------------------------------
 Parsing: "1+2;3+4;5+6;"
-NextToken: num: 1
-stmt
-Exp
-Fact
-NextToken: plus
-Exp'
-NextToken: num: 2
-Fact
-NextToken: ;
-Exp'
-NextToken: num: 3
-stmt
-Exp
-Fact
-NextToken: plus
-Exp'
-NextToken: num: 4
-Fact
-NextToken: ;
-Exp'
-NextToken: num: 5
-stmt
-Exp
-Fact
-NextToken: plus
-Exp'
-NextToken: num: 6
-Fact
-NextToken: ;
-Exp'
-NextToken: eof
 
 AST
 ( 1 + 2 )
@@ -232,29 +117,6 @@ F -> {nam}
 
 ---------------------------------------------------
 Parsing: "1; if(2){3;}"
-NextToken: num: 1
-stmt
-Exp
-Fact
-NextToken: ;
-Exp'
-NextToken: if
-stmt
-NextToken: lpar
-NextToken: num: 2
-Exp
-Fact
-NextToken: rpar
-Exp'
-NextToken: lcbr
-NextToken: num: 3
-stmt
-Exp
-Fact
-NextToken: ;
-Exp'
-NextToken: rcbr
-NextToken: eof
 
 AST
 1
@@ -272,35 +134,6 @@ StmtIf:
 
 ---------------------------------------------------
 Parsing: "1; if(2){3;} 4;"
-NextToken: num: 1
-stmt
-Exp
-Fact
-NextToken: ;
-Exp'
-NextToken: if
-stmt
-NextToken: lpar
-NextToken: num: 2
-Exp
-Fact
-NextToken: rpar
-Exp'
-NextToken: lcbr
-NextToken: num: 3
-stmt
-Exp
-Fact
-NextToken: ;
-Exp'
-NextToken: rcbr
-NextToken: num: 4
-stmt
-Exp
-Fact
-NextToken: ;
-Exp'
-NextToken: eof
 
 AST
 1
@@ -320,37 +153,6 @@ Literal: 4
 
 ---------------------------------------------------
 Parsing: "1; if(2){3+4+5;}"
-NextToken: num: 1
-stmt
-Exp
-Fact
-NextToken: ;
-Exp'
-NextToken: if
-stmt
-NextToken: lpar
-NextToken: num: 2
-Exp
-Fact
-NextToken: rpar
-Exp'
-NextToken: lcbr
-NextToken: num: 3
-stmt
-Exp
-Fact
-NextToken: plus
-Exp'
-NextToken: num: 4
-Fact
-NextToken: plus
-Exp'
-NextToken: num: 5
-Fact
-NextToken: ;
-Exp'
-NextToken: rcbr
-NextToken: eof
 
 AST
 1
@@ -372,43 +174,6 @@ StmtIf:
 
 ---------------------------------------------------
 Parsing: "1; if(2){3+4+5;} 6;"
-NextToken: num: 1
-stmt
-Exp
-Fact
-NextToken: ;
-Exp'
-NextToken: if
-stmt
-NextToken: lpar
-NextToken: num: 2
-Exp
-Fact
-NextToken: rpar
-Exp'
-NextToken: lcbr
-NextToken: num: 3
-stmt
-Exp
-Fact
-NextToken: plus
-Exp'
-NextToken: num: 4
-Fact
-NextToken: plus
-Exp'
-NextToken: num: 5
-Fact
-NextToken: ;
-Exp'
-NextToken: rcbr
-NextToken: num: 6
-stmt
-Exp
-Fact
-NextToken: ;
-Exp'
-NextToken: eof
 
 AST
 1
@@ -432,59 +197,10 @@ Literal: 6
 
 ---------------------------------------------------
 Parsing: "1; if(2){if(3){4;if(5){6;}}}"
-NextToken: num: 1
-stmt
-Exp
-Fact
-NextToken: ;
-Exp'
-NextToken: if
-stmt
-NextToken: lpar
-NextToken: num: 2
-Exp
-Fact
-NextToken: rpar
-Exp'
-NextToken: lcbr
-NextToken: if
-stmt
-NextToken: lpar
-NextToken: num: 3
-Exp
-Fact
-NextToken: rpar
-Exp'
-NextToken: lcbr
-NextToken: num: 4
-stmt
-Exp
-Fact
-NextToken: ;
-Exp'
-NextToken: if
-stmt
-NextToken: lpar
-NextToken: num: 5
-Exp
-Fact
-NextToken: rpar
-Exp'
-NextToken: lcbr
-NextToken: num: 6
-stmt
-Exp
-Fact
-NextToken: ;
-Exp'
-NextToken: rcbr
-NextToken: rcbr
 
-Invalid token after if at: "{6;}}"
-NextToken: rcbr
+Invalid token after if at: "if(5){6;}}" -> "}"
 
-Invalid token after if at: "6;}}}"
-NextToken: eof
+Invalid token after if at: "f(5){6;}}}" -> ""
 Program syntactically incorrect
 
 AST
@@ -517,67 +233,10 @@ StmtIf:
 
 ---------------------------------------------------
 Parsing: "1; if(2){if(3){4+5;if(6){7+8;}}}"
-NextToken: num: 1
-stmt
-Exp
-Fact
-NextToken: ;
-Exp'
-NextToken: if
-stmt
-NextToken: lpar
-NextToken: num: 2
-Exp
-Fact
-NextToken: rpar
-Exp'
-NextToken: lcbr
-NextToken: if
-stmt
-NextToken: lpar
-NextToken: num: 3
-Exp
-Fact
-NextToken: rpar
-Exp'
-NextToken: lcbr
-NextToken: num: 4
-stmt
-Exp
-Fact
-NextToken: plus
-Exp'
-NextToken: num: 5
-Fact
-NextToken: ;
-Exp'
-NextToken: if
-stmt
-NextToken: lpar
-NextToken: num: 6
-Exp
-Fact
-NextToken: rpar
-Exp'
-NextToken: lcbr
-NextToken: num: 7
-stmt
-Exp
-Fact
-NextToken: plus
-Exp'
-NextToken: num: 8
-Fact
-NextToken: ;
-Exp'
-NextToken: rcbr
-NextToken: rcbr
 
-Invalid token after if at: "+8;}}"
-NextToken: rcbr
+Invalid token after if at: "(6){7+8;}}" -> "}"
 
-Invalid token after if at: "8;}}}"
-NextToken: eof
+Invalid token after if at: "6){7+8;}}}" -> ""
 Program syntactically incorrect
 
 AST
@@ -614,38 +273,6 @@ StmtIf:
 
 ---------------------------------------------------
 Parsing: "1; if(2){3;}else{4;}"
-NextToken: num: 1
-stmt
-Exp
-Fact
-NextToken: ;
-Exp'
-NextToken: if
-stmt
-NextToken: lpar
-NextToken: num: 2
-Exp
-Fact
-NextToken: rpar
-Exp'
-NextToken: lcbr
-NextToken: num: 3
-stmt
-Exp
-Fact
-NextToken: ;
-Exp'
-NextToken: rcbr
-NextToken: else
-NextToken: lcbr
-NextToken: num: 4
-stmt
-Exp
-Fact
-NextToken: ;
-Exp'
-NextToken: rcbr
-NextToken: eof
 
 AST
 1
@@ -668,54 +295,6 @@ StmtIf:
 
 ---------------------------------------------------
 Parsing: "1; if(2){3;}if(4){5;}else{6;}"
-NextToken: num: 1
-stmt
-Exp
-Fact
-NextToken: ;
-Exp'
-NextToken: if
-stmt
-NextToken: lpar
-NextToken: num: 2
-Exp
-Fact
-NextToken: rpar
-Exp'
-NextToken: lcbr
-NextToken: num: 3
-stmt
-Exp
-Fact
-NextToken: ;
-Exp'
-NextToken: rcbr
-NextToken: if
-stmt
-NextToken: lpar
-NextToken: num: 4
-Exp
-Fact
-NextToken: rpar
-Exp'
-NextToken: lcbr
-NextToken: num: 5
-stmt
-Exp
-Fact
-NextToken: ;
-Exp'
-NextToken: rcbr
-NextToken: else
-NextToken: lcbr
-NextToken: num: 6
-stmt
-Exp
-Fact
-NextToken: ;
-Exp'
-NextToken: rcbr
-NextToken: eof
 
 AST
 1
@@ -745,25 +324,26 @@ StmtIf:
 
 
 ---------------------------------------------------
-Parsing: "int a; int b;"
-NextToken: int
-stmt
-stmt::decl stmt
-Decl
-Type
-NextToken: name: a
-NameList
-NextToken: ;
-NextToken: int
-stmt
-stmt::decl stmt
-Decl
-Type
-NextToken: name: b
-NameList
-NextToken: ;
-NextToken: eof
+Parsing: "int a; int b; bool c;"
 
 AST
+int a 
+int b 
+bool c 
 
+AST nodes
+int a 
+int b 
+bool c 
+
+---------------------------------------------------
+Parsing: "int b c; bool e f;"
+
+AST
+int b int c 
+bool e bool f 
+
+AST nodes
+int b int c 
+bool e bool f 
 
