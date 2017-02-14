@@ -11,10 +11,12 @@ namespace Tokenizer{
 enum class kToken{ eof, numerical, name
                  , lpar, rpar, lcbr, rcbr
                  , plus, minus, mult, div
-                 , token_c, token_d   //grammar: dragon
                  , kwd_if, kwd_else
                  , kwd_int, kwd_bool
                  , semicolon
+                 
+                 //not used by dalang
+                 , token_c, token_d   //grammar: dragon
 };
 
 kToken ParseToken(std::vector<char>::const_iterator& current_position) noexcept;

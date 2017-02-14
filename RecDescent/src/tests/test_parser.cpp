@@ -70,12 +70,11 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3;}else{4;}"), g); 
   parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3;}if(4){5;}else{6;}"), g); 
   
-  parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int a; int b;"), g);
+
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int a; int b; bool c;"), g);
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int a; int b c; bool d;"), g);
+    "int b c; bool e f"), g);
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "bool b1,b2,b3; b1=true; b2=false; b3=b1 and b2;"), g);

@@ -51,7 +51,7 @@ void ParserLL1RecDesc::Prog(){
 
 //TODO: should return Expr*
 Node* ParserLL1RecDesc::Expr(){
-  std::cout << "Exp\n";
+//   std::cout << "Exp\n";
   Node* eprime_synt = nullptr;
   Node* term_synth  = Term();
   
@@ -78,13 +78,11 @@ Node* ParserLL1RecDesc::Term(){
 //                        E'.synt  = E'1.synt
 //       |  empty      ** E'.synt  = E'1.synt
 Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
-  std::cout << "Exp'\n";
+//   std::cout << "Exp'\n";
   Node* eprime_synt = nullptr;
   
-  if(token_ == Tokenizer::kToken::plus){
-    Accept(kToken::plus, "Expecting +.");
+  if(TryAndAccept(kToken::plus)){
     Node* t_synt = Term();
-    
     Node* eprime1_inht = NewBinaryOp(eprime_inht, IR_ADD, t_synt);  
     
     //A new E' will op against current op+
@@ -95,7 +93,7 @@ Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
   } else{
     //check Follow(E')
     if(AcceptEmpty({kToken::rpar, kToken::semicolon}, 
-        "Term not followed by ; or rpar")){ 
+        "Expecting +")){ 
       eprime_synt = eprime_inht;
     }
   }
@@ -107,19 +105,17 @@ Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
 
 // F := ( E ) | numerical
 Node* ParserLL1RecDesc::Factor(){
-  std::cout << "Fact\n";
+//   std::cout << "Fact\n";
   Node* f_synt;
   
-  if(token_ == Tokenizer::kToken::numerical){
-    f_synt = NewLiteral(token_int_value_);
-    Accept(kToken::numerical, "Expecting numerical.");
+  if(TryAndAccept(kToken::numerical)){
+    f_synt = NewLiteral(prev_token_int_value_);
   }else //TODO: Accept returning bool
-  if(token_ == Tokenizer::kToken::lpar){
-    Accept(kToken::lpar, "Expecting lpar.");
+  if(TryAndAccept(kToken::lpar)){
     f_synt = Expr();
     Accept(kToken::rpar, "Expecting rpar.");
   }else{
-    Error("Expecting lpar.");
+    Error("Expecting numerical or lpar");
     NextToken();
     return Factor();
   }
@@ -131,14 +127,12 @@ Node* ParserLL1RecDesc::Factor(){
 
 
 Statement* ParserLL1RecDesc::Stmt(){
-  std::cout << "stmt\n";
+//   std::cout << "stmt\n";
   Statement* stmt_synt = nullptr;
   
-  if(token_ == Tokenizer::kToken::kwd_if){
+  if(TryAndAccept(kToken::kwd_if)){
     //if(E){STMTS}
 //     std::cout << "stmt::if\n";
-    
-    Accept(kToken::kwd_if, "Expecting if.");
     Accept(kToken::lpar, "if missing lpar.");
     Node* expr_synt = Expr();
     if(expr_synt == nullptr) Error("if condition wrong.");
@@ -157,8 +151,8 @@ Statement* ParserLL1RecDesc::Stmt(){
     else
       stmt_synt = NewStmtIf(dynamic_cast<Expression*>(expr_synt), stmts_synt, ifelse_synt);
     
-  }else if(token_ == kToken::kwd_int or token_ == kToken::kwd_bool){
-    std::cout << "stmt::decl stmt\n";
+  }else if(Check({kToken::kwd_int, kToken::kwd_bool})){
+//     std::cout << "stmt::decl stmt\n";
     VarDeclList* decl_synt = Decl();
     stmt_synt = NewDeclStmt(decl_synt);
     Accept(kToken::semicolon, "Expecting semicolon.");
@@ -177,8 +171,8 @@ Statement* ParserLL1RecDesc::Stmt(){
 Block* ParserLL1RecDesc::IfElse(){
 //   std::cout << "IfElse\n";
   Block* ifelse_synt = nullptr;
-  if(token_ == Tokenizer::kToken::kwd_else){
-    Accept(kToken::kwd_else, "else missing kwd_else.");
+  if(TryAndAccept(kToken::kwd_else)){
+    
     Accept(kToken::lcbr, "else missing lcbr.");
     std::vector<Statement*> stmts_inht;
     Block* stmts_synt = Stmts(stmts_inht);
@@ -219,7 +213,7 @@ Block* ParserLL1RecDesc::Stmts(std::vector<Statement*>& stmts_inht){
 }
   
 VarDeclList*  ParserLL1RecDesc::Decl(){
-  std::cout << "Decl\n";
+//   std::cout << "Decl\n";
   const TypeId type = Type();
   std::vector<VarDecl*> name_list_inht;
   VarDeclList* decl_synt = NameList(name_list_inht, type);
@@ -229,13 +223,13 @@ VarDeclList*  ParserLL1RecDesc::Decl(){
 VarDeclList*  
 ParserLL1RecDesc::NameList(std::vector<VarDecl*>& name_list_inht
                          , const TypeId& type_inht ){
-  std::cout << "NameList\n";
+//   std::cout << "NameList\n";
   VarDeclList* name_list_synt;
-  if(token_ == kToken::name){
-    name_list_inht.push_back( new VarDecl(token_string_value_, type_inht) );
-    Accept(kToken::name, "Name missing");
+  if(TryAndAccept(kToken::name)){
+    name_list_inht.push_back( NewVarDecl(prev_token_string_value_, type_inht) );
+    name_list_synt = NameList(name_list_inht, type_inht);
   }else{
-    if(AcceptEmpty({kToken::semicolon}, "Semi colon missing after declaration")){
+    if(AcceptEmpty({kToken::semicolon}, "Name missing")){
       //empty
       name_list_synt = NewVarDeclList(name_list_inht);
     }else{
@@ -247,14 +241,12 @@ ParserLL1RecDesc::NameList(std::vector<VarDecl*>& name_list_inht
 }
                         
 const TypeId  ParserLL1RecDesc::Type(){
-  std::cout << "Type\n";
+//   std::cout << "Type\n";
   TypeId t;
-  if(token_ == kToken::kwd_int){
-    Accept(kToken::kwd_int, "Type missing");
+  if(TryAndAccept(kToken::kwd_int)){
     t = TypeId::Int();
   }
-  else if(token_ == kToken::kwd_bool){
-    Accept(kToken::kwd_bool, "Type missing");
+  else if(TryAndAccept(kToken::kwd_bool)){
     t = TypeId::Bool();
   }
   else{

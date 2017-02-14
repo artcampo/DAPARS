@@ -39,7 +39,12 @@ ParseKeyword(std::vector<char>::const_iterator& current_position
   if(    *current_position == 'b'       and *(current_position + 1) == 'o'
      and *(current_position + 2) == 'o' and *(current_position + 3) == 'l'){
     current_position += 4; t = kToken::kwd_bool; return true;
-  }    
+  }
+  
+  if(*current_position == '_' and *(current_position + 1) == 'c')
+    { current_position += 2; t = kToken::token_c; return true;}
+  if(*current_position == '_' and *(current_position + 1) == 'd')
+    { current_position += 2; t = kToken::token_d; return true;}  
   
   return false;
 }
@@ -68,8 +73,7 @@ ParseToken(std::vector<char>::const_iterator& current_position) noexcept{
   if(*current_position == '}'){ ++current_position; return kToken::rcbr; }  
   if(*current_position == '+'){ ++current_position; return kToken::plus; }
   if(*current_position == ';'){ ++current_position; return kToken::semicolon; }
-  if(*current_position == 'c'){ ++current_position; return kToken::token_c; }
-  if(*current_position == 'd'){ ++current_position; return kToken::token_d; }
+
   if(ParseNumerical(current_position))              return kToken::numerical;
   
   kToken t;
@@ -88,8 +92,6 @@ std::string str(const kToken& t){
     case kToken::rcbr:      return std::string("rcbr"); break;    
     case kToken::plus:      return std::string("plus"); break;
     case kToken::numerical: return std::string("num");  break;
-    case kToken::token_c:   return std::string("c");  break;
-    case kToken::token_d:   return std::string("d");  break;
     case kToken::semicolon: return std::string(";");  break;
     case kToken::kwd_if:    return std::string("if");  break;
     case kToken::kwd_else:  return std::string("else");  break;
@@ -97,6 +99,8 @@ std::string str(const kToken& t){
     case kToken::kwd_bool:  return std::string("bool");  break;
     case kToken::name:      return std::string("name");  break;
     
+    case kToken::token_c:   return std::string("_c");  break;
+    case kToken::token_d:   return std::string("_d");  break;    
     
     default:                break;
   }

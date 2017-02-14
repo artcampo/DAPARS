@@ -49,7 +49,9 @@ void BaseParser::NextToken() noexcept{
     token_ = Tokenizer::kToken::eof;
   }else{
     //(?) store init/end position of current token for conversion
-    previous_position_ = current_position_;
+    prev_token_int_value_     = token_int_value_;
+    prev_token_string_value_  = token_string_value_;
+    previous_position_        = current_position_;
     token_ = Tokenizer::ParseToken(current_position_);
     if(token_ == Tokenizer::kToken::numerical){
       token_int_value_ = atoi( std::string( previous_position_
@@ -58,16 +60,25 @@ void BaseParser::NextToken() noexcept{
       token_string_value_ = std::string( previous_position_, current_position_);
     }
   }
-  
+  /*
   std::cout << "NextToken: " <<  str(token_);
   if(token_ == Tokenizer::kToken::numerical) std::cout << ": " << token_int_value_;
   if(token_ == Tokenizer::kToken::name) std::cout << ": " << token_string_value_;
   std::cout << "\n";
+  */
 }
 
 void BaseParser::Accept(const kToken& token, const std::string& error) noexcept{
   if(token_ != token) Error(error);
   NextToken();  
+}
+
+bool BaseParser::TryAndAccept(const kToken& token) noexcept{
+  if(token_ == token){
+    NextToken();  
+    return true;
+  }
+  return false;
 }
 
 
@@ -107,15 +118,27 @@ void BaseParser::Error(const std::string& message){
   std::cout << "\n" << message << " at: \"";
   
   //Go back N chars
-  std::vector<char>::const_iterator start_of_error = current_position_;
-  for(int i = 0; i < num_characters_to_display_before_error_
-                and start_of_error != file_data_.cbegin(); ++i)
-    --start_of_error;
   
-  while(start_of_error != current_position_){
-    std::cout << *start_of_error;
-    ++start_of_error;
+  {
+    std::vector<char>::const_iterator start_of_error = current_position_;
+    for(int i = 0; i < num_characters_to_display_before_error_
+                  and start_of_error != file_data_.cbegin(); ++i)
+      --start_of_error;
+  
+    while(start_of_error != current_position_){
+      std::cout << *start_of_error;
+      ++start_of_error;
+    }
+  }  
+  std::cout << "\" -> \""; 
+  //Go forward K chars
+  {
+    std::vector<char>::const_iterator start_of_error = current_position_;
+    for(int i = 0; i < num_characters_to_display_after_error_ and
+        start_of_error != file_data_.cend(); ++start_of_error)
+      std::cout << *start_of_error;
   }
+  
   std::cout << "\"" << std::endl;
 }
 
@@ -173,6 +196,11 @@ DeclStmt* BaseParser::NewDeclStmt(VarDeclList* const list){
 VarDeclList* BaseParser::NewVarDeclList(const std::vector<VarDecl*>& list){
   VarDeclList* l = new VarDeclList(list);
   return l;
+}
+
+VarDecl* BaseParser::NewVarDecl(const std::string& name, const TypeId& typeId){
+  VarDecl* d = new VarDecl(name, typeId);
+  return d;
 }
 
 } //end namespace Common
