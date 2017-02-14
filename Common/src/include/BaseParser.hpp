@@ -4,18 +4,14 @@
 #include <string>
 #include <fstream>
 #include "Tokenizer.hpp"
+#include "AST.hpp"
 
-class Block;
-class Node;
-class Expression;
-class ExpressionStatement;
-class Literal;
-class Statement;
-class StmtIf;
 
 namespace Common{
 
 using namespace Tokenizer;
+using namespace Compiler;
+using namespace AST;  
 
 class BaseParser{
   
@@ -37,12 +33,15 @@ protected:
   
   Tokenizer::kToken token_;
   int               token_int_value_;
+  std::string       token_string_value_;
   
   int               num_errors_;
   
   void Skip() noexcept;
   
   void Accept(const kToken& token, const std::string& error) noexcept;
+  bool AcceptEmpty(const std::vector<kToken>& tokens
+                 , const std::string& error) noexcept;
   void NextToken() noexcept;
   
   //Error handling
@@ -56,7 +55,8 @@ protected:
   Block* NewBlock(const std::vector<Statement*>& stmts_inht);
   StmtIf* NewStmtIf(Expression* const condition, Block* block1);
   StmtIf* NewStmtIf(Expression* const condition, Block* block1, Block* block2);
-  
+  DeclStmt* NewDeclStmt(VarDeclList* const list);
+  VarDeclList* NewVarDeclList(const std::vector<VarDecl*>& list);
 };
 
 } //end namespace Common

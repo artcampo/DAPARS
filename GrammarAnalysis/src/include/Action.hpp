@@ -11,7 +11,7 @@ namespace GrammarAnalyzer{
     enum class kAction{ none, shift, reduce, accept };
     
     kAction action_;
-    StateId   next_state_;   
+    StateId next_state_;   
     RuleId  rule_id_;
     
     Action(): action_(kAction::none){};

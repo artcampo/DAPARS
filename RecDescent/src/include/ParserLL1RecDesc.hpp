@@ -6,7 +6,7 @@
 #include "BaseParser.hpp"
 #include "Tokenizer.hpp"
 #include "Grammar.hpp"
-
+#include "Types.hpp"
 
 namespace RecDescent{
   
@@ -36,7 +36,11 @@ private:
   Block*      Stmts(std::vector<Statement*>& stmts_inht);
   Statement*  Stmt();
   Block*      IfElse();
-  Decl*  Decl();
+  
+  //Variables declaration
+  VarDeclList*  Decl();
+  VarDeclList*  NameList(std::vector<VarDecl*>& name_list_inht, const TypeId& type_inht );
+  const TypeId  Type();
 
   
 };

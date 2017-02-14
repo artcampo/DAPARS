@@ -54,10 +54,12 @@ void BaseParser::NextToken() noexcept{
     if(token_ == Tokenizer::kToken::numerical){
       token_int_value_ = atoi( std::string( previous_position_
                                     , current_position_).c_str());
+    }else if(token_ == Tokenizer::kToken::name){
+      token_string_value_ = std::string( previous_position_, current_position_);
     }
   }
   
-//   std::cout << "NextToken: " <<  str(token_);
+   std::cout << "NextToken: " <<  str(token_);
 //   if(token_ == Tokenizer::kToken::numerical) std::cout << ": " << token_int_value_;
 //   std::cout << "\n";
 }
@@ -65,6 +67,15 @@ void BaseParser::NextToken() noexcept{
 void BaseParser::Accept(const kToken& token, const std::string& error) noexcept{
   if(token_ != token) Error(error);
   NextToken();  
+}
+
+
+bool BaseParser::AcceptEmpty(const std::vector<kToken>& tokens
+                           , const std::string& error) noexcept{
+  for(const auto it : tokens)
+    if(token_ == it) return true;
+  Error(error);
+  return false;
 }
 
 void BaseParser::Skip() noexcept{
@@ -145,6 +156,16 @@ StmtIf* BaseParser::NewStmtIf(Expression* const condition, Block* block1){
 StmtIf* BaseParser::NewStmtIf(Expression* const condition, Block* block1, Block* block2){
   StmtIf* new_stmt_if = new StmtIf(condition, block1, block2);
   return new_stmt_if;
+}
+
+DeclStmt* BaseParser::NewDeclStmt(VarDeclList* const list){
+  DeclStmt* s = new DeclStmt(list);
+  return s;
+}
+
+VarDeclList* BaseParser::NewVarDeclList(const std::vector<VarDecl*>& list){
+  VarDeclList* l = new VarDeclList(list);
+  return l;
 }
 
 } //end namespace Common

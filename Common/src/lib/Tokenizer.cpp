@@ -44,6 +44,20 @@ ParseKeyword(std::vector<char>::const_iterator& current_position
   return false;
 }
 
+bool 
+ParseName(std::vector<char>::const_iterator& current_position) noexcept{
+  //TODO check +1 still valid
+  if(*current_position >= 'a' and *current_position <= 'z')
+  {
+    ++current_position;
+    while( (*current_position >= '0' and *current_position <= '9')
+        or (*current_position >= 'a' and *current_position <= 'z'))
+      ++current_position;
+    return true;
+  }
+  return false;
+}
+
 // returns current token starting at current_position, and
 // updates current_position after it
 kToken 
@@ -60,6 +74,7 @@ ParseToken(std::vector<char>::const_iterator& current_position) noexcept{
   
   kToken t;
   if(ParseKeyword(current_position, t)) return t;
+  if(ParseName(current_position)) return kToken::name;
   std::cout << "Tokenizer could not recognize input"; exit(1);
 }
 

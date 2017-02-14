@@ -57,10 +57,6 @@ Node* ParserLL1RecDesc::Expr(){
   
   if(term_synth != nullptr){
     eprime_synt = ExprPrime(term_synth);
-    if(eprime_synt == nullptr)
-      Error("E' missing");
-  }else {
-    Error("Term missing.");
   }
 //   std::cout << "<-Exp\n";
   return eprime_synt;
@@ -94,14 +90,10 @@ Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
     
   } else{
     //check Follow(E')
-    if(not(token_ == Tokenizer::kToken::eof 
-        or token_ == Tokenizer::kToken::rpar
-        or token_ == Tokenizer::kToken::rcbr
-        or token_ == Tokenizer::kToken::kwd_if
-        or token_ == Tokenizer::kToken::semicolon
-          ))
-      Error("Expecting eof or rpar.");
-    eprime_synt = eprime_inht;
+    if(not AcceptEmpty({kToken::rpar, kToken::semicolon}, 
+        "Term not followed by ; or rpar")){
+      eprime_synt = eprime_inht;
+    }
   }
   
 //   std::cout << "<-Exp'\n";
@@ -135,7 +127,7 @@ Node* ParserLL1RecDesc::Factor(){
 
 
 Statement* ParserLL1RecDesc::Stmt(){
-//   std::cout << "stmt\n";
+  std::cout << "stmt\n";
   Statement* stmt_synt = nullptr;
   
   if(token_ == Tokenizer::kToken::kwd_if){
@@ -162,7 +154,10 @@ Statement* ParserLL1RecDesc::Stmt(){
       stmt_synt = NewStmtIf(dynamic_cast<Expression*>(expr_synt), stmts_synt, ifelse_synt);
     
   }else if(token_ == kToken::kwd_int or token_ == kToken::kwd_bool){
-    stmt_synt = Decl();
+    std::cout << "stmt::decl stmt\n";
+    VarDeclList* decl_synt = Decl();
+    stmt_synt = NewDeclStmt(decl_synt);
+    Accept(kToken::semicolon, "Expecting semicolon.");
   }
   else{
 //     std::cout << "stmt::exp stmt\n";
@@ -186,6 +181,11 @@ Block* ParserLL1RecDesc::IfElse(){
     if(stmts_synt == nullptr) Error("Statements within else wrong.");
     ifelse_synt = stmts_synt;
     Accept(kToken::rcbr, "else missing rcbr.");
+  }else{
+    AcceptEmpty( {kToken::kwd_bool, kToken::eof, kToken::kwd_if
+                , kToken::kwd_int, kToken::lpar, kToken::name
+                , kToken::numerical},
+                "Invalid token after if");
   }
 //   std::cout << "<-IfElse\n";
   return ifelse_synt;
@@ -195,25 +195,66 @@ Block* ParserLL1RecDesc::Stmts(std::vector<Statement*>& stmts_inht){
 //   std::cout << "stmts\n";
   Block* stmts_synt = nullptr;
   
-  if(  token_ == Tokenizer::kToken::numerical
-    or token_ == Tokenizer::kToken::lpar
-    or token_ == Tokenizer::kToken::plus
-    or token_ == Tokenizer::kToken::kwd_if){
-      Statement* stmt_synth = Stmt();
-      
-      stmts_inht.push_back(stmt_synth);
-      stmts_synt = Stmts(stmts_inht);
-
-    }
-  else{
+  Statement* stmt_synth = Stmt();
+  if( stmt_synth != nullptr){
+    stmts_inht.push_back(stmt_synth);
+    stmts_synt = Stmts(stmts_inht);
+  }else{
     //check follow(Stmts)
-    if(not (token_ == Tokenizer::kToken::eof
-         or token_ == Tokenizer::kToken::rcbr))
-      Error("Block not finishing in eof or rcbr");
-    stmts_synt = NewBlock(stmts_inht);
+    if(not AcceptEmpty({kToken::eof, kToken::rcbr}, "Block not finishing in eof or rcbr")){
+      stmts_synt = NewBlock(stmts_inht);
+    }
   }  
 //   std::cout << "<-stmts\n";
   return stmts_synt;
+}
+  
+VarDeclList*  ParserLL1RecDesc::Decl(){
+  std::cout << "Decl\n";
+  const TypeId type = Type();
+  std::vector<VarDecl*> name_list_inht;
+  VarDeclList* decl_synt = NameList(name_list_inht, type);
+  return decl_synt;
+}
+
+VarDeclList*  
+ParserLL1RecDesc::NameList(std::vector<VarDecl*>& name_list_inht
+                         , const TypeId& type_inht ){
+  std::cout << "NameList\n";
+  VarDeclList* name_list_synt;
+  if(token_ == kToken::name){
+    name_list_inht.push_back( new VarDecl(token_string_value_, type_inht) );
+    Accept(kToken::name, "Name missing");
+  }else{
+    if(token_ == kToken::semicolon){
+      //empty
+      Accept(kToken::semicolon, "Semi colon missing after declaration");
+      name_list_synt = NewVarDeclList(name_list_inht);
+    }else{
+      Error("Semi colon missing after declaration");
+      NextToken(); //on error advance token 
+      return NameList(name_list_inht, type_inht);
+    }
+  }
+  return name_list_synt;
+}
+                        
+const TypeId  ParserLL1RecDesc::Type(){
+  std::cout << "Type\n";
+  TypeId t;
+  if(token_ == kToken::kwd_int){
+    Accept(kToken::kwd_int, "Type missing");
+    t = TypeId::Int();
+  }
+  else if(token_ == kToken::kwd_bool){
+    Accept(kToken::kwd_bool, "Type missing");
+    t = TypeId::Bool();
+  }
+  else{
+    Error("Type missing");
+    t = TypeId::Int();
+  }
+  return t;
 }
   
 } //end namespace RecDescent

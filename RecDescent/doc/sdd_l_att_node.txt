@@ -22,7 +22,7 @@ STMT  := if(E){STMTS} IFELSE  ** STMT.synt =
       
 L-attributed SDD for VarDecl creation.
 
-DECL  := TYPE NAME_LIST ** DECL.synt      = New VarDeclList
+DECL  := TYPE NAME_LIST ** DECL.synt      = NAME_LIST.synt
                         ** NAME_LIST.inht = {}, TYPE.synt
 
 TYPE  := int      ** TYPE.synt = typeId(int)
