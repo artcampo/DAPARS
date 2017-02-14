@@ -42,7 +42,10 @@ protected:
   void Accept(const kToken& token, const std::string& error) noexcept;
   bool AcceptEmpty(const std::vector<kToken>& tokens
                  , const std::string& error) noexcept;
+  bool Check(const std::vector<kToken>& tokens) const noexcept;
+                 
   void NextToken() noexcept;
+  
   
   //Error handling
   void Error(const std::string& message);

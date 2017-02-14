@@ -59,9 +59,10 @@ void BaseParser::NextToken() noexcept{
     }
   }
   
-   std::cout << "NextToken: " <<  str(token_);
-//   if(token_ == Tokenizer::kToken::numerical) std::cout << ": " << token_int_value_;
-//   std::cout << "\n";
+  std::cout << "NextToken: " <<  str(token_);
+  if(token_ == Tokenizer::kToken::numerical) std::cout << ": " << token_int_value_;
+  if(token_ == Tokenizer::kToken::name) std::cout << ": " << token_string_value_;
+  std::cout << "\n";
 }
 
 void BaseParser::Accept(const kToken& token, const std::string& error) noexcept{
@@ -75,6 +76,12 @@ bool BaseParser::AcceptEmpty(const std::vector<kToken>& tokens
   for(const auto it : tokens)
     if(token_ == it) return true;
   Error(error);
+  return false;
+}
+
+bool BaseParser::Check(const std::vector<kToken>& tokens) const noexcept{
+  for(const auto it : tokens)
+    if(token_ == it) return true;
   return false;
 }
 

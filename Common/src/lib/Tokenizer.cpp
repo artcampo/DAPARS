@@ -95,6 +95,8 @@ std::string str(const kToken& t){
     case kToken::kwd_else:  return std::string("else");  break;
     case kToken::kwd_int:   return std::string("int");  break;
     case kToken::kwd_bool:  return std::string("bool");  break;
+    case kToken::name:      return std::string("name");  break;
+    
     
     default:                break;
   }

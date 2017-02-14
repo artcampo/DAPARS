@@ -51,12 +51,16 @@ void ParserLL1RecDesc::Prog(){
 
 //TODO: should return Expr*
 Node* ParserLL1RecDesc::Expr(){
-//   std::cout << "Exp\n";
+  std::cout << "Exp\n";
   Node* eprime_synt = nullptr;
   Node* term_synth  = Term();
   
   if(term_synth != nullptr){
     eprime_synt = ExprPrime(term_synth);
+    if(eprime_synt == nullptr)
+      Error("E' missing");
+  }else {
+    Error("Term missing.");
   }
 //   std::cout << "<-Exp\n";
   return eprime_synt;
@@ -74,7 +78,7 @@ Node* ParserLL1RecDesc::Term(){
 //                        E'.synt  = E'1.synt
 //       |  empty      ** E'.synt  = E'1.synt
 Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
-//   std::cout << "Exp'\n";
+  std::cout << "Exp'\n";
   Node* eprime_synt = nullptr;
   
   if(token_ == Tokenizer::kToken::plus){
@@ -90,8 +94,8 @@ Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
     
   } else{
     //check Follow(E')
-    if(not AcceptEmpty({kToken::rpar, kToken::semicolon}, 
-        "Term not followed by ; or rpar")){
+    if(AcceptEmpty({kToken::rpar, kToken::semicolon}, 
+        "Term not followed by ; or rpar")){ 
       eprime_synt = eprime_inht;
     }
   }
@@ -103,7 +107,7 @@ Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
 
 // F := ( E ) | numerical
 Node* ParserLL1RecDesc::Factor(){
-//   std::cout << "Fact\n";
+  std::cout << "Fact\n";
   Node* f_synt;
   
   if(token_ == Tokenizer::kToken::numerical){
@@ -195,15 +199,20 @@ Block* ParserLL1RecDesc::Stmts(std::vector<Statement*>& stmts_inht){
 //   std::cout << "stmts\n";
   Block* stmts_synt = nullptr;
   
-  Statement* stmt_synth = Stmt();
-  if( stmt_synth != nullptr){
-    stmts_inht.push_back(stmt_synth);
-    stmts_synt = Stmts(stmts_inht);
-  }else{
-    //check follow(Stmts)
-    if(not AcceptEmpty({kToken::eof, kToken::rcbr}, "Block not finishing in eof or rcbr")){
-      stmts_synt = NewBlock(stmts_inht);
+  //STMTS => bool {empty} if int ( {nam} {num} 
+  if( Check({kToken::kwd_if, kToken::kwd_int, kToken::kwd_bool, kToken::lpar
+          , kToken::numerical, kToken::name})){
+      Statement* stmt_synth = Stmt();
+      
+      stmts_inht.push_back(stmt_synth);
+      stmts_synt = Stmts(stmts_inht);
+
     }
+  else{
+    //check follow(Stmts)
+    if(AcceptEmpty({kToken::eof, kToken::rcbr}, "Block not finishing in eof or rcbr")){
+      stmts_synt = NewBlock(stmts_inht);
+    }    
   }  
 //   std::cout << "<-stmts\n";
   return stmts_synt;
@@ -226,12 +235,10 @@ ParserLL1RecDesc::NameList(std::vector<VarDecl*>& name_list_inht
     name_list_inht.push_back( new VarDecl(token_string_value_, type_inht) );
     Accept(kToken::name, "Name missing");
   }else{
-    if(token_ == kToken::semicolon){
+    if(AcceptEmpty({kToken::semicolon}, "Semi colon missing after declaration")){
       //empty
-      Accept(kToken::semicolon, "Semi colon missing after declaration");
       name_list_synt = NewVarDeclList(name_list_inht);
     }else{
-      Error("Semi colon missing after declaration");
       NextToken(); //on error advance token 
       return NameList(name_list_inht, type_inht);
     }

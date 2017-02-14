@@ -38,5 +38,8 @@ Goto table 12
 | 0 | 0 | 0 |
 | 0 | 0 | 0 |
 | 0 | 0 | 0 |
+NextToken: lpar
+NextToken: rpar
+NextToken: eof
 Parsed: PAIR -> ( ) 
 Parsed: LIST -> PAIR 
