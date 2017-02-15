@@ -241,7 +241,7 @@ ParserLL1RecDesc::NameList(std::vector<VarDecl*>& name_list_inht
     name_list_inht.push_back( NewVarDecl(prev_token_string_value_, type_inht) );
     name_list_synt = NameList(name_list_inht, type_inht);
     if( not comp_unit_.scope_->RegDecl(prev_token_string_value_, type_inht)){
-      Error("Symbol already declared.");
+      Error("[err:15] Symbol already declared.");
     }
   }else{
     if(AcceptEmpty({kToken::semicolon}, "Name missing")){
@@ -274,7 +274,6 @@ const TypeId  ParserLL1RecDesc::Type(){
   return t;
 }
 
-//next error:15
 
 } //end namespace RecDescent
 

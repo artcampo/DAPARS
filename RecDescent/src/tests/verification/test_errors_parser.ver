@@ -88,6 +88,15 @@ Expecting numerical or lpar at: "1+(;" -> ""
 [err:3] Block not finishing in eof or rcbr at: "1+(;" -> ""
 
 ------------------------------------------------------------------
+Parsing: "int a; int b; int a;"
+[err:15] Symbol already declared. at: " b; int a;" -> ""
+
+AST dump:
+int a 
+int b 
+int a 
+
+------------------------------------------------------------------
 Parsing: "1+(2));"
 [err:] assignment missing '=' at: "1+(2))" -> ";"
 [err:3] Block not finishing in eof or rcbr at: "1+(2))" -> ";"

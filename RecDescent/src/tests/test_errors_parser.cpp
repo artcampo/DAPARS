@@ -65,6 +65,10 @@ int main()
 
   parse<Grammar,ParserLL1RecDesc>( std::string("1+(;"), g);
 
+  //error:15
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "int a; int b; int a;"), g);
+
   //Chaotic cluster fuck
   parse<Grammar,ParserLL1RecDesc>( std::string("1+(2));"), g);
   parse<Grammar,ParserLL1RecDesc>( std::string("1++2;"), g);

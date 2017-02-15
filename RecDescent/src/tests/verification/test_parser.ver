@@ -119,6 +119,9 @@ bool c
 
 ---------------------------------------------------
 Parsing: "int b c d; bool e f;"
+[err:15] Symbol already declared. at: "int b c d;" -> " bool e f;"
+[err:15] Symbol already declared. at: "int b c d;" -> " bool e f;"
+[err:15] Symbol already declared. at: " bool e f;" -> ""
 
 AST pretty:
 int b int c int d 
@@ -160,6 +163,8 @@ Assign
 
 ---------------------------------------------------
 Parsing: "int a b c; b=1; c=2; a=(1+b+c);"
+[err:15] Symbol already declared. at: "int a b c;" -> " b=1; c=2; a=(1+b+c);"
+[err:15] Symbol already declared. at: "int a b c;" -> " b=1; c=2; a=(1+b+c);"
 
 AST pretty:
 int a int b int c 
@@ -185,6 +190,7 @@ Assign
 
 ---------------------------------------------------
 Parsing: "int a; int b; int a;"
+[err:15] Symbol already declared. at: " b; int a;" -> ""
 
 AST pretty:
 int a 
