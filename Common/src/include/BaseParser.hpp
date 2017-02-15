@@ -54,15 +54,18 @@ protected:
   void ErrorCritical(const std::string& message);
   
   //Creation of AST nodes with error checking
-  Node*         NewBinaryOp(Node* const lhs, const int op, Node* const rhs);
-  ExpressionStatement* NewExpressionStatement(Node* const node_expr);
-  Node*         NewLiteral(const uint32_t &value);
+//   ExprStmt*     NewExprStmt(Expr* const node_expr);
+  BinaryOp*     NewBinaryOp(Expr* const lhs, const int op, Expr* const rhs);
+  Var*          NewVar(const std::string& name);
+  
+  Literal*      NewLiteral(const uint32_t &value);
   Block*        NewBlock(const std::vector<Statement*>& stmts_inht);
-  StmtIf*       NewStmtIf(Expression* const condition, Block* block1);
-  StmtIf*       NewStmtIf(Expression* const condition, Block* block1, Block* block2);
+  IfStmt*       NewIfStmt(Expr* const condition, Block* block1);
+  IfStmt*       NewIfStmt(Expr* const condition, Block* block1, Block* block2);
   DeclStmt*     NewDeclStmt(VarDeclList* const list);
   VarDeclList*  NewVarDeclList(const std::vector<VarDecl*>& list);
   VarDecl*      NewVarDecl(const std::string& name, const TypeId& typeId);
+  AssignStmt*   NewAssignStmt(Expr* const lhs, Expr* const rhs);
   
 private:
   int               num_errors_;

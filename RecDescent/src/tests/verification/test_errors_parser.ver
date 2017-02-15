@@ -27,7 +27,7 @@ Parsing: "1; )"
 
 ------------------------------------------------------------------
 Parsing: "1 )"
-[err:4] Expecting semicolon after expression. at: "1 )" -> ""
+[err:4] Expecting semicolon after Expr. at: "1 )" -> ""
 [err:3] Block not finishing in eof or rcbr at: "1 )" -> ""
 
 ------------------------------------------------------------------
@@ -81,7 +81,7 @@ Expecting numerical or lpar at: "1+(;" -> ""
 
 ------------------------------------------------------------------
 Parsing: "1+(2));"
-[err:4] Expecting semicolon after expression. at: "1+(2))" -> ";"
+[err:4] Expecting semicolon after Expr. at: "1+(2))" -> ";"
 [err:3] Block not finishing in eof or rcbr at: "1+(2))" -> ";"
 
 ------------------------------------------------------------------

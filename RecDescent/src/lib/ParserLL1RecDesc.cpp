@@ -77,7 +77,7 @@ Statement* ParserLL1RecDesc::Stmt(){
     //if(E){STMTS}
 //     std::cout << "stmt::if\n";
     if(not Accept(kToken::lpar, "[err:6] if missing lpar.")) return nullptr;
-    Node* expr_synt = Expr();
+    Node* expr_synt = Exprs();
     if(expr_synt == nullptr) Error("[err:7] if condition wrong.");
     
     if(not Accept(kToken::rpar, "[err:8] if missing rpar.")) return nullptr;
@@ -94,9 +94,9 @@ Statement* ParserLL1RecDesc::Stmt(){
     Block* ifelse_synt = IfElse();
     
     if(ifelse_synt == nullptr)
-      stmt_synt = NewStmtIf(dynamic_cast<Expression*>(expr_synt), stmts_synt);
+      stmt_synt = NewIfStmt(dynamic_cast<Expr*>(expr_synt), stmts_synt);
     else
-      stmt_synt = NewStmtIf(dynamic_cast<Expression*>(expr_synt), stmts_synt, ifelse_synt);
+      stmt_synt = NewIfStmt(dynamic_cast<Expr*>(expr_synt), stmts_synt, ifelse_synt);
     
   }else if(Check({kToken::kwd_int, kToken::kwd_bool})){
 //     std::cout << "stmt::decl stmt\n";
@@ -104,22 +104,28 @@ Statement* ParserLL1RecDesc::Stmt(){
     stmt_synt = NewDeclStmt(decl_synt);
     Accept(kToken::semicolon, "[err:5] Expecting semicolon after variable declaration.");
   }
-  else{
+  else if(Check({kToken::lpar, kToken::name, kToken::numerical})){
 //     std::cout << "stmt::exp stmt\n";
-    Node* expr_synt = Expr();
-    stmt_synt       = NewExpressionStatement(expr_synt);
+    Expr* expr_lhs  = Exprs();
+    if(not Accept(kToken::equality, "[err:] assignment missing '='")){
+      return nullptr;
+    }
+    Expr* expr_rhs  = Exprs();
+    stmt_synt       = NewAssignStmt(expr_lhs, expr_rhs);
     
-    Accept(kToken::semicolon, "[err:4] Expecting semicolon after expression.");
+    Accept(kToken::semicolon, "[err:4] Expecting semicolon after Expr.");
+  }else{
+    Error("Expr wrong");
   }
 //   std::cout << "<-stmt\n";
   return stmt_synt;
 }
 
 //TODO: should return Expr*
-Node* ParserLL1RecDesc::Expr(){
+Expr* ParserLL1RecDesc::Exprs(){
 //   std::cout << "Exp\n";
-  Node* eprime_synt = nullptr;
-  Node* term_synth  = Term();
+  Expr* eprime_synt = nullptr;
+  Expr* term_synth  = Term();
   
   if(term_synth != nullptr){
     eprime_synt = ExprPrime(term_synth);
@@ -134,7 +140,7 @@ Node* ParserLL1RecDesc::Expr(){
 }
 
 
-Node* ParserLL1RecDesc::Term(){
+Expr* ParserLL1RecDesc::Term(){
 //   std::cout << "T\n";
   return Factor();
 }
@@ -144,13 +150,13 @@ Node* ParserLL1RecDesc::Term(){
 // E'    := + T E'     ** E'1.inht = new Node(+, E'.inht, T.node)
 //                        E'.synt  = E'1.synt
 //       |  empty      ** E'.synt  = E'1.synt
-Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
+Expr* ParserLL1RecDesc::ExprPrime(Expr* eprime_inht){
 //   std::cout << "Exp'\n";
-  Node* eprime_synt = nullptr;
+  Expr* eprime_synt = nullptr;
   
   if(TryAndAccept(kToken::plus)){
-    Node* t_synt = Term();
-    Node* eprime1_inht = NewBinaryOp(eprime_inht, IR_ADD, t_synt);  
+    Expr* t_synt = Term();
+    Expr* eprime1_inht = NewBinaryOp(eprime_inht, IR_ADD, t_synt);  
     
     //A new E' will op against current op+
     eprime_synt = ExprPrime(eprime1_inht);
@@ -159,7 +165,7 @@ Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
     
   } else{
     //check Follow(E')
-    if(AcceptEmpty({kToken::rpar, kToken::semicolon}, 
+    if(AcceptEmpty({kToken::rpar, kToken::semicolon, kToken::equality}, 
         "Expecting +")){ 
       eprime_synt = eprime_inht;
     }
@@ -171,15 +177,16 @@ Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
 
 
 // F := ( E ) | numerical
-Node* ParserLL1RecDesc::Factor(){
+Expr* ParserLL1RecDesc::Factor(){
 //   std::cout << "Fact\n";
-  Node* f_synt;
+  Expr* f_synt;
   
   if(TryAndAccept(kToken::numerical)){
     f_synt = NewLiteral(prev_token_int_value_);
-  }else //TODO: Accept returning bool
-  if(TryAndAccept(kToken::lpar)){
-    f_synt = Expr();
+  }else if(TryAndAccept(kToken::name)){
+    f_synt = NewVar(prev_token_string_value_);
+  }else if(TryAndAccept(kToken::lpar)){
+    f_synt = Exprs();
     Accept(kToken::rpar, "[err:14] Expecting rpar.");
   }else{
     //Error recover
@@ -210,7 +217,7 @@ Block* ParserLL1RecDesc::IfElse(){
   }else{
     AcceptEmpty( {kToken::kwd_bool, kToken::eof, kToken::kwd_if
                 , kToken::kwd_int, kToken::lpar, kToken::name
-                , kToken::numerical},
+                , kToken::numerical, kToken::rcbr},
                 "Invalid token after if");
   }
 //   std::cout << "<-IfElse\n";

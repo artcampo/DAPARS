@@ -38,7 +38,7 @@ void CreateGrammarDalang(G& g){
   const Symbol IFELSE = g.AddNonTerminal("IFELSE");
   const Symbol DECL   = g.AddNonTerminal("DECL");
   
-  //Expressions
+  //Exprs
   const Symbol E      = g.AddNonTerminal("E");
   const Symbol EP     = g.AddNonTerminal("E'");
   const Symbol T      = g.AddNonTerminal("T");
@@ -58,7 +58,7 @@ void CreateGrammarDalang(G& g){
   g.AddRule(Rule(STMTS,  {STMT, STMTS}));
   g.AddRule(Rule(STMTS,  {empty}));
   
-  g.AddRule(Rule(STMT,   {E, equl, E}));          
+  g.AddRule(Rule(STMT,   {E, equl, E, semi}));          
   g.AddRule(Rule(STMT,   {DECL, semi}));
   g.AddRule(Rule(STMT,   {kwd_if, lpar, E, rpar, lcbr, STMTS, rcbr, IFELSE}));
   
@@ -73,7 +73,16 @@ void CreateGrammarDalang(G& g){
   g.AddRule(Rule(NAME_LIST, {name, NAME_LIST}));
   g.AddRule(Rule(NAME_LIST, {empty}));
   
-  //Expressions
+  //Exprs
+  g.AddRule(Rule(E,  {T, EP}));
+  g.AddRule(Rule(EP, {plus, T, EP}));
+//   g.AddRule(Rule(EP, {minu, T, EP}));
+  g.AddRule(Rule(EP, {empty}));
+  g.AddRule(Rule(T,  {F}));
+  g.AddRule(Rule(F,  {lpar, E, rpar}));
+  g.AddRule(Rule(F,  {numr}));
+  g.AddRule(Rule(F,  {name}));  
+  /*
   g.AddRule(Rule(E,  {T, EP}));
   g.AddRule(Rule(EP, {plus, T, EP}));
   g.AddRule(Rule(EP, {minu, T, EP}));
@@ -85,7 +94,7 @@ void CreateGrammarDalang(G& g){
   g.AddRule(Rule(F,  {lpar, E, rpar}));
   g.AddRule(Rule(F,  {numr}));
   g.AddRule(Rule(F,  {name}));
-  
+  */
   
   //Anaylze
   g.Analyze();

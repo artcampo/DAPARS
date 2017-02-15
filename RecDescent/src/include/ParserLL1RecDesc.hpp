@@ -26,11 +26,11 @@ private:
   
   void  Prog();
   
-  //Expressions
-  Node* Expr();
-  Node* ExprPrime(Node* eprime_inht); // make it const
-  Node* Term();
-  Node* Factor();
+  //Exprs
+  Expr* Exprs();
+  Expr* ExprPrime(Expr* eprime_inht); // make it const
+  Expr* Term();
+  Expr* Factor();
   
   //Control Flow
   Block*      Stmts(std::vector<Statement*>& stmts_inht);

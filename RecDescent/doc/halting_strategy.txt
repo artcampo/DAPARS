@@ -7,7 +7,7 @@ This function is not called for each non-terminal, instead it's called for:
 -before any error recover action that could go infinite
 
 It is specifically not called for the most frequent non-terminals such as
-expression or binary ops.
+Expr or binary ops.
 
 Integrity of AST: Fatal errors within a non-terminal force pointers to be
 nullptr. Any node creation that takes another node checks for a nullptr, and

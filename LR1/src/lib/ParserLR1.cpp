@@ -27,7 +27,7 @@ namespace LR1{
 class ExceptionNotEndFile: public exception{
   virtual const char* what() const throw()
   {
-    return "Parsed last expression, but more ";
+    return "Parsed last Expr, but more ";
   }
 };
 */

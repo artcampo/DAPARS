@@ -117,7 +117,7 @@ if(2){
 
 AST dump:
 Literal: 1
-StmtIf:
+IfStmt:
 -Cond: Literal: 2
 -Then:
 --Literal: 3
@@ -135,7 +135,7 @@ if(2){
 
 AST dump:
 Literal: 1
-StmtIf:
+IfStmt:
 -Cond: Literal: 2
 -Then:
 --Literal: 3
@@ -153,7 +153,7 @@ if(2){
 
 AST dump:
 Literal: 1
-StmtIf:
+IfStmt:
 -Cond: Literal: 2
 -Then:
 --Op: + 
@@ -175,7 +175,7 @@ if(2){
 
 AST dump:
 Literal: 1
-StmtIf:
+IfStmt:
 -Cond: Literal: 2
 -Then:
 --Op: + 
@@ -202,14 +202,14 @@ if(2){
 
 AST dump:
 Literal: 1
-StmtIf:
+IfStmt:
 -Cond: Literal: 2
 -Then:
---StmtIf:
+--IfStmt:
 ---Cond: Literal: 3
 ---Then:
 ----Literal: 4
-----StmtIf:
+----IfStmt:
 -----Cond: Literal: 5
 -----Then:
 ------Literal: 6
@@ -233,16 +233,16 @@ if(2){
 
 AST dump:
 Literal: 1
-StmtIf:
+IfStmt:
 -Cond: Literal: 2
 -Then:
---StmtIf:
+--IfStmt:
 ---Cond: Literal: 3
 ---Then:
 ----Op: + 
 -----Literal: 4
 -----Literal: 5
-----StmtIf:
+----IfStmt:
 -----Cond: Literal: 6
 -----Then:
 ------Op: + 

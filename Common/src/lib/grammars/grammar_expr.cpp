@@ -1,5 +1,5 @@
 /*
- * This produces simple expression grammar. LL1
+ * This produces simple Expr grammar. LL1
  */
 
 using namespace Tokenizer;

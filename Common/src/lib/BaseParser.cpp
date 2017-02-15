@@ -11,7 +11,7 @@ namespace Common{
 class ExceptionNotEndFile: public exception{
   virtual const char* what() const throw()
   {
-    return "Parsed last expression, but more ";
+    return "Parsed last Expr, but more ";
   }
 };
 */
@@ -159,27 +159,34 @@ void BaseParser::ErrorCritical(const std::string& message){
 //   exit(1);
 }
   
-Node* BaseParser::NewBinaryOp(Node* const lhs, const int op, Node* const rhs){
+BinaryOp* BaseParser::NewBinaryOp(Expr* const lhs, const int op, Expr* const rhs){
 //   if(lhs == nullptr) ErrorCritical("lhs invalid");
 //   if(rhs == nullptr) ErrorCritical("rhs invalid");
   if(lhs == nullptr or rhs == nullptr) return nullptr;
   
-  Expression* const lhs_exp = dynamic_cast<Expression*>(lhs);
-  Expression* const rhs_exp = dynamic_cast<Expression*>(rhs);
-  Node* new_node = new BinaryOp(lhs_exp, op, rhs_exp );        
+  Expr* const lhs_exp = dynamic_cast<Expr*>(lhs);
+  Expr* const rhs_exp = dynamic_cast<Expr*>(rhs);
+  BinaryOp* new_node = new BinaryOp(lhs_exp, op, rhs_exp );        
   return new_node; 
 }
 
-ExpressionStatement*  BaseParser::NewExpressionStatement(Node* const node_expr){
+/*
+ExprStmt*  BaseParser::NewExprStmt(Expr* const node_expr){
 //   if(node_expr == nullptr) ErrorCritical("node_expr invalid");
   if(node_expr == nullptr) return nullptr;
   
-  Expression* const exp = dynamic_cast<Expression*>(node_expr);
-  ExpressionStatement* new_node = new ExpressionStatement(exp);
+  Expr* const exp = dynamic_cast<Expr*>(node_expr);
+  ExprStmt* new_node = new ExprStmt(exp);
   return new_node; 
 }
+*/
 
-Node* BaseParser::NewLiteral(const uint32_t &value){
+Var* BaseParser::NewVar(const std::string& name){
+  Var* v = new Var(name);
+  return v;
+}
+
+Literal* BaseParser::NewLiteral(const uint32_t &value){
   Literal* new_node = new Literal(value);
   return new_node; 
 }
@@ -196,15 +203,15 @@ Block* BaseParser::NewBlock(const std::vector<Statement*>& stmts_inht){
   return new_block;
 }
 
-StmtIf* BaseParser::NewStmtIf(Expression* const condition, Block* block1){
+IfStmt* BaseParser::NewIfStmt(Expr* const condition, Block* block1){
   if(condition == nullptr or block1 == nullptr) return nullptr;
   
-  StmtIf* new_stmt_if = new StmtIf(condition, block1);
+  IfStmt* new_stmt_if = new IfStmt(condition, block1);
   return new_stmt_if;
 }
 
-StmtIf* BaseParser::NewStmtIf(Expression* const condition, Block* block1, Block* block2){
-  StmtIf* new_stmt_if = new StmtIf(condition, block1, block2);
+IfStmt* BaseParser::NewIfStmt(Expr* const condition, Block* block1, Block* block2){
+  IfStmt* new_stmt_if = new IfStmt(condition, block1, block2);
   
   return new_stmt_if;
 }
@@ -227,6 +234,13 @@ VarDeclList* BaseParser::NewVarDeclList(const std::vector<VarDecl*>& list){
 VarDecl* BaseParser::NewVarDecl(const std::string& name, const TypeId& typeId){
   VarDecl* d = new VarDecl(name, typeId);
   return d;
+}
+
+AssignStmt* BaseParser::NewAssignStmt(Expr* const lhs
+                                    , Expr* const rhs){
+  if(lhs == nullptr or rhs == nullptr) return nullptr;
+  AssignStmt* a = new AssignStmt(lhs,rhs);
+  return a;
 }
 
 } //end namespace Common
