@@ -87,8 +87,11 @@ int main()
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int a; a=(1+2+3);"), g);
-parse<Grammar,ParserLL1RecDesc>( std::string(
+  parse<Grammar,ParserLL1RecDesc>( std::string(
     "int a b c; b=1; c=2; a=(1+b+c);"), g);
+
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "int a; int b; int a;"), g);
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int b c; bool e f"), g);
