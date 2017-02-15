@@ -14,18 +14,18 @@ namespace LALR{
 
 using namespace Common;
 using namespace Tokenizer;
-using namespace GrammarAnalyzer;  
-  
+using namespace GrammarAnalyzer;
+
 class ParserLALR : public LR1::ParserLR1{
-  
-public:  
-  ParserLALR(std::string const &file_name, Block* &programBlock, GrammarLALR& grammar);
+
+public:
+  ParserLALR(std::string const &file_name, CompilationUnit& unit , GrammarLALR& grammar);
 //   void Parse();
-  
+
 private:
-  
-  
-  
+
+
+
 };
 
 } //end namespace LALR

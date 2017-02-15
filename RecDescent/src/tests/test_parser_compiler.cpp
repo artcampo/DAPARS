@@ -21,23 +21,23 @@ int main(int argc, char **argv)
     std::cout << "Missing source input file\n";
     exit(1);
   }
-  
-  Block* programBlock = nullptr;
-  
+
+  CompilationUnit unit;
+
   using namespace RecDescent;
   std::unique_ptr<ParserLL1RecDesc> parser(
-    new ParserLL1RecDesc(std::string(argv[1]), programBlock));
+    new ParserLL1RecDesc(std::string(argv[1]), unit));
 
   parser->Parse();
-  
-  if(programBlock == nullptr){
+
+  if(unit.ast_.block_ == nullptr){
     std::cout << "Program block is empty!" << std::endl;
     return 1;
   }
-  
+
   std::cout << "Print AST\n";
   ASTVisitorPrettyPrinter visitor;
-  visitor.Visit(*programBlock);
-    
+  visitor.Visit(*unit.ast_.block_);
+
   return 0;
 }

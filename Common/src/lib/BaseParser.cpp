@@ -16,12 +16,12 @@ class ExceptionNotEndFile: public exception{
 };
 */
 
-BaseParser::BaseParser(const std::vector<char>& parse_data, 
-                       Block* &programBlock)
+BaseParser::BaseParser(const std::vector<char>& parse_data
+                      , CompilationUnit& unit)
   : file_data_(parse_data)
   , current_position_(file_data_.cbegin())
   , skip_symbols_ {' ','\n'}
-  , programBlock_(programBlock)
+  , compilation_unit_(unit)
   , num_errors_(0)
 {
   std::cout << "Parsing: \"";
@@ -29,24 +29,24 @@ BaseParser::BaseParser(const std::vector<char>& parse_data,
   std::cout << "\"\n";
 }
 
-BaseParser::BaseParser(std::string const &file_name, Block* &programBlock) 
+BaseParser::BaseParser(std::string const &file_name, CompilationUnit& unit)
   : file_(std::ifstream (file_name.c_str(), std::ios::binary) )
   , file_data_(std::vector<char> ((std::istreambuf_iterator<char>(file_)),
                                    std::istreambuf_iterator<char>()) )
   , current_position_(file_data_.cbegin())
   , skip_symbols_ {' ','\n'}
-  , programBlock_(programBlock)
+  , compilation_unit_(unit)
   , num_errors_(0)
   , continue_parsing_(true)
   {}
 
 
-  
+
 void BaseParser::NextToken() noexcept{
   Skip();
   if(current_position_ == file_data_.cend()){
     if(token_ == Tokenizer::kToken::eof){
-      Error("[err:1] NextToken performed after reaching eof"); 
+      Error("[err:1] NextToken performed after reaching eof");
       continue_parsing_ = false;
     }
     token_ = Tokenizer::kToken::eof;
@@ -62,7 +62,7 @@ void BaseParser::NextToken() noexcept{
     }else if(token_ == Tokenizer::kToken::name){
       token_string_value_ = std::string( previous_position_, current_position_);
     }
-    
+
     if(token_ == kToken::error){
       Error("[err:2] Token not recognized");
     }
@@ -80,13 +80,13 @@ bool BaseParser::Accept(const kToken& token, const std::string& error) noexcept{
     Error(error);
     return false;
   }
-  NextToken();  
+  NextToken();
   return true;
 }
 
 bool BaseParser::TryAndAccept(const kToken& token) noexcept{
   if(token_ == token){
-    NextToken();  
+    NextToken();
     return true;
   }
   return false;
@@ -109,9 +109,9 @@ bool BaseParser::Check(const std::vector<kToken>& tokens) const noexcept{
 
 void BaseParser::Skip() noexcept{
   bool symbol_is_no_skip = false;
-  while(not symbol_is_no_skip 
+  while(not symbol_is_no_skip
         and current_position_ != file_data_.cend() ){
-    
+
     bool current_symbol_skipped = false;
     for(auto const &s : skip_symbols_){
       if(*current_position_ == s){
@@ -128,21 +128,21 @@ void BaseParser::Error(const std::string& message){
   ++num_errors_;
   if(num_errors_ >= num_errors_to_halt_) continue_parsing_ = false;
   std::cout << message << " at: \"";
-  
+
   //Go back N chars
-  
+
   {
     std::vector<char>::const_iterator start_of_error = current_position_;
     for(int i = 0; i < num_characters_to_display_before_error_
                   and start_of_error != file_data_.cbegin(); ++i)
       --start_of_error;
-  
+
     while(start_of_error != current_position_){
       std::cout << *start_of_error;
       ++start_of_error;
     }
-  }  
-  std::cout << "\" -> \""; 
+  }
+  std::cout << "\" -> \"";
   //Go forward K chars
   {
     std::vector<char>::const_iterator start_of_error = current_position_;
@@ -150,7 +150,7 @@ void BaseParser::Error(const std::string& message){
         start_of_error != file_data_.cend(); ++start_of_error)
       std::cout << *start_of_error;
   }
-  
+
   std::cout << "\"" << std::endl;
 }
 
@@ -158,26 +158,26 @@ void BaseParser::ErrorCritical(const std::string& message){
   Error(message);
 //   exit(1);
 }
-  
+
 BinaryOp* BaseParser::NewBinaryOp(Expr* const lhs, const int op, Expr* const rhs){
 //   if(lhs == nullptr) ErrorCritical("lhs invalid");
 //   if(rhs == nullptr) ErrorCritical("rhs invalid");
   if(lhs == nullptr or rhs == nullptr) return nullptr;
-  
+
   Expr* const lhs_exp = dynamic_cast<Expr*>(lhs);
   Expr* const rhs_exp = dynamic_cast<Expr*>(rhs);
-  BinaryOp* new_node = new BinaryOp(lhs_exp, op, rhs_exp );        
-  return new_node; 
+  BinaryOp* new_node = new BinaryOp(lhs_exp, op, rhs_exp );
+  return new_node;
 }
 
 /*
 ExprStmt*  BaseParser::NewExprStmt(Expr* const node_expr){
 //   if(node_expr == nullptr) ErrorCritical("node_expr invalid");
   if(node_expr == nullptr) return nullptr;
-  
+
   Expr* const exp = dynamic_cast<Expr*>(node_expr);
   ExprStmt* new_node = new ExprStmt(exp);
-  return new_node; 
+  return new_node;
 }
 */
 
@@ -188,13 +188,13 @@ Var* BaseParser::NewVar(const std::string& name){
 
 Literal* BaseParser::NewLiteral(const uint32_t &value){
   Literal* new_node = new Literal(value);
-  return new_node; 
+  return new_node;
 }
-  
+
 Block* BaseParser::NewBlock(const std::vector<Statement*>& stmts_inht){
   if(stmts_inht.empty()) return nullptr;
   for(const auto stmt : stmts_inht) if(stmt == nullptr) return nullptr;
-  
+
   Block* new_block;
   new_block = new Block();
   for(const auto stmt : stmts_inht){
@@ -205,20 +205,20 @@ Block* BaseParser::NewBlock(const std::vector<Statement*>& stmts_inht){
 
 IfStmt* BaseParser::NewIfStmt(Expr* const condition, Block* block1){
   if(condition == nullptr or block1 == nullptr) return nullptr;
-  
+
   IfStmt* new_stmt_if = new IfStmt(condition, block1);
   return new_stmt_if;
 }
 
 IfStmt* BaseParser::NewIfStmt(Expr* const condition, Block* block1, Block* block2){
   IfStmt* new_stmt_if = new IfStmt(condition, block1, block2);
-  
+
   return new_stmt_if;
 }
 
 DeclStmt* BaseParser::NewDeclStmt(VarDeclList* const list){
   if(list == nullptr) return nullptr;
-  
+
   DeclStmt* s = new DeclStmt(list);
   return s;
 }
@@ -226,7 +226,7 @@ DeclStmt* BaseParser::NewDeclStmt(VarDeclList* const list){
 VarDeclList* BaseParser::NewVarDeclList(const std::vector<VarDecl*>& list){
   if(list.empty()) return nullptr;
   for(const auto dec : list) if(dec == nullptr) return nullptr;
-  
+
   VarDeclList* l = new VarDeclList(list);
   return l;
 }
@@ -244,4 +244,4 @@ AssignStmt* BaseParser::NewAssignStmt(Expr* const lhs
 }
 
 } //end namespace Common
- 
+

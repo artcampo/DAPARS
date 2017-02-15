@@ -21,28 +21,28 @@ using namespace GrammarAnalyzer;
 template <class G>
 void parse(const std::string& str, G& g)
 {
-  Block* programBlock = nullptr;
-  
-  
-  std::unique_ptr<ParserLR1> parser(new 
-                ParserLR1(std::vector<char> (str.begin(), str.end()), programBlock, g));
+  CompilationUnit unit;
+
+
+  std::unique_ptr<ParserLR1> parser(new
+                ParserLR1(std::vector<char> (str.begin(), str.end()), unit, g));
 
   parser->Parse();
 }
 
 int main()
 {
-    
+
   //Grammar
   GrammarLR1 g;
   CreateGrammar(g);
   std::cout << g;
-  
+
   //pass
   parse( std::string("()"), g); std::cout << "\n";
   parse( std::string("()()()"), g); std::cout << "\n";
   parse( std::string("(())"), g); std::cout << "\n";
-  
+
   //no pass
   parse( std::string("((()()))"), g); std::cout << "\n";
   parse( std::string("(()"), g); std::cout << "\n";

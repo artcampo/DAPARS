@@ -24,19 +24,18 @@ template <class G, class P>
 void parse(const std::string& str, G& g)
 {
   std::cout << "------------------------------------------------------------------\n";
-  Block* programBlock = nullptr;
-  
-  
-  std::unique_ptr<P> parser(new 
-                P(std::vector<char> (str.begin(), str.end()), programBlock));
+  CompilationUnit unit;
+
+  std::unique_ptr<P> parser(new
+                P(std::vector<char> (str.begin(), str.end()), unit));
 
   parser->Parse();
-  if(programBlock != nullptr){
+  if(unit.ast_.block_ != nullptr){
     std::cout << "\nAST dump:\n";
     ASTVisitorDump visitor_dump;
-    visitor_dump.Visit(*programBlock);      
+    visitor_dump.Visit(*unit.ast_.block_);
   }
-  
+
   std::cout << "\n";
 }
 
@@ -47,28 +46,28 @@ int main()
   Grammar g;
   CreateGrammarExpr(g);
   std::cout << g;
-  
+
   //Proper error identification
-  parse<Grammar,ParserLL1RecDesc>( std::string("  "), g); 
-  parse<Grammar,ParserLL1RecDesc>( std::string("@"), g); 
-  parse<Grammar,ParserLL1RecDesc>( std::string("1; )"), g); 
-  parse<Grammar,ParserLL1RecDesc>( std::string("1 )"), g); 
-  parse<Grammar,ParserLL1RecDesc>( std::string("int a"), g); 
-  
-  parse<Grammar,ParserLL1RecDesc>( std::string("if"), g); 
-  parse<Grammar,ParserLL1RecDesc>( std::string("if("), g); 
-  parse<Grammar,ParserLL1RecDesc>( std::string("if(int"), g); 
-  parse<Grammar,ParserLL1RecDesc>( std::string("if(1)"), g); 
-  parse<Grammar,ParserLL1RecDesc>( std::string("if(1){"), g); 
-  parse<Grammar,ParserLL1RecDesc>( std::string("if(1){2;"), g); 
+  parse<Grammar,ParserLL1RecDesc>( std::string("  "), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("@"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("1; )"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("1 )"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("int a"), g);
 
-  parse<Grammar,ParserLL1RecDesc>( std::string("1+;"), g); 
+  parse<Grammar,ParserLL1RecDesc>( std::string("if"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("if("), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("if(int"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("if(1)"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("if(1){"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("if(1){2;"), g);
 
-  parse<Grammar,ParserLL1RecDesc>( std::string("1+(;"), g); 
-  
+  parse<Grammar,ParserLL1RecDesc>( std::string("1+;"), g);
+
+  parse<Grammar,ParserLL1RecDesc>( std::string("1+(;"), g);
+
   //Chaotic cluster fuck
-  parse<Grammar,ParserLL1RecDesc>( std::string("1+(2));"), g); 
-  parse<Grammar,ParserLL1RecDesc>( std::string("1++2;"), g); 
+  parse<Grammar,ParserLL1RecDesc>( std::string("1+(2));"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("1++2;"), g);
 
   return 0;
 }

@@ -6,12 +6,14 @@
 #include "Grammar.hpp"
 #include "ASTVisitorDump.hpp"
 #include "ASTVisitorPrettyPrinter.hpp"
+#include "CompilationUnit.hpp"
 #include <iostream>
 #include <memory>
 #include <string>
 
 using namespace RecDescent;
-using namespace GrammarAnalyzer;
+// using namespace GrammarAnalyzer;
+using GrammarAnalyzer::Grammar;
 #include "../../../Common/src/lib/grammars/grammar_expr.cpp"
 #include "../../../Common/src/lib/grammars/grammar_control_flow.cpp"
 
@@ -24,69 +26,69 @@ template <class G, class P>
 void parse(const std::string& str, G& g)
 {
   std::cout << "---------------------------------------------------\n";
-  Block* programBlock = nullptr;
-  
-  
-  std::unique_ptr<P> parser(new 
-                P(std::vector<char> (str.begin(), str.end()), programBlock));
+
+  CompilationUnit unit;
+
+  std::unique_ptr<P> parser(new
+                P(std::vector<char> (str.begin(), str.end()), unit));
 
   parser->Parse();
-  if(programBlock != nullptr){
+  if(unit.ast_.block_ != nullptr){
     std::cout << "\nAST pretty:\n";
     ASTVisitorPrettyPrinter visitor;
-    visitor.Visit(*programBlock);  
+    visitor.Visit(*unit.ast_.block_);
     std::cout << "\nAST dump:\n";
     ASTVisitorDump visitor_dump;
-    visitor_dump.Visit(*programBlock);      
+    visitor_dump.Visit(*unit.ast_.block_);
   }
-  
+
   std::cout << "\n";
 }
 
 int main()
 {
-  {    
+  {
   //Grammar
   Grammar g;
   CreateGrammarExpr(g);
   std::cout << g;
-  
+
   //pass
-  parse<Grammar,ParserLL1RecDesc>( std::string("(1);"), g); 
-  parse<Grammar,ParserLL1RecDesc>( std::string("1;2;3;"), g); 
+  parse<Grammar,ParserLL1RecDesc>( std::string("(1);"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("1;2;3;"), g);
   parse<Grammar,ParserLL1RecDesc>( std::string("2+3+4;"), g); std::cout << "\n";
   parse<Grammar,ParserLL1RecDesc>( std::string("2++3+4;"), g); std::cout << "\n";
   parse<Grammar,ParserLL1RecDesc>( std::string("1+2;3+4;"), g); std::cout << "\n";
   parse<Grammar,ParserLL1RecDesc>( std::string("1+2;3+4;5+6;"), g); std::cout << "\n";
   }
-  
+
   {
   Grammar g;
   CreateGrammarExpr(g);
   std::cout << g;
-  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3;}"), g); 
-  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3;} 4;"), g); 
-  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3+4+5;}"), g); 
-  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3+4+5;} 6;"), g); 
-  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){if(3){4;if(5){6;}}}"), g); 
-  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){if(3){4+5;if(6){7+8;}}}"), g); 
-  
-  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3;}else{4;}"), g); 
-  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3;}if(4){5;}else{6;}"), g); 
-  
+  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3;}"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3;} 4;"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3+4+5;}"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3+4+5;} 6;"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){if(3){4;if(5){6;}}}"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){if(3){4+5;if(6){7+8;}}}"), g);
+
+  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3;}else{4;}"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3;}if(4){5;}else{6;}"), g);
+
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int a; int b; bool c;"), g);
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int b c d; bool e f;"), g);
-  
+
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int a; a=1;"), g);
-  
+
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int a; a=(1+2+3);"), g);  
+    "int a; a=(1+2+3);"), g);
 parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int a b c; b=1; c=2; a=(1+b+c);"), g);    
+    "int a b c; b=1; c=2; a=(1+b+c);"), g);
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int b c; bool e f"), g);
@@ -95,18 +97,18 @@ parse<Grammar,ParserLL1RecDesc>( std::string(
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "bool b1,b2,b3; b1=true; b2=false; b3=b1 and b2;"), g);
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "bool b1; int i1,i2; i1=1; i2=2; b1=i1==i2;"), g);   
+    "bool b1; int i1,i2; i1=1; i2=2; b1=i1==i2;"), g);
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "bool b1; int i1; b1=2; i1=true;"), g);   
+    "bool b1; int i1; b1=2; i1=true;"), g);
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "bool b1; int i1; bool b1;"), g);   
+    "bool b1; int i1; bool b1;"), g);
     */
   }
-  
+
   /*
   parse( std::string("()()()"), g); std::cout << "\n";
   parse( std::string("(())"), g); std::cout << "\n";
-  
+
   //no pass
   parse( std::string("((()()))"), g); std::cout << "\n";
   parse( std::string("(()"), g); std::cout << "\n";

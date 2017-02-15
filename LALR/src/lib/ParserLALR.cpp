@@ -18,13 +18,13 @@ class ExceptionNotEndFile: public exception{
 };
 */
 
-  
-ParserLALR::ParserLALR(std::string const &file_name, Block* &programBlock
-              , GrammarLALR& grammar) 
-  : ParserLR1(file_name, programBlock, grammar)
+
+ParserLALR::ParserLALR(std::string const &file_name, CompilationUnit& unit
+              , GrammarLALR& grammar)
+  : ParserLR1(file_name, unit, grammar)
 {
- 
+
 }
-  
+
 } //end namespace LALR
- 
+

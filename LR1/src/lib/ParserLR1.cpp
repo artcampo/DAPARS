@@ -9,20 +9,22 @@
 
 namespace LR1{
 
+using namespace GrammarAnalyzer;
+
   class ShiftedSymbol{
-  public:  
+  public:
     ShiftedSymbol(const SymbolId& symbol, const StateId& state)
       : symbol_(symbol), state_(state){};
     SymbolId  symbol_;
     StateId   state_;
-    
-    std::string str() const{ 
+
+    std::string str() const{
       return std::string("<") + std::to_string(state_)
-           + std::string(",") + std::to_string(symbol_) 
+           + std::string(",") + std::to_string(symbol_)
            + std::string(">");
     }
-  };  
-  
+  };
+
   /*
 class ExceptionNotEndFile: public exception{
   virtual const char* what() const throw()
@@ -31,16 +33,16 @@ class ExceptionNotEndFile: public exception{
   }
 };
 */
-  
-ParserLR1::ParserLR1(std::string const &file_name, Block* &programBlock
-              , GrammarLR1& grammar) 
-  : BaseParser(file_name, programBlock)
+
+ParserLR1::ParserLR1(std::string const &file_name, CompilationUnit& unit
+              , GrammarLR1& grammar)
+  : BaseParser(file_name, unit)
   , grammar_(grammar){}
-  
-ParserLR1::ParserLR1(const std::vector<char>& parse_data, Block* &programBlock
-              , GrammarLR1& grammar) 
-  : BaseParser(parse_data, programBlock)
-  , grammar_(grammar){}  
+
+ParserLR1::ParserLR1(const std::vector<char>& parse_data, CompilationUnit& unit
+              , GrammarLR1& grammar)
+  : BaseParser(parse_data, unit)
+  , grammar_(grammar){}
 
 void printStackRec(std::stack<ShiftedSymbol>& c){
   if(c.empty()) return;
@@ -49,7 +51,7 @@ void printStackRec(std::stack<ShiftedSymbol>& c){
   printStackRec(c);
   std::cout << s.str();
 }
-  
+
 void printStack(std::stack<ShiftedSymbol>& context){
   std::stack<ShiftedSymbol> c = context;
   printStackRec(c);
@@ -59,30 +61,30 @@ void printStack(std::stack<ShiftedSymbol>& context){
 
 void ParserLR1::Parse(){
   using kAction = Action::kAction;
-  
+
   std::stack<ShiftedSymbol> context;
   context.push( ShiftedSymbol( grammar_.GetSymbolId(Symbol::Eof()), 0));
   bool finished = false;
   NextToken();
-  
+
   while(not finished){
     //printStack(context); std::cout << "\n";
     const StateId  state  = context.top().state_;
     const SymbolId symbol = grammar_.GetSymbolId(token_);
     const Action action   = grammar_.GetAction(state, symbol);
-    
+
     /*
-    std::cout << " State: " << state 
+    std::cout << " State: " << state
               << " token: " << str(token_)
               << " symbol: " << symbol
               << " action: " << action.str()
               << "\n";
               */
-              
+
     if(action.action_ == kAction::shift){
       context.push( ShiftedSymbol(symbol, action.next_state_));
       NextToken();
-      
+
     }else if(action.action_ == kAction::reduce){
       const Rule& r = grammar_.GetRule(action.rule_id_);
       std::cout << "Parsed: " << r.str() << "\n";
@@ -101,6 +103,6 @@ void ParserLR1::Parse(){
   }
 }
 
-  
+
 } //end namespace LR1
- 
+

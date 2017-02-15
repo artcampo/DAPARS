@@ -12,18 +12,18 @@ namespace RecDescent{
 
 using namespace Common;
 using namespace IRDefinition;
-using namespace SubtypesArithmetic;  
-  
+using namespace SubtypesArithmetic;
 
-ParserLL1RecDesc::ParserLL1RecDesc(std::string const &file_name, Block* &programBlock)
-//   , Grammar& grammar) 
-  : BaseParser(file_name, programBlock){}
+
+ParserLL1RecDesc::ParserLL1RecDesc(std::string const &file_name, CompilationUnit& unit)
+//   , Grammar& grammar)
+  : BaseParser(file_name, unit){}
 //   , grammar_(grammar){}
 
-ParserLL1RecDesc::ParserLL1RecDesc(const std::vector<char>& parse_data, Block* &programBlock)
-//   , Grammar& grammar) 
-  : BaseParser(parse_data, programBlock){}
-//   , grammar_(grammar){}    
+ParserLL1RecDesc::ParserLL1RecDesc(const std::vector<char>& parse_data, CompilationUnit& unit)
+//   , Grammar& grammar)
+  : BaseParser(parse_data, unit){}
+//   , grammar_(grammar){}
 
 void ParserLL1RecDesc::Parse(){
   Prog();
@@ -34,26 +34,26 @@ void ParserLL1RecDesc::Prog(){
   NextToken();
   std::vector<Statement*> stmts_inht;
   Block* stmts_synt = Stmts(stmts_inht);
-  
+
   if(stmts_synt != nullptr){
 //     std::cout << "Prog" << std::endl;
     if(token_ != Tokenizer::kToken::eof){
       Error("More data after program.");
     }
   }
-  programBlock_ = stmts_synt;
+  compilation_unit_.ast_.block_ = stmts_synt;
 }
 
 Block* ParserLL1RecDesc::Stmts(std::vector<Statement*>& stmts_inht){
 //   std::cout << "stmts\n";
 //   if(not ContinueParsing()) return nullptr;
   Block* stmts_synt = nullptr;
-  
-  //STMTS => bool {empty} if int ( {nam} {num} 
+
+  //STMTS => bool {empty} if int ( {nam} {num}
   if( Check({kToken::kwd_if, kToken::kwd_int, kToken::kwd_bool, kToken::lpar
           , kToken::numerical, kToken::name})){
       Statement* stmt_synth = Stmt();
-      
+
       stmts_inht.push_back(stmt_synth);
       stmts_synt = Stmts(stmts_inht);
 
@@ -62,8 +62,8 @@ Block* ParserLL1RecDesc::Stmts(std::vector<Statement*>& stmts_inht){
     //check follow(Stmts)
     if(AcceptEmpty({kToken::eof, kToken::rcbr}, "[err:3] Block not finishing in eof or rcbr")){
       stmts_synt = NewBlock(stmts_inht);
-    }    
-  }  
+    }
+  }
 //   std::cout << "<-stmts\n";
   return stmts_synt;
 }
@@ -72,16 +72,16 @@ Statement* ParserLL1RecDesc::Stmt(){
 //   std::cout << "stmt\n";
 //   if(not ContinueParsing()) return nullptr;
   Statement* stmt_synt = nullptr;
-  
+
   if(TryAndAccept(kToken::kwd_if)){
     //if(E){STMTS}
 //     std::cout << "stmt::if\n";
     if(not Accept(kToken::lpar, "[err:6] if missing lpar.")) return nullptr;
     Node* expr_synt = Exprs();
     if(expr_synt == nullptr) Error("[err:7] if condition wrong.");
-    
+
     if(not Accept(kToken::rpar, "[err:8] if missing rpar.")) return nullptr;
-    
+
     if(not Accept(kToken::lcbr, "[err:9] if missing lcbr.")) return nullptr;
     std::vector<Statement*> stmts_inht;
     Block* stmts_synt = Stmts(stmts_inht);
@@ -90,14 +90,14 @@ Statement* ParserLL1RecDesc::Stmt(){
       return nullptr;
     }
     if(not Accept(kToken::rcbr, "[err:11] if missing rcbr.")) return nullptr;
-    
+
     Block* ifelse_synt = IfElse();
-    
+
     if(ifelse_synt == nullptr)
       stmt_synt = NewIfStmt(dynamic_cast<Expr*>(expr_synt), stmts_synt);
     else
       stmt_synt = NewIfStmt(dynamic_cast<Expr*>(expr_synt), stmts_synt, ifelse_synt);
-    
+
   }else if(Check({kToken::kwd_int, kToken::kwd_bool})){
 //     std::cout << "stmt::decl stmt\n";
     VarDeclList* decl_synt = Decl();
@@ -112,7 +112,7 @@ Statement* ParserLL1RecDesc::Stmt(){
     }
     Expr* expr_rhs  = Exprs();
     stmt_synt       = NewAssignStmt(expr_lhs, expr_rhs);
-    
+
     Accept(kToken::semicolon, "[err:4] Expecting semicolon after Expr.");
   }else{
     Error("Expr wrong");
@@ -126,10 +126,10 @@ Expr* ParserLL1RecDesc::Exprs(){
 //   std::cout << "Exp\n";
   Expr* eprime_synt = nullptr;
   Expr* term_synth  = Term();
-  
+
   if(term_synth != nullptr){
     eprime_synt = ExprPrime(term_synth);
-    
+
 //     if(eprime_synt == nullptr)
 //       Error("E' missing");
   }else {
@@ -153,24 +153,24 @@ Expr* ParserLL1RecDesc::Term(){
 Expr* ParserLL1RecDesc::ExprPrime(Expr* eprime_inht){
 //   std::cout << "Exp'\n";
   Expr* eprime_synt = nullptr;
-  
+
   if(TryAndAccept(kToken::plus)){
     Expr* t_synt = Term();
-    Expr* eprime1_inht = NewBinaryOp(eprime_inht, IR_ADD, t_synt);  
-    
+    Expr* eprime1_inht = NewBinaryOp(eprime_inht, IR_ADD, t_synt);
+
     //A new E' will op against current op+
     eprime_synt = ExprPrime(eprime1_inht);
     if(eprime_synt == nullptr)
       Error("[err:12] operand to + missing");
-    
+
   } else{
     //check Follow(E')
-    if(AcceptEmpty({kToken::rpar, kToken::semicolon, kToken::equality}, 
-        "Expecting +")){ 
+    if(AcceptEmpty({kToken::rpar, kToken::semicolon, kToken::equality},
+        "Expecting +")){
       eprime_synt = eprime_inht;
     }
   }
-  
+
 //   std::cout << "<-Exp'\n";
   return eprime_synt;
 }
@@ -180,7 +180,7 @@ Expr* ParserLL1RecDesc::ExprPrime(Expr* eprime_inht){
 Expr* ParserLL1RecDesc::Factor(){
 //   std::cout << "Fact\n";
   Expr* f_synt;
-  
+
   if(TryAndAccept(kToken::numerical)){
     f_synt = NewLiteral(prev_token_int_value_);
   }else if(TryAndAccept(kToken::name)){
@@ -195,7 +195,7 @@ Expr* ParserLL1RecDesc::Factor(){
     NextToken();
     return Factor();
   }
-  
+
 //   std::cout << "<-Fact\n";
   return f_synt;
 }
@@ -205,9 +205,9 @@ Block* ParserLL1RecDesc::IfElse(){
 //   std::cout << "IfElse\n";
   if(not ContinueParsing()) return nullptr;
   Block* ifelse_synt = nullptr;
-  
+
   if(TryAndAccept(kToken::kwd_else)){
-    
+
     Accept(kToken::lcbr, "else missing lcbr.");
     std::vector<Statement*> stmts_inht;
     Block* stmts_synt = Stmts(stmts_inht);
@@ -223,7 +223,7 @@ Block* ParserLL1RecDesc::IfElse(){
 //   std::cout << "<-IfElse\n";
   return ifelse_synt;
 }
-  
+
 VarDeclList*  ParserLL1RecDesc::Decl(){
 //   std::cout << "Decl\n";
   const TypeId type = Type();
@@ -232,7 +232,7 @@ VarDeclList*  ParserLL1RecDesc::Decl(){
   return decl_synt;
 }
 
-VarDeclList*  
+VarDeclList*
 ParserLL1RecDesc::NameList(std::vector<VarDecl*>& name_list_inht
                          , const TypeId& type_inht ){
 //   std::cout << "NameList\n";
@@ -247,13 +247,13 @@ ParserLL1RecDesc::NameList(std::vector<VarDecl*>& name_list_inht
     }else{
       //Error recover
       if(not ContinueParsing()) return nullptr;
-      NextToken(); //on error advance token 
+      NextToken(); //on error advance token
       return NameList(name_list_inht, type_inht);
     }
   }
   return name_list_synt;
 }
-                        
+
 const TypeId  ParserLL1RecDesc::Type(){
 //   std::cout << "Type\n";
   TypeId t;
@@ -270,8 +270,8 @@ const TypeId  ParserLL1RecDesc::Type(){
   }
   return t;
 }
-  
+
 //next error:15
-  
+
 } //end namespace RecDescent
- 
+
