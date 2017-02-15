@@ -86,6 +86,7 @@ ParseToken(std::vector<char>::const_iterator& current_position
   if(*current_position == '}'){ ++current_position; return kToken::rcbr; }  
   if(*current_position == '+'){ ++current_position; return kToken::plus; }
   if(*current_position == ';'){ ++current_position; return kToken::semicolon; }
+  if(*current_position == '='){ ++current_position; return kToken::equality; }
 
   if(ParseNumerical(current_position, end_position)) return kToken::numerical;
   
@@ -107,6 +108,7 @@ std::string str(const kToken& t){
     case kToken::plus:      return std::string("plus"); break;
     case kToken::numerical: return std::string("num");  break;
     case kToken::semicolon: return std::string(";");  break;
+    case kToken::equality:  return std::string("=");  break;
     case kToken::kwd_if:    return std::string("if");  break;
     case kToken::kwd_else:  return std::string("else");  break;
     case kToken::kwd_int:   return std::string("int");  break;

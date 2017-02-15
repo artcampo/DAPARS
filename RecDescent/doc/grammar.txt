@@ -5,7 +5,7 @@ STMTS := STMT STMTS
       |  empty
 STMT  := if(E){STMTS} IFELSE
       |  DECL;
-      |  E;
+      |  E = E;
       
 IFELSE:= else{STMTS}
       |  empty

@@ -16,8 +16,10 @@ Prog  := STMTS      ** STMTS.inht  = {}
 STMTS := STMT STMTS ** STMTS1.inht = {STMTS1.inht, STMT.synt}
                     ** STMTS.synt  = STMTS1.synt
       |  {empty}    ** STMTS.synt  = new Block( {Stmt_i... Stmt_j})
-STMT  := if(E){STMTS} IFELSE  ** STMT.synt = 
-      |  E;
+      
+STMT  := if(E){STMTS} IFELSE  ** STMT.synt = new IfStmt(E,STMTS, IFELSE.synt)
+      |  E = E                ** STMT.synt = new AssignStmt(E,E1)
+      |  E;                   ** STMT.synt = new ExprStmt(E)
       
       
 L-attributed SDD for VarDecl creation.

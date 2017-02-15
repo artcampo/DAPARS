@@ -2,6 +2,10 @@ KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
+Backtrack free violation. Rules:
+STMT -> E ; 
+STMT -> E = E 
+Offending symbol: (
 Dalang grammar v0.3
 -----------------------------
 First Table
@@ -20,22 +24,22 @@ TYPE => bool int
 -----------------------------
 Follow Table
 DECL => ; 
-E => ) ; 
-E' => ) ; 
-F => / - * + ) ; 
+E => bool {eof} = if int ( {nam} {num} } ) ; 
+E' => bool {eof} = if int ( {nam} {num} } ) ; 
+F => bool / {eof} = if int ( - * {nam} {num} + } ) ; 
 IFELSE => bool {eof} if int ( {nam} {num} } 
 NAME_LIST => ; 
 PROG => {eof} 
 STMT => bool {eof} if int ( {nam} {num} } 
 STMTS => {eof} } 
-T => - + ) ; 
-T'' => - + ) ; 
+T => bool {eof} = if int ( - {nam} {num} + } ) ; 
+T'' => bool {eof} = if int ( - {nam} {num} + } ) ; 
 TYPE => {nam} ; 
 -----------------------------
 First+ Table
 DECL -> TYPE NAME_LIST  => bool int 
 E -> T E'  => ( {nam} {num} 
-E' -> {empty}  => {empty} ) ; 
+E' -> {empty}  => bool {empty} {eof} = if int ( {nam} {num} } ) ; 
 E' -> - T E'  => - 
 E' -> + T E'  => + 
 F -> ( E )  => ( 
@@ -47,13 +51,14 @@ NAME_LIST -> {empty}  => {empty} ;
 NAME_LIST -> {nam} NAME_LIST  => {nam} 
 PROG -> STMTS  init  => bool {empty} if int ( {nam} {num} 
 STMT -> DECL ;  => bool int 
+STMT -> E = E  => ( {nam} {num} 
 STMT -> E ;  => ( {nam} {num} 
 STMT -> if ( E ) { STMTS } IFELSE  => if 
 STMTS -> {empty}  => {empty} {eof} } 
 STMTS -> STMT STMTS  => bool if int ( {nam} {num} 
 T -> F T''  => ( {nam} {num} 
 T'' -> / F T''  => / 
-T'' -> {empty}  => {empty} - + ) ; 
+T'' -> {empty}  => bool {empty} {eof} = if int ( - {nam} {num} + } ) ; 
 T'' -> * F T''  => * 
 TYPE -> bool  => bool 
 TYPE -> int  => int 
