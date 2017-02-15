@@ -13,41 +13,106 @@ F -> {num}
 F -> {nam} 
 
 ---------------------------------------------------
-Parsing: "(1);"
-[err:] assignment missing '=' at: "(1);" -> ""
-[err:3] Block not finishing in eof or rcbr at: "(1);" -> ""
+Parsing: "int a; (a=1);"
+[err:14] Expecting rpar. at: "int a; (a=" -> "1);"
+[err:4] Expecting semicolon after Expr. at: "t a; (a=1)" -> ";"
+[err:3] Block not finishing in eof or rcbr at: "t a; (a=1)" -> ";"
 
 ---------------------------------------------------
-Parsing: "1;2;3;"
-[err:] assignment missing '=' at: "1;" -> "2;3;"
-[err:3] Block not finishing in eof or rcbr at: "1;" -> "2;3;"
+Parsing: "int a;a=1;a=2;a=3;"
+
+AST pretty:
+int a 
+a=1
+a=2
+a=3
+
+AST dump:
+int a 
+Assign
+-a
+-Literal: 1
+Assign
+-a
+-Literal: 2
+Assign
+-a
+-Literal: 3
 
 ---------------------------------------------------
-Parsing: "2+3+4;"
-[err:] assignment missing '=' at: "2+3+4;" -> ""
-[err:3] Block not finishing in eof or rcbr at: "2+3+4;" -> ""
+Parsing: "int a;a=2+3+4;"
+
+AST pretty:
+int a 
+a=( ( 2 + 3 ) + 4 )
+
+AST dump:
+int a 
+Assign
+-a
+-Op: + 
+--Op: + 
+---Literal: 2
+---Literal: 3
+--Literal: 4
 
 
 ---------------------------------------------------
-Parsing: "2++3+4;"
-Expecting numerical or lpar at: "2++" -> "3+4;"
-[err:12] operand to + missing at: "2++3+4;" -> ""
-[err:12] operand to + missing at: "2++3+4;" -> ""
-[err:12] operand to + missing at: "2++3+4;" -> ""
-[err:] assignment missing '=' at: "2++3+4;" -> ""
-[err:3] Block not finishing in eof or rcbr at: "2++3+4;" -> ""
+Parsing: "int a;a=2++3+4;"
+Expecting numerical or lpar at: "nt a;a=2++" -> "3+4;"
+[err:12] operand to + missing at: ";a=2++3+4;" -> ""
+[err:12] operand to + missing at: ";a=2++3+4;" -> ""
+[err:12] operand to + missing at: ";a=2++3+4;" -> ""
 
 
 ---------------------------------------------------
-Parsing: "1+2;3+4;"
-[err:] assignment missing '=' at: "1+2;" -> "3+4;"
-[err:3] Block not finishing in eof or rcbr at: "1+2;" -> "3+4;"
+Parsing: "int a;a=1+2;a=3+4;"
+
+AST pretty:
+int a 
+a=( 1 + 2 )
+a=( 3 + 4 )
+
+AST dump:
+int a 
+Assign
+-a
+-Op: + 
+--Literal: 1
+--Literal: 2
+Assign
+-a
+-Op: + 
+--Literal: 3
+--Literal: 4
 
 
 ---------------------------------------------------
-Parsing: "1+2;3+4;5+6;"
-[err:] assignment missing '=' at: "1+2;" -> "3+4;5+6;"
-[err:3] Block not finishing in eof or rcbr at: "1+2;" -> "3+4;5+6;"
+Parsing: "int a;a=1+2;a=3+4;a=5+6;"
+
+AST pretty:
+int a 
+a=( 1 + 2 )
+a=( 3 + 4 )
+a=( 5 + 6 )
+
+AST dump:
+int a 
+Assign
+-a
+-Op: + 
+--Literal: 1
+--Literal: 2
+Assign
+-a
+-Op: + 
+--Literal: 3
+--Literal: 4
+Assign
+-a
+-Op: + 
+--Literal: 5
+--Literal: 6
 
 
 Grammar:
@@ -65,44 +130,202 @@ F -> {num}
 F -> {nam} 
 
 ---------------------------------------------------
-Parsing: "1; if(2){3;}"
-[err:] assignment missing '=' at: "1;" -> " if(2){3;}"
-[err:3] Block not finishing in eof or rcbr at: "1;" -> " if(2){3;}"
+Parsing: "int a;a=1; if(2){a=3;}"
+
+AST pretty:
+int a 
+a=1
+if(2){
+  a=3
+  }
+
+AST dump:
+int a 
+Assign
+-a
+-Literal: 1
+IfStmt:
+-Cond: Literal: 2
+-Then:
+--Assign
+---a
+---Literal: 3
+
 
 ---------------------------------------------------
-Parsing: "1; if(2){3;} 4;"
-[err:] assignment missing '=' at: "1;" -> " if(2){3;} 4;"
-[err:3] Block not finishing in eof or rcbr at: "1;" -> " if(2){3;} 4;"
+Parsing: "int a;a=1; if(2){a=3;} a=4;"
+
+AST pretty:
+int a 
+a=1
+if(2){
+  a=3
+  }
+a=4
+
+AST dump:
+int a 
+Assign
+-a
+-Literal: 1
+IfStmt:
+-Cond: Literal: 2
+-Then:
+--Assign
+---a
+---Literal: 3
+
+Assign
+-a
+-Literal: 4
 
 ---------------------------------------------------
-Parsing: "1; if(2){3+4+5;}"
-[err:] assignment missing '=' at: "1;" -> " if(2){3+4+5;}"
-[err:3] Block not finishing in eof or rcbr at: "1;" -> " if(2){3+4+5;}"
+Parsing: "int a;a=1; if(2){a=3+4+5;}"
+
+AST pretty:
+int a 
+a=1
+if(2){
+  a=( ( 3 + 4 ) + 5 )
+  }
+
+AST dump:
+int a 
+Assign
+-a
+-Literal: 1
+IfStmt:
+-Cond: Literal: 2
+-Then:
+--Assign
+---a
+---Op: + 
+----Op: + 
+-----Literal: 3
+-----Literal: 4
+----Literal: 5
+
 
 ---------------------------------------------------
-Parsing: "1; if(2){3+4+5;} 6;"
-[err:] assignment missing '=' at: "1;" -> " if(2){3+4+5;} 6;"
-[err:3] Block not finishing in eof or rcbr at: "1;" -> " if(2){3+4+5;} 6;"
+Parsing: "int a;a=1; if(2){a=3+4+5;} a=6;"
+
+AST pretty:
+int a 
+a=1
+if(2){
+  a=( ( 3 + 4 ) + 5 )
+  }
+a=6
+
+AST dump:
+int a 
+Assign
+-a
+-Literal: 1
+IfStmt:
+-Cond: Literal: 2
+-Then:
+--Assign
+---a
+---Op: + 
+----Op: + 
+-----Literal: 3
+-----Literal: 4
+----Literal: 5
+
+Assign
+-a
+-Literal: 6
 
 ---------------------------------------------------
-Parsing: "1; if(2){if(3){4;if(5){6;}}}"
-[err:] assignment missing '=' at: "1;" -> " if(2){if(3){4;if(5){6;}}}"
-[err:3] Block not finishing in eof or rcbr at: "1;" -> " if(2){if(3){4;if(5){6;}}}"
+Parsing: "int a;a=1; if(2){if(3){a=4;if(5){a=6;}}}"
+
+AST pretty:
+int a 
+a=1
+if(2){
+  if(3){
+    a=4
+    if(5){
+      a=6
+      }
+    }
+  }
+
+AST dump:
+int a 
+Assign
+-a
+-Literal: 1
+IfStmt:
+-Cond: Literal: 2
+-Then:
+--IfStmt:
+---Cond: Literal: 3
+---Then:
+----Assign
+-----a
+-----Literal: 4
+----IfStmt:
+-----Cond: Literal: 5
+-----Then:
+------Assign
+-------a
+-------Literal: 6
+
+
+
 
 ---------------------------------------------------
-Parsing: "1; if(2){if(3){4+5;if(6){7+8;}}}"
-[err:] assignment missing '=' at: "1;" -> " if(2){if(3){4+5;if(6){7+8;}}}"
-[err:3] Block not finishing in eof or rcbr at: "1;" -> " if(2){if(3){4+5;if(6){7+8;}}}"
+Parsing: "int a;a=1; if(2){if(3){a=4+5;if(6){a=7+8;}}}"
+
+AST pretty:
+int a 
+a=1
+if(2){
+  if(3){
+    a=( 4 + 5 )
+    if(6){
+      a=( 7 + 8 )
+      }
+    }
+  }
+
+AST dump:
+int a 
+Assign
+-a
+-Literal: 1
+IfStmt:
+-Cond: Literal: 2
+-Then:
+--IfStmt:
+---Cond: Literal: 3
+---Then:
+----Assign
+-----a
+-----Op: + 
+------Literal: 4
+------Literal: 5
+----IfStmt:
+-----Cond: Literal: 6
+-----Then:
+------Assign
+-------a
+-------Op: + 
+--------Literal: 7
+--------Literal: 8
+
+
+
 
 ---------------------------------------------------
-Parsing: "1; if(2){3;}else{4;}"
-[err:] assignment missing '=' at: "1;" -> " if(2){3;}else{4;}"
-[err:3] Block not finishing in eof or rcbr at: "1;" -> " if(2){3;}else{4;}"
+Parsing: "int a;a=1; if(2){a=3;}else{4;}"
+[err:3] Block not finishing in eof or rcbr at: "{a=3;}else" -> "{4;}"
 
 ---------------------------------------------------
-Parsing: "1; if(2){3;}if(4){5;}else{6;}"
-[err:] assignment missing '=' at: "1;" -> " if(2){3;}if(4){5;}else{6;}"
-[err:3] Block not finishing in eof or rcbr at: "1;" -> " if(2){3;}if(4){5;}else{6;}"
+Parsing: "int a;a=1; if(2){a=3;}if(4){a=5;}else{a=6;}"
+[err:3] Block not finishing in eof or rcbr at: "{a=5;}else" -> "{a=6;}"
 
 ---------------------------------------------------
 Parsing: "int a; int b; bool c;"

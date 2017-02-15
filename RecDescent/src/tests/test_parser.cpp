@@ -54,27 +54,27 @@ int main()
   std::cout << g;
 
   //pass
-  parse<Grammar,ParserLL1RecDesc>( std::string("(1);"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("1;2;3;"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("2+3+4;"), g); std::cout << "\n";
-  parse<Grammar,ParserLL1RecDesc>( std::string("2++3+4;"), g); std::cout << "\n";
-  parse<Grammar,ParserLL1RecDesc>( std::string("1+2;3+4;"), g); std::cout << "\n";
-  parse<Grammar,ParserLL1RecDesc>( std::string("1+2;3+4;5+6;"), g); std::cout << "\n";
+  parse<Grammar,ParserLL1RecDesc>( std::string("int a; (a=1);"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("int a;a=1;a=2;a=3;"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("int a;a=2+3+4;"), g); std::cout << "\n";
+  parse<Grammar,ParserLL1RecDesc>( std::string("int a;a=2++3+4;"), g); std::cout << "\n";
+  parse<Grammar,ParserLL1RecDesc>( std::string("int a;a=1+2;a=3+4;"), g); std::cout << "\n";
+  parse<Grammar,ParserLL1RecDesc>( std::string("int a;a=1+2;a=3+4;a=5+6;"), g); std::cout << "\n";
   }
 
   {
   Grammar g;
   CreateGrammarExpr(g);
   std::cout << g;
-  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3;}"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3;} 4;"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3+4+5;}"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3+4+5;} 6;"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){if(3){4;if(5){6;}}}"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){if(3){4+5;if(6){7+8;}}}"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("int a;a=1; if(2){a=3;}"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("int a;a=1; if(2){a=3;} a=4;"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("int a;a=1; if(2){a=3+4+5;}"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("int a;a=1; if(2){a=3+4+5;} a=6;"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("int a;a=1; if(2){if(3){a=4;if(5){a=6;}}}"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("int a;a=1; if(2){if(3){a=4+5;if(6){a=7+8;}}}"), g);
 
-  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3;}else{4;}"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("1; if(2){3;}if(4){5;}else{6;}"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("int a;a=1; if(2){a=3;}else{4;}"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("int a;a=1; if(2){a=3;}if(4){a=5;}else{a=6;}"), g);
 
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
