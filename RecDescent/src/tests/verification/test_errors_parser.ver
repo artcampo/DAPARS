@@ -23,11 +23,12 @@ Parsing: "@"
 
 ------------------------------------------------------------------
 Parsing: "1; )"
-[err:3] Block not finishing in eof or rcbr at: "1; )" -> ""
+[err:] assignment missing '=' at: "1;" -> " )"
+[err:3] Block not finishing in eof or rcbr at: "1;" -> " )"
 
 ------------------------------------------------------------------
 Parsing: "1 )"
-[err:4] Expecting semicolon after Expr. at: "1 )" -> ""
+[err:] assignment missing '=' at: "1 )" -> ""
 [err:3] Block not finishing in eof or rcbr at: "1 )" -> ""
 
 ------------------------------------------------------------------
@@ -65,12 +66,17 @@ Parsing: "if(1){"
 
 ------------------------------------------------------------------
 Parsing: "if(1){2;"
-[err:11] if missing rcbr. at: "if(1){2;" -> ""
+[err:] assignment missing '=' at: "if(1){2;" -> ""
+[err:3] Block not finishing in eof or rcbr at: "if(1){2;" -> ""
+[err:10] if missing then statement. at: "if(1){2;" -> ""
+[err:3] Block not finishing in eof or rcbr at: "if(1){2;" -> ""
 
 ------------------------------------------------------------------
 Parsing: "1+;"
 Expecting numerical or lpar at: "1+;" -> ""
 [err:12] operand to + missing at: "1+;" -> ""
+[err:] assignment missing '=' at: "1+;" -> ""
+[err:3] Block not finishing in eof or rcbr at: "1+;" -> ""
 
 ------------------------------------------------------------------
 Parsing: "1+(;"
@@ -78,10 +84,12 @@ Expecting numerical or lpar at: "1+(;" -> ""
 [err:13] Term missing. at: "1+(;" -> ""
 [err:14] Expecting rpar. at: "1+(;" -> ""
 [err:12] operand to + missing at: "1+(;" -> ""
+[err:] assignment missing '=' at: "1+(;" -> ""
+[err:3] Block not finishing in eof or rcbr at: "1+(;" -> ""
 
 ------------------------------------------------------------------
 Parsing: "1+(2));"
-[err:4] Expecting semicolon after Expr. at: "1+(2))" -> ";"
+[err:] assignment missing '=' at: "1+(2))" -> ";"
 [err:3] Block not finishing in eof or rcbr at: "1+(2))" -> ";"
 
 ------------------------------------------------------------------
@@ -89,4 +97,6 @@ Parsing: "1++2;"
 Expecting numerical or lpar at: "1++" -> "2;"
 [err:12] operand to + missing at: "1++2;" -> ""
 [err:12] operand to + missing at: "1++2;" -> ""
+[err:] assignment missing '=' at: "1++2;" -> ""
+[err:3] Block not finishing in eof or rcbr at: "1++2;" -> ""
 
