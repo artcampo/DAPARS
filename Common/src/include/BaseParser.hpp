@@ -28,7 +28,7 @@ protected:
   const static int num_errors_to_halt_                     = 10;
 
 
-  CompilationUnit&  compilation_unit_;
+  CompilationUnit&  comp_unit_;
 
   Tokenizer::kToken token_;
   int               token_int_value_;

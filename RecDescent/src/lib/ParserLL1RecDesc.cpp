@@ -41,7 +41,7 @@ void ParserLL1RecDesc::Prog(){
       Error("More data after program.");
     }
   }
-  compilation_unit_.ast_.block_ = stmts_synt;
+  comp_unit_.ast_.block_ = stmts_synt;
 }
 
 Block* ParserLL1RecDesc::Stmts(std::vector<Statement*>& stmts_inht){
@@ -240,6 +240,9 @@ ParserLL1RecDesc::NameList(std::vector<VarDecl*>& name_list_inht
   if(TryAndAccept(kToken::name)){
     name_list_inht.push_back( NewVarDecl(prev_token_string_value_, type_inht) );
     name_list_synt = NameList(name_list_inht, type_inht);
+    if( not comp_unit_.scope_->RegDecl(prev_token_string_value_, type_inht)){
+      Error("Symbol already declared.");
+    }
   }else{
     if(AcceptEmpty({kToken::semicolon}, "Name missing")){
       //empty
