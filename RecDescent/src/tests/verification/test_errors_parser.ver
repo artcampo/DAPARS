@@ -1,0 +1,68 @@
+Parsing of each possible error
+Grammar:
+PROG -> E  init 
+E -> T E' 
+E' -> + T E' 
+E' -> - T E' 
+E' -> {empty} 
+T -> F T' 
+T' -> * F T' 
+T' -> / F T' 
+T' -> {empty} 
+F -> ( E ) 
+F -> {num} 
+F -> {nam} 
+
+------------------------------------------------------------------
+Parsing: "  "
+
+------------------------------------------------------------------
+Parsing: "@"
+[err:2] Token not recognized at: "" -> "@"
+[err:3] Block not finishing in eof or rcbr at: "" -> "@"
+
+------------------------------------------------------------------
+Parsing: "1; )"
+[err:3] Block not finishing in eof or rcbr at: "1; )" -> ""
+
+------------------------------------------------------------------
+Parsing: "1 )"
+[err:4] Expecting semicolon after expression. at: "1 )" -> ""
+[err:3] Block not finishing in eof or rcbr at: "1 )" -> ""
+
+------------------------------------------------------------------
+Parsing: "int a"
+Name missing at: "int a" -> ""
+[err:5] Expecting semicolon after variable declaration. at: "int a" -> ""
+
+------------------------------------------------------------------
+Parsing: "if"
+[err:6] if missing lpar. at: "if" -> ""
+
+------------------------------------------------------------------
+Parsing: "if("
+Expecting numerical or lpar at: "if(" -> ""
+Term missing. at: "if(" -> ""
+[err:7] if condition wrong. at: "if(" -> ""
+[err:8] if missing rpar. at: "if(" -> ""
+
+------------------------------------------------------------------
+Parsing: "if(int"
+Expecting numerical or lpar at: "if(int" -> ""
+Term missing. at: "if(int" -> ""
+[err:7] if condition wrong. at: "if(int" -> ""
+[err:8] if missing rpar. at: "if(int" -> ""
+Name missing at: "if(int" -> ""
+[err:5] Expecting semicolon after variable declaration. at: "if(int" -> ""
+
+------------------------------------------------------------------
+Parsing: "if(1)"
+[err:9] if missing lcbr. at: "if(1)" -> ""
+
+------------------------------------------------------------------
+Parsing: "if(1){"
+
+------------------------------------------------------------------
+Parsing: "if(1){2;"
+[err:10] if missing rcbr. at: "if(1){2;" -> ""
+

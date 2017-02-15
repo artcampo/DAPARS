@@ -37,14 +37,17 @@ BaseParser::BaseParser(std::string const &file_name, Block* &programBlock)
   , skip_symbols_ {' ','\n'}
   , programBlock_(programBlock)
   , num_errors_(0)
+  , continue_parsing_(true)
   {}
 
+
+  
 void BaseParser::NextToken() noexcept{
   Skip();
   if(current_position_ == file_data_.cend()){
     if(token_ == Tokenizer::kToken::eof){
-      std::cout << "NextToken performed after reaching eof"; 
-      exit(1);
+      Error("[err:1] NextToken performed after reaching eof"); 
+      continue_parsing_ = false;
     }
     token_ = Tokenizer::kToken::eof;
   }else{
@@ -61,7 +64,7 @@ void BaseParser::NextToken() noexcept{
     }
     
     if(token_ == kToken::error){
-      ErrorCritical("Token not recognized");
+      Error("[err:2] Token not recognized");
     }
   }
   /*
@@ -72,9 +75,13 @@ void BaseParser::NextToken() noexcept{
   */
 }
 
-void BaseParser::Accept(const kToken& token, const std::string& error) noexcept{
-  if(token_ != token) Error(error);
+bool BaseParser::Accept(const kToken& token, const std::string& error) noexcept{
+  if(token_ != token){
+    Error(error);
+    return false;
+  }
   NextToken();  
+  return true;
 }
 
 bool BaseParser::TryAndAccept(const kToken& token) noexcept{
@@ -119,7 +126,8 @@ void BaseParser::Skip() noexcept{
 
 void BaseParser::Error(const std::string& message){
   ++num_errors_;
-  std::cout << "\n" << message << " at: \"";
+  if(num_errors_ >= num_errors_to_halt_) continue_parsing_ = false;
+  std::cout << message << " at: \"";
   
   //Go back N chars
   
@@ -148,12 +156,13 @@ void BaseParser::Error(const std::string& message){
 
 void BaseParser::ErrorCritical(const std::string& message){
   Error(message);
-  exit(1);
+//   exit(1);
 }
   
 Node* BaseParser::NewBinaryOp(Node* const lhs, const int op, Node* const rhs){
-  if(lhs == nullptr) ErrorCritical("lhs invalid");
-  if(rhs == nullptr) ErrorCritical("rhs invalid");
+//   if(lhs == nullptr) ErrorCritical("lhs invalid");
+//   if(rhs == nullptr) ErrorCritical("rhs invalid");
+  if(lhs == nullptr or rhs == nullptr) return nullptr;
   
   Expression* const lhs_exp = dynamic_cast<Expression*>(lhs);
   Expression* const rhs_exp = dynamic_cast<Expression*>(rhs);
@@ -162,7 +171,8 @@ Node* BaseParser::NewBinaryOp(Node* const lhs, const int op, Node* const rhs){
 }
 
 ExpressionStatement*  BaseParser::NewExpressionStatement(Node* const node_expr){
-  if(node_expr == nullptr) ErrorCritical("node_expr invalid");
+//   if(node_expr == nullptr) ErrorCritical("node_expr invalid");
+  if(node_expr == nullptr) return nullptr;
   
   Expression* const exp = dynamic_cast<Expression*>(node_expr);
   ExpressionStatement* new_node = new ExpressionStatement(exp);
@@ -175,29 +185,41 @@ Node* BaseParser::NewLiteral(const uint32_t &value){
 }
   
 Block* BaseParser::NewBlock(const std::vector<Statement*>& stmts_inht){
+  if(stmts_inht.empty()) return nullptr;
+  for(const auto stmt : stmts_inht) if(stmt == nullptr) return nullptr;
+  
   Block* new_block;
   new_block = new Block();
-  for(const auto stmt : stmts_inht)
-    new_block->AddStatement(stmt);  
+  for(const auto stmt : stmts_inht){
+    new_block->AddStatement(stmt);
+  }
   return new_block;
 }
 
 StmtIf* BaseParser::NewStmtIf(Expression* const condition, Block* block1){
+  if(condition == nullptr or block1 == nullptr) return nullptr;
+  
   StmtIf* new_stmt_if = new StmtIf(condition, block1);
   return new_stmt_if;
 }
 
 StmtIf* BaseParser::NewStmtIf(Expression* const condition, Block* block1, Block* block2){
   StmtIf* new_stmt_if = new StmtIf(condition, block1, block2);
+  
   return new_stmt_if;
 }
 
 DeclStmt* BaseParser::NewDeclStmt(VarDeclList* const list){
+  if(list == nullptr) return nullptr;
+  
   DeclStmt* s = new DeclStmt(list);
   return s;
 }
 
 VarDeclList* BaseParser::NewVarDeclList(const std::vector<VarDecl*>& list){
+  if(list.empty()) return nullptr;
+  for(const auto dec : list) if(dec == nullptr) return nullptr;
+  
   VarDeclList* l = new VarDeclList(list);
   return l;
 }

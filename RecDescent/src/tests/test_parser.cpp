@@ -1,3 +1,7 @@
+/*
+ * Multiple tests for basic constructs.
+ */
+
 #include "ParserLL1RecDesc.hpp"
 #include "Grammar.hpp"
 #include "ASTVisitorDump.hpp"
@@ -28,10 +32,10 @@ void parse(const std::string& str, G& g)
 
   parser->Parse();
   if(programBlock != nullptr){
-    std::cout << "\nAST\n";
+    std::cout << "\nAST pretty:\n";
     ASTVisitorPrettyPrinter visitor;
     visitor.Visit(*programBlock);  
-    std::cout << "\nAST nodes\n";
+    std::cout << "\nAST dump:\n";
     ASTVisitorDump visitor_dump;
     visitor_dump.Visit(*programBlock);      
   }
@@ -74,7 +78,7 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int a; int b; bool c;"), g);
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int b c; bool e f;"), g);
+    "int b c d; bool e f;"), g);
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int b c; bool e f"), g);

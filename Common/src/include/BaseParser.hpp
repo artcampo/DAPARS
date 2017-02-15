@@ -24,30 +24,29 @@ public:
 protected:
   const static int num_characters_to_display_before_error_ = 10;
   const static int num_characters_to_display_after_error_  = 10;
-  std::vector<char> skip_symbols_;
+  const static int num_errors_to_halt_                     = 10;
   
   Block*& programBlock_;
-  std::ifstream     file_;
-  std::vector<char> file_data_;
-  std::vector<char>::const_iterator current_position_;
-  std::vector<char>::const_iterator previous_position_;
-  
+
   Tokenizer::kToken token_;
   int               token_int_value_;
   std::string       token_string_value_;
   int               prev_token_int_value_;    //for when TryAndAccept has been called
   std::string       prev_token_string_value_; //for when TryAndAccept has been called
-  int               num_errors_;
+
   
   void Skip() noexcept;
   
-  void Accept(const kToken& token, const std::string& error) noexcept;
+  bool Accept(const kToken& token, const std::string& error) noexcept;
   bool AcceptEmpty(const std::vector<kToken>& tokens
                  , const std::string& error) noexcept;
   bool Check(const std::vector<kToken>& tokens) const noexcept;
   bool TryAndAccept(const kToken& token) noexcept;
   
   void NextToken() noexcept;
+  bool ContinueParsing(){ return continue_parsing_;}
+  
+  
   
   
   //Error handling
@@ -64,6 +63,17 @@ protected:
   DeclStmt*     NewDeclStmt(VarDeclList* const list);
   VarDeclList*  NewVarDeclList(const std::vector<VarDecl*>& list);
   VarDecl*      NewVarDecl(const std::string& name, const TypeId& typeId);
+  
+private:
+  int               num_errors_;
+  bool              continue_parsing_;  
+  
+  std::ifstream     file_;
+  std::vector<char> file_data_;
+  std::vector<char>::const_iterator current_position_;
+  std::vector<char>::const_iterator previous_position_;  
+  
+  std::vector<char> skip_symbols_;
 };
 
 } //end namespace Common

@@ -10,6 +10,7 @@ regenerate_test_standalone test_grammar_dalang
 regenerate_test_standalone test_grammar
 regenerate_test_standalone test_grammar2
 regenerate_test_standalone test_parser
+regenerate_test_standalone test_errors_parser
 
 ###################################################################
 regenerate_test_with_input(){

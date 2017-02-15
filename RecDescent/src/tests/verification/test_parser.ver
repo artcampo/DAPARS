@@ -15,21 +15,21 @@ F -> {nam}
 ---------------------------------------------------
 Parsing: "(1);"
 
-AST
+AST pretty:
 1
 
-AST nodes
+AST dump:
 Literal: 1
 
 ---------------------------------------------------
 Parsing: "1;2;3;"
 
-AST
+AST pretty:
 1
 2
 3
 
-AST nodes
+AST dump:
 Literal: 1
 Literal: 2
 Literal: 3
@@ -37,10 +37,10 @@ Literal: 3
 ---------------------------------------------------
 Parsing: "2+3+4;"
 
-AST
+AST pretty:
 ( ( 2 + 3 ) + 4 )
 
-AST nodes
+AST dump:
 Op: + 
 -Op: + 
 --Literal: 2
@@ -50,29 +50,21 @@ Op: +
 
 ---------------------------------------------------
 Parsing: "2++3+4;"
-
 Expecting numerical or lpar at: "2++" -> "3+4;"
-Program syntactically incorrect
-
-AST
-( ( 2 + 3 ) + 4 )
-
-AST nodes
-Op: + 
--Op: + 
---Literal: 2
---Literal: 3
--Literal: 4
+E' error at: "2++3+4;" -> ""
+E' error at: "2++3+4;" -> ""
+E' error at: "2++3+4;" -> ""
+E' missing at: "2++3+4;" -> ""
 
 
 ---------------------------------------------------
 Parsing: "1+2;3+4;"
 
-AST
+AST pretty:
 ( 1 + 2 )
 ( 3 + 4 )
 
-AST nodes
+AST dump:
 Op: + 
 -Literal: 1
 -Literal: 2
@@ -84,12 +76,12 @@ Op: +
 ---------------------------------------------------
 Parsing: "1+2;3+4;5+6;"
 
-AST
+AST pretty:
 ( 1 + 2 )
 ( 3 + 4 )
 ( 5 + 6 )
 
-AST nodes
+AST dump:
 Op: + 
 -Literal: 1
 -Literal: 2
@@ -118,13 +110,13 @@ F -> {nam}
 ---------------------------------------------------
 Parsing: "1; if(2){3;}"
 
-AST
+AST pretty:
 1
 if(2){
   3
   }
 
-AST nodes
+AST dump:
 Literal: 1
 StmtIf:
 -Cond: Literal: 2
@@ -135,14 +127,14 @@ StmtIf:
 ---------------------------------------------------
 Parsing: "1; if(2){3;} 4;"
 
-AST
+AST pretty:
 1
 if(2){
   3
   }
 4
 
-AST nodes
+AST dump:
 Literal: 1
 StmtIf:
 -Cond: Literal: 2
@@ -154,13 +146,13 @@ Literal: 4
 ---------------------------------------------------
 Parsing: "1; if(2){3+4+5;}"
 
-AST
+AST pretty:
 1
 if(2){
   ( ( 3 + 4 ) + 5 )
   }
 
-AST nodes
+AST dump:
 Literal: 1
 StmtIf:
 -Cond: Literal: 2
@@ -175,14 +167,14 @@ StmtIf:
 ---------------------------------------------------
 Parsing: "1; if(2){3+4+5;} 6;"
 
-AST
+AST pretty:
 1
 if(2){
   ( ( 3 + 4 ) + 5 )
   }
 6
 
-AST nodes
+AST dump:
 Literal: 1
 StmtIf:
 -Cond: Literal: 2
@@ -198,12 +190,7 @@ Literal: 6
 ---------------------------------------------------
 Parsing: "1; if(2){if(3){4;if(5){6;}}}"
 
-Invalid token after if at: "if(5){6;}}" -> "}"
-
-Invalid token after if at: "f(5){6;}}}" -> ""
-Program syntactically incorrect
-
-AST
+AST pretty:
 1
 if(2){
   if(3){
@@ -214,7 +201,7 @@ if(2){
     }
   }
 
-AST nodes
+AST dump:
 Literal: 1
 StmtIf:
 -Cond: Literal: 2
@@ -234,12 +221,7 @@ StmtIf:
 ---------------------------------------------------
 Parsing: "1; if(2){if(3){4+5;if(6){7+8;}}}"
 
-Invalid token after if at: "(6){7+8;}}" -> "}"
-
-Invalid token after if at: "6){7+8;}}}" -> ""
-Program syntactically incorrect
-
-AST
+AST pretty:
 1
 if(2){
   if(3){
@@ -250,7 +232,7 @@ if(2){
     }
   }
 
-AST nodes
+AST dump:
 Literal: 1
 StmtIf:
 -Cond: Literal: 2
@@ -273,77 +255,33 @@ StmtIf:
 
 ---------------------------------------------------
 Parsing: "1; if(2){3;}else{4;}"
-
-AST
-1
-if(2){
-  3
-  }
-else{
-  4
-  }
-
-AST nodes
-Literal: 1
-StmtIf:
--Cond: Literal: 2
--Then:
---Literal: 3
--Else:
---Literal: 4
-
+[err:3] Block not finishing in eof or rcbr at: "2){3;}else" -> "{4;}"
 
 ---------------------------------------------------
 Parsing: "1; if(2){3;}if(4){5;}else{6;}"
-
-AST
-1
-if(2){
-  3
-  }
-if(4){
-  5
-  }
-else{
-  6
-  }
-
-AST nodes
-Literal: 1
-StmtIf:
--Cond: Literal: 2
--Then:
---Literal: 3
-
-StmtIf:
--Cond: Literal: 4
--Then:
---Literal: 5
--Else:
---Literal: 6
-
+[err:3] Block not finishing in eof or rcbr at: "4){5;}else" -> "{6;}"
 
 ---------------------------------------------------
 Parsing: "int a; int b; bool c;"
 
-AST
+AST pretty:
 int a 
 int b 
 bool c 
 
-AST nodes
+AST dump:
 int a 
 int b 
 bool c 
 
 ---------------------------------------------------
-Parsing: "int b c; bool e f;"
+Parsing: "int b c d; bool e f;"
 
-AST
-int b int c 
+AST pretty:
+int b int c int d 
 bool e bool f 
 
-AST nodes
-int b int c 
+AST dump:
+int b int c int d 
 bool e bool f 
 

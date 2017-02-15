@@ -27,9 +27,6 @@ ParserLL1RecDesc::ParserLL1RecDesc(const std::vector<char>& parse_data, Block* &
 
 void ParserLL1RecDesc::Parse(){
   Prog();
-  if(num_errors_ != 0){
-    std::cout << "Program syntactically incorrect\n";
-  }
 }
 
 
@@ -44,9 +41,75 @@ void ParserLL1RecDesc::Prog(){
       Error("More data after program.");
     }
   }
-  
   programBlock_ = stmts_synt;
+}
+
+Block* ParserLL1RecDesc::Stmts(std::vector<Statement*>& stmts_inht){
+//   std::cout << "stmts\n";
+//   if(not ContinueParsing()) return nullptr;
+  Block* stmts_synt = nullptr;
   
+  //STMTS => bool {empty} if int ( {nam} {num} 
+  if( Check({kToken::kwd_if, kToken::kwd_int, kToken::kwd_bool, kToken::lpar
+          , kToken::numerical, kToken::name})){
+      Statement* stmt_synth = Stmt();
+      
+      stmts_inht.push_back(stmt_synth);
+      stmts_synt = Stmts(stmts_inht);
+
+    }
+  else{
+    //check follow(Stmts)
+    if(AcceptEmpty({kToken::eof, kToken::rcbr}, "[err:3] Block not finishing in eof or rcbr")){
+      stmts_synt = NewBlock(stmts_inht);
+    }    
+  }  
+//   std::cout << "<-stmts\n";
+  return stmts_synt;
+}
+
+Statement* ParserLL1RecDesc::Stmt(){
+//   std::cout << "stmt\n";
+//   if(not ContinueParsing()) return nullptr;
+  Statement* stmt_synt = nullptr;
+  
+  if(TryAndAccept(kToken::kwd_if)){
+    //if(E){STMTS}
+//     std::cout << "stmt::if\n";
+    if(not Accept(kToken::lpar, "[err:6] if missing lpar.")) return nullptr;
+    Node* expr_synt = Expr();
+    if(expr_synt == nullptr) Error("[err:7] if condition wrong.");
+    
+    if(not Accept(kToken::rpar, "[err:8] if missing rpar.")) return nullptr;
+    
+    if(not Accept(kToken::lcbr, "[err:9] if missing lcbr.")) return nullptr;
+    std::vector<Statement*> stmts_inht;
+    Block* stmts_synt = Stmts(stmts_inht);
+    if(stmts_synt == nullptr) return nullptr;
+    if(not Accept(kToken::rcbr, "[err:10] if missing rcbr.")) return nullptr;
+    
+    Block* ifelse_synt = IfElse();
+    
+    if(ifelse_synt == nullptr)
+      stmt_synt = NewStmtIf(dynamic_cast<Expression*>(expr_synt), stmts_synt);
+    else
+      stmt_synt = NewStmtIf(dynamic_cast<Expression*>(expr_synt), stmts_synt, ifelse_synt);
+    
+  }else if(Check({kToken::kwd_int, kToken::kwd_bool})){
+//     std::cout << "stmt::decl stmt\n";
+    VarDeclList* decl_synt = Decl();
+    stmt_synt = NewDeclStmt(decl_synt);
+    Accept(kToken::semicolon, "[err:5] Expecting semicolon after variable declaration.");
+  }
+  else{
+//     std::cout << "stmt::exp stmt\n";
+    Node* expr_synt = Expr();
+    stmt_synt       = NewExpressionStatement(expr_synt);
+    
+    Accept(kToken::semicolon, "[err:4] Expecting semicolon after expression.");
+  }
+//   std::cout << "<-stmt\n";
+  return stmt_synt;
 }
 
 //TODO: should return Expr*
@@ -115,7 +178,9 @@ Node* ParserLL1RecDesc::Factor(){
     f_synt = Expr();
     Accept(kToken::rpar, "Expecting rpar.");
   }else{
+    //Error recover
     Error("Expecting numerical or lpar");
+    if(not ContinueParsing()) return nullptr;
     NextToken();
     return Factor();
   }
@@ -125,52 +190,11 @@ Node* ParserLL1RecDesc::Factor(){
 }
 
 
-
-Statement* ParserLL1RecDesc::Stmt(){
-//   std::cout << "stmt\n";
-  Statement* stmt_synt = nullptr;
-  
-  if(TryAndAccept(kToken::kwd_if)){
-    //if(E){STMTS}
-//     std::cout << "stmt::if\n";
-    Accept(kToken::lpar, "if missing lpar.");
-    Node* expr_synt = Expr();
-    if(expr_synt == nullptr) Error("if condition wrong.");
-    
-    Accept(kToken::rpar, "if missing rpar.");
-    
-    Accept(kToken::lcbr, "if missing lcbr.");
-    std::vector<Statement*> stmts_inht;
-    Block* stmts_synt = Stmts(stmts_inht);
-    Accept(kToken::rcbr, "if missing rcbr.");
-    
-    Block* ifelse_synt = IfElse();
-    
-    if(ifelse_synt == nullptr)
-      stmt_synt = NewStmtIf(dynamic_cast<Expression*>(expr_synt), stmts_synt);
-    else
-      stmt_synt = NewStmtIf(dynamic_cast<Expression*>(expr_synt), stmts_synt, ifelse_synt);
-    
-  }else if(Check({kToken::kwd_int, kToken::kwd_bool})){
-//     std::cout << "stmt::decl stmt\n";
-    VarDeclList* decl_synt = Decl();
-    stmt_synt = NewDeclStmt(decl_synt);
-    Accept(kToken::semicolon, "Expecting semicolon.");
-  }
-  else{
-//     std::cout << "stmt::exp stmt\n";
-    Node* expr_synt = Expr();
-    stmt_synt       = NewExpressionStatement(expr_synt);
-    
-    Accept(kToken::semicolon, "Expecting semicolon.");
-  }
-//   std::cout << "<-stmt\n";
-  return stmt_synt;
-}
-
 Block* ParserLL1RecDesc::IfElse(){
 //   std::cout << "IfElse\n";
+  if(not ContinueParsing()) return nullptr;
   Block* ifelse_synt = nullptr;
+  
   if(TryAndAccept(kToken::kwd_else)){
     
     Accept(kToken::lcbr, "else missing lcbr.");
@@ -188,29 +212,6 @@ Block* ParserLL1RecDesc::IfElse(){
 //   std::cout << "<-IfElse\n";
   return ifelse_synt;
 }
-
-Block* ParserLL1RecDesc::Stmts(std::vector<Statement*>& stmts_inht){
-//   std::cout << "stmts\n";
-  Block* stmts_synt = nullptr;
-  
-  //STMTS => bool {empty} if int ( {nam} {num} 
-  if( Check({kToken::kwd_if, kToken::kwd_int, kToken::kwd_bool, kToken::lpar
-          , kToken::numerical, kToken::name})){
-      Statement* stmt_synth = Stmt();
-      
-      stmts_inht.push_back(stmt_synth);
-      stmts_synt = Stmts(stmts_inht);
-
-    }
-  else{
-    //check follow(Stmts)
-    if(AcceptEmpty({kToken::eof, kToken::rcbr}, "Block not finishing in eof or rcbr")){
-      stmts_synt = NewBlock(stmts_inht);
-    }    
-  }  
-//   std::cout << "<-stmts\n";
-  return stmts_synt;
-}
   
 VarDeclList*  ParserLL1RecDesc::Decl(){
 //   std::cout << "Decl\n";
@@ -224,7 +225,7 @@ VarDeclList*
 ParserLL1RecDesc::NameList(std::vector<VarDecl*>& name_list_inht
                          , const TypeId& type_inht ){
 //   std::cout << "NameList\n";
-  VarDeclList* name_list_synt;
+  VarDeclList* name_list_synt = nullptr;
   if(TryAndAccept(kToken::name)){
     name_list_inht.push_back( NewVarDecl(prev_token_string_value_, type_inht) );
     name_list_synt = NameList(name_list_inht, type_inht);
@@ -233,6 +234,8 @@ ParserLL1RecDesc::NameList(std::vector<VarDecl*>& name_list_inht
       //empty
       name_list_synt = NewVarDeclList(name_list_inht);
     }else{
+      //Error recover
+      if(not ContinueParsing()) return nullptr;
       NextToken(); //on error advance token 
       return NameList(name_list_inht, type_inht);
     }
@@ -250,6 +253,7 @@ const TypeId  ParserLL1RecDesc::Type(){
     t = TypeId::Bool();
   }
   else{
+    //Error recover
     Error("Type missing");
     t = TypeId::Int();
   }
