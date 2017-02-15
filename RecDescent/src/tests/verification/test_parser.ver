@@ -51,10 +51,9 @@ Op: +
 ---------------------------------------------------
 Parsing: "2++3+4;"
 Expecting numerical or lpar at: "2++" -> "3+4;"
-E' error at: "2++3+4;" -> ""
-E' error at: "2++3+4;" -> ""
-E' error at: "2++3+4;" -> ""
-E' missing at: "2++3+4;" -> ""
+[err:12] operand to + missing at: "2++3+4;" -> ""
+[err:12] operand to + missing at: "2++3+4;" -> ""
+[err:12] operand to + missing at: "2++3+4;" -> ""
 
 
 ---------------------------------------------------

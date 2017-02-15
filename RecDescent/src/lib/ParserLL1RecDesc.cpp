@@ -85,8 +85,11 @@ Statement* ParserLL1RecDesc::Stmt(){
     if(not Accept(kToken::lcbr, "[err:9] if missing lcbr.")) return nullptr;
     std::vector<Statement*> stmts_inht;
     Block* stmts_synt = Stmts(stmts_inht);
-    if(stmts_synt == nullptr) return nullptr;
-    if(not Accept(kToken::rcbr, "[err:10] if missing rcbr.")) return nullptr;
+    if(stmts_synt == nullptr){
+      Error("[err:10] if missing then statement.");
+      return nullptr;
+    }
+    if(not Accept(kToken::rcbr, "[err:11] if missing rcbr.")) return nullptr;
     
     Block* ifelse_synt = IfElse();
     
@@ -120,10 +123,11 @@ Node* ParserLL1RecDesc::Expr(){
   
   if(term_synth != nullptr){
     eprime_synt = ExprPrime(term_synth);
-    if(eprime_synt == nullptr)
-      Error("E' missing");
+    
+//     if(eprime_synt == nullptr)
+//       Error("E' missing");
   }else {
-    Error("Term missing.");
+    Error("[err:13] Term missing.");
   }
 //   std::cout << "<-Exp\n";
   return eprime_synt;
@@ -151,7 +155,7 @@ Node* ParserLL1RecDesc::ExprPrime(Node* eprime_inht){
     //A new E' will op against current op+
     eprime_synt = ExprPrime(eprime1_inht);
     if(eprime_synt == nullptr)
-      Error("E' error");
+      Error("[err:12] operand to + missing");
     
   } else{
     //check Follow(E')
@@ -176,7 +180,7 @@ Node* ParserLL1RecDesc::Factor(){
   }else //TODO: Accept returning bool
   if(TryAndAccept(kToken::lpar)){
     f_synt = Expr();
-    Accept(kToken::rpar, "Expecting rpar.");
+    Accept(kToken::rpar, "[err:14] Expecting rpar.");
   }else{
     //Error recover
     Error("Expecting numerical or lpar");
@@ -259,6 +263,8 @@ const TypeId  ParserLL1RecDesc::Type(){
   }
   return t;
 }
+  
+//next error:15
   
 } //end namespace RecDescent
  

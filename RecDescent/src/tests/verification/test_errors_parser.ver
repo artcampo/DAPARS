@@ -42,14 +42,14 @@ Parsing: "if"
 ------------------------------------------------------------------
 Parsing: "if("
 Expecting numerical or lpar at: "if(" -> ""
-Term missing. at: "if(" -> ""
+[err:13] Term missing. at: "if(" -> ""
 [err:7] if condition wrong. at: "if(" -> ""
 [err:8] if missing rpar. at: "if(" -> ""
 
 ------------------------------------------------------------------
 Parsing: "if(int"
 Expecting numerical or lpar at: "if(int" -> ""
-Term missing. at: "if(int" -> ""
+[err:13] Term missing. at: "if(int" -> ""
 [err:7] if condition wrong. at: "if(int" -> ""
 [err:8] if missing rpar. at: "if(int" -> ""
 Name missing at: "if(int" -> ""
@@ -61,8 +61,32 @@ Parsing: "if(1)"
 
 ------------------------------------------------------------------
 Parsing: "if(1){"
+[err:10] if missing then statement. at: "if(1){" -> ""
 
 ------------------------------------------------------------------
 Parsing: "if(1){2;"
-[err:10] if missing rcbr. at: "if(1){2;" -> ""
+[err:11] if missing rcbr. at: "if(1){2;" -> ""
+
+------------------------------------------------------------------
+Parsing: "1+;"
+Expecting numerical or lpar at: "1+;" -> ""
+[err:12] operand to + missing at: "1+;" -> ""
+
+------------------------------------------------------------------
+Parsing: "1+(;"
+Expecting numerical or lpar at: "1+(;" -> ""
+[err:13] Term missing. at: "1+(;" -> ""
+[err:14] Expecting rpar. at: "1+(;" -> ""
+[err:12] operand to + missing at: "1+(;" -> ""
+
+------------------------------------------------------------------
+Parsing: "1+(2));"
+[err:4] Expecting semicolon after expression. at: "1+(2))" -> ";"
+[err:3] Block not finishing in eof or rcbr at: "1+(2))" -> ";"
+
+------------------------------------------------------------------
+Parsing: "1++2;"
+Expecting numerical or lpar at: "1++" -> "2;"
+[err:12] operand to + missing at: "1++2;" -> ""
+[err:12] operand to + missing at: "1++2;" -> ""
 

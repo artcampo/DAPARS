@@ -48,7 +48,7 @@ int main()
   CreateGrammarExpr(g);
   std::cout << g;
   
-  //pass
+  //Proper error identification
   parse<Grammar,ParserLL1RecDesc>( std::string("  "), g); 
   parse<Grammar,ParserLL1RecDesc>( std::string("@"), g); 
   parse<Grammar,ParserLL1RecDesc>( std::string("1; )"), g); 
@@ -62,6 +62,13 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string("if(1){"), g); 
   parse<Grammar,ParserLL1RecDesc>( std::string("if(1){2;"), g); 
 
+  parse<Grammar,ParserLL1RecDesc>( std::string("1+;"), g); 
+
+  parse<Grammar,ParserLL1RecDesc>( std::string("1+(;"), g); 
+  
+  //Chaotic cluster fuck
+  parse<Grammar,ParserLL1RecDesc>( std::string("1+(2));"), g); 
+  parse<Grammar,ParserLL1RecDesc>( std::string("1++2;"), g); 
 
   return 0;
 }
