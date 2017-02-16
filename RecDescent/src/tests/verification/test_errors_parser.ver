@@ -109,6 +109,32 @@ Assign
 --b
 
 ------------------------------------------------------------------
+Parsing: "int a; bool b; a=a+b;"
+[err:17] Incompatible types in op
+
+AST dump:
+int a 
+bool b 
+Assign
+-a
+-Op: + 
+--a
+--b
+
+------------------------------------------------------------------
+Parsing: "int a; bool b; a=b+b;"
+[err:18] Incompatible types in assignment
+
+AST dump:
+int a 
+bool b 
+Assign
+-a
+-Op: + 
+--b
+--b
+
+------------------------------------------------------------------
 Parsing: "1+(2));"
 [err:] assignment missing '=' at: "1+(2))" -> ";"
 [err:3] Block not finishing in eof or rcbr at: "1+(2))" -> ";"
