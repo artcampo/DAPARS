@@ -6,6 +6,7 @@
 #include "Grammar.hpp"
 #include "ASTVisitorDump.hpp"
 #include "ASTVisitorPrettyPrinter.hpp"
+#include "Passes/PassManager.hpp"
 #include <iostream>
 #include <memory>
 #include <string>
@@ -30,11 +31,16 @@ void parse(const std::string& str, G& g)
                 P(std::vector<char> (str.begin(), str.end()), unit));
 
   parser->Parse();
+  if(unit.ValidAst()){
+    PassManager pm(unit);
+    pm.Run();
+  }
   if(unit.ast_.block_ != nullptr){
     std::cout << "\nAST dump:\n";
     ASTVisitorDump visitor_dump;
     visitor_dump.Visit(*unit.ast_.block_);
   }
+
 
   std::cout << "\n";
 }
@@ -68,6 +74,8 @@ int main()
   //error:15
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int a; int b; int a;"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "int a; a=1+b;"), g);
 
   //Chaotic cluster fuck
   parse<Grammar,ParserLL1RecDesc>( std::string("1+(2));"), g);

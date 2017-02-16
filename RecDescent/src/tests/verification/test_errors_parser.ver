@@ -97,6 +97,18 @@ int b
 int a 
 
 ------------------------------------------------------------------
+Parsing: "int a; a=1+b;"
+[error:16] Var used before declaration at: " a; a=1+b;" -> ""
+
+AST dump:
+int a 
+Assign
+-a
+-Op: + 
+--Literal: 1
+--b
+
+------------------------------------------------------------------
 Parsing: "1+(2));"
 [err:] assignment missing '=' at: "1+(2))" -> ";"
 [err:3] Block not finishing in eof or rcbr at: "1+(2))" -> ";"
