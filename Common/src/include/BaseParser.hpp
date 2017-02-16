@@ -58,9 +58,9 @@ protected:
   //Creation of AST nodes with error checking
 //   ExprStmt*     NewExprStmt(Expr* const node_expr);
   BinaryOp*     NewBinaryOp(Expr* const lhs, const int op, Expr* const rhs);
-  Var*          NewVar(const std::string& name);
+  Var*          NewVar(const std::string& name, const TypeId& typeId);
 
-  Literal*      NewLiteral(const uint32_t &value);
+  Literal*      NewLiteral(const uint32_t &value, const TypeId& typeId);
   Block*        NewBlock(const std::vector<Statement*>& stmts_inht);
   IfStmt*       NewIfStmt(Expr* const condition, Block* block1);
   IfStmt*       NewIfStmt(Expr* const condition, Block* block1, Block* block2);

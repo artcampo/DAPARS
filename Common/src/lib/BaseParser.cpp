@@ -1,5 +1,6 @@
 #include "BaseParser.hpp"
 #include "Node.hpp"
+#include "Types.hpp"
 #include <iterator>
 #include <fstream>
 #include <iostream>
@@ -184,13 +185,13 @@ ExprStmt*  BaseParser::NewExprStmt(Expr* const node_expr){
 }
 */
 
-Var* BaseParser::NewVar(const std::string& name){
-  Var* v = new Var(name);
+Var* BaseParser::NewVar(const std::string& name, const TypeId& typeId){
+  Var* v = new Var(name, typeId);
   return v;
 }
 
-Literal* BaseParser::NewLiteral(const uint32_t &value){
-  Literal* new_node = new Literal(value);
+Literal* BaseParser::NewLiteral(const uint32_t &value, const TypeId& typeId){
+  Literal* new_node = new Literal(value, typeId);
   return new_node;
 }
 

@@ -182,9 +182,15 @@ Expr* ParserLL1RecDesc::Factor(){
   Expr* f_synt;
 
   if(TryAndAccept(kToken::numerical)){
-    f_synt = NewLiteral(prev_token_int_value_);
+    f_synt = NewLiteral(prev_token_int_value_, kFirstClass::typeid_int);
   }else if(TryAndAccept(kToken::name)){
-    f_synt = NewVar(prev_token_string_value_);
+    if(not comp_unit_.scope_->IsDecl(prev_token_string_value_)){
+      Error("[error:16] Var used before declaration");
+      //Error recovery: insert it as int
+      comp_unit_.scope_->RegDecl(prev_token_string_value_, kFirstClass::typeid_int);
+    }
+    f_synt = NewVar(prev_token_string_value_
+                  , comp_unit_.scope_->GetTypeId(prev_token_string_value_));
   }else if(TryAndAccept(kToken::lpar)){
     f_synt = Exprs();
     Accept(kToken::rpar, "[err:14] Expecting rpar.");
