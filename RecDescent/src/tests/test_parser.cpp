@@ -7,6 +7,7 @@
 #include "ASTVisitorDump.hpp"
 #include "ASTVisitorPrettyPrinter.hpp"
 #include "CompilationUnit.hpp"
+#include "Passes/PassManager.hpp"
 #include <iostream>
 #include <memory>
 #include <string>
@@ -33,6 +34,10 @@ void parse(const std::string& str, G& g)
                 P(std::vector<char> (str.begin(), str.end()), unit));
 
   parser->Parse();
+  if(unit.ValidAst()){
+    PassManager pm(unit);
+    pm.Run();
+  }
   if(unit.ast_.block_ != nullptr){
     std::cout << "\nAST pretty:\n";
     ASTVisitorPrettyPrinter visitor;
