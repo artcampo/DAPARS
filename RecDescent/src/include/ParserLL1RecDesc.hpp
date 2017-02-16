@@ -27,19 +27,20 @@ private:
   void  Prog();
 
   //Exprs
-  Expr* Exprs();
-  Expr* ExprPrime(Expr* eprime_inht); // make it const
-  Expr* Term();
-  Expr* Factor();
+  Expr* Exprs(const ScopeId scope_inht);
+  Expr* ExprPrime(Expr* eprime_inht, const ScopeId scope_inht); // make it const
+  Expr* Term(const ScopeId scope_inht);
+  Expr* Factor(const ScopeId scope_inht);
 
   //Control Flow
-  Block*      Stmts(std::vector<Statement*>& stmts_inht);
-  Statement*  Stmt();
-  Block*      IfElse();
+  Block*      Stmts(std::vector<Statement*>& stmts_inht, const ScopeId scope_inht);
+  Statement*  Stmt(const ScopeId scope_inht);
+  Block*      IfElse(const ScopeId scope_inht);
 
   //Variables declaration
-  VarDeclList*  Decl();
-  VarDeclList*  NameList(std::vector<VarDecl*>& name_list_inht, const TypeId& type_inht );
+  VarDeclList*  Decl(const ScopeId scope_inht);
+  VarDeclList*  NameList(std::vector<VarDecl*>& name_list_inht
+                       , const TypeId& type_inht, const ScopeId scope_inht );
   const TypeId  Type();
 
 

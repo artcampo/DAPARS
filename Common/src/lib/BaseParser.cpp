@@ -22,13 +22,13 @@ BaseParser::BaseParser(const std::vector<char>& parse_data
   : file_data_(parse_data)
   , current_position_(file_data_.cbegin())
   , skip_symbols_ {' ','\n'}
-  , comp_unit_(unit)
+  , unit_(unit)
   , num_errors_(0)
 {
   std::cout << "Parsing: \"";
   for(const auto& it : parse_data ) std::cout << it;
   std::cout << "\"\n";
-  comp_unit_.scope_ = new LexicalScope(nullptr);
+//   unit_.scope_ = new LexicalScope(nullptr);
 }
 
 BaseParser::BaseParser(std::string const &file_name, CompilationUnit& unit)
@@ -37,11 +37,11 @@ BaseParser::BaseParser(std::string const &file_name, CompilationUnit& unit)
                                    std::istreambuf_iterator<char>()) )
   , current_position_(file_data_.cbegin())
   , skip_symbols_ {' ','\n'}
-  , comp_unit_(unit)
+  , unit_(unit)
   , num_errors_(0)
   , continue_parsing_(true)
 {
-  comp_unit_.scope_ = new LexicalScope(nullptr);
+//   unit_.scope_ = new LexicalScope(nullptr);
 }
 
 
