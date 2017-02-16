@@ -152,7 +152,9 @@ IfStmt:
 ---a
 ---Literal: 3
 
-Scope 0Scope 1Scope 1
+Scope 0: {0, a }
+Scope 1: {0, a }
+
 ---------------------------------------------------
 Parsing: "int a;a=1; if(2){a=3;} a=4;"
 [error:16] Var used before declaration at: "; if(2){a=" -> "3;} a=4;"
@@ -180,7 +182,9 @@ IfStmt:
 Assign
 -a
 -Literal: 4
-Scope 0Scope 1Scope 1
+Scope 0: {0, a }
+Scope 1: {0, a }
+
 ---------------------------------------------------
 Parsing: "int a;a=1; if(2){a=3+4+5;}"
 [error:16] Var used before declaration at: "; if(2){a=" -> "3+4+5;}"
@@ -208,7 +212,9 @@ IfStmt:
 -----Literal: 4
 ----Literal: 5
 
-Scope 0Scope 1Scope 1
+Scope 0: {0, a }
+Scope 1: {0, a }
+
 ---------------------------------------------------
 Parsing: "int a;a=1; if(2){a=3+4+5;} a=6;"
 [error:16] Var used before declaration at: "; if(2){a=" -> "3+4+5;} a=6;"
@@ -240,7 +246,9 @@ IfStmt:
 Assign
 -a
 -Literal: 6
-Scope 0Scope 1Scope 1
+Scope 0: {0, a }
+Scope 1: {0, a }
+
 ---------------------------------------------------
 Parsing: "int a;a=1; if(2){if(3){a=4;if(5){a=6;}}}"
 [error:16] Var used before declaration at: "){if(3){a=" -> "4;if(5){a=6;}}}"
@@ -281,7 +289,11 @@ IfStmt:
 
 
 
-Scope 0Scope 1Scope 2Scope 3Scope 3Scope 2Scope 1
+Scope 0: {0, a }
+Scope 1: {}
+Scope 2: {0, a }
+Scope 3: {0, a }
+
 ---------------------------------------------------
 Parsing: "int a;a=1; if(2){if(3){a=4+5;if(6){a=7+8;}}}"
 [error:16] Var used before declaration at: "){if(3){a=" -> "4+5;if(6){a=7+8;}}}"
@@ -326,7 +338,11 @@ IfStmt:
 
 
 
-Scope 0Scope 1Scope 2Scope 3Scope 3Scope 2Scope 1
+Scope 0: {0, a }
+Scope 1: {}
+Scope 2: {0, a }
+Scope 3: {0, a }
+
 ---------------------------------------------------
 Parsing: "int a;a=1; if(2){a=3;}else{4;}"
 [error:16] Var used before declaration at: "; if(2){a=" -> "3;}else{4;}"
@@ -430,4 +446,27 @@ AST dump:
 int a 
 int b 
 int a 
+
+---------------------------------------------------
+Parsing: "int a; if(1){int b;}"
+
+AST pretty:
+int a 
+if(1){
+    int b 
+  }
+
+AST dump:
+int a 
+IfStmt:
+-Cond: Literal: 1
+-Then:
+----int b 
+
+Scope 0: {0, a }
+Scope 1: {0, b }
+
+---------------------------------------------------
+Parsing: "int a; if(1){int b;}else{int c;}"
+[err:3] Block not finishing in eof or rcbr at: "nt b;}else" -> "{int c;}"
 

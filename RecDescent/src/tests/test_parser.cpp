@@ -102,6 +102,12 @@ int main()
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int a; int b; int a;"), g);
+
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "int a; if(1){int b;}"), g);
+
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "int a; if(1){int b;}else{int c;}"), g);
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int b c; bool e f"), g);
