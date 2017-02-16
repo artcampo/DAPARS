@@ -63,7 +63,7 @@ Block* ParserLL1RecDesc::Stmts(std::vector<Statement*>& stmts_inht, const ScopeI
     //check follow(Stmts)
     if(AcceptEmpty({kToken::eof, kToken::rcbr}, "[err:3] Block not finishing in eof or rcbr")){
 //       unit.
-      stmts_synt = NewBlock(stmts_inht);
+      stmts_synt = NewBlock(stmts_inht, scope_inht);
     }
   }
 //   std::cout << "<-stmts\n";
@@ -98,14 +98,14 @@ Statement* ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
     Block* ifelse_synt = IfElse(scope_inht);
 
     if(ifelse_synt == nullptr)
-      stmt_synt = NewIfStmt(dynamic_cast<Expr*>(expr_synt), stmts_synt);
+      stmt_synt = NewIfStmt(dynamic_cast<Expr*>(expr_synt), stmts_synt, scope_inht);
     else
-      stmt_synt = NewIfStmt(dynamic_cast<Expr*>(expr_synt), stmts_synt, ifelse_synt);
+      stmt_synt = NewIfStmt(dynamic_cast<Expr*>(expr_synt), stmts_synt, ifelse_synt, scope_inht);
 
   }else if(Check({kToken::kwd_int, kToken::kwd_bool})){
 //     std::cout << "stmt::decl stmt\n";
     VarDeclList* decl_synt = Decl(scope_inht);
-    stmt_synt = NewDeclStmt(decl_synt);
+    stmt_synt = NewDeclStmt(decl_synt, scope_inht);
     Accept(kToken::semicolon, "[err:5] Expecting semicolon after variable declaration.");
   }
   else if(Check({kToken::lpar, kToken::name, kToken::numerical})){
@@ -115,7 +115,7 @@ Statement* ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
       return nullptr;
     }
     Expr* expr_rhs  = Exprs(scope_inht);
-    stmt_synt       = NewAssignStmt(expr_lhs, expr_rhs);
+    stmt_synt       = NewAssignStmt(expr_lhs, expr_rhs, scope_inht);
 
     Accept(kToken::semicolon, "[err:4] Expecting semicolon after Expr.");
   }else{
@@ -160,7 +160,7 @@ Expr* ParserLL1RecDesc::ExprPrime(Expr* eprime_inht, const ScopeId scope_inht){
 
   if(TryAndAccept(kToken::plus)){
     Expr* t_synt = Term(scope_inht);
-    Expr* eprime1_inht = NewBinaryOp(eprime_inht, IR_ADD, t_synt);
+    Expr* eprime1_inht = NewBinaryOp(eprime_inht, IR_ADD, t_synt, scope_inht);
 
     //A new E' will op against current op+
     eprime_synt = ExprPrime(eprime1_inht, scope_inht);
@@ -186,7 +186,7 @@ Expr* ParserLL1RecDesc::Factor(const ScopeId scope_inht){
   Expr* f_synt;
 
   if(TryAndAccept(kToken::numerical)){
-    f_synt = NewLiteral(prev_token_int_value_, kFirstClass::typeid_int);
+    f_synt = NewLiteral(prev_token_int_value_, kFirstClass::typeid_int, scope_inht);
   }else if(TryAndAccept(kToken::name)){
     if(not unit_.Scope().IsDecl(prev_token_string_value_)){
       Error("[error:16] Var used before declaration");
@@ -194,7 +194,8 @@ Expr* ParserLL1RecDesc::Factor(const ScopeId scope_inht){
       unit_.Scope().RegDecl(prev_token_string_value_, kFirstClass::typeid_int);
     }
     f_synt = NewVar(prev_token_string_value_
-                  , unit_.Scope().GetTypeId(prev_token_string_value_));
+                  , unit_.Scope().GetTypeId(prev_token_string_value_)
+                  , scope_inht);
   }else if(TryAndAccept(kToken::lpar)){
     f_synt = Exprs(scope_inht);
     Accept(kToken::rpar, "[err:14] Expecting rpar.");
@@ -251,7 +252,8 @@ ParserLL1RecDesc::NameList(std::vector<VarDecl*>& name_list_inht
 //   std::cout << "NameList\n";
   VarDeclList* name_list_synt = nullptr;
   if(TryAndAccept(kToken::name)){
-    name_list_inht.push_back( NewVarDecl(prev_token_string_value_, type_inht) );
+    name_list_inht.push_back(
+      NewVarDecl(prev_token_string_value_, type_inht, scope_inht) );
 //     std::cout << "new var: "<< prev_token_string_value_ << "\n";
     if(not unit_.Scope().RegDecl(prev_token_string_value_, type_inht)){
       Error("[err:15] Symbol already declared.");
@@ -259,7 +261,7 @@ ParserLL1RecDesc::NameList(std::vector<VarDecl*>& name_list_inht
     name_list_synt = NameList(name_list_inht, type_inht, scope_inht);
   }else if(AcceptEmpty({kToken::semicolon}, "Name missing")){
       //empty
-      name_list_synt = NewVarDeclList(name_list_inht);
+      name_list_synt = NewVarDeclList(name_list_inht, scope_inht);
   }else{
     //Error recover
     if(not ContinueParsing()) return nullptr;

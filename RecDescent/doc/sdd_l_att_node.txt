@@ -1,3 +1,7 @@
+As the grammar evolves those SDDs have to be adapted.
+
+------------------------------------------------------------------------------
+
 L-attributed SDD for node creation.
 
 Prog  := E          ** P.node   = E.synt

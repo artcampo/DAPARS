@@ -163,87 +163,88 @@ void BaseParser::ErrorCritical(const std::string& message){
 //   exit(1);
 }
 
-BinaryOp* BaseParser::NewBinaryOp(Expr* const lhs, const int op, Expr* const rhs){
+BinaryOp* BaseParser::NewBinaryOp(Expr* const lhs, const int op
+                                , Expr* const rhs, const ScopeId id){
 //   if(lhs == nullptr) ErrorCritical("lhs invalid");
 //   if(rhs == nullptr) ErrorCritical("rhs invalid");
   if(lhs == nullptr or rhs == nullptr) return nullptr;
 
   Expr* const lhs_exp = dynamic_cast<Expr*>(lhs);
   Expr* const rhs_exp = dynamic_cast<Expr*>(rhs);
-  BinaryOp* new_node = new BinaryOp(lhs_exp, op, rhs_exp );
+  BinaryOp* new_node = new BinaryOp(lhs_exp, op, rhs_exp, id);
   return new_node;
 }
 
-/*
-ExprStmt*  BaseParser::NewExprStmt(Expr* const node_expr){
-//   if(node_expr == nullptr) ErrorCritical("node_expr invalid");
-  if(node_expr == nullptr) return nullptr;
 
-  Expr* const exp = dynamic_cast<Expr*>(node_expr);
-  ExprStmt* new_node = new ExprStmt(exp);
-  return new_node;
-}
-*/
-
-Var* BaseParser::NewVar(const std::string& name, const TypeId& typeId){
-  Var* v = new Var(name, typeId);
+Var* BaseParser::NewVar(const std::string& name, const TypeId& typeId
+                        , const ScopeId id){
+  Var* v = new Var(name, typeId, id);
   return v;
 }
 
-Literal* BaseParser::NewLiteral(const uint32_t &value, const TypeId& typeId){
-  Literal* new_node = new Literal(value, typeId);
+Literal* BaseParser::NewLiteral(const uint32_t &value, const TypeId& typeId
+                              , const ScopeId id){
+  Literal* new_node = new Literal(value, typeId, id);
   return new_node;
 }
 
-Block* BaseParser::NewBlock(const std::vector<Statement*>& stmts_inht){
+Block* BaseParser::NewBlock(const std::vector<Statement*>& stmts_inht
+                          , const ScopeId id){
   if(stmts_inht.empty()) return nullptr;
   for(const auto stmt : stmts_inht) if(stmt == nullptr) return nullptr;
 
   Block* new_block;
-  new_block = new Block();
+  new_block = new Block(id);
   for(const auto stmt : stmts_inht){
     new_block->AddStatement(stmt);
   }
   return new_block;
 }
 
-IfStmt* BaseParser::NewIfStmt(Expr* const condition, Block* block1){
+IfStmt* BaseParser::NewIfStmt(Expr* const condition, Block* block1
+                            , const ScopeId id){
   if(condition == nullptr or block1 == nullptr) return nullptr;
 
-  IfStmt* new_stmt_if = new IfStmt(condition, block1);
+  IfStmt* new_stmt_if = new IfStmt(condition, block1, id);
   return new_stmt_if;
 }
 
-IfStmt* BaseParser::NewIfStmt(Expr* const condition, Block* block1, Block* block2){
-  IfStmt* new_stmt_if = new IfStmt(condition, block1, block2);
+IfStmt* BaseParser::NewIfStmt(Expr* const condition, Block* block1
+                            , Block* block2, const ScopeId id){
+  IfStmt* new_stmt_if = new IfStmt(condition, block1, block2, id);
 
   return new_stmt_if;
 }
 
-DeclStmt* BaseParser::NewDeclStmt(VarDeclList* const list){
+DeclStmt* BaseParser::NewDeclStmt(VarDeclList* const list, const ScopeId id){
   if(list == nullptr) return nullptr;
 
-  DeclStmt* s = new DeclStmt(list);
+  DeclStmt* s = new DeclStmt(list, id);
   return s;
 }
 
-VarDeclList* BaseParser::NewVarDeclList(const std::vector<VarDecl*>& list){
+VarDeclList* BaseParser::NewVarDeclList(const std::vector<VarDecl*>& list
+                                      , const ScopeId id
+){
   if(list.empty()) return nullptr;
   for(const auto dec : list) if(dec == nullptr) return nullptr;
 
-  VarDeclList* l = new VarDeclList(list);
+  VarDeclList* l = new VarDeclList(list, id);
   return l;
 }
 
-VarDecl* BaseParser::NewVarDecl(const std::string& name, const TypeId& typeId){
-  VarDecl* d = new VarDecl(name, typeId);
+VarDecl* BaseParser::NewVarDecl(const std::string& name
+                              , const TypeId& typeId
+                              , const ScopeId id){
+  VarDecl* d = new VarDecl(name, typeId, id);
   return d;
 }
 
 AssignStmt* BaseParser::NewAssignStmt(Expr* const lhs
-                                    , Expr* const rhs){
+                                    , Expr* const rhs
+                                     , const ScopeId id){
   if(lhs == nullptr or rhs == nullptr) return nullptr;
-  AssignStmt* a = new AssignStmt(lhs,rhs);
+  AssignStmt* a = new AssignStmt(lhs,rhs, id);
   return a;
 }
 

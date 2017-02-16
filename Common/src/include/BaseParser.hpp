@@ -56,18 +56,17 @@ protected:
   void ErrorCritical(const std::string& message);
 
   //Creation of AST nodes with error checking
-//   ExprStmt*     NewExprStmt(Expr* const node_expr);
-  BinaryOp*     NewBinaryOp(Expr* const lhs, const int op, Expr* const rhs);
-  Var*          NewVar(const std::string& name, const TypeId& typeId);
+  BinaryOp*     NewBinaryOp(Expr* const lhs, const int op, Expr* const rhs, const ScopeId id);
+  Var*          NewVar(const std::string& name, const TypeId& typeId, const ScopeId id);
 
-  Literal*      NewLiteral(const uint32_t &value, const TypeId& typeId);
-  Block*        NewBlock(const std::vector<Statement*>& stmts_inht);
-  IfStmt*       NewIfStmt(Expr* const condition, Block* block1);
-  IfStmt*       NewIfStmt(Expr* const condition, Block* block1, Block* block2);
-  DeclStmt*     NewDeclStmt(VarDeclList* const list);
-  VarDeclList*  NewVarDeclList(const std::vector<VarDecl*>& list);
-  VarDecl*      NewVarDecl(const std::string& name, const TypeId& typeId);
-  AssignStmt*   NewAssignStmt(Expr* const lhs, Expr* const rhs);
+  Literal*      NewLiteral(const uint32_t &value, const TypeId& typeId, const ScopeId id);
+  Block*        NewBlock(const std::vector<Statement*>& stmts_inht, const ScopeId id);
+  IfStmt*       NewIfStmt(Expr* const condition, Block* block1, const ScopeId id);
+  IfStmt*       NewIfStmt(Expr* const condition, Block* block1, Block* block2, const ScopeId id);
+  DeclStmt*     NewDeclStmt(VarDeclList* const list, const ScopeId id);
+  VarDeclList*  NewVarDeclList(const std::vector<VarDecl*>& list, const ScopeId id);
+  VarDecl*      NewVarDecl(const std::string& name, const TypeId& typeId, const ScopeId id);
+  AssignStmt*   NewAssignStmt(Expr* const lhs, Expr* const rhs, const ScopeId id);
 
 private:
   int               num_errors_;

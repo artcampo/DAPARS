@@ -6,6 +6,7 @@
 #include "Grammar.hpp"
 #include "ASTVisitorDump.hpp"
 #include "ASTVisitorPrettyPrinter.hpp"
+#include "ASTVisitorScopes.hpp"
 #include "CompilationUnit.hpp"
 #include "Passes/PassManager.hpp"
 #include <iostream>
@@ -45,6 +46,10 @@ void parse(const std::string& str, G& g)
     std::cout << "\nAST dump:\n";
     ASTVisitorDump visitor_dump;
     visitor_dump.Visit(*unit.ast_.block_);
+    if(unit.NumScopes()>1){
+      ASTVisitorScopes v(unit);
+      v.Visit(*unit.ast_.block_);
+    }
   }
 
   std::cout << "\n";
