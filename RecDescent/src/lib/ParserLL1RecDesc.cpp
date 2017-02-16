@@ -239,20 +239,20 @@ ParserLL1RecDesc::NameList(std::vector<VarDecl*>& name_list_inht
   VarDeclList* name_list_synt = nullptr;
   if(TryAndAccept(kToken::name)){
     name_list_inht.push_back( NewVarDecl(prev_token_string_value_, type_inht) );
-    name_list_synt = NameList(name_list_inht, type_inht);
-    if( not comp_unit_.scope_->RegDecl(prev_token_string_value_, type_inht)){
+//     std::cout << "new var: "<< prev_token_string_value_ << "\n";
+    if(not comp_unit_.scope_->RegDecl(prev_token_string_value_, type_inht)){
       Error("[err:15] Symbol already declared.");
     }
-  }else{
-    if(AcceptEmpty({kToken::semicolon}, "Name missing")){
+    name_list_synt = NameList(name_list_inht, type_inht);
+  }else if(AcceptEmpty({kToken::semicolon}, "Name missing")){
       //empty
       name_list_synt = NewVarDeclList(name_list_inht);
-    }else{
-      //Error recover
-      if(not ContinueParsing()) return nullptr;
-      NextToken(); //on error advance token
-      return NameList(name_list_inht, type_inht);
-    }
+  }else{
+    //Error recover
+    if(not ContinueParsing()) return nullptr;
+    NextToken(); //on error advance token
+    return NameList(name_list_inht, type_inht);
+
   }
   return name_list_synt;
 }
