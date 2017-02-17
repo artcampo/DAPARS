@@ -6,6 +6,7 @@
 #include "Tokenizer.hpp"
 #include "AST.hpp"
 #include "CompilationUnit.hpp"
+#include "Locus.hpp"
 
 
 namespace Common{
@@ -23,8 +24,6 @@ public:
 
 
 protected:
-  const static int num_characters_to_display_before_error_ = 10;
-  const static int num_characters_to_display_after_error_  = 10;
   const static int num_errors_to_halt_                     = 10;
 
 
@@ -49,6 +48,7 @@ protected:
   bool ContinueParsing(){ return continue_parsing_;}
 
 
+  const Locus CurrentLocus() const noexcept { return Locus(current_position_);}
 
 
   //Error handling
@@ -56,17 +56,27 @@ protected:
   void ErrorCritical(const std::string& message);
 
   //Creation of AST nodes with error checking
-  BinaryOp*     NewBinaryOp(Expr* const lhs, const int op, Expr* const rhs, const ScopeId id);
-  Var*          NewVar(const std::string& name, const TypeId& typeId, const ScopeId id);
+  BinaryOp*     NewBinaryOp(Expr* const lhs, const int op, Expr* const rhs
+                        , const ScopeId id, const Locus& locus);
+  Var*          NewVar(const std::string& name, const TypeId& typeId
+                        , const ScopeId id, const Locus& locus);
 
-  Literal*      NewLiteral(const uint32_t &value, const TypeId& typeId, const ScopeId id);
-  Block*        NewBlock(const std::vector<Statement*>& stmts_inht, const ScopeId id);
-  IfStmt*       NewIfStmt(Expr* const condition, Block* block1, const ScopeId id);
-  IfStmt*       NewIfStmt(Expr* const condition, Block* block1, Block* block2, const ScopeId id);
-  DeclStmt*     NewDeclStmt(VarDeclList* const list, const ScopeId id);
-  VarDeclList*  NewVarDeclList(const std::vector<VarDecl*>& list, const ScopeId id);
-  VarDecl*      NewVarDecl(const std::string& name, const TypeId& typeId, const ScopeId id);
-  AssignStmt*   NewAssignStmt(Expr* const lhs, Expr* const rhs, const ScopeId id);
+  Literal*      NewLiteral(const uint32_t &value, const TypeId& typeId
+                        , const ScopeId id, const Locus& locus);
+  Block*        NewBlock(const std::vector<Statement*>& stmts_inht
+                        , const ScopeId id, const Locus& locus);
+  IfStmt*       NewIfStmt(Expr* const condition, Block* block1
+                        , const ScopeId id, const Locus& locus);
+  IfStmt*       NewIfStmt(Expr* const condition, Block* block1, Block* block2
+                        , const ScopeId id, const Locus& locus);
+  DeclStmt*     NewDeclStmt(VarDeclList* const list, const ScopeId id
+                        , const Locus& locus);
+  VarDeclList*  NewVarDeclList(const std::vector<VarDecl*>& list
+                        , const ScopeId id, const Locus& locus);
+  VarDecl*      NewVarDecl(const std::string& name, const TypeId& typeId
+                        , const ScopeId id, const Locus& locus);
+  AssignStmt*   NewAssignStmt(Expr* const lhs, Expr* const rhs
+                        , const ScopeId id, const Locus& locus);
 
 private:
   int               num_errors_;

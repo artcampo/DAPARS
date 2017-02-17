@@ -1,6 +1,7 @@
 #include "BaseParser.hpp"
 #include "Node.hpp"
 #include "Types.hpp"
+#include "Locus.hpp"
 #include <iterator>
 #include <fstream>
 #include <iostream>
@@ -28,6 +29,7 @@ BaseParser::BaseParser(const std::vector<char>& parse_data
   std::cout << "Parsing: \"";
   for(const auto& it : parse_data ) std::cout << it;
   std::cout << "\"\n";
+  unit_.SetFileData(&file_data_);
 //   unit_.scope_ = new LexicalScope(nullptr);
 }
 
@@ -42,6 +44,7 @@ BaseParser::BaseParser(std::string const &file_name, CompilationUnit& unit)
   , continue_parsing_(true)
 {
 //   unit_.scope_ = new LexicalScope(nullptr);
+  unit_.SetFileData(&file_data_);
 }
 
 
@@ -128,34 +131,15 @@ void BaseParser::Skip() noexcept{
   }
 }
 
+//Locus
+//file_data_.cbegin()
 void BaseParser::Error(const std::string& message){
   ++num_errors_;
   if(num_errors_ >= num_errors_to_halt_) continue_parsing_ = false;
   std::cout << message << " at: \"";
 
   //Go back N chars
-
-  {
-    std::vector<char>::const_iterator start_of_error = current_position_;
-    for(int i = 0; i < num_characters_to_display_before_error_
-                  and start_of_error != file_data_.cbegin(); ++i)
-      --start_of_error;
-
-    while(start_of_error != current_position_){
-      std::cout << *start_of_error;
-      ++start_of_error;
-    }
-  }
-  std::cout << "\" -> \"";
-  //Go forward K chars
-  {
-    std::vector<char>::const_iterator start_of_error = current_position_;
-    for(int i = 0; i < num_characters_to_display_after_error_ and
-        start_of_error != file_data_.cend(); ++start_of_error)
-      std::cout << *start_of_error;
-  }
-
-  std::cout << "\"" << std::endl;
+  unit_.Error(message, CurrentLocus());
 }
 
 void BaseParser::ErrorCritical(const std::string& message){
@@ -164,37 +148,37 @@ void BaseParser::ErrorCritical(const std::string& message){
 }
 
 BinaryOp* BaseParser::NewBinaryOp(Expr* const lhs, const int op
-                                , Expr* const rhs, const ScopeId id){
+  , Expr* const rhs, const ScopeId id, const Locus& locus){
 //   if(lhs == nullptr) ErrorCritical("lhs invalid");
 //   if(rhs == nullptr) ErrorCritical("rhs invalid");
   if(lhs == nullptr or rhs == nullptr) return nullptr;
 
   Expr* const lhs_exp = dynamic_cast<Expr*>(lhs);
   Expr* const rhs_exp = dynamic_cast<Expr*>(rhs);
-  BinaryOp* new_node = new BinaryOp(lhs_exp, op, rhs_exp, id);
+  BinaryOp* new_node = new BinaryOp(lhs_exp, op, rhs_exp, id, locus);
   return new_node;
 }
 
 
 Var* BaseParser::NewVar(const std::string& name, const TypeId& typeId
-                        , const ScopeId id){
-  Var* v = new Var(name, typeId, id);
+  , const ScopeId id, const Locus& locus){
+  Var* v = new Var(name, typeId, id, locus);
   return v;
 }
 
 Literal* BaseParser::NewLiteral(const uint32_t &value, const TypeId& typeId
-                              , const ScopeId id){
-  Literal* new_node = new Literal(value, typeId, id);
+  , const ScopeId id, const Locus& locus){
+  Literal* new_node = new Literal(value, typeId, id, locus);
   return new_node;
 }
 
 Block* BaseParser::NewBlock(const std::vector<Statement*>& stmts_inht
-                          , const ScopeId id){
+  , const ScopeId id, const Locus& locus){
   if(stmts_inht.empty()) return nullptr;
   for(const auto stmt : stmts_inht) if(stmt == nullptr) return nullptr;
 
   Block* new_block;
-  new_block = new Block(id);
+  new_block = new Block(id, locus);
   for(const auto stmt : stmts_inht){
     new_block->AddStatement(stmt);
   }
@@ -202,49 +186,51 @@ Block* BaseParser::NewBlock(const std::vector<Statement*>& stmts_inht
 }
 
 IfStmt* BaseParser::NewIfStmt(Expr* const condition, Block* block1
-                            , const ScopeId id){
+  , const ScopeId id, const Locus& locus){
   if(condition == nullptr or block1 == nullptr) return nullptr;
 
-  IfStmt* new_stmt_if = new IfStmt(condition, block1, id);
+  IfStmt* new_stmt_if = new IfStmt(condition, block1, id, locus);
   return new_stmt_if;
 }
 
 IfStmt* BaseParser::NewIfStmt(Expr* const condition, Block* block1
-                            , Block* block2, const ScopeId id){
-  IfStmt* new_stmt_if = new IfStmt(condition, block1, block2, id);
+  , Block* block2, const ScopeId id, const Locus& locus){
+  IfStmt* new_stmt_if = new IfStmt(condition, block1, block2, id, locus);
 
   return new_stmt_if;
 }
 
-DeclStmt* BaseParser::NewDeclStmt(VarDeclList* const list, const ScopeId id){
+DeclStmt* BaseParser::NewDeclStmt(VarDeclList* const list, const ScopeId id
+  , const Locus& locus){
   if(list == nullptr) return nullptr;
 
-  DeclStmt* s = new DeclStmt(list, id);
+  DeclStmt* s = new DeclStmt(list, id, locus);
   return s;
 }
 
 VarDeclList* BaseParser::NewVarDeclList(const std::vector<VarDecl*>& list
-                                      , const ScopeId id
-){
+  , const ScopeId id, const Locus& locus){
   if(list.empty()) return nullptr;
   for(const auto dec : list) if(dec == nullptr) return nullptr;
 
-  VarDeclList* l = new VarDeclList(list, id);
+  VarDeclList* l = new VarDeclList(list, id, locus);
   return l;
 }
 
 VarDecl* BaseParser::NewVarDecl(const std::string& name
                               , const TypeId& typeId
-                              , const ScopeId id){
-  VarDecl* d = new VarDecl(name, typeId, id);
+                              , const ScopeId id
+                               , const Locus& locus){
+  VarDecl* d = new VarDecl(name, typeId, id, locus);
   return d;
 }
 
 AssignStmt* BaseParser::NewAssignStmt(Expr* const lhs
                                     , Expr* const rhs
-                                     , const ScopeId id){
+                                     , const ScopeId id
+                                     , const Locus& locus){
   if(lhs == nullptr or rhs == nullptr) return nullptr;
-  AssignStmt* a = new AssignStmt(lhs,rhs, id);
+  AssignStmt* a = new AssignStmt(lhs,rhs, id, locus);
   return a;
 }
 

@@ -40,7 +40,8 @@ private:
   //Variables declaration
   VarDeclList*  Decl(const ScopeId scope_inht);
   VarDeclList*  NameList(std::vector<VarDecl*>& name_list_inht
-                       , const TypeId& type_inht, const ScopeId scope_inht );
+                       , const TypeId& type_inht, const ScopeId scope_inht
+                       , const Locus& locus_inht);
   const TypeId  Type();
 
 
