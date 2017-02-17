@@ -106,12 +106,11 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int a; if(1){int b;}"), g);
 
+  //This is buggy
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int a; if(1){int b;}else{int c;}"), g);
-  /*
-  parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int b c; bool e f"), g);
-    */
+
+
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "bool b1,b2,b3; b1=true; b2=false; b3=b1 and b2;"), g);
@@ -124,14 +123,5 @@ int main()
     */
   }
 
-  /*
-  parse( std::string("()()()"), g); std::cout << "\n";
-  parse( std::string("(())"), g); std::cout << "\n";
-
-  //no pass
-  parse( std::string("((()()))"), g); std::cout << "\n";
-  parse( std::string("(()"), g); std::cout << "\n";
-  parse( std::string("())"), g); std::cout << "\n";
-*/
   return 0;
 }

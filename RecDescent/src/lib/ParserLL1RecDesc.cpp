@@ -274,8 +274,6 @@ ParserLL1RecDesc::NameList(std::vector<VarDecl*>& name_list_inht
   if(not ContinueParsing()) return nullptr;
   NextToken(); //on error advance token
   return NameList(name_list_inht, type_inht, scope_inht, locus_inht);
-
-  return name_list_synt;
 }
 
 VarDeclList*

@@ -134,7 +134,9 @@ Assign
 --b
 
 ------------------------------------------------------------------
-Parsing: "int a, b, c;"
+Parsing: "int a b c;"
+[err:19] Variables must be separated with comma. at: "int a b" -> " c;"
+[err:19] Variables must be separated with comma. at: "int a b c" -> ";"
 
 AST dump:
 int a int b int c 

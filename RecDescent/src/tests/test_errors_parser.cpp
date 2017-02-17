@@ -81,7 +81,7 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int a; bool b; a=b+b;"), g);
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int a, b, c;"), g);
+    "int a b c;"), g);
 
   //Chaotic cluster fuck
   parse<Grammar,ParserLL1RecDesc>( std::string("1+(2));"), g);
