@@ -136,7 +136,6 @@ void BaseParser::Skip() noexcept{
 void BaseParser::Error(const std::string& message){
   ++num_errors_;
   if(num_errors_ >= num_errors_to_halt_) continue_parsing_ = false;
-  std::cout << message << " at: \"";
 
   //Go back N chars
   unit_.Error(message, CurrentLocus());

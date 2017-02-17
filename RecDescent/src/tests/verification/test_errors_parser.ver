@@ -110,7 +110,7 @@ Assign
 
 ------------------------------------------------------------------
 Parsing: "int a; bool b; a=a+b;"
-[err:17] Incompatible types in op
+[err:17] Incompatible types in op at: "ol b; a=a+" -> "b;"
 
 AST dump:
 int a 
@@ -123,7 +123,7 @@ Assign
 
 ------------------------------------------------------------------
 Parsing: "int a; bool b; a=b+b;"
-[err:18] Incompatible types in assignment
+[err:18] Incompatible types in assignment at: " bool b; a" -> "=b+b;"
 
 AST dump:
 int a 
