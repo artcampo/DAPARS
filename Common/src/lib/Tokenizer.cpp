@@ -5,8 +5,8 @@
 
 namespace Common{
 namespace Tokenizer{
-    
-bool 
+
+bool
 ParseNumerical(std::vector<char>::const_iterator& current_position
              , std::vector<char>::const_iterator end_position) noexcept{
   bool matched = false;
@@ -20,46 +20,46 @@ ParseNumerical(std::vector<char>::const_iterator& current_position
   return matched;
 }
 
-bool 
+bool
 ParseKeyword(std::vector<char>::const_iterator& current_position
              , std::vector<char>::const_iterator end_position
            , kToken& t) noexcept{
   int chars_left = std::distance(current_position, end_position);
-  
+
   if(chars_left >= 2 and
     *current_position == 'i' and *(current_position + 1) == 'f'){
     current_position += 2; t = kToken::kwd_if; return true;
   }
-  
-  if( chars_left >= 4 and 
+
+  if( chars_left >= 4 and
     *current_position == 'e'       and *(current_position + 1) == 'l'
      and *(current_position + 2) == 's' and *(current_position + 3) == 'e'){
     current_position += 4; t = kToken::kwd_else; return true;
-  }  
-  
+  }
+
   if( chars_left >= 3 and
     *current_position == 'i'       and *(current_position + 1) == 'n'
      and *(current_position + 2) == 't'){
     current_position += 3; t = kToken::kwd_int; return true;
-  }    
+  }
   //TODO check +3 still valid
   if( chars_left >= 4 and
     *current_position == 'b'       and *(current_position + 1) == 'o'
      and *(current_position + 2) == 'o' and *(current_position + 3) == 'l'){
     current_position += 4; t = kToken::kwd_bool; return true;
   }
-  
+
   if(chars_left >= 2){
     if(*current_position == '_' and *(current_position + 1) == 'c')
       { current_position += 2; t = kToken::token_c; return true;}
     if(*current_position == '_' and *(current_position + 1) == 'd')
-      { current_position += 2; t = kToken::token_d; return true;}  
+      { current_position += 2; t = kToken::token_d; return true;}
   }
-  
+
   return false;
 }
 
-bool 
+bool
 ParseName(std::vector<char>::const_iterator& current_position
              , std::vector<char>::const_iterator end_position) noexcept{
   //TODO check +1 still valid
@@ -77,23 +77,24 @@ ParseName(std::vector<char>::const_iterator& current_position
 
 // returns current token starting at current_position, and
 // updates current_position after it
-kToken 
+kToken
 ParseToken(std::vector<char>::const_iterator& current_position
              , std::vector<char>::const_iterator end_position) noexcept{
   if(*current_position == '('){ ++current_position; return kToken::lpar; }
   if(*current_position == ')'){ ++current_position; return kToken::rpar; }
   if(*current_position == '{'){ ++current_position; return kToken::lcbr; }
-  if(*current_position == '}'){ ++current_position; return kToken::rcbr; }  
+  if(*current_position == '}'){ ++current_position; return kToken::rcbr; }
   if(*current_position == '+'){ ++current_position; return kToken::plus; }
   if(*current_position == ';'){ ++current_position; return kToken::semicolon; }
+  if(*current_position == ','){ ++current_position; return kToken::comma; }
   if(*current_position == '='){ ++current_position; return kToken::equality; }
 
   if(ParseNumerical(current_position, end_position)) return kToken::numerical;
-  
+
   kToken t;
   if(ParseKeyword(current_position, end_position, t)) return t;
   if(ParseName(current_position, end_position)) return kToken::name;
-  
+
   return kToken::error;
 }
 
@@ -104,7 +105,7 @@ std::string str(const kToken& t){
     case kToken::lpar:      return std::string("lpar"); break;
     case kToken::rpar:      return std::string("rpar"); break;
     case kToken::lcbr:      return std::string("lcbr"); break;
-    case kToken::rcbr:      return std::string("rcbr"); break;    
+    case kToken::rcbr:      return std::string("rcbr"); break;
     case kToken::plus:      return std::string("plus"); break;
     case kToken::numerical: return std::string("num");  break;
     case kToken::semicolon: return std::string(";");  break;
@@ -114,10 +115,10 @@ std::string str(const kToken& t){
     case kToken::kwd_int:   return std::string("int");  break;
     case kToken::kwd_bool:  return std::string("bool");  break;
     case kToken::name:      return std::string("name");  break;
-    
+
     case kToken::token_c:   return std::string("_c");  break;
-    case kToken::token_d:   return std::string("_d");  break;    
-    
+    case kToken::token_d:   return std::string("_d");  break;
+
     default:                break;
   }
   return std::string("error");

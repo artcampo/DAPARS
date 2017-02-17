@@ -266,18 +266,56 @@ ParserLL1RecDesc::NameList(std::vector<VarDecl*>& name_list_inht
     if(not unit_.Scope().RegDecl(prev_token_string_value_, type_inht)){
       Error("[err:15] Symbol already declared.");
     }
-    name_list_synt = NameList(name_list_inht, type_inht, scope_inht, locus_inht);
-  }else if(AcceptEmpty({kToken::semicolon}, "Name missing")){
-      //empty
-      name_list_synt = NewVarDeclList(name_list_inht, scope_inht, locus_inht);
-  }else{
-    //Error recover
-    if(not ContinueParsing()) return nullptr;
-    NextToken(); //on error advance token
-    return NameList(name_list_inht, type_inht, scope_inht, locus_inht);
-
+    name_list_synt = NameListPrime(name_list_inht, type_inht, scope_inht, locus_inht);
+    if(name_list_synt != nullptr) return name_list_synt;
   }
+
+  //Error recover
+  if(not ContinueParsing()) return nullptr;
+  NextToken(); //on error advance token
+  return NameList(name_list_inht, type_inht, scope_inht, locus_inht);
+
   return name_list_synt;
+}
+
+VarDeclList*
+ParserLL1RecDesc::NameListPrime(std::vector<VarDecl*>& name_list_inht
+                         , const TypeId& type_inht
+                         , const ScopeId scope_inht
+                         , const Locus& locus_inht){
+//   std::cout << "NameList\n";
+  VarDeclList* name_list_synt = nullptr;
+
+  bool has_comma = TryAndAccept(kToken::comma);
+  if(not has_comma and Check({kToken::name}) and not Check({kToken::semicolon})){
+    Error("[err:19] Variables must be separated with comma.");
+    has_comma = true;
+  }
+
+  if(has_comma){
+    if(TryAndAccept(kToken::name)){
+      name_list_inht.push_back(
+        NewVarDecl(prev_token_string_value_, type_inht, scope_inht, locus_inht) );
+
+      if(not unit_.Scope().RegDecl(prev_token_string_value_, type_inht)){
+        Error("[err:15] Symbol already declared.");
+      }
+      name_list_synt = NameListPrime(name_list_inht, type_inht, scope_inht, locus_inht);
+      if(name_list_synt != nullptr) return name_list_synt;
+    }
+  }
+
+
+  if(AcceptEmpty({kToken::semicolon}, "Name missing")){
+    //empty
+    name_list_synt = NewVarDeclList(name_list_inht, scope_inht, locus_inht);
+    return name_list_synt;
+  }
+  //Error recover
+  if(not ContinueParsing()) return nullptr;
+  NextToken(); //on error advance token
+  return NameListPrime(name_list_inht, type_inht, scope_inht, locus_inht);
+
 }
 
 const TypeId  ParserLL1RecDesc::Type(){

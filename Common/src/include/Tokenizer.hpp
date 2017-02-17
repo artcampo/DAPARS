@@ -6,17 +6,17 @@
 
 namespace Common{
 namespace Tokenizer{
-  
-  
+
+
 enum class kToken{ eof, numerical, name
                  , lpar, rpar, lcbr, rcbr
                  , plus, minus, mult, div
                  , equality
                  , kwd_if, kwd_else
                  , kwd_int, kwd_bool
-                 , semicolon
-                 , error 
-                 
+                 , semicolon, comma
+                 , error
+
                  //not used by dalang
                  , token_c, token_d   //grammar: dragon
 };

@@ -10,7 +10,8 @@ E => ( {nam} {num}
 E' => {empty} + 
 F => ( {nam} {num} 
 IFELSE => else {empty} 
-NAME_LIST => {empty} {nam} 
+NAME_LIST => {nam} 
+NAME_LIST' => , {empty} 
 PROG => bool {empty} if int ( {nam} {num} 
 STMT => bool if int ( {nam} {num} 
 STMTS => bool {empty} if int ( {nam} {num} 
@@ -24,11 +25,12 @@ E' => = ) ;
 F => = + ) ; 
 IFELSE => bool {eof} if int ( {nam} {num} } 
 NAME_LIST => ; 
+NAME_LIST' => ; 
 PROG => {eof} 
 STMT => bool {eof} if int ( {nam} {num} } 
 STMTS => {eof} } 
 T => = + ) ; 
-TYPE => {nam} ; 
+TYPE => {nam} 
 -----------------------------
 First+ Table
 DECL -> TYPE NAME_LIST  => bool int 
@@ -40,8 +42,9 @@ F -> {nam}  => {nam}
 F -> {num}  => {num} 
 IFELSE -> else { STMTS }  => else 
 IFELSE -> {empty}  => bool {empty} {eof} if int ( {nam} {num} } 
-NAME_LIST -> {empty}  => {empty} ; 
-NAME_LIST -> {nam} NAME_LIST  => {nam} 
+NAME_LIST -> {nam} NAME_LIST'  => {nam} 
+NAME_LIST' -> , {nam} NAME_LIST'  => , 
+NAME_LIST' -> {empty}  => {empty} ; 
 PROG -> STMTS  init  => bool {empty} if int ( {nam} {num} 
 STMT -> DECL ;  => bool int 
 STMT -> E = E ;  => ( {nam} {num} 

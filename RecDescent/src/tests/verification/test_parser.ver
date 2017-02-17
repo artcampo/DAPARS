@@ -357,7 +357,8 @@ int b
 bool c 
 
 ---------------------------------------------------
-Parsing: "int b c d; bool e f;"
+Parsing: "int b, c, d; bool e f;"
+[err:19] Variables must be separated with comma. at: "; bool e f" -> ";"
 
 AST pretty:
 int b int c int d 
@@ -399,6 +400,8 @@ Assign
 
 ---------------------------------------------------
 Parsing: "int a b c; b=1; c=2; a=(1+b+c);"
+[err:19] Variables must be separated with comma. at: "int a b" -> " c; b=1; c=2; a=(1+b+c);"
+[err:19] Variables must be separated with comma. at: "int a b c" -> "; b=1; c=2; a=(1+b+c);"
 
 AST pretty:
 int a int b int c 

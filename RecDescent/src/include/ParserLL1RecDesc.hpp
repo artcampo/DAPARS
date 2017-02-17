@@ -42,6 +42,9 @@ private:
   VarDeclList*  NameList(std::vector<VarDecl*>& name_list_inht
                        , const TypeId& type_inht, const ScopeId scope_inht
                        , const Locus& locus_inht);
+  VarDeclList*  NameListPrime(std::vector<VarDecl*>& name_list_inht
+                       , const TypeId& type_inht, const ScopeId scope_inht
+                       , const Locus& locus_inht);
   const TypeId  Type();
 
 

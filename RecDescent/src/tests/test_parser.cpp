@@ -90,7 +90,7 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int a; int b; bool c;"), g);
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int b c d; bool e f;"), g);
+    "int b, c, d; bool e f;"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int a; a=1;"), g);

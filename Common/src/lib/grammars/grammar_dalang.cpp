@@ -12,6 +12,7 @@ void CreateGrammarDalang(G& g){
 
   //Terminals
   const Symbol semi = g.AddTerminal("SEMC", ";", Tokenizer::kToken::semicolon);
+  const Symbol comma = g.AddTerminal("COMMA", ",", Tokenizer::kToken::comma);
   const Symbol lpar = g.AddTerminal("LPAR", "(", Tokenizer::kToken::lpar);
   const Symbol rpar = g.AddTerminal("RPAR", ")", Tokenizer::kToken::rpar);
   const Symbol plus = g.AddTerminal("PLUS", "+", Tokenizer::kToken::plus);
@@ -49,6 +50,7 @@ void CreateGrammarDalang(G& g){
   //Others
   const Symbol TYPE       = g.AddNonTerminal("TYPE");
   const Symbol NAME_LIST  = g.AddNonTerminal("NAME_LIST");
+  const Symbol NAME_LISTP = g.AddNonTerminal("NAME_LIST'");
 
 
   //Non-terminals
@@ -71,8 +73,10 @@ void CreateGrammarDalang(G& g){
   g.AddRule(Rule(DECL, {TYPE,NAME_LIST}));
   g.AddRule(Rule(TYPE, {kwd_type_int}));
   g.AddRule(Rule(TYPE, {kwd_type_bool}));
-  g.AddRule(Rule(NAME_LIST, {name, NAME_LIST}));
-  g.AddRule(Rule(NAME_LIST, {empty}));
+  g.AddRule(Rule(NAME_LIST, {name, NAME_LISTP}));
+
+  g.AddRule(Rule(NAME_LISTP, {comma, name, NAME_LISTP}));
+  g.AddRule(Rule(NAME_LISTP, {empty}));
 
   //Exprs
   g.AddRule(Rule(E,  {T, EP}));

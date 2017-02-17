@@ -1,0 +1,7 @@
+Parsing errors
+[err:14] Expecting rpar.
+[err:15] Symbol already declared.
+[error:16] Var used before declaration
+[err:19] Variables must be separated with comma.
+
+Context sensitive errors:
