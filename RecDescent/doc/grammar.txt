@@ -22,11 +22,6 @@ DECL  := TYPE NAME_LIST
 TYPE  := int
       |  bool
 
-NAME_LIST := name NAME_LIST
-          | empty
-
-
-
 NAME_LIST := name NAME_LIST'
 
 NAME_LIST':= , name NAME_LIST'
