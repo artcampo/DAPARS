@@ -15,30 +15,36 @@ F -> {nam}
 
 ------------------------------------------------------------------
 Parsing: "  "
+AST not build at: "  " -> ""
 
 ------------------------------------------------------------------
 Parsing: "@"
 [err:2] Token not recognized at: "" -> "@"
 [err:3] Block not finishing in eof or rcbr at: "" -> "@"
+AST not build at: "" -> "@"
 
 ------------------------------------------------------------------
 Parsing: "1; )"
 [err:] assignment missing '=' at: "1;" -> " )"
 [err:3] Block not finishing in eof or rcbr at: "1;" -> " )"
+AST not build at: "1;" -> " )"
 
 ------------------------------------------------------------------
 Parsing: "1 )"
 [err:] assignment missing '=' at: "1 )" -> ""
 [err:3] Block not finishing in eof or rcbr at: "1 )" -> ""
+AST not build at: "1 )" -> ""
 
 ------------------------------------------------------------------
 Parsing: "int a"
 Name missing at: "int a" -> ""
 [err:5] Expecting semicolon after variable declaration. at: "int a" -> ""
+AST not build at: "int a" -> ""
 
 ------------------------------------------------------------------
 Parsing: "if"
 [err:6] if missing lpar. at: "if" -> ""
+AST not build at: "if" -> ""
 
 ------------------------------------------------------------------
 Parsing: "if("
@@ -46,6 +52,7 @@ Expecting numerical or lpar at: "if(" -> ""
 [err:13] Term missing. at: "if(" -> ""
 [err:7] if condition wrong. at: "if(" -> ""
 [err:8] if missing rpar. at: "if(" -> ""
+AST not build at: "if(" -> ""
 
 ------------------------------------------------------------------
 Parsing: "if(int"
@@ -54,14 +61,17 @@ Expecting numerical or lpar at: "if(int" -> ""
 [err:7] if condition wrong. at: "if(int" -> ""
 [err:8] if missing rpar. at: "if(int" -> ""
 [err:5] Expecting semicolon after variable declaration. at: "if(int" -> ""
+AST not build at: "if(int" -> ""
 
 ------------------------------------------------------------------
 Parsing: "if(1)"
 [err:9] if missing lcbr. at: "if(1)" -> ""
+AST not build at: "if(1)" -> ""
 
 ------------------------------------------------------------------
 Parsing: "if(1){"
 [err:10] if missing then statement. at: "if(1){" -> ""
+AST not build at: "if(1){" -> ""
 
 ------------------------------------------------------------------
 Parsing: "if(1){2;"
@@ -69,6 +79,7 @@ Parsing: "if(1){2;"
 [err:3] Block not finishing in eof or rcbr at: "if(1){2;" -> ""
 [err:10] if missing then statement. at: "if(1){2;" -> ""
 [err:3] Block not finishing in eof or rcbr at: "if(1){2;" -> ""
+AST not build at: "if(1){2;" -> ""
 
 ------------------------------------------------------------------
 Parsing: "1+;"
@@ -76,6 +87,7 @@ Expecting numerical or lpar at: "1+;" -> ""
 [err:12] operand to + missing at: "1+;" -> ""
 [err:] assignment missing '=' at: "1+;" -> ""
 [err:3] Block not finishing in eof or rcbr at: "1+;" -> ""
+AST not build at: "1+;" -> ""
 
 ------------------------------------------------------------------
 Parsing: "1+(;"
@@ -85,6 +97,7 @@ Expecting numerical or lpar at: "1+(;" -> ""
 [err:12] operand to + missing at: "1+(;" -> ""
 [err:] assignment missing '=' at: "1+(;" -> ""
 [err:3] Block not finishing in eof or rcbr at: "1+(;" -> ""
+AST not build at: "1+(;" -> ""
 
 ------------------------------------------------------------------
 Parsing: "int a; int b; int a;"
@@ -145,6 +158,7 @@ int a int b int c
 Parsing: "1+(2));"
 [err:] assignment missing '=' at: "1+(2))" -> ";"
 [err:3] Block not finishing in eof or rcbr at: "1+(2))" -> ";"
+AST not build at: "1+(2))" -> ";"
 
 ------------------------------------------------------------------
 Parsing: "1++2;"
@@ -153,4 +167,5 @@ Expecting numerical or lpar at: "1++" -> "2;"
 [err:12] operand to + missing at: "1++2;" -> ""
 [err:] assignment missing '=' at: "1++2;" -> ""
 [err:3] Block not finishing in eof or rcbr at: "1++2;" -> ""
+AST not build at: "1++2;" -> ""
 

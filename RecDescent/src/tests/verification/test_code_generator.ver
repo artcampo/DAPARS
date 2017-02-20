@@ -26,4 +26,5 @@ int a
 ---------------------------------------------------
 Parsing: "if(1){int a;}else{int a;} int a;"
 [err:3] Block not finishing in eof or rcbr at: "nt a;}else" -> "{int a;} int a;"
+AST not build at: "nt a;}else" -> "{int a;} int a;"
 

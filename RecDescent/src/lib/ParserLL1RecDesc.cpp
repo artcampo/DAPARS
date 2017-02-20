@@ -45,19 +45,19 @@ void ParserLL1RecDesc::Prog(){
 
   if(stmts_synt != nullptr){
 //     std::cout << "Prog" << std::endl;
-    if(token_ != Tokenizer::kToken::eof){
-      Error("More data after program.");
-    }
+    if(token_ != Tokenizer::kToken::eof) Error("More data after program.");
+
+    std::unique_ptr<AST::ProgInit> pinit= std::make_unique<AST::ProgInit>(id, CurrentLocus());
+    std::unique_ptr<AST::ProgEnd> pend = std::make_unique<AST::ProgEnd>(id, CurrentLocus());
+    std::unique_ptr<Block> block(stmts_synt);
+
+    std::unique_ptr<AST::ProgBody> prog =
+      std::make_unique<AST::ProgBody>(id, CurrentLocus(), pinit, pend, block);
+
+    unit_.InitAst(prog);
+  }else{
+    Error("AST not build");
   }
-
-  std::unique_ptr<AST::ProgInit> pinit= std::make_unique<AST::ProgInit>(id, CurrentLocus());
-  std::unique_ptr<AST::ProgEnd> pend = std::make_unique<AST::ProgEnd>(id, CurrentLocus());
-  std::unique_ptr<Block> block(stmts_synt);
-
-  std::unique_ptr<AST::ProgBody> prog =
-    std::make_unique<AST::ProgBody>(id, CurrentLocus(), pinit, pend, block);
-
-  unit_.InitAst(prog);
 
 }
 
