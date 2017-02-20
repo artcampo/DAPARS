@@ -8,5 +8,5 @@ set(files
     ParserLR1.cpp
 )
 
-add_definitions( -std=c++11 -g)
+add_definitions( -std=c++14 -g)
 add_library(PARSER_LR1 STATIC ${files})

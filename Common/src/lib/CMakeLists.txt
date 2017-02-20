@@ -7,5 +7,5 @@ set(files
     Tokenizer.cpp
 )
 
-add_definitions( -std=c++11 -g)
+add_definitions( -std=c++14 -g)
 add_library(BASE_PARSER STATIC ${files})

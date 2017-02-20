@@ -5,13 +5,13 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../../DAVM/src/include")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../../DACOMPILER/src/include")
 add_subdirectory(verification)
 
-add_definitions( -std=c++11 -g)
+add_definitions( -std=c++14 -g)
 
 set(lib_parser_comp
     PARSER_LR1
     GRAMMAR
     BASE_PARSER
-    BARECOMPILER 
+    BARECOMPILER
 )
 
 add_executable(unit_items unit_items.cpp)

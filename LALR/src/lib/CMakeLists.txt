@@ -10,5 +10,5 @@ set(files
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../LR1/src/lib/ParserLR1.cpp"
 )
 
-add_definitions( -std=c++11 -g)
+add_definitions( -std=c++14 -g)
 add_library(PARSER_LALR STATIC ${files})

@@ -5,7 +5,7 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../../DAVM/src/include")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../../DACOMPILER/src/include")
 add_subdirectory(verification)
 
-add_definitions( -std=c++11 -g)
+add_definitions( -std=c++14 -g)
 
 add_executable(generate_grammar_strings generate_grammar_strings.cpp)
 target_link_libraries(generate_grammar_strings  GRAMMAR)
