@@ -7,6 +7,7 @@
 #include "ASTVisitorDump.hpp"
 #include "ASTVisitorPrettyPrinter.hpp"
 #include "ASTVisitorScopes.hpp"
+#include "ASTVisitorCodeGenerator.hpp"
 #include "CompilationUnit.hpp"
 #include "Passes/PassManager.hpp"
 #include <iostream>
@@ -50,6 +51,9 @@ void parse(const std::string& str, G& g)
       ASTVisitorScopes v(unit);
       v.Visit(*unit.ast_.block_);
     }
+    CodeGen visitor_codegen;
+    visitor_codegen.Visit(*unit.ast_.block_, nullptr);
+//     visitor_codegen.EndOfProgram();
   }
 
   std::cout << "\n";
