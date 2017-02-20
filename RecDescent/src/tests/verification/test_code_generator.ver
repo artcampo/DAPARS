@@ -1,0 +1,29 @@
+Grammar:
+PROG -> E  init 
+E -> T E' 
+E' -> + T E' 
+E' -> - T E' 
+E' -> {empty} 
+T -> F T' 
+T' -> * F T' 
+T' -> / F T' 
+T' -> {empty} 
+F -> ( E ) 
+F -> {num} 
+F -> {nam} 
+
+---------------------------------------------------
+Parsing: "if(1){int a;} int a;"
+
+AST dump:
+IfStmt:
+-Cond: Literal: 1
+-Then:
+----int a 
+
+int a 
+
+---------------------------------------------------
+Parsing: "if(1){int a;}else{int a;} int a;"
+[err:3] Block not finishing in eof or rcbr at: "nt a;}else" -> "{int a;} int a;"
+

@@ -51,9 +51,7 @@ void parse(const std::string& str, G& g)
       ASTVisitorScopes v(unit);
       v.Visit(*unit.ast_.block_);
     }
-    CodeGen visitor_codegen;
-    visitor_codegen.Visit(*unit.ast_.block_, nullptr);
-//     visitor_codegen.EndOfProgram();
+
   }
 
   std::cout << "\n";
