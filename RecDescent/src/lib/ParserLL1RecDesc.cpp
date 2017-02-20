@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include <exception>
+#include <memory>
 
 /*
   Functions for non-terminals have at least a return for each derivation
@@ -48,6 +49,10 @@ void ParserLL1RecDesc::Prog(){
       Error("More data after program.");
     }
   }
+
+  std::unique_ptr<AST::ProgInit> pinit= std::make_unique<AST::ProgInit>(id, CurrentLocus());
+//   std::unique_ptr<AST::ProgInit> pinit = std::make_unique<AST::ProgInit>(id, CurrentLocus());
+//   std::unique_ptr<ProgEnd> pend = std::make_unique<ProgEnd>(id, CurrentLocus());
   unit_.ast_.block_ = stmts_synt;
 }
 

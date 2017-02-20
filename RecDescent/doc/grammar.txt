@@ -1,5 +1,7 @@
 conditional flow
-Prog  := STMTS
+Prog   := P_INIT STMTS P_END
+P_INIT := empty
+P_END  := empty
 
 STMTS := STMT STMTS
       |  empty
