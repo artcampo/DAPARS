@@ -60,7 +60,7 @@ int main()
   std::cout << g;
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "if(1+2){int a;} int a;"), g);
+    "if(1+2){int a;} int b;"), g);
 
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(
