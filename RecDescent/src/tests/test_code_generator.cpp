@@ -40,12 +40,12 @@ void parse(const std::string& str, G& g)
     PassManager pm(unit);
     pm.Run();
   }
-  if(unit.ast_.block_ != nullptr){
+  if(unit.GetAstProg() != nullptr){
     std::cout << "\nAST dump:\n";
     ASTVisitorDump visitor_dump;
-    visitor_dump.Visit(*unit.ast_.block_);
+    visitor_dump.Visit(*unit.GetAstProg());
     CodeGen visitor_codegen;
-    visitor_codegen.Visit(*unit.ast_.block_, nullptr);
+    visitor_codegen.Visit(*unit.GetAstProg(), nullptr);
 //     visitor_codegen.EndOfProgram();
   }
 

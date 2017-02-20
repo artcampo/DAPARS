@@ -40,16 +40,16 @@ void parse(const std::string& str, G& g)
     PassManager pm(unit);
     pm.Run();
   }
-  if(unit.ast_.block_ != nullptr){
+  if(unit.GetAstProg() != nullptr){
     std::cout << "\nAST pretty:\n";
     ASTVisitorPrettyPrinter visitor;
-    visitor.Visit(*unit.ast_.block_);
+    visitor.Visit(*unit.GetAstProg());
     std::cout << "\nAST dump:\n";
     ASTVisitorDump visitor_dump;
-    visitor_dump.Visit(*unit.ast_.block_);
+    visitor_dump.Visit(*unit.GetAstProg());
     if(unit.NumScopes()>1){
       ASTVisitorScopes v(unit);
-      v.Visit(*unit.ast_.block_);
+      v.Visit(*unit.GetAstProg());
     }
 
   }

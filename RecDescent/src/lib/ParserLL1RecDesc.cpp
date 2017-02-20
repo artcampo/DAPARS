@@ -51,9 +51,14 @@ void ParserLL1RecDesc::Prog(){
   }
 
   std::unique_ptr<AST::ProgInit> pinit= std::make_unique<AST::ProgInit>(id, CurrentLocus());
-//   std::unique_ptr<AST::ProgInit> pinit = std::make_unique<AST::ProgInit>(id, CurrentLocus());
-//   std::unique_ptr<ProgEnd> pend = std::make_unique<ProgEnd>(id, CurrentLocus());
-  unit_.ast_.block_ = stmts_synt;
+  std::unique_ptr<AST::ProgEnd> pend = std::make_unique<AST::ProgEnd>(id, CurrentLocus());
+  std::unique_ptr<Block> block(stmts_synt);
+
+  std::unique_ptr<AST::ProgBody> prog =
+    std::make_unique<AST::ProgBody>(id, CurrentLocus(), pinit, pend, block);
+
+  unit_.InitAst(prog);
+
 }
 
 Block* ParserLL1RecDesc::Stmts(std::vector<Statement*>& stmts_inht, const ScopeId scope_inht){
