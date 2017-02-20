@@ -60,11 +60,12 @@ int main()
   std::cout << g;
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "if(1){int a;} int a;"), g);
+    "if(1+2){int a;} int a;"), g);
 
+  /*
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "if(1){int a;}else{int a;} int a;"), g);
-
+*/
 
   return 0;
 }
