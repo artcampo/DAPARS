@@ -25,6 +25,7 @@ BaseParser::BaseParser(const std::vector<char>& parse_data
   , skip_symbols_ {' ','\n'}
   , unit_(unit)
   , num_errors_(0)
+  , continue_parsing_(true)
 {
   std::cout << "Parsing: \"";
   for(const auto& it : parse_data ) std::cout << it;

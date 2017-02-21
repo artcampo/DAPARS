@@ -61,10 +61,20 @@ AST dump:
 ---------------------------------------------------
 Parsing: "int a;a=2++3+4;"
 Expecting numerical or lpar at: "nt a;a=2++" -> "3+4;"
-[err:12] operand to + missing at: ";a=2++3+4;" -> ""
-[err:12] operand to + missing at: ";a=2++3+4;" -> ""
-[err:12] operand to + missing at: ";a=2++3+4;" -> ""
-AST not build at: ";a=2++3+4;" -> ""
+
+AST pretty:
+int a 
+a=( ( 2 + 3 ) + 4 )
+
+AST dump:
+--int a 
+-Assign
+--a
+--Op: + 
+---Op: + 
+----Literal: 2
+----Literal: 3
+---Literal: 4
 
 
 ---------------------------------------------------
@@ -339,13 +349,56 @@ Scope 3: {}
 
 ---------------------------------------------------
 Parsing: "int a;a=1; if(2){a=3;}else{4;}"
-[err:3] Block not finishing in eof or rcbr at: "{a=3;}else" -> "{4;}"
-AST not build at: "{a=3;}else" -> "{4;}"
+[err:] assignment missing '=' at: "3;}else{4;" -> "}"
+[err:3] Block not finishing in eof or rcbr at: "3;}else{4;" -> "}"
+Statements within else wrong. at: "3;}else{4;" -> "}"
+else missing rcbr. at: "3;}else{4;" -> "}"
+[err:3] Block not finishing in eof or rcbr at: "3;}else{4;" -> "}"
+AST not build at: "3;}else{4;" -> "}"
 
 ---------------------------------------------------
 Parsing: "int a;a=1; if(2){a=3;}if(4){a=5;}else{a=6;}"
-[err:3] Block not finishing in eof or rcbr at: "{a=5;}else" -> "{a=6;}"
-AST not build at: "{a=5;}else" -> "{a=6;}"
+
+AST pretty:
+int a 
+a=1
+if(2){
+  a=3
+  }
+if(4){
+  a=5
+  }
+else{
+  a=6
+  }
+
+AST dump:
+--int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---Assign
+----a
+----Literal: 3
+
+-IfStmt:
+--Cond: Literal: 4
+--Then:
+---Assign
+----a
+----Literal: 5
+--Else:
+---Assign
+----a
+----Literal: 6
+
+Scope 0: {0, a }
+Scope 1: {}
+Scope 2: {}
+Scope 3: {}
 
 ---------------------------------------------------
 Parsing: "int a; int b; bool c;"
@@ -464,6 +517,26 @@ Scope 1: {0, b }
 
 ---------------------------------------------------
 Parsing: "int a; if(1){int b;}else{int c;}"
-[err:3] Block not finishing in eof or rcbr at: "nt b;}else" -> "{int c;}"
-AST not build at: "nt b;}else" -> "{int c;}"
+
+AST pretty:
+int a 
+if(1){
+    int b 
+  }
+else{
+    int c 
+  }
+
+AST dump:
+--int a 
+-IfStmt:
+--Cond: Literal: 1
+--Then:
+------int b 
+--Else:
+------int c 
+
+Scope 0: {0, a }
+Scope 1: {0, b }
+Scope 2: {0, c }
 
