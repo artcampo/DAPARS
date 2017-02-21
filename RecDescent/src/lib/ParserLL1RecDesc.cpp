@@ -125,6 +125,8 @@ Statement* ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
 
   }
 
+  //while(E){STMTS}
+
   //VarDecl
   if(Check({kToken::kwd_int, kToken::kwd_bool})){
 //     std::cout << "stmt::decl stmt\n";

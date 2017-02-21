@@ -6,6 +6,7 @@ P_END  := empty
 STMTS := STMT STMTS
       |  empty
 STMT  := if(E){STMTS} IFELSE
+      |  while(E){STMTS}
       |  DECL;
       |  E = E;
 

@@ -2,6 +2,7 @@ KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
+KEYWORD EXTRA INFO NOT IMPLEMENTED
 Dalang grammar v0.3
 -----------------------------
 First Table
@@ -12,9 +13,9 @@ F => ( {nam} {num}
 IFELSE => else {empty} 
 NAME_LIST => {nam} 
 NAME_LIST' => , {empty} 
-PROG => bool {empty} if int ( {nam} {num} 
-STMT => bool if int ( {nam} {num} 
-STMTS => bool {empty} if int ( {nam} {num} 
+PROG => bool {empty} if int ( {nam} {num} while 
+STMT => bool if int ( {nam} {num} while 
+STMTS => bool {empty} if int ( {nam} {num} while 
 T => ( {nam} {num} 
 TYPE => bool int 
 -----------------------------
@@ -23,11 +24,11 @@ DECL => ;
 E => = ) ; 
 E' => = ) ; 
 F => = + ) ; 
-IFELSE => bool {eof} if int ( {nam} {num} } 
+IFELSE => bool {eof} if int ( {nam} {num} } while 
 NAME_LIST => ; 
 NAME_LIST' => ; 
 PROG => {eof} 
-STMT => bool {eof} if int ( {nam} {num} } 
+STMT => bool {eof} if int ( {nam} {num} } while 
 STMTS => {eof} } 
 T => = + ) ; 
 TYPE => {nam} 
@@ -41,16 +42,17 @@ F -> ( E )  => (
 F -> {nam}  => {nam} 
 F -> {num}  => {num} 
 IFELSE -> else { STMTS }  => else 
-IFELSE -> {empty}  => bool {empty} {eof} if int ( {nam} {num} } 
+IFELSE -> {empty}  => bool {empty} {eof} if int ( {nam} {num} } while 
 NAME_LIST -> {nam} NAME_LIST'  => {nam} 
 NAME_LIST' -> , {nam} NAME_LIST'  => , 
 NAME_LIST' -> {empty}  => {empty} ; 
-PROG -> STMTS  init  => bool {empty} if int ( {nam} {num} 
+PROG -> STMTS  init  => bool {empty} if int ( {nam} {num} while 
 STMT -> DECL ;  => bool int 
 STMT -> E = E ;  => ( {nam} {num} 
 STMT -> if ( E ) { STMTS } IFELSE  => if 
+STMT -> while ( E ) { STMTS }  => while 
 STMTS -> {empty}  => {empty} {eof} } 
-STMTS -> STMT STMTS  => bool if int ( {nam} {num} 
+STMTS -> STMT STMTS  => bool if int ( {nam} {num} while 
 T -> F  => ( {nam} {num} 
 TYPE -> bool  => bool 
 TYPE -> int  => int 

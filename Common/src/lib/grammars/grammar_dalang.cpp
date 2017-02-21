@@ -26,8 +26,10 @@ void CreateGrammarDalang(G& g){
   const Symbol equl = g.AddTerminal("EQUL", "=", Tokenizer::kToken::equality);
   const Symbol empty = Symbol::Empty();
 
-  const Symbol kwd_if   = g.AddTerminalKeyword("IF", "if", Tokenizer::kToken::kwd_if);
-  const Symbol kwd_else = g.AddTerminalKeyword("ELSE", "else", Tokenizer::kToken::kwd_else);
+  const Symbol kwd_if     = g.AddTerminalKeyword("IF", "if", Tokenizer::kToken::kwd_if);
+  const Symbol kwd_else   = g.AddTerminalKeyword("ELSE", "else", Tokenizer::kToken::kwd_else);
+  const Symbol kwd_while  = g.AddTerminalKeyword("While", "while", Tokenizer::kToken::kwd_while);
+
   const Symbol kwd_type_int  = g.AddTerminalKeyword("INT", "int", Tokenizer::kToken::kwd_int);
   const Symbol kwd_type_bool = g.AddTerminalKeyword("BOOL", "bool", Tokenizer::kToken::kwd_bool);
 
@@ -64,6 +66,7 @@ void CreateGrammarDalang(G& g){
   g.AddRule(Rule(STMT,   {E, equl, E, semi}));
   g.AddRule(Rule(STMT,   {DECL, semi}));
   g.AddRule(Rule(STMT,   {kwd_if, lpar, E, rpar, lcbr, STMTS, rcbr, IFELSE}));
+  g.AddRule(Rule(STMT,   {kwd_while, lpar, E, rpar, lcbr, STMTS, rcbr}));
 
   g.AddRule(Rule(IFELSE, {kwd_else, lcbr, STMTS, rcbr}));
   g.AddRule(Rule(IFELSE, {empty}));
