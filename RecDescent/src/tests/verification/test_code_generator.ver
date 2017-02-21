@@ -13,18 +13,42 @@ F -> {num}
 F -> {nam} 
 
 ---------------------------------------------------
-Parsing: "if(1){int a;} int a;"
+Parsing: "if(1+2){int a;} int b;"
 
 AST dump:
-IfStmt:
--Cond: Literal: 1
--Then:
-----int a 
+-IfStmt:
+--Cond: Op: + 
+---Literal: 1
+---Literal: 2
+--Then:
+------int a 
 
-int a 
+--int b 
+P
+BBlock {If VarDecl: int b  } with successor: ProgEnd
+**Backpatch try [Block {If VarDecl: int b  }]:(0x55b32a5b3ad0)
+**Backpatch try [If]:(0x55b32a5b3950)
+IfIf with successor: VarDecl: int b 
+**Backpatch insert [Block {VarDecl: int a  }] has to patch:jump if trueto:0
+**Backpatch insert [VarDecl: int b ] has to patch:jump if falseto:0
+BBlock {VarDecl: int a  } with successor: VarDecl: int b 
+**Backpatch try [Block {VarDecl: int a  }]:(0x55b32a5b38c0)Backpatch: jump if trueto:0 with node: Block {VarDecl: int a  }
 
----------------------------------------------------
-Parsing: "if(1){int a;}else{int a;} int a;"
-[err:3] Block not finishing in eof or rcbr at: "nt a;}else" -> "{int a;} int a;"
-AST not build at: "nt a;}else" -> "{int a;} int a;"
+**Backpatch try [VarDecl: int a ]:(0x55b32a5b3890)
+DVarDecl: int a  with successor: VarDecl: int b 
+**Backpatch insert [VarDecl: int b ] has to patch:Jump, to:0
+
+**Backpatch try [VarDecl: int b ]:(0x55b32a5b3aa0)Backpatch: jump if falseto:0 with node: VarDecl: int b 
+Backpatch: Jump, to:0 with node: VarDecl: int b 
+
+DVarDecl: int b  with successor: ProgEnd
+0: Load, r:0 val: 1
+1: Load, r:1 val: 2
+2: ADD, rs1:0 rs2: 1 rd:2
+3: jump if trueto:5
+4: jump if falseto:7
+5: [Inst not implemented]
+6: Jump, to:7
+7: [Inst not implemented]
+8: Stop
 

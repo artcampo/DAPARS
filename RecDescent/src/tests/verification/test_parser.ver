@@ -29,16 +29,16 @@ a=2
 a=3
 
 AST dump:
-int a 
-Assign
--a
--Literal: 1
-Assign
--a
--Literal: 2
-Assign
--a
--Literal: 3
+--int a 
+-Assign
+--a
+--Literal: 1
+-Assign
+--a
+--Literal: 2
+-Assign
+--a
+--Literal: 3
 
 ---------------------------------------------------
 Parsing: "int a;a=2+3+4;"
@@ -48,14 +48,14 @@ int a
 a=( ( 2 + 3 ) + 4 )
 
 AST dump:
-int a 
-Assign
--a
--Op: + 
+--int a 
+-Assign
+--a
 --Op: + 
----Literal: 2
----Literal: 3
---Literal: 4
+---Op: + 
+----Literal: 2
+----Literal: 3
+---Literal: 4
 
 
 ---------------------------------------------------
@@ -76,17 +76,17 @@ a=( 1 + 2 )
 a=( 3 + 4 )
 
 AST dump:
-int a 
-Assign
--a
--Op: + 
---Literal: 1
---Literal: 2
-Assign
--a
--Op: + 
---Literal: 3
---Literal: 4
+--int a 
+-Assign
+--a
+--Op: + 
+---Literal: 1
+---Literal: 2
+-Assign
+--a
+--Op: + 
+---Literal: 3
+---Literal: 4
 
 
 ---------------------------------------------------
@@ -99,22 +99,22 @@ a=( 3 + 4 )
 a=( 5 + 6 )
 
 AST dump:
-int a 
-Assign
--a
--Op: + 
---Literal: 1
---Literal: 2
-Assign
--a
--Op: + 
---Literal: 3
---Literal: 4
-Assign
--a
--Op: + 
---Literal: 5
---Literal: 6
+--int a 
+-Assign
+--a
+--Op: + 
+---Literal: 1
+---Literal: 2
+-Assign
+--a
+--Op: + 
+---Literal: 3
+---Literal: 4
+-Assign
+--a
+--Op: + 
+---Literal: 5
+---Literal: 6
 
 
 Grammar:
@@ -142,16 +142,16 @@ if(2){
   }
 
 AST dump:
-int a 
-Assign
--a
--Literal: 1
-IfStmt:
--Cond: Literal: 2
--Then:
---Assign
----a
----Literal: 3
+--int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---Assign
+----a
+----Literal: 3
 
 Scope 0: {0, a }
 Scope 1: {}
@@ -168,20 +168,20 @@ if(2){
 a=4
 
 AST dump:
-int a 
-Assign
--a
--Literal: 1
-IfStmt:
--Cond: Literal: 2
--Then:
---Assign
----a
----Literal: 3
+--int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---Assign
+----a
+----Literal: 3
 
-Assign
--a
--Literal: 4
+-Assign
+--a
+--Literal: 4
 Scope 0: {0, a }
 Scope 1: {}
 
@@ -196,20 +196,20 @@ if(2){
   }
 
 AST dump:
-int a 
-Assign
--a
--Literal: 1
-IfStmt:
--Cond: Literal: 2
--Then:
---Assign
----a
----Op: + 
+--int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---Assign
+----a
 ----Op: + 
------Literal: 3
------Literal: 4
-----Literal: 5
+-----Op: + 
+------Literal: 3
+------Literal: 4
+-----Literal: 5
 
 Scope 0: {0, a }
 Scope 1: {}
@@ -226,24 +226,24 @@ if(2){
 a=6
 
 AST dump:
-int a 
-Assign
--a
--Literal: 1
-IfStmt:
--Cond: Literal: 2
--Then:
---Assign
----a
----Op: + 
+--int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---Assign
+----a
 ----Op: + 
------Literal: 3
------Literal: 4
-----Literal: 5
+-----Op: + 
+------Literal: 3
+------Literal: 4
+-----Literal: 5
 
-Assign
--a
--Literal: 6
+-Assign
+--a
+--Literal: 6
 Scope 0: {0, a }
 Scope 1: {}
 
@@ -263,25 +263,25 @@ if(2){
   }
 
 AST dump:
-int a 
-Assign
--a
--Literal: 1
-IfStmt:
--Cond: Literal: 2
--Then:
---IfStmt:
----Cond: Literal: 3
----Then:
-----Assign
------a
------Literal: 4
-----IfStmt:
------Cond: Literal: 5
------Then:
-------Assign
--------a
--------Literal: 6
+--int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---IfStmt:
+----Cond: Literal: 3
+----Then:
+-----Assign
+------a
+------Literal: 4
+-----IfStmt:
+------Cond: Literal: 5
+------Then:
+-------Assign
+--------a
+--------Literal: 6
 
 
 
@@ -306,29 +306,29 @@ if(2){
   }
 
 AST dump:
-int a 
-Assign
--a
--Literal: 1
-IfStmt:
--Cond: Literal: 2
--Then:
---IfStmt:
----Cond: Literal: 3
----Then:
-----Assign
------a
------Op: + 
-------Literal: 4
-------Literal: 5
-----IfStmt:
------Cond: Literal: 6
------Then:
-------Assign
--------a
--------Op: + 
---------Literal: 7
---------Literal: 8
+--int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---IfStmt:
+----Cond: Literal: 3
+----Then:
+-----Assign
+------a
+------Op: + 
+-------Literal: 4
+-------Literal: 5
+-----IfStmt:
+------Cond: Literal: 6
+------Then:
+-------Assign
+--------a
+--------Op: + 
+---------Literal: 7
+---------Literal: 8
 
 
 
@@ -356,9 +356,9 @@ int b
 bool c 
 
 AST dump:
-int a 
-int b 
-bool c 
+--int a 
+--int b 
+--bool c 
 
 ---------------------------------------------------
 Parsing: "int b, c, d; bool e f;"
@@ -369,8 +369,8 @@ int b int c int d
 bool e bool f 
 
 AST dump:
-int b int c int d 
-bool e bool f 
+--int b -int c -int d 
+--bool e -bool f 
 
 ---------------------------------------------------
 Parsing: "int a; a=1;"
@@ -380,10 +380,10 @@ int a
 a=1
 
 AST dump:
-int a 
-Assign
--a
--Literal: 1
+--int a 
+-Assign
+--a
+--Literal: 1
 
 ---------------------------------------------------
 Parsing: "int a; a=(1+2+3);"
@@ -393,14 +393,14 @@ int a
 a=( ( 1 + 2 ) + 3 )
 
 AST dump:
-int a 
-Assign
--a
--Op: + 
+--int a 
+-Assign
+--a
 --Op: + 
----Literal: 1
----Literal: 2
---Literal: 3
+---Op: + 
+----Literal: 1
+----Literal: 2
+---Literal: 3
 
 ---------------------------------------------------
 Parsing: "int a b c; b=1; c=2; a=(1+b+c);"
@@ -414,20 +414,20 @@ c=2
 a=( ( 1 + b ) + c )
 
 AST dump:
-int a int b int c 
-Assign
--b
--Literal: 1
-Assign
--c
--Literal: 2
-Assign
--a
--Op: + 
---Op: + 
----Literal: 1
----b
+--int a -int b -int c 
+-Assign
+--b
+--Literal: 1
+-Assign
 --c
+--Literal: 2
+-Assign
+--a
+--Op: + 
+---Op: + 
+----Literal: 1
+----b
+---c
 
 ---------------------------------------------------
 Parsing: "int a; int b; int a;"
@@ -439,9 +439,9 @@ int b
 int a 
 
 AST dump:
-int a 
-int b 
-int a 
+--int a 
+--int b 
+--int a 
 
 ---------------------------------------------------
 Parsing: "int a; if(1){int b;}"
@@ -453,11 +453,11 @@ if(1){
   }
 
 AST dump:
-int a 
-IfStmt:
--Cond: Literal: 1
--Then:
-----int b 
+--int a 
+-IfStmt:
+--Cond: Literal: 1
+--Then:
+------int b 
 
 Scope 0: {0, a }
 Scope 1: {0, b }
