@@ -78,6 +78,9 @@ protected:
   AssignStmt*   NewAssignStmt(Expr* const lhs, Expr* const rhs
                         , const ScopeId id, const Locus& locus);
 
+  std::unique_ptr<WhileStmt>
+  NewWhileStmt(std::unique_ptr<Expr>& condition, std::unique_ptr<Block>& body
+                        , const ScopeId id, const Locus& locus);
 private:
   int               num_errors_;
   bool              continue_parsing_;

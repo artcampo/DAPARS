@@ -48,6 +48,8 @@ private:
   const TypeId  Type();
 
 
+  Block* ParseSubBlock(const ScopeId scope_inht, const std::string& error);
+
 };
 
 } //end namespace RecDescent

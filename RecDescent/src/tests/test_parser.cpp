@@ -108,9 +108,11 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int a; if(1){int b;}"), g);
 
-  //This is buggy
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int a; if(1){int b;}else{int c;}"), g);
+
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "int a; while(1 + 2){ int c; c = 1+2; }"), g);
 
 
   /*

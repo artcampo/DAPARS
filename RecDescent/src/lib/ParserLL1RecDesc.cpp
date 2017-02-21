@@ -69,7 +69,7 @@ Block* ParserLL1RecDesc::Stmts(std::vector<Statement*>& stmts_inht, const ScopeI
 
   //STMTS => bool {empty} if int ( {nam} {num}
   if( Check({kToken::kwd_if, kToken::kwd_int, kToken::kwd_bool, kToken::lpar
-          , kToken::numerical, kToken::name})){
+          , kToken::numerical, kToken::name, kToken::kwd_while})){
       Statement* stmt_synth = Stmt(scope_inht);
 
       stmts_inht.push_back(stmt_synth);
@@ -106,12 +106,8 @@ Statement* ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
 
     if(not Accept(kToken::lcbr, "[err:9] if missing lcbr.")) return nullptr;
     const ScopeId nested_id = unit_.NewNestedScope();
-    std::vector<Statement*> stmts_inht;
-    Block* stmts_synt = Stmts(stmts_inht, nested_id);
-    if(stmts_synt == nullptr){
-      Error("[err:10] if missing then statement.");
-      return nullptr;
-    }
+    Block* stmts_synt = ParseSubBlock(nested_id, "[err:10] if missing then statement.");
+    if(stmts_synt == nullptr) return nullptr;
     if(not Accept(kToken::rcbr, "[err:11] if missing rcbr.")) return nullptr;
 
     unit_.RestoreScope();
@@ -126,6 +122,25 @@ Statement* ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
   }
 
   //while(E){STMTS}
+  if(TryAndAccept(kToken::kwd_while)){
+    if(not Accept(kToken::lpar, "[err:] while missing lpar.")) return nullptr;
+    Expr* expr_synt = Exprs(scope_inht);
+    if(expr_synt == nullptr) Error("[err:] while condition wrong.");
+    if(not Accept(kToken::rpar, "[err:] while missing rpar.")) return nullptr;
+
+    if(not Accept(kToken::lcbr, "[err:] while missing lcbr.")) return nullptr;
+    const ScopeId nested_id = unit_.NewNestedScope();
+    Block* stmts_synt = ParseSubBlock(nested_id, "[err:] while missing body.");
+    if(stmts_synt == nullptr) return nullptr;
+    if(not Accept(kToken::rcbr, "[err:] while missing rcbr.")) return nullptr;
+
+    std::unique_ptr<Expr>  e(expr_synt);
+    std::unique_ptr<Block> b(stmts_synt);
+    unit_.RestoreScope();
+    std::unique_ptr<WhileStmt> unique_stmt_synt = NewWhileStmt(e, b, scope_inht, l);
+    stmt_synt = unique_stmt_synt.get();
+    return stmt_synt;
+  }
 
   //VarDecl
   if(Check({kToken::kwd_int, kToken::kwd_bool})){
@@ -375,6 +390,12 @@ const TypeId  ParserLL1RecDesc::Type(){
   return t;
 }
 
+Block* ParserLL1RecDesc::ParseSubBlock(const ScopeId scope, const std::string& error){
+  std::vector<Statement*> stmts_inht;
+  Block* stmts_synt = Stmts(stmts_inht, scope);
+  if(stmts_synt == nullptr) Error(error);
+  return stmts_synt;
+}
 
 } //end namespace RecDescent
 
