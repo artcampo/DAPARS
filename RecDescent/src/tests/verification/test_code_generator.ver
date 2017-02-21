@@ -26,19 +26,19 @@ AST dump:
 -int b 
 P
 BBlock {If VarDecl: int b  } with successor: ProgEnd
-**Backpatch try [Block {If VarDecl: int b  }]:(0x5602dec98ad0)
-**Backpatch try [If]:(0x5602dec98980)
+**Backpatch try [Block {If VarDecl: int b  }]:(0x55dbc373fad0)
+**Backpatch try [If]:(0x55dbc373f980)
 IfIf with successor: VarDecl: int b 
 **Backpatch insert [Block {VarDecl: int a  }] has to patch:jump if trueto:0
 **Backpatch insert [VarDecl: int b ] has to patch:jump if falseto:0
 BBlock {VarDecl: int a  } with successor: VarDecl: int b 
-**Backpatch try [Block {VarDecl: int a  }]:(0x5602dec988f0)Backpatch: jump if trueto:0 with node: Block {VarDecl: int a  }
+**Backpatch try [Block {VarDecl: int a  }]:(0x55dbc373f8f0)Backpatch: jump if trueto:0 with node: Block {VarDecl: int a  }
 
-**Backpatch try [VarDecl: int a ]:(0x5602dec988c0)
+**Backpatch try [VarDecl: int a ]:(0x55dbc373f8c0)
 DVarDecl: int a  with successor: VarDecl: int b 
 **Backpatch insert [VarDecl: int b ] has to patch:JUMP: @0
 
-**Backpatch try [VarDecl: int b ]:(0x5602dec98930)Backpatch: jump if falseto:0 with node: VarDecl: int b 
+**Backpatch try [VarDecl: int b ]:(0x55dbc373f930)Backpatch: jump if falseto:0 with node: VarDecl: int b 
 Backpatch: JUMP: @0 with node: VarDecl: int b 
 
 DVarDecl: int b  with successor: ProgEnd
@@ -51,4 +51,44 @@ DVarDecl: int b  with successor: ProgEnd
 6: JUMP: @7
 7: NewVar: TypeId0
 8: STOP
+
+---------------------------------------------------
+Parsing: "int a; while(1+2){int b;} int c;"
+
+AST dump:
+-int a 
+-WhileStmt:
+--Cond: Op: + 
+---Literal: 1
+---Literal: 2
+--Body:
+---int b 
+
+--int c 
+P
+BBlock {VarDecl: int a  While ( + ) {Block {VarDecl: int b  }} VarDecl: int c  } with successor: ProgEnd
+**Backpatch try [Block {VarDecl: int a  While ( + ) {Block {VarDecl: int b  }} VarDecl: int c  }]:(0x55dbc373fcf0)
+**Backpatch try [VarDecl: int a ]:(0x55dbc373fd90)
+DVarDecl: int a  with successor: While ( + ) {Block {VarDecl: int b  }}
+**Backpatch try [While ( + ) {Block {VarDecl: int b  }}]:(0x55dbc373ff70)
+**Backpatch insert [Block {VarDecl: int b  }] has to patch:jump if trueto:0
+**Backpatch insert [VarDecl: int c ] has to patch:jump if falseto:0
+BBlock {VarDecl: int b  } with successor: VarDecl: int c 
+**Backpatch try [Block {VarDecl: int b  }]:(0x55dbc373fcb0)Backpatch: jump if trueto:0 with node: Block {VarDecl: int b  }
+
+**Backpatch try [VarDecl: int b ]:(0x55dbc37400a0)
+DVarDecl: int b  with successor: VarDecl: int c 
+**Backpatch try [VarDecl: int c ]:(0x55dbc373fdc0)Backpatch: jump if falseto:0 with node: VarDecl: int c 
+
+DVarDecl: int c  with successor: ProgEnd
+0: NewVar: TypeId0
+1: Load, r:0 val: 1
+2: Load, r:1 val: 2
+3: ADD, rs1:0 rs2: 1 rd:2
+4: jump if trueto:6
+5: jump if falseto:8
+6: NewVar: TypeId0
+7: jump if falseto:1
+8: NewVar: TypeId0
+9: STOP
 

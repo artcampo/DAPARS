@@ -62,6 +62,9 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "if(1+2){int a;} int b;"), g);
 
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "int a; while(1+2){int b;} int c;"), g);
+
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "if(1){int a;}else{int a;} int a;"), g);
