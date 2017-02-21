@@ -139,6 +139,8 @@ Statement* ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
     unit_.RestoreScope();
     std::unique_ptr<WhileStmt> unique_stmt_synt = NewWhileStmt(e, b, scope_inht, l);
     stmt_synt = unique_stmt_synt.get();
+    //TODO: passs propierty of unique_ptr(!!!)
+    unique_stmt_synt.release();
     return stmt_synt;
   }
 
@@ -288,7 +290,7 @@ Block* ParserLL1RecDesc::IfElse(const ScopeId scope_inht){
 
   AcceptEmpty( {kToken::kwd_bool, kToken::eof, kToken::kwd_if
                 , kToken::kwd_int, kToken::lpar, kToken::name
-                , kToken::numerical, kToken::rcbr},
+                , kToken::numerical, kToken::rcbr, kToken::kwd_while},
                 "Invalid token after if");
 
 //   std::cout << "<-IfElse\n";

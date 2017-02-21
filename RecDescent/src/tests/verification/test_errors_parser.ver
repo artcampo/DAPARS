@@ -116,16 +116,16 @@ Parsing: "int a; int b; int a;"
 [err:15] Symbol already declared. at: " b; int a;" -> ""
 
 AST dump:
---int a 
---int b 
---int a 
+-int a 
+-int b 
+-int a 
 
 ------------------------------------------------------------------
 Parsing: "int a; a=1+b;"
 [error:16] Var used before declaration at: " a; a=1+b;" -> ""
 
 AST dump:
---int a 
+-int a 
 -Assign
 --a
 --Op: + 
@@ -137,8 +137,8 @@ Parsing: "int a; bool b; a=a+b;"
 [err:17] Incompatible types in op at: "ol b; a=a+" -> "b;"
 
 AST dump:
---int a 
---bool b 
+-int a 
+-bool b 
 -Assign
 --a
 --Op: + 
@@ -150,8 +150,8 @@ Parsing: "int a; bool b; a=b+b;"
 [err:18] Incompatible types in assignment at: " bool b; a" -> "=b+b;"
 
 AST dump:
---int a 
---bool b 
+-int a 
+-bool b 
 -Assign
 --a
 --Op: + 
@@ -164,7 +164,7 @@ Parsing: "int a b c;"
 [err:19] Variables must be separated with comma. at: "int a b c" -> ";"
 
 AST dump:
---int a -int b -int c 
+-int a int b int c 
 
 ------------------------------------------------------------------
 Parsing: "1+(2));"

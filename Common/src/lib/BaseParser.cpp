@@ -237,10 +237,12 @@ AssignStmt* BaseParser::NewAssignStmt(Expr* const lhs
 std::unique_ptr<WhileStmt>
 BaseParser::NewWhileStmt(std::unique_ptr<Expr>& condition, std::unique_ptr<Block>& body
     , const ScopeId id, const Locus& locus){
-  if(condition.get() == nullptr or body.get() == nullptr)
+  if(condition.get() == nullptr or body.get() == nullptr){
+    std::cout << "Null NewWhileStmt\n";
     return std::unique_ptr<WhileStmt>(nullptr);
+  }
 
-  return std::make_unique<WhileStmt>( condition, body, id, locus);
+  return std::move(std::make_unique<WhileStmt>( condition, body, id, locus));
 }
 
 } //end namespace Common

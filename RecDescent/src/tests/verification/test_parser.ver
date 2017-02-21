@@ -29,7 +29,7 @@ a=2
 a=3
 
 AST dump:
---int a 
+-int a 
 -Assign
 --a
 --Literal: 1
@@ -48,7 +48,7 @@ int a
 a=( ( 2 + 3 ) + 4 )
 
 AST dump:
---int a 
+-int a 
 -Assign
 --a
 --Op: + 
@@ -67,7 +67,7 @@ int a
 a=( ( 2 + 3 ) + 4 )
 
 AST dump:
---int a 
+-int a 
 -Assign
 --a
 --Op: + 
@@ -86,7 +86,7 @@ a=( 1 + 2 )
 a=( 3 + 4 )
 
 AST dump:
---int a 
+-int a 
 -Assign
 --a
 --Op: + 
@@ -109,7 +109,7 @@ a=( 3 + 4 )
 a=( 5 + 6 )
 
 AST dump:
---int a 
+-int a 
 -Assign
 --a
 --Op: + 
@@ -152,7 +152,7 @@ if(2){
   }
 
 AST dump:
---int a 
+-int a 
 -Assign
 --a
 --Literal: 1
@@ -178,7 +178,7 @@ if(2){
 a=4
 
 AST dump:
---int a 
+-int a 
 -Assign
 --a
 --Literal: 1
@@ -206,7 +206,7 @@ if(2){
   }
 
 AST dump:
---int a 
+-int a 
 -Assign
 --a
 --Literal: 1
@@ -236,7 +236,7 @@ if(2){
 a=6
 
 AST dump:
---int a 
+-int a 
 -Assign
 --a
 --Literal: 1
@@ -273,7 +273,7 @@ if(2){
   }
 
 AST dump:
---int a 
+-int a 
 -Assign
 --a
 --Literal: 1
@@ -316,7 +316,7 @@ if(2){
   }
 
 AST dump:
---int a 
+-int a 
 -Assign
 --a
 --Literal: 1
@@ -373,7 +373,7 @@ else{
   }
 
 AST dump:
---int a 
+-int a 
 -Assign
 --a
 --Literal: 1
@@ -409,9 +409,9 @@ int b
 bool c 
 
 AST dump:
---int a 
---int b 
---bool c 
+-int a 
+-int b 
+-bool c 
 
 ---------------------------------------------------
 Parsing: "int b, c, d; bool e f;"
@@ -422,8 +422,8 @@ int b int c int d
 bool e bool f 
 
 AST dump:
---int b -int c -int d 
---bool e -bool f 
+-int b int c int d 
+-bool e bool f 
 
 ---------------------------------------------------
 Parsing: "int a; a=1;"
@@ -433,7 +433,7 @@ int a
 a=1
 
 AST dump:
---int a 
+-int a 
 -Assign
 --a
 --Literal: 1
@@ -446,7 +446,7 @@ int a
 a=( ( 1 + 2 ) + 3 )
 
 AST dump:
---int a 
+-int a 
 -Assign
 --a
 --Op: + 
@@ -467,7 +467,7 @@ c=2
 a=( ( 1 + b ) + c )
 
 AST dump:
---int a -int b -int c 
+-int a int b int c 
 -Assign
 --b
 --Literal: 1
@@ -492,9 +492,9 @@ int b
 int a 
 
 AST dump:
---int a 
---int b 
---int a 
+-int a 
+-int b 
+-int a 
 
 ---------------------------------------------------
 Parsing: "int a; if(1){int b;}"
@@ -502,15 +502,15 @@ Parsing: "int a; if(1){int b;}"
 AST pretty:
 int a 
 if(1){
-    int b 
+  int b 
   }
 
 AST dump:
---int a 
+-int a 
 -IfStmt:
 --Cond: Literal: 1
 --Then:
-------int b 
+---int b 
 
 Scope 0: {0, a }
 Scope 1: {0, b }
@@ -521,22 +521,49 @@ Parsing: "int a; if(1){int b;}else{int c;}"
 AST pretty:
 int a 
 if(1){
-    int b 
+  int b 
   }
 else{
-    int c 
+  int c 
   }
 
 AST dump:
---int a 
+-int a 
 -IfStmt:
 --Cond: Literal: 1
 --Then:
-------int b 
+---int b 
 --Else:
-------int c 
+---int c 
 
 Scope 0: {0, a }
 Scope 1: {0, b }
 Scope 2: {0, c }
+
+---------------------------------------------------
+Parsing: "int a; while(1 + 2){ int c; c = 1+2; }"
+
+AST pretty:
+int a 
+while(( 1 + 2 )){
+  int c 
+  c=( 1 + 2 )
+  }
+
+AST dump:
+-int a 
+-WhileStmt:
+--Cond: Op: + 
+---Literal: 1
+---Literal: 2
+--Body:
+---int c 
+---Assign
+----c
+----Op: + 
+-----Literal: 1
+-----Literal: 2
+
+Scope 0: {0, a }
+Scope 1: {0, c }
 
