@@ -24,24 +24,6 @@ AST dump:
 ---int a 
 
 -int b 
-P
-BBlock {If VarDecl: int b  } with successor: ProgEnd
-**Backpatch try [Block {If VarDecl: int b  }]:(0x55dbc373fad0)
-**Backpatch try [If]:(0x55dbc373f980)
-IfIf with successor: VarDecl: int b 
-**Backpatch insert [Block {VarDecl: int a  }] has to patch:jump if trueto:0
-**Backpatch insert [VarDecl: int b ] has to patch:jump if falseto:0
-BBlock {VarDecl: int a  } with successor: VarDecl: int b 
-**Backpatch try [Block {VarDecl: int a  }]:(0x55dbc373f8f0)Backpatch: jump if trueto:0 with node: Block {VarDecl: int a  }
-
-**Backpatch try [VarDecl: int a ]:(0x55dbc373f8c0)
-DVarDecl: int a  with successor: VarDecl: int b 
-**Backpatch insert [VarDecl: int b ] has to patch:JUMP: @0
-
-**Backpatch try [VarDecl: int b ]:(0x55dbc373f930)Backpatch: jump if falseto:0 with node: VarDecl: int b 
-Backpatch: JUMP: @0 with node: VarDecl: int b 
-
-DVarDecl: int b  with successor: ProgEnd
 0: Load, r:0 val: 1
 1: Load, r:1 val: 2
 2: ADD, rs1:0 rs2: 1 rd:2
@@ -65,22 +47,6 @@ AST dump:
 ---int b 
 
 --int c 
-P
-BBlock {VarDecl: int a  While ( + ) {Block {VarDecl: int b  }} VarDecl: int c  } with successor: ProgEnd
-**Backpatch try [Block {VarDecl: int a  While ( + ) {Block {VarDecl: int b  }} VarDecl: int c  }]:(0x55dbc373fcf0)
-**Backpatch try [VarDecl: int a ]:(0x55dbc373fd90)
-DVarDecl: int a  with successor: While ( + ) {Block {VarDecl: int b  }}
-**Backpatch try [While ( + ) {Block {VarDecl: int b  }}]:(0x55dbc373ff70)
-**Backpatch insert [Block {VarDecl: int b  }] has to patch:jump if trueto:0
-**Backpatch insert [VarDecl: int c ] has to patch:jump if falseto:0
-BBlock {VarDecl: int b  } with successor: VarDecl: int c 
-**Backpatch try [Block {VarDecl: int b  }]:(0x55dbc373fcb0)Backpatch: jump if trueto:0 with node: Block {VarDecl: int b  }
-
-**Backpatch try [VarDecl: int b ]:(0x55dbc37400a0)
-DVarDecl: int b  with successor: VarDecl: int c 
-**Backpatch try [VarDecl: int c ]:(0x55dbc373fdc0)Backpatch: jump if falseto:0 with node: VarDecl: int c 
-
-DVarDecl: int c  with successor: ProgEnd
 0: NewVar: TypeId0
 1: Load, r:0 val: 1
 2: Load, r:1 val: 2
