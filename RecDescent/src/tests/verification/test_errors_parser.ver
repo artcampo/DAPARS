@@ -167,6 +167,26 @@ AST dump:
 -int a int b int c 
 
 ------------------------------------------------------------------
+Parsing: "int a,b,c; a= 2+1; a = b+c; 2 = 2;"
+[err:22] left of assignment is not an Lval at: "a = b+c; 2" -> " = 2;"
+
+AST dump:
+-int a int b int c 
+-Assign
+--a
+--Op: + 
+---Literal: 2
+---Literal: 1
+-Assign
+--a
+--Op: + 
+---b
+---c
+-Assign
+--Literal: 2
+--Literal: 2
+
+------------------------------------------------------------------
 Parsing: "1+(2));"
 [err:] assignment missing '=' at: "1+(2))" -> ";"
 [err:3] Block not finishing in eof or rcbr at: "1+(2))" -> ";"
