@@ -19,6 +19,8 @@ E'    := + T E'
 T     := F
 F     := ( E )
       |  numerical
+      | true
+      | false
 
 DECL  := TYPE NAME_LIST
 

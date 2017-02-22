@@ -3,20 +3,22 @@ KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
+KEYWORD EXTRA INFO NOT IMPLEMENTED
+KEYWORD EXTRA INFO NOT IMPLEMENTED
 Dalang grammar v0.3
 -----------------------------
 First Table
 DECL => bool int 
-E => ( {nam} {num} 
+E => false ( {num}  true 
 E' => {empty} + 
-F => ( {nam} {num} 
+F => false ( {num}  true 
 IFELSE => else {empty} 
 NAME_LIST => {nam} 
 NAME_LIST' => , {empty} 
-PROG => bool {empty} if int ( {nam} {num} while 
-STMT => bool if int ( {nam} {num} while 
-STMTS => bool {empty} if int ( {nam} {num} while 
-T => ( {nam} {num} 
+PROG => bool {empty} false if int ( {num}  true while 
+STMT => bool false if int ( {num}  true while 
+STMTS => bool {empty} false if int ( {num}  true while 
+T => false ( {num}  true 
 TYPE => bool int 
 -----------------------------
 Follow Table
@@ -24,36 +26,37 @@ DECL => ;
 E => = ) ; 
 E' => = ) ; 
 F => = + ) ; 
-IFELSE => bool {eof} if int ( {nam} {num} } while 
+IFELSE => bool {eof} false if int ( {num} }  true while 
 NAME_LIST => ; 
 NAME_LIST' => ; 
 PROG => {eof} 
-STMT => bool {eof} if int ( {nam} {num} } while 
+STMT => bool {eof} false if int ( {num} }  true while 
 STMTS => {eof} } 
 T => = + ) ; 
 TYPE => {nam} 
 -----------------------------
 First+ Table
 DECL -> TYPE NAME_LIST  => bool int 
-E -> T E'  => ( {nam} {num} 
+E -> T E'  => false ( {num}  true 
 E' -> {empty}  => {empty} = ) ; 
 E' -> + T E'  => + 
+F -> false  => false 
 F -> ( E )  => ( 
-F -> {nam}  => {nam} 
 F -> {num}  => {num} 
+F ->  true  =>  true 
 IFELSE -> else { STMTS }  => else 
-IFELSE -> {empty}  => bool {empty} {eof} if int ( {nam} {num} } while 
+IFELSE -> {empty}  => bool {empty} {eof} false if int ( {num} }  true while 
 NAME_LIST -> {nam} NAME_LIST'  => {nam} 
 NAME_LIST' -> , {nam} NAME_LIST'  => , 
 NAME_LIST' -> {empty}  => {empty} ; 
-PROG -> STMTS  init  => bool {empty} if int ( {nam} {num} while 
+PROG -> STMTS  init  => bool {empty} false if int ( {num}  true while 
 STMT -> DECL ;  => bool int 
-STMT -> E = E ;  => ( {nam} {num} 
+STMT -> E = E ;  => false ( {num}  true 
 STMT -> if ( E ) { STMTS } IFELSE  => if 
 STMT -> while ( E ) { STMTS }  => while 
 STMTS -> {empty}  => {empty} {eof} } 
-STMTS -> STMT STMTS  => bool if int ( {nam} {num} while 
-T -> F  => ( {nam} {num} 
+STMTS -> STMT STMTS  => bool false if int ( {num}  true while 
+T -> F  => false ( {num}  true 
 TYPE -> bool  => bool 
 TYPE -> int  => int 
 -----------------------------
