@@ -235,20 +235,20 @@ Expr* ParserLL1RecDesc::Factor(const ScopeId scope_inht){
 
   //F := numerical
   if(TryAndAccept(kToken::numerical)){
-    f_synt = NewLiteral(prev_token_int_value_, kFirstClass::typeid_int
+    f_synt = NewLiteral(prev_token_int_value_, TypeId::Int()
                       , scope_inht, l);
     return f_synt;
   }
 
   //F := true
   if(TryAndAccept(kToken::kwd_true)){
-    f_synt = NewLiteral(1, kFirstClass::typeid_bool , scope_inht, l);
+    f_synt = NewLiteral(1, TypeId::Bool() , scope_inht, l);
     return f_synt;
   }
 
   //F := false
   if(TryAndAccept(kToken::kwd_false)){
-    f_synt = NewLiteral(0, kFirstClass::typeid_bool , scope_inht, l);
+    f_synt = NewLiteral(0, TypeId::Bool() , scope_inht, l);
     return f_synt;
   }
 
@@ -257,7 +257,7 @@ Expr* ParserLL1RecDesc::Factor(const ScopeId scope_inht){
     if(not unit_.Scope().IsDecl(prev_token_string_value_)){
       Error("[error:16] Var used before declaration");
       //Error recovery: insert it as int
-      unit_.Scope().RegDecl(prev_token_string_value_, kFirstClass::typeid_int);
+      unit_.Scope().RegDecl(prev_token_string_value_, TypeId::Int());
     }
     f_synt = NewVar(prev_token_string_value_
                   , unit_.Scope().GetTypeId(prev_token_string_value_)
