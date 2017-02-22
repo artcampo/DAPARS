@@ -17,7 +17,7 @@ void CreateGrammarDalang(G& g){
   const Symbol rpar = g.AddTerminal("RPAR", ")", Tokenizer::kToken::rpar);
   const Symbol plus = g.AddTerminal("PLUS", "+", Tokenizer::kToken::plus);
   const Symbol minu = g.AddTerminal("MINU", "-", Tokenizer::kToken::minus);
-  const Symbol mult = g.AddTerminal("MULT", "*", Tokenizer::kToken::mult);
+  const Symbol astk = g.AddTerminal("ASTK", "*", Tokenizer::kToken::astk);
   const Symbol div  = g.AddTerminal("DIVI", "/", Tokenizer::kToken::div);
   const Symbol numr = g.AddTerminal("NUM", "{num}",  Tokenizer::kToken::numerical);
   const Symbol name = g.AddTerminal("NAME", "{nam}", Tokenizer::kToken::name);
@@ -55,6 +55,7 @@ void CreateGrammarDalang(G& g){
 
   //Others
   const Symbol TYPE       = g.AddNonTerminal("TYPE");
+  const Symbol TYPEP      = g.AddNonTerminal("TYPE'");
   const Symbol NAME_LIST  = g.AddNonTerminal("NAME_LIST");
   const Symbol NAME_LISTP = g.AddNonTerminal("NAME_LIST'");
 
@@ -77,9 +78,12 @@ void CreateGrammarDalang(G& g){
 
 
   //Types
-  g.AddRule(Rule(DECL, {TYPE,NAME_LIST}));
-  g.AddRule(Rule(TYPE, {kwd_type_int}));
-  g.AddRule(Rule(TYPE, {kwd_type_bool}));
+  g.AddRule(Rule(DECL,  {TYPE,NAME_LIST}));
+  g.AddRule(Rule(TYPE,  {kwd_type_int,  TYPEP}));
+  g.AddRule(Rule(TYPE,  {kwd_type_bool, TYPEP}));
+  g.AddRule(Rule(TYPEP, {astk}));
+  g.AddRule(Rule(TYPEP, {empty}));
+
   g.AddRule(Rule(NAME_LIST, {name, NAME_LISTP}));
 
   g.AddRule(Rule(NAME_LISTP, {comma, name, NAME_LISTP}));

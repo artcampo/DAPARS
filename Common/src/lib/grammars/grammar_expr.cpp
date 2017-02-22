@@ -34,7 +34,7 @@ void CreateGrammarExpr(G& g){
   g.AddTerminal(rpar, Tokenizer::kToken::rpar);
   g.AddTerminal(plus, Tokenizer::kToken::plus);
   g.AddTerminal(minu, Tokenizer::kToken::minus);
-  g.AddTerminal(mult, Tokenizer::kToken::mult);
+  g.AddTerminal(mult, Tokenizer::kToken::astk);
   g.AddTerminal(div,  Tokenizer::kToken::div);
   g.AddTerminal(numr, Tokenizer::kToken::numerical);
   g.AddTerminal(name, Tokenizer::kToken::name);

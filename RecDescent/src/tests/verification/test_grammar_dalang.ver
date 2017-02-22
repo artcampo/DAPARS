@@ -20,6 +20,7 @@ STMT => bool false if int ( {num}  true while
 STMTS => bool {empty} false if int ( {num}  true while 
 T => false ( {num}  true 
 TYPE => bool int 
+TYPE' => * {empty} 
 -----------------------------
 Follow Table
 DECL => ; 
@@ -34,6 +35,7 @@ STMT => bool {eof} false if int ( {num} }  true while
 STMTS => {eof} } 
 T => = + ) ; 
 TYPE => {nam} 
+TYPE' => {nam} 
 -----------------------------
 First+ Table
 DECL -> TYPE NAME_LIST  => bool int 
@@ -57,7 +59,9 @@ STMT -> while ( E ) { STMTS }  => while
 STMTS -> {empty}  => {empty} {eof} } 
 STMTS -> STMT STMTS  => bool false if int ( {num}  true while 
 T -> F  => false ( {num}  true 
-TYPE -> bool  => bool 
-TYPE -> int  => int 
+TYPE -> bool TYPE'  => bool 
+TYPE -> int TYPE'  => int 
+TYPE' -> *  => * 
+TYPE' -> {empty}  => {empty} {nam} 
 -----------------------------
 Is backtrack free: 0

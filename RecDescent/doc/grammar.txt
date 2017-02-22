@@ -24,8 +24,12 @@ F     := ( E )
 
 DECL  := TYPE NAME_LIST
 
-TYPE  := int
-      |  bool
+TYPE  := int TYPE'
+      |  bool TYPE'
+
+TYPE' := *
+      |  empty
+
 
 NAME_LIST := name NAME_LIST'
 

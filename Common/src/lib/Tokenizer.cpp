@@ -115,6 +115,7 @@ ParseToken(std::vector<char>::const_iterator& current_position
   if(*current_position == '{'){ ++current_position; return kToken::lcbr; }
   if(*current_position == '}'){ ++current_position; return kToken::rcbr; }
   if(*current_position == '+'){ ++current_position; return kToken::plus; }
+  if(*current_position == '*'){ ++current_position; return kToken::astk; }
   if(*current_position == ';'){ ++current_position; return kToken::semicolon; }
   if(*current_position == ','){ ++current_position; return kToken::comma; }
   if(*current_position == '='){ ++current_position; return kToken::equality; }
@@ -136,10 +137,12 @@ std::string str(const kToken& t){
     case kToken::rpar:      return std::string("rpar"); break;
     case kToken::lcbr:      return std::string("lcbr"); break;
     case kToken::rcbr:      return std::string("rcbr"); break;
-    case kToken::plus:      return std::string("plus"); break;
-    case kToken::numerical: return std::string("num");  break;
+
+    case kToken::plus:      return std::string("+");  break;
+    case kToken::astk:      return std::string("*");  break;
     case kToken::semicolon: return std::string(";");  break;
     case kToken::equality:  return std::string("=");  break;
+
     case kToken::kwd_if:    return std::string("if");  break;
     case kToken::kwd_else:  return std::string("else");  break;
     case kToken::kwd_while: return std::string("while");  break;
@@ -147,6 +150,8 @@ std::string str(const kToken& t){
     case kToken::kwd_bool:  return std::string("bool");  break;
     case kToken::kwd_true:  return std::string("true");  break;
     case kToken::kwd_false: return std::string("false");  break;
+
+    case kToken::numerical: return std::string("num");  break;
     case kToken::name:      return std::string("name");  break;
 
     case kToken::token_c:   return std::string("_c");  break;
