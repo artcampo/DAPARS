@@ -143,6 +143,7 @@ F -> {nam}
 
 ---------------------------------------------------
 Parsing: "int a;a=1; if(2){a=3;}"
+[err:] if condition is not a bool at: ";a=1; if(2" -> "){a=3;}"
 
 AST pretty:
 int a 
@@ -168,6 +169,7 @@ Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "int a;a=1; if(2){a=3;} a=4;"
+[err:] if condition is not a bool at: ";a=1; if(2" -> "){a=3;} a=4;"
 
 AST pretty:
 int a 
@@ -197,6 +199,7 @@ Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "int a;a=1; if(2){a=3+4+5;}"
+[err:] if condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;}"
 
 AST pretty:
 int a 
@@ -226,6 +229,7 @@ Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "int a;a=1; if(2){a=3+4+5;} a=6;"
+[err:] if condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;} a=6;"
 
 AST pretty:
 int a 
@@ -259,6 +263,9 @@ Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "int a;a=1; if(2){if(3){a=4;if(5){a=6;}}}"
+[err:] if condition is not a bool at: "){a=4;if(5" -> "){a=6;}}}"
+[err:] if condition is not a bool at: "if(2){if(3" -> "){a=4;if(5){a=6;}}}"
+[err:] if condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4;if(5){a=6;}}}"
 
 AST pretty:
 int a 
@@ -302,6 +309,9 @@ Scope 3: {}
 
 ---------------------------------------------------
 Parsing: "int a;a=1; if(2){if(3){a=4+5;if(6){a=7+8;}}}"
+[err:] if condition is not a bool at: "a=4+5;if(6" -> "){a=7+8;}}}"
+[err:] if condition is not a bool at: "if(2){if(3" -> "){a=4+5;if(6){a=7+8;}}}"
+[err:] if condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4+5;if(6){a=7+8;}}}"
 
 AST pretty:
 int a 
@@ -358,6 +368,8 @@ AST not build at: "3;}else{4;" -> "}"
 
 ---------------------------------------------------
 Parsing: "int a;a=1; if(2){a=3;}if(4){a=5;}else{a=6;}"
+[err:] if condition is not a bool at: ";a=1; if(2" -> "){a=3;}if(4){a=5;}else{a=6;}"
+[err:] if condition is not a bool at: "{a=3;}if(4" -> "){a=5;}else{a=6;}"
 
 AST pretty:
 int a 
@@ -498,6 +510,7 @@ AST dump:
 
 ---------------------------------------------------
 Parsing: "int a; if(1){int b;}"
+[err:] if condition is not a bool at: "nt a; if(1" -> "){int b;}"
 
 AST pretty:
 int a 
@@ -517,6 +530,7 @@ Scope 1: {0, b }
 
 ---------------------------------------------------
 Parsing: "int a; if(1){int b;}else{int c;}"
+[err:] if condition is not a bool at: "nt a; if(1" -> "){int b;}else{int c;}"
 
 AST pretty:
 int a 
@@ -542,6 +556,7 @@ Scope 2: {0, c }
 
 ---------------------------------------------------
 Parsing: "int a; while(1 + 2){ int c; c = 1+2; }"
+[err:] while condition is not a bool at: " while(1 +" -> " 2){ int c; c = 1+2; }"
 
 AST pretty:
 int a 

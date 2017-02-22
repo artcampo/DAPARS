@@ -14,6 +14,7 @@ F -> {nam}
 
 ---------------------------------------------------
 Parsing: "if(1+2){int a;} int b;"
+[err:] if condition is not a bool at: "if(1+" -> "2){int a;} int b;"
 
 AST dump:
 -IfStmt:
@@ -36,6 +37,7 @@ AST dump:
 
 ---------------------------------------------------
 Parsing: "int a; while(1+2){int b;} int c;"
+[err:] while condition is not a bool at: "; while(1+" -> "2){int b;} int c;"
 
 AST dump:
 -int a 
