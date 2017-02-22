@@ -17,10 +17,13 @@ E     := T E'
 E'    := + T E'
       |  empty
 T     := F
-F     := ( E )
+F     := *F'
+      |  @F'
+      |  F'
+F'    := ( E )
       |  numerical
-      | true
-      | false
+      |  true
+      |  false
 
 DECL  := TYPE NAME_LIST
 

@@ -119,6 +119,8 @@ ParseToken(std::vector<char>::const_iterator& current_position
   if(*current_position == ';'){ ++current_position; return kToken::semicolon; }
   if(*current_position == ','){ ++current_position; return kToken::comma; }
   if(*current_position == '='){ ++current_position; return kToken::equality; }
+  if(*current_position == '&'){ ++current_position; return kToken::ampersand; }
+
 
   if(ParseNumerical(current_position, end_position)) return kToken::numerical;
 
@@ -142,6 +144,7 @@ std::string str(const kToken& t){
     case kToken::astk:      return std::string("*");  break;
     case kToken::semicolon: return std::string(";");  break;
     case kToken::equality:  return std::string("=");  break;
+    case kToken::ampersand: return std::string("&");  break;
 
     case kToken::kwd_if:    return std::string("if");  break;
     case kToken::kwd_else:  return std::string("else");  break;

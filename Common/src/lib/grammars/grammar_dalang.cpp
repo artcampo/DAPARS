@@ -24,6 +24,7 @@ void CreateGrammarDalang(G& g){
   const Symbol lcbr = g.AddTerminal("LCBR", "{", Tokenizer::kToken::lcbr);
   const Symbol rcbr = g.AddTerminal("RCBR", "}", Tokenizer::kToken::rcbr);
   const Symbol equl = g.AddTerminal("EQUL", "=", Tokenizer::kToken::equality);
+  const Symbol amps = g.AddTerminal("AMPS", "&", Tokenizer::kToken::ampersand);
   const Symbol empty = Symbol::Empty();
 
   const Symbol kwd_if     = g.AddTerminalKeyword("IF", "if", Tokenizer::kToken::kwd_if);
@@ -52,6 +53,7 @@ void CreateGrammarDalang(G& g){
   const Symbol T      = g.AddNonTerminal("T");
   const Symbol TP     = g.AddNonTerminal("T''");
   const Symbol F      = g.AddNonTerminal("F");
+  const Symbol FP     = g.AddNonTerminal("F'");
 
   //Others
   const Symbol TYPE       = g.AddNonTerminal("TYPE");
@@ -95,10 +97,16 @@ void CreateGrammarDalang(G& g){
 //   g.AddRule(Rule(EP, {minu, T, EP}));
   g.AddRule(Rule(EP, {empty}));
   g.AddRule(Rule(T,  {F}));
-  g.AddRule(Rule(F,  {lpar, E, rpar}));
-  g.AddRule(Rule(F,  {numr}));
-  g.AddRule(Rule(F,  {kwd_true}));
-  g.AddRule(Rule(F,  {kwd_false}));
+
+  g.AddRule(Rule(F,  {amps, FP}));
+  g.AddRule(Rule(F,  {astk, FP}));
+  g.AddRule(Rule(F,  {FP}));
+
+  g.AddRule(Rule(FP,  {lpar, E, rpar}));
+  g.AddRule(Rule(FP,  {numr}));
+  g.AddRule(Rule(FP,  {name}));
+  g.AddRule(Rule(FP,  {kwd_true}));
+  g.AddRule(Rule(FP,  {kwd_false}));
   /*
   g.AddRule(Rule(E,  {T, EP}));
   g.AddRule(Rule(EP, {plus, T, EP}));

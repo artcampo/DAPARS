@@ -15,7 +15,7 @@ enum class kToken{ eof, numerical, name
                  , kwd_if, kwd_else, kwd_while
                  , kwd_int, kwd_bool
                  , kwd_true, kwd_false
-                 , semicolon, comma
+                 , semicolon, comma, ampersand
                  , error
 
                  //not used by dalang
