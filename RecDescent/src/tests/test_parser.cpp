@@ -117,6 +117,9 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "bool a, b; a = true; b = false;"), g);
 
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "int* a; int* b;"), g);
+
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "bool b1,b2,b3; b1=true; b2=false; b3=b1 and b2;"), g);

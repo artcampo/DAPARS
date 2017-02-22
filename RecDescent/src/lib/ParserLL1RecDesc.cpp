@@ -389,12 +389,14 @@ const TypeId  ParserLL1RecDesc::Type(){
 //   std::cout << "Type\n";
   TypeId t;
   if(TryAndAccept(kToken::kwd_int)){
-    t = TypeId::Int();
+    if(TryAndAccept(kToken::astk))  t = TypeId::PtrToInt();
+    else                            t = TypeId::Int();
     return t;
   }
 
   if(TryAndAccept(kToken::kwd_bool)){
-    t = TypeId::Bool();
+    if(TryAndAccept(kToken::astk))  t = TypeId::PtrToBool();
+    else                            t = TypeId::Bool();
     return t;
   }
 

@@ -599,3 +599,14 @@ AST dump:
 --b
 --Literal: 0
 
+---------------------------------------------------
+Parsing: "int* a; int* b;"
+
+AST pretty:
+int* a 
+int* b 
+
+AST dump:
+-int* a 
+-int* b 
+
