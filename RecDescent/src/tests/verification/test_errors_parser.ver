@@ -187,6 +187,31 @@ AST dump:
 --Literal: 2
 
 ------------------------------------------------------------------
+Parsing: "bool a; int b; a = true; b = 1; a = b; b = true; a = 2;"
+[err:18] Incompatible types in assignment at: "; b = 1; a" -> " = b; b = true; a = 2;"
+[err:18] Incompatible types in assignment at: "; a = b; b" -> " = true; a = 2;"
+[err:18] Incompatible types in assignment at: " = true; a" -> " = 2;"
+
+AST dump:
+-bool a 
+-int b 
+-Assign
+--a
+--Literal: 1
+-Assign
+--b
+--Literal: 1
+-Assign
+--a
+--b
+-Assign
+--b
+--Literal: 1
+-Assign
+--a
+--Literal: 2
+
+------------------------------------------------------------------
 Parsing: "1+(2));"
 [err:] assignment missing '=' at: "1+(2))" -> ";"
 [err:3] Block not finishing in eof or rcbr at: "1+(2))" -> ";"

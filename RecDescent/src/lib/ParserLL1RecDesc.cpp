@@ -240,6 +240,18 @@ Expr* ParserLL1RecDesc::Factor(const ScopeId scope_inht){
     return f_synt;
   }
 
+  //F := true
+  if(TryAndAccept(kToken::kwd_true)){
+    f_synt = NewLiteral(1, kFirstClass::typeid_bool , scope_inht, l);
+    return f_synt;
+  }
+
+  //F := false
+  if(TryAndAccept(kToken::kwd_false)){
+    f_synt = NewLiteral(0, kFirstClass::typeid_bool , scope_inht, l);
+    return f_synt;
+  }
+
   //F := name
   if(TryAndAccept(kToken::name)){
     if(not unit_.Scope().IsDecl(prev_token_string_value_)){

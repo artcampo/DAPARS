@@ -114,6 +114,8 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int a; while(1 + 2){ int c; c = 1+2; }"), g);
 
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "bool a, b; a = true; b = false;"), g);
 
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(

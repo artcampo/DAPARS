@@ -582,3 +582,20 @@ AST dump:
 Scope 0: {0, a }
 Scope 1: {0, c }
 
+---------------------------------------------------
+Parsing: "bool a, b; a = true; b = false;"
+
+AST pretty:
+bool a bool b 
+a=1
+b=0
+
+AST dump:
+-bool a bool b 
+-Assign
+--a
+--Literal: 1
+-Assign
+--b
+--Literal: 0
+
