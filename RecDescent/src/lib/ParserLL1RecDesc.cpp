@@ -390,25 +390,20 @@ ParserLL1RecDesc::NameListPrime(std::vector<VarDecl*>& name_list_inht
 
 const AST::Type&  ParserLL1RecDesc::Type_(){
 //   std::cout << "Type\n";
-  const AST::Type* t;
+
   if(TryAndAccept(kToken::kwd_int)){
-    //if(TryAndAccept(kToken::astk))  t = AST::Type::PtrToInt();
-    //else                            t = AST::Type::Int();
-    t = &unit_.GetType(kBasicTypeId::kInt);
-    return *t;
+    if(TryAndAccept(kToken::astk)) return unit_.GetTypePtrToInt();
+    else                           return unit_.GetTypeInt();
   }
 
   if(TryAndAccept(kToken::kwd_bool)){
-    //if(TryAndAccept(kToken::astk))  t = AST::Type::PtrToBool();
-    //else                            t = AST::Type::Bool();
-    t = &unit_.GetType(kBasicTypeId::kBool);
-    return *t;
+    if(TryAndAccept(kToken::astk))  return unit_.GetTypePtrToBool();
+    else                            return unit_.GetTypeBool();
   }
 
   //Error recover
   Error("Type missing");
-  t = &unit_.GetType(kBasicTypeId::kInt);
-  return *t;
+  return unit_.GetTypeInt();
 }
 
 Block* ParserLL1RecDesc::ParseSubBlock(const ScopeId scope, const std::string& error){

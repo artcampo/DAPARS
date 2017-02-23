@@ -610,3 +610,30 @@ AST dump:
 -int* a 
 -int* b 
 
+---------------------------------------------------
+Parsing: "int* a; int b, c; b = 2; a = &b; c = *a;"
+Expecting numerical or lpar at: "= 2; a = &" -> "b; c = *a;"
+Expecting numerical or lpar at: " &b; c = *" -> "a;"
+[err:18] Incompatible types in assignment at: "; b = 2; a" -> " = &b; c = *a;"
+[err:18] Incompatible types in assignment at: " a = &b; c" -> " = *a;"
+
+AST pretty:
+int* a 
+int b int c 
+b=2
+a=b
+c=a
+
+AST dump:
+-int* a 
+-int b int c 
+-Assign
+--b
+--Literal: 2
+-Assign
+--a
+--b
+-Assign
+--c
+--a
+

@@ -6,19 +6,51 @@ KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
 Dalang grammar v0.3
+Grammar:
+PROG -> STMTS  init 
+STMTS -> STMT STMTS 
+STMTS -> {empty} 
+STMT -> E = E ; 
+STMT -> DECL ; 
+STMT -> if ( E ) { STMTS } IFELSE 
+STMT -> while ( E ) { STMTS } 
+IFELSE -> else { STMTS } 
+IFELSE -> {empty} 
+DECL -> TYPE NAME_LIST 
+TYPE -> int TYPE' 
+TYPE -> bool TYPE' 
+TYPE' -> * 
+TYPE' -> {empty} 
+NAME_LIST -> {nam} NAME_LIST' 
+NAME_LIST' -> , {nam} NAME_LIST' 
+NAME_LIST' -> {empty} 
+E -> T E' 
+E' -> + T E' 
+E' -> {empty} 
+T -> F 
+F -> & F' 
+F -> * F' 
+F -> F' 
+F' -> ( E ) 
+F' -> {num} 
+F' -> {nam} 
+F' ->  true 
+F' -> false 
+
 -----------------------------
 First Table
 DECL => bool int 
-E => false ( {num}  true 
+E => & * false ( {nam} {num}  true 
 E' => {empty} + 
-F => false ( {num}  true 
+F => & * false ( {nam} {num}  true 
+F' => false ( {nam} {num}  true 
 IFELSE => else {empty} 
 NAME_LIST => {nam} 
 NAME_LIST' => , {empty} 
-PROG => bool {empty} false if int ( {num}  true while 
-STMT => bool false if int ( {num}  true while 
-STMTS => bool {empty} false if int ( {num}  true while 
-T => false ( {num}  true 
+PROG => & * bool {empty} false if int ( {nam} {num}  true while 
+STMT => & * bool false if int ( {nam} {num}  true while 
+STMTS => & * bool {empty} false if int ( {nam} {num}  true while 
+T => & * false ( {nam} {num}  true 
 TYPE => bool int 
 TYPE' => * {empty} 
 -----------------------------
@@ -27,11 +59,12 @@ DECL => ;
 E => = ) ; 
 E' => = ) ; 
 F => = + ) ; 
-IFELSE => bool {eof} false if int ( {num} }  true while 
+F' => = + ) ; 
+IFELSE => & * bool {eof} false if int ( {nam} {num} }  true while 
 NAME_LIST => ; 
 NAME_LIST' => ; 
 PROG => {eof} 
-STMT => bool {eof} false if int ( {num} }  true while 
+STMT => & * bool {eof} false if int ( {nam} {num} }  true while 
 STMTS => {eof} } 
 T => = + ) ; 
 TYPE => {nam} 
@@ -39,26 +72,30 @@ TYPE' => {nam}
 -----------------------------
 First+ Table
 DECL -> TYPE NAME_LIST  => bool int 
-E -> T E'  => false ( {num}  true 
+E -> T E'  => & * false ( {nam} {num}  true 
 E' -> {empty}  => {empty} = ) ; 
 E' -> + T E'  => + 
-F -> false  => false 
-F -> ( E )  => ( 
-F -> {num}  => {num} 
-F ->  true  =>  true 
+F -> & F'  => & 
+F -> * F'  => * 
+F -> F'  => false ( {nam} {num}  true 
+F' -> false  => false 
+F' -> ( E )  => ( 
+F' -> {nam}  => {nam} 
+F' -> {num}  => {num} 
+F' ->  true  =>  true 
 IFELSE -> else { STMTS }  => else 
-IFELSE -> {empty}  => bool {empty} {eof} false if int ( {num} }  true while 
+IFELSE -> {empty}  => & * bool {empty} {eof} false if int ( {nam} {num} }  true while 
 NAME_LIST -> {nam} NAME_LIST'  => {nam} 
 NAME_LIST' -> , {nam} NAME_LIST'  => , 
 NAME_LIST' -> {empty}  => {empty} ; 
-PROG -> STMTS  init  => bool {empty} false if int ( {num}  true while 
+PROG -> STMTS  init  => & * bool {empty} false if int ( {nam} {num}  true while 
 STMT -> DECL ;  => bool int 
-STMT -> E = E ;  => false ( {num}  true 
+STMT -> E = E ;  => & * false ( {nam} {num}  true 
 STMT -> if ( E ) { STMTS } IFELSE  => if 
 STMT -> while ( E ) { STMTS }  => while 
 STMTS -> {empty}  => {empty} {eof} } 
-STMTS -> STMT STMTS  => bool false if int ( {num}  true while 
-T -> F  => false ( {num}  true 
+STMTS -> STMT STMTS  => & * bool false if int ( {nam} {num}  true while 
+T -> F  => & * false ( {nam} {num}  true 
 TYPE -> bool TYPE'  => bool 
 TYPE -> int TYPE'  => int 
 TYPE' -> *  => * 
