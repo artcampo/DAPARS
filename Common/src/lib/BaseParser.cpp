@@ -160,15 +160,15 @@ BinaryOp* BaseParser::NewBinaryOp(Expr* const lhs, const int op
 }
 
 
-Var* BaseParser::NewVar(const std::string& name, const Type& typeId
+Var* BaseParser::NewVar(const std::string& name, const Type& type
   , const ScopeId id, const Locus& locus){
-  Var* v = new Var(name, typeId, id, locus);
+  Var* v = new Var(name, type, id, locus);
   return v;
 }
 
-Literal* BaseParser::NewLiteral(const uint32_t &value, const Type& typeId
+Literal* BaseParser::NewLiteral(const uint32_t &value, const Type& type
   , const ScopeId id, const Locus& locus){
-  Literal* new_node = new Literal(value, typeId, id, locus);
+  Literal* new_node = new Literal(value, type, id, locus);
   return new_node;
 }
 
@@ -218,10 +218,10 @@ VarDeclList* BaseParser::NewVarDeclList(const std::vector<VarDecl*>& list
 }
 
 VarDecl* BaseParser::NewVarDecl(const std::string& name
-                              , const Type& typeId
+                              , const Type& type
                               , const ScopeId id
                                , const Locus& locus){
-  VarDecl* d = new VarDecl(name, typeId, id, locus);
+  VarDecl* d = new VarDecl(name, type, id, locus);
   return d;
 }
 

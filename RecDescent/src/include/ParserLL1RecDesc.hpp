@@ -45,7 +45,7 @@ private:
   VarDeclList*  NameListPrime(std::vector<VarDecl*>& name_list_inht
                        , const Compiler::AST::Type& type_inht, const ScopeId scope_inht
                        , const Locus& locus_inht);
-  const Compiler::AST::Type  Type();
+  const Compiler::AST::Type&  Type_();
 
 
   Block* ParseSubBlock(const ScopeId scope_inht, const std::string& error);

@@ -60,10 +60,10 @@ protected:
   //Creation of AST nodes with error checking
   BinaryOp*     NewBinaryOp(Expr* const lhs, const int op, Expr* const rhs
                         , const ScopeId id, const Locus& locus);
-  Var*          NewVar(const std::string& name, const Type& typeId
+  Var*          NewVar(const std::string& name, const Type& type
                         , const ScopeId id, const Locus& locus);
 
-  Literal*      NewLiteral(const uint32_t &value, const Type& typeId
+  Literal*      NewLiteral(const uint32_t &value, const Type& type
                         , const ScopeId id, const Locus& locus);
   Block*        NewBlock(const std::vector<Statement*>& stmts_inht
                         , const ScopeId id, const Locus& locus);
@@ -75,7 +75,7 @@ protected:
                         , const Locus& locus);
   VarDeclList*  NewVarDeclList(const std::vector<VarDecl*>& list
                         , const ScopeId id, const Locus& locus);
-  VarDecl*      NewVarDecl(const std::string& name, const Type& typeId
+  VarDecl*      NewVarDecl(const std::string& name, const Type& type
                         , const ScopeId id, const Locus& locus);
   AssignStmt*   NewAssignStmt(Expr* const lhs, Expr* const rhs
                         , const ScopeId id, const Locus& locus);

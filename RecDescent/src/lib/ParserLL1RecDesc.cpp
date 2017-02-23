@@ -1,7 +1,8 @@
 #include "ParserLL1RecDesc.hpp"
 #include "Node.hpp"
 #include "IRDefinition.hpp"
-
+// #include "CompilationUnit.hpp"
+#include "Types.hpp"
 #include <iterator>
 #include <fstream>
 #include <iostream>
@@ -21,7 +22,6 @@ using namespace Common;
 using namespace IRDefinition;
 using namespace SubtypesArithmetic;
 using namespace Compiler;
-
 
 ParserLL1RecDesc::ParserLL1RecDesc(std::string const &file_name, CompilationUnit& unit)
 //   , Grammar& grammar)
@@ -236,20 +236,22 @@ Expr* ParserLL1RecDesc::Factor(const ScopeId scope_inht){
 
   //F := numerical
   if(TryAndAccept(kToken::numerical)){
-    f_synt = NewLiteral(prev_token_int_value_, AST::Type::Int()
+    const AST::Type& t = unit_.GetType(kBasicTypeId::kInt);
+    f_synt = NewLiteral(prev_token_int_value_, t
                       , scope_inht, l);
     return f_synt;
   }
 
   //F := true
   if(TryAndAccept(kToken::kwd_true)){
-    f_synt = NewLiteral(1, AST::Type::Bool() , scope_inht, l);
+    f_synt = NewLiteral(1, unit_.GetType(kBasicTypeId::kBool) , scope_inht, l);
+    //f_synt = NewLiteral(1, AST::Type::Bool() , scope_inht, l);
     return f_synt;
   }
 
   //F := false
   if(TryAndAccept(kToken::kwd_false)){
-    f_synt = NewLiteral(0, AST::Type::Bool() , scope_inht, l);
+    f_synt = NewLiteral(0, unit_.GetType(kBasicTypeId::kBool) , scope_inht, l);
     return f_synt;
   }
 
@@ -258,7 +260,7 @@ Expr* ParserLL1RecDesc::Factor(const ScopeId scope_inht){
     if(not unit_.Scope().IsDecl(prev_token_string_value_)){
       Error("[error:16] Var used before declaration");
       //Error recovery: insert it as int
-      unit_.Scope().RegDecl(prev_token_string_value_, AST::Type::Int());
+      unit_.Scope().RegDecl(prev_token_string_value_, unit_.GetType(kBasicTypeId::kInt));
     }
     f_synt = NewVar(prev_token_string_value_
                   , unit_.Scope().GetType(prev_token_string_value_)
@@ -312,7 +314,7 @@ Block* ParserLL1RecDesc::IfElse(const ScopeId scope_inht){
 
 VarDeclList*  ParserLL1RecDesc::Decl(const ScopeId scope_inht){
 //   std::cout << "Decl\n";
-  const AST::Type type_id = Type();
+  const AST::Type& type_id = Type_();
   const Locus l = CurrentLocus();
   std::vector<VarDecl*> name_list_inht;
   VarDeclList* decl_synt = NameList(name_list_inht, type_id, scope_inht, l);
@@ -386,25 +388,27 @@ ParserLL1RecDesc::NameListPrime(std::vector<VarDecl*>& name_list_inht
 
 }
 
-const AST::Type  ParserLL1RecDesc::Type(){
+const AST::Type&  ParserLL1RecDesc::Type_(){
 //   std::cout << "Type\n";
-  AST::Type t;
+  const AST::Type* t;
   if(TryAndAccept(kToken::kwd_int)){
-    if(TryAndAccept(kToken::astk))  t = AST::Type::PtrToInt();
-    else                            t = AST::Type::Int();
-    return t;
+    //if(TryAndAccept(kToken::astk))  t = AST::Type::PtrToInt();
+    //else                            t = AST::Type::Int();
+    t = &unit_.GetType(kBasicTypeId::kInt);
+    return *t;
   }
 
   if(TryAndAccept(kToken::kwd_bool)){
-    if(TryAndAccept(kToken::astk))  t = AST::Type::PtrToBool();
-    else                            t = AST::Type::Bool();
-    return t;
+    //if(TryAndAccept(kToken::astk))  t = AST::Type::PtrToBool();
+    //else                            t = AST::Type::Bool();
+    t = &unit_.GetType(kBasicTypeId::kBool);
+    return *t;
   }
 
   //Error recover
   Error("Type missing");
-  t = AST::Type::Int();
-  return t;
+  t = &unit_.GetType(kBasicTypeId::kInt);
+  return *t;
 }
 
 Block* ParserLL1RecDesc::ParseSubBlock(const ScopeId scope, const std::string& error){
