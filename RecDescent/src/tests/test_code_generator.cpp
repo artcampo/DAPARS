@@ -17,6 +17,7 @@
 using namespace RecDescent;
 // using namespace GrammarAnalyzer;
 using GrammarAnalyzer::Grammar;
+using Compiler::PassManager;
 #include "../../../Common/src/lib/grammars/grammar_expr.cpp"
 #include "../../../Common/src/lib/grammars/grammar_control_flow.cpp"
 

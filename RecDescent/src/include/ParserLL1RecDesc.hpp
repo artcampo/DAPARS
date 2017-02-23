@@ -12,7 +12,7 @@
 namespace RecDescent{
 
 using namespace Common;
-using namespace Tokenizer;
+using namespace Common::Tokenizer;
 
 class ParserLL1RecDesc : public BaseParser{
 
@@ -40,12 +40,12 @@ private:
   //Variables declaration
   VarDeclList*  Decl(const ScopeId scope_inht);
   VarDeclList*  NameList(std::vector<VarDecl*>& name_list_inht
-                       , const TypeId& type_inht, const ScopeId scope_inht
+                       , const Compiler::AST::Type& type_inht, const ScopeId scope_inht
                        , const Locus& locus_inht);
   VarDeclList*  NameListPrime(std::vector<VarDecl*>& name_list_inht
-                       , const TypeId& type_inht, const ScopeId scope_inht
+                       , const Compiler::AST::Type& type_inht, const ScopeId scope_inht
                        , const Locus& locus_inht);
-  const TypeId  Type();
+  const Compiler::AST::Type  Type();
 
 
   Block* ParseSubBlock(const ScopeId scope_inht, const std::string& error);
