@@ -228,13 +228,28 @@ Expr* ParserLL1RecDesc::ExprPrime(Expr* eprime_inht, const ScopeId scope_inht){
 }
 
 
-// F := ( E ) | numerical
 Expr* ParserLL1RecDesc::Factor(const ScopeId scope_inht){
+  Expr* f_synt;
+  Locus l = CurrentLocus();
+
+  //F := *F'
+  if(TryAndAccept(kToken::astk)){
+//     f_synt = New
+  }
+
+  //F := &F'
+  if(TryAndAccept(kToken::ampersand)){
+  }
+
+  return FactorPrime(scope_inht);
+}
+// F := ( E ) | numerical
+Expr* ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
 //   std::cout << "Fact\n";
   Expr* f_synt;
   Locus l = CurrentLocus();
 
-  //F := numerical
+  //F' := numerical
   if(TryAndAccept(kToken::numerical)){
     const AST::Type& t = unit_.GetType(kBasicTypeId::kInt);
     f_synt = NewLiteral(prev_token_int_value_, t
@@ -242,20 +257,20 @@ Expr* ParserLL1RecDesc::Factor(const ScopeId scope_inht){
     return f_synt;
   }
 
-  //F := true
+  //F' := true
   if(TryAndAccept(kToken::kwd_true)){
     f_synt = NewLiteral(1, unit_.GetType(kBasicTypeId::kBool) , scope_inht, l);
     //f_synt = NewLiteral(1, AST::Type::Bool() , scope_inht, l);
     return f_synt;
   }
 
-  //F := false
+  //F' := false
   if(TryAndAccept(kToken::kwd_false)){
     f_synt = NewLiteral(0, unit_.GetType(kBasicTypeId::kBool) , scope_inht, l);
     return f_synt;
   }
 
-  //F := name
+  //F' := name
   if(TryAndAccept(kToken::name)){
     if(not unit_.Scope().IsDecl(prev_token_string_value_)){
       Error("[error:16] Var used before declaration");

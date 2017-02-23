@@ -31,6 +31,7 @@ private:
   Expr* ExprPrime(Expr* eprime_inht, const ScopeId scope_inht); // make it const
   Expr* Term(const ScopeId scope_inht);
   Expr* Factor(const ScopeId scope_inht);
+  Expr* FactorPrime(const ScopeId scope_inht);
 
   //Control Flow
   Block*      Stmts(std::vector<Statement*>& stmts_inht, const ScopeId scope_inht);
