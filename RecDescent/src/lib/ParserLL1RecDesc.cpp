@@ -44,13 +44,13 @@ void ParserLL1RecDesc::Prog(){
   const ScopeId id = unit_.NewFirstScope();
   std::unique_ptr<Block> stmts_synt = Stmts(stmts_inht, id);
 
-  if(stmts_synt != nullptr){
+  if(stmts_synt.get() != nullptr){
 //     std::cout << "Prog" << std::endl;
     if(token_ != Tokenizer::kToken::eof) Error("More data after program.");
 
     std::unique_ptr<AST::ProgInit> pinit= std::make_unique<AST::ProgInit>(id, CurrentLocus());
     std::unique_ptr<AST::ProgEnd> pend = std::make_unique<AST::ProgEnd>(id, CurrentLocus());
-    std::unique_ptr<Block> block(stmts_synt);
+    std::unique_ptr<Block> block = std::move(stmts_synt);
 
     std::unique_ptr<AST::ProgBody> prog =
       std::make_unique<AST::ProgBody>(id, CurrentLocus(), pinit, pend, block);
@@ -62,10 +62,10 @@ void ParserLL1RecDesc::Prog(){
 
 }
 
-std::unique_ptr<Block> ParserLL1RecDesc::Stmts(std::vector<std::unique_ptr<Statement>>& stmts_inht, const ScopeId scope_inht){
+std::unique_ptr<Block>&& ParserLL1RecDesc::Stmts(std::vector<std::unique_ptr<Statement>>& stmts_inht, const ScopeId scope_inht){
 //   std::cout << "stmts\n";
 //   if(not ContinueParsing()) return nullptr;
-  std::unique_ptr<Block> stmts_synt = nullptr;
+  std::unique_ptr<Block> stmts_synt(nullptr);
   Locus l = CurrentLocus();
 
   //STMTS => bool {empty} if int ( {nam} {num}
@@ -73,9 +73,9 @@ std::unique_ptr<Block> ParserLL1RecDesc::Stmts(std::vector<std::unique_ptr<State
           , kToken::numerical, kToken::name, kToken::kwd_while})){
       std::unique_ptr<Statement> stmt_synth = Stmt(scope_inht);
 
-      stmts_inht.push_back(stmt_synth);
+      stmts_inht.push_back(std::move(stmt_synth));
       stmts_synt = Stmts(stmts_inht, scope_inht);
-      return stmts_synt;
+      return std::move(stmts_synt);
 
     }
 
@@ -89,32 +89,32 @@ std::unique_ptr<Block> ParserLL1RecDesc::Stmts(std::vector<std::unique_ptr<State
   return std::move(stmts_synt);
 }
 
-std::unique_ptr<Statement> ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
+std::unique_ptr<Statement>&& ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
 //   std::cout << "stmt\n";
 //   if(not ContinueParsing()) return nullptr;
-  std::unique_ptr<Statement> stmt_synt = nullptr;
+  std::unique_ptr<Statement> stmt_synt(nullptr);
   Locus l = CurrentLocus();
 
   //if(E){STMTS}
   if(TryAndAccept(kToken::kwd_if)){
 
 //     std::cout << "stmt::if\n";
-    if(not Accept(kToken::lpar, "[err:6] if missing lpar.")) return nullptr;
-    Node* expr_synt = Exprs(scope_inht);
-    if(expr_synt == nullptr) Error("[err:7] if condition wrong.");
+    if(not Accept(kToken::lpar, "[err:6] if missing lpar.")) return std::move(stmt_synt);
+    std::unique_ptr<Expr> expr_synt = Exprs(scope_inht);
+    if(expr_synt.get() == nullptr) Error("[err:7] if condition wrong.");
 
-    if(not Accept(kToken::rpar, "[err:8] if missing rpar.")) return nullptr;
+    if(not Accept(kToken::rpar, "[err:8] if missing rpar.")) return std::move(stmt_synt);
 
-    if(not Accept(kToken::lcbr, "[err:9] if missing lcbr.")) return nullptr;
+    if(not Accept(kToken::lcbr, "[err:9] if missing lcbr.")) return std::move(stmt_synt);
     const ScopeId nested_id = unit_.NewNestedScope();
     std::unique_ptr<Block> stmts_synt = ParseSubBlock(nested_id, "[err:10] if missing then statement.");
-    if(stmts_synt == nullptr) return nullptr;
-    if(not Accept(kToken::rcbr, "[err:11] if missing rcbr.")) return nullptr;
+    if(stmts_synt.get() == nullptr) return std::move(stmt_synt);
+    if(not Accept(kToken::rcbr, "[err:11] if missing rcbr.")) return std::move(stmt_synt);
 
     unit_.RestoreScope();
     std::unique_ptr<Block> ifelse_synt = IfElse(scope_inht);
 
-    if(ifelse_synt == nullptr)
+    if(ifelse_synt.get() == nullptr)
       stmt_synt = NewIfStmt(expr_synt, stmts_synt, scope_inht, l);
     else
       stmt_synt = NewIfStmt(expr_synt, stmts_synt, ifelse_synt, scope_inht, l);
@@ -124,24 +124,19 @@ std::unique_ptr<Statement> ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
 
   //while(E){STMTS}
   if(TryAndAccept(kToken::kwd_while)){
-    if(not Accept(kToken::lpar, "[err:] while missing lpar.")) return nullptr;
+    if(not Accept(kToken::lpar, "[err:] while missing lpar.")) return std::move(stmt_synt);
     std::unique_ptr<Expr> expr_synt = Exprs(scope_inht);
-    if(expr_synt == nullptr) Error("[err:] while condition wrong.");
-    if(not Accept(kToken::rpar, "[err:] while missing rpar.")) return nullptr;
+    if(expr_synt.get() == nullptr) Error("[err:] while condition wrong.");
+    if(not Accept(kToken::rpar, "[err:] while missing rpar.")) return std::move(stmt_synt);
 
-    if(not Accept(kToken::lcbr, "[err:] while missing lcbr.")) return nullptr;
+    if(not Accept(kToken::lcbr, "[err:] while missing lcbr.")) return std::move(stmt_synt);
     const ScopeId nested_id = unit_.NewNestedScope();
     std::unique_ptr<Block> stmts_synt = ParseSubBlock(nested_id, "[err:] while missing body.");
-    if(stmts_synt == nullptr) return nullptr;
-    if(not Accept(kToken::rcbr, "[err:] while missing rcbr.")) return nullptr;
+    if(stmts_synt.get() == nullptr) return std::move(stmt_synt);
+    if(not Accept(kToken::rcbr, "[err:] while missing rcbr.")) return std::move(stmt_synt);
 
-    std::unique_ptr<Expr>  e(expr_synt);
-    std::unique_ptr<Block> b(stmts_synt);
     unit_.RestoreScope();
-    std::unique_ptr<WhileStmt> unique_stmt_synt = NewWhileStmt(e, b, scope_inht, l);
-    stmt_synt = unique_stmt_synt.get();
-    //TODO: passs propierty of unique_ptr(!!!)
-    unique_stmt_synt.release();
+    stmt_synt = NewWhileStmt(expr_synt, stmts_synt, scope_inht, l);
     return std::move(stmt_synt);
   }
 
@@ -158,7 +153,7 @@ std::unique_ptr<Statement> ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
 //     std::cout << "stmt::assign stmt\n";
     std::unique_ptr<Expr> expr_lhs  = Exprs(scope_inht);
     if(not Accept(kToken::equality, "[err:] assignment missing '='")){
-      return std::move(nullptr);
+      return std::move(stmt_synt);
     }
     std::unique_ptr<Expr> expr_rhs  = Exprs(scope_inht);
     stmt_synt       = NewAssignStmt(expr_lhs, expr_rhs, scope_inht, l);
@@ -172,12 +167,12 @@ std::unique_ptr<Statement> ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
 }
 
 //TODO: should return std::unique_ptr<Expr>
-std::unique_ptr<Expr> ParserLL1RecDesc::Exprs(const ScopeId scope_inht){
+std::unique_ptr<Expr>&& ParserLL1RecDesc::Exprs(const ScopeId scope_inht){
 //   std::cout << "Exp\n";
   std::unique_ptr<Expr> eprime_synt(nullptr);
   std::unique_ptr<Expr> term_synth  = Term(scope_inht);
 
-  if(term_synth != nullptr){
+  if(term_synth.get() != nullptr){
     eprime_synt = ExprPrime(term_synth, scope_inht);
 
 //     if(eprime_synt == nullptr)
@@ -190,7 +185,7 @@ std::unique_ptr<Expr> ParserLL1RecDesc::Exprs(const ScopeId scope_inht){
 }
 
 
-std::unique_ptr<Expr> ParserLL1RecDesc::Term(const ScopeId scope_inht){
+std::unique_ptr<Expr>&& ParserLL1RecDesc::Term(const ScopeId scope_inht){
 //   std::cout << "T\n";
   return std::move(Factor(scope_inht));
 }
@@ -200,9 +195,9 @@ std::unique_ptr<Expr> ParserLL1RecDesc::Term(const ScopeId scope_inht){
 // E'    := + T E'     ** E'1.inht = new Node(+, E'.inht, T.node)
 //                        E'.synt  = E'1.synt
 //       |  empty      ** E'.synt  = E'1.synt
-std::unique_ptr<Expr> ParserLL1RecDesc::ExprPrime(std::unique_ptr<Expr>& eprime_inht, const ScopeId scope_inht){
+std::unique_ptr<Expr>&& ParserLL1RecDesc::ExprPrime(std::unique_ptr<Expr>& eprime_inht, const ScopeId scope_inht){
 //   std::cout << "Exp'\n";
-  std::unique_ptr<Expr> eprime_synt = nullptr;
+  std::unique_ptr<Expr> eprime_synt(nullptr);
   Locus l = CurrentLocus();
 
   if(TryAndAccept(kToken::plus)){
@@ -211,7 +206,7 @@ std::unique_ptr<Expr> ParserLL1RecDesc::ExprPrime(std::unique_ptr<Expr>& eprime_
 
     //A new E' will op against current op+
     eprime_synt = ExprPrime(eprime1_inht, scope_inht);
-    if(eprime_synt == nullptr)
+    if(eprime_synt.get() == nullptr)
       Error("[err:12] operand to + missing");
     return std::move(eprime_synt);
 
@@ -220,7 +215,7 @@ std::unique_ptr<Expr> ParserLL1RecDesc::ExprPrime(std::unique_ptr<Expr>& eprime_
   //check Follow(E')
   if(AcceptEmpty({kToken::rpar, kToken::semicolon, kToken::equality},
       "Expecting +")){
-    eprime_synt = eprime_inht;
+    eprime_synt = std::move(eprime_inht);
   }
 
 //   std::cout << "<-Exp'\n";
@@ -228,7 +223,7 @@ std::unique_ptr<Expr> ParserLL1RecDesc::ExprPrime(std::unique_ptr<Expr>& eprime_
 }
 
 
-std::unique_ptr<Expr> ParserLL1RecDesc::Factor(const ScopeId scope_inht){
+std::unique_ptr<Expr>&& ParserLL1RecDesc::Factor(const ScopeId scope_inht){
   std::unique_ptr<Expr> f_synt;
   Locus l = CurrentLocus();
 
@@ -244,9 +239,9 @@ std::unique_ptr<Expr> ParserLL1RecDesc::Factor(const ScopeId scope_inht){
   return std::move(FactorPrime(scope_inht));
 }
 // F := ( E ) | numerical
-std::unique_ptr<Expr> ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
+std::unique_ptr<Expr>&& ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
 //   std::cout << "Fact\n";
-  std::unique_ptr<Expr> f_synt;
+  std::unique_ptr<Expr> f_synt(nullptr);
   Locus l = CurrentLocus();
 
   //F' := numerical
@@ -290,9 +285,10 @@ std::unique_ptr<Expr> ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
   }else{
     //Error recover
     Error("Expecting numerical or lpar");
-    if(not ContinueParsing()) return nullptr;
+    if(not ContinueParsing())
+      return std::move(f_synt);
     NextToken();
-    return Factor(scope_inht);
+    return std::move(Factor(scope_inht));
   }
 
 //   std::cout << "<-Fact\n";
@@ -300,10 +296,12 @@ std::unique_ptr<Expr> ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
 }
 
 
-std::unique_ptr<Block> ParserLL1RecDesc::IfElse(const ScopeId scope_inht){
+std::unique_ptr<Block>&& ParserLL1RecDesc::IfElse(const ScopeId scope_inht){
 //   std::cout << "IfElse\n";
-  if(not ContinueParsing()) return nullptr;
-  std::unique_ptr<Block> ifelse_synt = nullptr;
+  std::unique_ptr<Block> ifelse_synt(nullptr);
+  if(not ContinueParsing())
+    return std::move(ifelse_synt);
+
 
   if(TryAndAccept(kToken::kwd_else)){
 
@@ -311,8 +309,8 @@ std::unique_ptr<Block> ParserLL1RecDesc::IfElse(const ScopeId scope_inht){
     std::vector<std::unique_ptr<Statement>> stmts_inht;
     const ScopeId nested_id = unit_.NewNestedScope();
     std::unique_ptr<Block> stmts_synt = Stmts(stmts_inht, nested_id);
-    if(stmts_synt == nullptr) Error("Statements within else wrong.");
-    ifelse_synt = stmts_synt;
+    if(stmts_synt.get() == nullptr) Error("Statements within else wrong.");
+    ifelse_synt = std::move(stmts_synt);
     Accept(kToken::rcbr, "else missing rcbr.");
     unit_.RestoreScope();
     return std::move(ifelse_synt);
@@ -327,7 +325,7 @@ std::unique_ptr<Block> ParserLL1RecDesc::IfElse(const ScopeId scope_inht){
   return std::move(ifelse_synt);
 }
 
-std::unique_ptr<VarDeclList>  ParserLL1RecDesc::Decl(const ScopeId scope_inht){
+std::unique_ptr<VarDeclList>&&  ParserLL1RecDesc::Decl(const ScopeId scope_inht){
 //   std::cout << "Decl\n";
   const AST::Type& type_id = Type_();
   const Locus l = CurrentLocus();
@@ -337,37 +335,39 @@ std::unique_ptr<VarDeclList>  ParserLL1RecDesc::Decl(const ScopeId scope_inht){
 }
 
 
+std::unique_ptr<VarDeclList>&&
 ParserLL1RecDesc::NameList(std::vector<std::unique_ptr<VarDecl>>& name_list_inht
                          , const AST::Type& type_inht
                          , const ScopeId scope_inht
                          , const Locus& locus_inht){
 //   std::cout << "NameList\n";
-  std::unique_ptr<VarDeclList> name_list_synt = nullptr;
+  std::unique_ptr<VarDeclList> name_list_synt(nullptr);
 
   //NAME_LIST := name NAME_LIST'
   if(TryAndAccept(kToken::name)){
     name_list_inht.push_back(
-      NewVarDecl(prev_token_string_value_, type_inht, scope_inht, locus_inht) );
+      NewVarDecl(prev_token_string_value_, type_inht, scope_inht, locus_inht)
+    );
 //     std::cout << "new var: "<< prev_token_string_value_ << "\n";
     if(not unit_.Scope().RegDecl(prev_token_string_value_, type_inht)){
       Error("[err:15] Symbol already declared.");
     }
     name_list_synt = NameListPrime(name_list_inht, type_inht, scope_inht, locus_inht);
-    if(name_list_synt != nullptr) std::move(return name_list_synt);
+    if(name_list_synt.get() != nullptr) return std::move(name_list_synt);
   }
 
   //Error recover
-  if(not ContinueParsing()) return nullptr;
+  if(not ContinueParsing()) return std::move(name_list_synt);
   NextToken(); //on error advance token
-  return std::move(NameList(name_list_inht, type_inht, scope_inht, locus_inht));
+  return NameList(name_list_inht, type_inht, scope_inht, locus_inht);
 }
 
-std::unique_ptr<VarDeclList>
+std::unique_ptr<VarDeclList>&&
 ParserLL1RecDesc::NameListPrime(std::vector<std::unique_ptr<VarDecl>>& name_list_inht
                          , const AST::Type& type_inht
                          , const ScopeId scope_inht
                          , const Locus& locus_inht){
-  std::unique_ptr<VarDeclList> name_list_synt = nullptr;
+  std::unique_ptr<VarDeclList> name_list_synt(nullptr);
   //   std::cout << "NameList\n";
 
   //NAME_LIST':= , name NAME_LIST'
@@ -385,7 +385,7 @@ ParserLL1RecDesc::NameListPrime(std::vector<std::unique_ptr<VarDecl>>& name_list
         Error("[err:15] Symbol already declared.");
       }
       name_list_synt = NameListPrime(name_list_inht, type_inht, scope_inht, locus_inht);
-      if(name_list_synt != nullptr) return std::move(name_list_synt);
+      if(name_list_synt.get() != nullptr) return std::move(name_list_synt);
     }
   }
 
@@ -397,9 +397,10 @@ ParserLL1RecDesc::NameListPrime(std::vector<std::unique_ptr<VarDecl>>& name_list
   }
 
   //Error recover
-  if(not ContinueParsing()) return nullptr;
+  if(not ContinueParsing())
+    return std::move(name_list_synt);
   NextToken(); //on error advance token
-  return std::move(NameListPrime(name_list_inht, type_inht, scope_inht, locus_inht));
+  return NameListPrime(name_list_inht, type_inht, scope_inht, locus_inht);
 
 }
 
@@ -421,10 +422,10 @@ const AST::Type&  ParserLL1RecDesc::Type_(){
   return unit_.GetTypeInt();
 }
 
-std::unique_ptr<Block> ParserLL1RecDesc::ParseSubBlock(const ScopeId scope, const std::string& error){
+std::unique_ptr<Block>&& ParserLL1RecDesc::ParseSubBlock(const ScopeId scope, const std::string& error){
   std::vector<std::unique_ptr<Statement>> stmts_inht;
   std::unique_ptr<Block> stmts_synt = Stmts(stmts_inht, scope);
-  if(stmts_synt == nullptr) Error(error);
+  if(stmts_synt.get() == nullptr) Error(error);
   return std::move(stmts_synt);
 }
 
