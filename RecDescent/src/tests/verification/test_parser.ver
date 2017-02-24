@@ -1,0 +1,829 @@
+Grammar:
+PROG -> E  init 
+E -> T E' 
+E' -> + T E' 
+E' -> - T E' 
+E' -> {empty} 
+T -> F T' 
+T' -> * F T' 
+T' -> / F T' 
+T' -> {empty} 
+F -> ( E ) 
+F -> {num} 
+F -> {nam} 
+
+---------------------------------------------------
+Parsing: "int a; (a=1);"
+Decl
+Type
+NameList
+VarDec: int a
+NameList'
+[err:14] Expecting rpar. at: "int a; (a=" -> "1);"
+[err:4] Expecting semicolon after Expr. at: "t a; (a=1)" -> ";"
+[err:3] Block not finishing in eof or rcbr at: "t a; (a=1)" -> ";"
+AST not build at: "t a; (a=1)" -> ";"
+
+---------------------------------------------------
+Parsing: "int a;a=1;a=2;a=3;"
+Decl
+Type
+NameList
+VarDec: int a
+NameList'
+
+AST pretty:
+int a 
+a=1
+a=2
+a=3
+
+AST dump:
+-int a 
+-Assign
+--a
+--Literal: 1
+-Assign
+--a
+--Literal: 2
+-Assign
+--a
+--Literal: 3
+
+---------------------------------------------------
+Parsing: "int a;a=2+3+4;"
+Decl
+Type
+NameList
+VarDec: int a
+NameList'
+
+AST pretty:
+int a 
+a=( ( 2 + 3 ) + 4 )
+
+AST dump:
+-int a 
+-Assign
+--a
+--Op: + 
+---Op: + 
+----Literal: 2
+----Literal: 3
+---Literal: 4
+
+
+---------------------------------------------------
+Parsing: "int a;a=2++3+4;"
+Decl
+Type
+NameList
+VarDec: int a
+NameList'
+Expecting numerical or lpar at: "nt a;a=2++" -> "3+4;"
+
+AST pretty:
+int a 
+a=( ( 2 + 3 ) + 4 )
+
+AST dump:
+-int a 
+-Assign
+--a
+--Op: + 
+---Op: + 
+----Literal: 2
+----Literal: 3
+---Literal: 4
+
+
+---------------------------------------------------
+Parsing: "int a;a=1+2;a=3+4;"
+Decl
+Type
+NameList
+VarDec: int a
+NameList'
+
+AST pretty:
+int a 
+a=( 1 + 2 )
+a=( 3 + 4 )
+
+AST dump:
+-int a 
+-Assign
+--a
+--Op: + 
+---Literal: 1
+---Literal: 2
+-Assign
+--a
+--Op: + 
+---Literal: 3
+---Literal: 4
+
+
+---------------------------------------------------
+Parsing: "int a;a=1+2;a=3+4;a=5+6;"
+Decl
+Type
+NameList
+VarDec: int a
+NameList'
+
+AST pretty:
+int a 
+a=( 1 + 2 )
+a=( 3 + 4 )
+a=( 5 + 6 )
+
+AST dump:
+-int a 
+-Assign
+--a
+--Op: + 
+---Literal: 1
+---Literal: 2
+-Assign
+--a
+--Op: + 
+---Literal: 3
+---Literal: 4
+-Assign
+--a
+--Op: + 
+---Literal: 5
+---Literal: 6
+
+
+Grammar:
+PROG -> E  init 
+E -> T E' 
+E' -> + T E' 
+E' -> - T E' 
+E' -> {empty} 
+T -> F T' 
+T' -> * F T' 
+T' -> / F T' 
+T' -> {empty} 
+F -> ( E ) 
+F -> {num} 
+F -> {nam} 
+
+---------------------------------------------------
+Parsing: "int a;a=1; if(2){a=3;}"
+Decl
+Type
+NameList
+VarDec: int a
+NameList'
+[err:21] if condition is not a bool at: ";a=1; if(2" -> "){a=3;}"
+
+AST pretty:
+int a 
+a=1
+if(2){
+  a=3
+  }
+
+AST dump:
+-int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---Assign
+----a
+----Literal: 3
+
+Scope 0: {0, a }
+Scope 1: {}
+
+---------------------------------------------------
+Parsing: "int a;a=1; if(2){a=3;} a=4;"
+Decl
+Type
+NameList
+VarDec: int a
+NameList'
+[err:21] if condition is not a bool at: ";a=1; if(2" -> "){a=3;} a=4;"
+
+AST pretty:
+int a 
+a=1
+if(2){
+  a=3
+  }
+a=4
+
+AST dump:
+-int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---Assign
+----a
+----Literal: 3
+
+-Assign
+--a
+--Literal: 4
+Scope 0: {0, a }
+Scope 1: {}
+
+---------------------------------------------------
+Parsing: "int a;a=1; if(2){a=3+4+5;}"
+Decl
+Type
+NameList
+VarDec: int a
+NameList'
+[err:21] if condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;}"
+
+AST pretty:
+int a 
+a=1
+if(2){
+  a=( ( 3 + 4 ) + 5 )
+  }
+
+AST dump:
+-int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---Assign
+----a
+----Op: + 
+-----Op: + 
+------Literal: 3
+------Literal: 4
+-----Literal: 5
+
+Scope 0: {0, a }
+Scope 1: {}
+
+---------------------------------------------------
+Parsing: "int a;a=1; if(2){a=3+4+5;} a=6;"
+Decl
+Type
+NameList
+VarDec: int a
+NameList'
+[err:21] if condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;} a=6;"
+
+AST pretty:
+int a 
+a=1
+if(2){
+  a=( ( 3 + 4 ) + 5 )
+  }
+a=6
+
+AST dump:
+-int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---Assign
+----a
+----Op: + 
+-----Op: + 
+------Literal: 3
+------Literal: 4
+-----Literal: 5
+
+-Assign
+--a
+--Literal: 6
+Scope 0: {0, a }
+Scope 1: {}
+
+---------------------------------------------------
+Parsing: "int a;a=1; if(2){if(3){a=4;if(5){a=6;}}}"
+Decl
+Type
+NameList
+VarDec: int a
+NameList'
+[err:21] if condition is not a bool at: "){a=4;if(5" -> "){a=6;}}}"
+[err:21] if condition is not a bool at: "if(2){if(3" -> "){a=4;if(5){a=6;}}}"
+[err:21] if condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4;if(5){a=6;}}}"
+
+AST pretty:
+int a 
+a=1
+if(2){
+  if(3){
+    a=4
+    if(5){
+      a=6
+      }
+    }
+  }
+
+AST dump:
+-int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---IfStmt:
+----Cond: Literal: 3
+----Then:
+-----Assign
+------a
+------Literal: 4
+-----IfStmt:
+------Cond: Literal: 5
+------Then:
+-------Assign
+--------a
+--------Literal: 6
+
+
+
+Scope 0: {0, a }
+Scope 1: {}
+Scope 2: {}
+Scope 3: {}
+
+---------------------------------------------------
+Parsing: "int a;a=1; if(2){if(3){a=4+5;if(6){a=7+8;}}}"
+Decl
+Type
+NameList
+VarDec: int a
+NameList'
+[err:21] if condition is not a bool at: "a=4+5;if(6" -> "){a=7+8;}}}"
+[err:21] if condition is not a bool at: "if(2){if(3" -> "){a=4+5;if(6){a=7+8;}}}"
+[err:21] if condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4+5;if(6){a=7+8;}}}"
+
+AST pretty:
+int a 
+a=1
+if(2){
+  if(3){
+    a=( 4 + 5 )
+    if(6){
+      a=( 7 + 8 )
+      }
+    }
+  }
+
+AST dump:
+-int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---IfStmt:
+----Cond: Literal: 3
+----Then:
+-----Assign
+------a
+------Op: + 
+-------Literal: 4
+-------Literal: 5
+-----IfStmt:
+------Cond: Literal: 6
+------Then:
+-------Assign
+--------a
+--------Op: + 
+---------Literal: 7
+---------Literal: 8
+
+
+
+Scope 0: {0, a }
+Scope 1: {}
+Scope 2: {}
+Scope 3: {}
+
+---------------------------------------------------
+Parsing: "int a;a=1; if(2){a=3;}else{4;}"
+Decl
+Type
+NameList
+VarDec: int a
+NameList'
+[err:] assignment missing '=' at: "3;}else{4;" -> "}"
+[err:3] Block not finishing in eof or rcbr at: "3;}else{4;" -> "}"
+Statements within else wrong. at: "3;}else{4;" -> "}"
+else missing rcbr. at: "3;}else{4;" -> "}"
+[err:3] Block not finishing in eof or rcbr at: "3;}else{4;" -> "}"
+AST not build at: "3;}else{4;" -> "}"
+
+---------------------------------------------------
+Parsing: "int a;a=1; if(2){a=3;}if(4){a=5;}else{a=6;}"
+Decl
+Type
+NameList
+VarDec: int a
+NameList'
+[err:21] if condition is not a bool at: ";a=1; if(2" -> "){a=3;}if(4){a=5;}else{a=6;}"
+[err:21] if condition is not a bool at: "{a=3;}if(4" -> "){a=5;}else{a=6;}"
+
+AST pretty:
+int a 
+a=1
+if(2){
+  a=3
+  }
+if(4){
+  a=5
+  }
+else{
+  a=6
+  }
+
+AST dump:
+-int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---Assign
+----a
+----Literal: 3
+
+-IfStmt:
+--Cond: Literal: 4
+--Then:
+---Assign
+----a
+----Literal: 5
+--Else:
+---Assign
+----a
+----Literal: 6
+
+Scope 0: {0, a }
+Scope 1: {}
+Scope 2: {}
+Scope 3: {}
+
+---------------------------------------------------
+Parsing: "int a; int b; bool c;"
+Decl
+Type
+NameList
+VarDec: int a
+NameList'
+Decl
+Type
+NameList
+VarDec: int b
+NameList'
+Decl
+Type
+NameList
+VarDec: bool c
+NameList'
+
+AST pretty:
+int a 
+int b 
+bool c 
+
+AST dump:
+-int a 
+-int b 
+-bool c 
+
+---------------------------------------------------
+Parsing: "int b, c, d; bool e f;"
+Decl
+Type
+NameList
+VarDec: int b
+NameList'
+NameList'
+NameList'
+Decl
+Type
+NameList
+VarDec: bool e
+NameList'
+[err:19] Variables must be separated with comma. at: "; bool e f" -> ";"
+NameList'
+
+AST pretty:
+int b int c int d 
+bool e bool f 
+
+AST dump:
+-int b int c int d 
+-bool e bool f 
+
+---------------------------------------------------
+Parsing: "int a; a=1;"
+Decl
+Type
+NameList
+VarDec: int a
+NameList'
+
+AST pretty:
+int a 
+a=1
+
+AST dump:
+-int a 
+-Assign
+--a
+--Literal: 1
+
+---------------------------------------------------
+Parsing: "int a; a=(1+2+3);"
+Decl
+Type
+NameList
+VarDec: int a
+NameList'
+
+AST pretty:
+int a 
+a=( ( 1 + 2 ) + 3 )
+
+AST dump:
+-int a 
+-Assign
+--a
+--Op: + 
+---Op: + 
+----Literal: 1
+----Literal: 2
+---Literal: 3
+
+---------------------------------------------------
+Parsing: "int a b c; b=1; c=2; a=(1+b+c);"
+Decl
+Type
+NameList
+VarDec: int a
+NameList'
+[err:19] Variables must be separated with comma. at: "int a b" -> " c; b=1; c=2; a=(1+b+c);"
+NameList'
+[err:19] Variables must be separated with comma. at: "int a b c" -> "; b=1; c=2; a=(1+b+c);"
+NameList'
+
+AST pretty:
+int a int b int c 
+b=1
+c=2
+a=( ( 1 + b ) + c )
+
+AST dump:
+-int a int b int c 
+-Assign
+--b
+--Literal: 1
+-Assign
+--c
+--Literal: 2
+-Assign
+--a
+--Op: + 
+---Op: + 
+----Literal: 1
+----b
+---c
+
+---------------------------------------------------
+Parsing: "int a; int b; int a;"
+Decl
+Type
+NameList
+VarDec: int a
+NameList'
+Decl
+Type
+NameList
+VarDec: int b
+NameList'
+Decl
+Type
+NameList
+VarDec: int a
+[err:15] Symbol already declared. at: " b; int a;" -> ""
+NameList'
+
+AST pretty:
+int a 
+int b 
+int a 
+
+AST dump:
+-int a 
+-int b 
+-int a 
+
+---------------------------------------------------
+Parsing: "int a; if(1){int b;}"
+Decl
+Type
+NameList
+VarDec: int a
+NameList'
+Decl
+Type
+NameList
+VarDec: int b
+NameList'
+[err:21] if condition is not a bool at: "nt a; if(1" -> "){int b;}"
+
+AST pretty:
+int a 
+if(1){
+  int b 
+  }
+
+AST dump:
+-int a 
+-IfStmt:
+--Cond: Literal: 1
+--Then:
+---int b 
+
+Scope 0: {0, a }
+Scope 1: {0, b }
+
+---------------------------------------------------
+Parsing: "int a; if(1){int b;}else{int c;}"
+Decl
+Type
+NameList
+VarDec: int a
+NameList'
+Decl
+Type
+NameList
+VarDec: int b
+NameList'
+Decl
+Type
+NameList
+VarDec: int c
+NameList'
+[err:21] if condition is not a bool at: "nt a; if(1" -> "){int b;}else{int c;}"
+
+AST pretty:
+int a 
+if(1){
+  int b 
+  }
+else{
+  int c 
+  }
+
+AST dump:
+-int a 
+-IfStmt:
+--Cond: Literal: 1
+--Then:
+---int b 
+--Else:
+---int c 
+
+Scope 0: {0, a }
+Scope 1: {0, b }
+Scope 2: {0, c }
+
+---------------------------------------------------
+Parsing: "int a; while(1 + 2){ int c; c = 1+2; }"
+Decl
+Type
+NameList
+VarDec: int a
+NameList'
+Decl
+Type
+NameList
+VarDec: int c
+NameList'
+[err:20] while condition is not a bool at: " while(1 +" -> " 2){ int c; c = 1+2; }"
+
+AST pretty:
+int a 
+while(( 1 + 2 )){
+  int c 
+  c=( 1 + 2 )
+  }
+
+AST dump:
+-int a 
+-WhileStmt:
+--Cond: Op: + 
+---Literal: 1
+---Literal: 2
+--Body:
+---int c 
+---Assign
+----c
+----Op: + 
+-----Literal: 1
+-----Literal: 2
+
+Scope 0: {0, a }
+Scope 1: {0, c }
+
+---------------------------------------------------
+Parsing: "bool a, b; a = true; b = false;"
+Decl
+Type
+NameList
+VarDec: bool a
+NameList'
+NameList'
+
+AST pretty:
+bool a bool b 
+a=1
+b=0
+
+AST dump:
+-bool a bool b 
+-Assign
+--a
+--Literal: 1
+-Assign
+--b
+--Literal: 0
+
+---------------------------------------------------
+Parsing: "int* a; int* b;"
+Decl
+Type
+NameList
+VarDec: int* a
+NameList'
+Decl
+Type
+NameList
+VarDec: int* b
+NameList'
+
+AST pretty:
+int* a 
+int* b 
+
+AST dump:
+-int* a 
+-int* b 
+
+---------------------------------------------------
+Parsing: "int* a; int b, c; b = 2; a = &b; c = *a;"
+Decl
+Type
+NameList
+VarDec: int* a
+NameList'
+Decl
+Type
+NameList
+VarDec: int b
+NameList'
+NameList'
+[err:18] Incompatible types in assignment at: "; b = 2; a" -> " = &b; c = *a;"
+[err:18] Incompatible types in assignment at: " a = &b; c" -> " = *a;"
+
+AST pretty:
+int* a 
+int b int c 
+b=2
+a=b
+c=a
+
+AST dump:
+-int* a 
+-int b int c 
+-Assign
+--b
+--Literal: 2
+-Assign
+--a
+--b
+-Assign
+--c
+--a
+

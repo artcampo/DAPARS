@@ -58,35 +58,35 @@ protected:
   void ErrorCritical(const std::string& message);
 
   //Creation of AST nodes with error checking
-  std::unique_ptr<BinaryOp>&&
+  std::unique_ptr<BinaryOp>
   NewBinaryOp(std::unique_ptr<Expr>& lhs, const int op, std::unique_ptr<Expr>& rhs
                         , const ScopeId id, const Locus& locus);
 
-  std::unique_ptr<Var>&&
+  std::unique_ptr<Var>
   NewVar(const std::string& name, const Type& type
                         , const ScopeId id, const Locus& locus);
 
-  std::unique_ptr<Literal>&&
+  std::unique_ptr<Literal>
   NewLiteral(const uint32_t &value, const Type& type
                         , const ScopeId id, const Locus& locus);
 
-  std::unique_ptr<Block>&&
+  std::unique_ptr<Block>
   NewBlock(std::vector<std::unique_ptr<Statement>>& stmts_inht
                         , const ScopeId id, const Locus& locus);
 
-  std::unique_ptr<IfStmt>&&
+  std::unique_ptr<IfStmt>
   NewIfStmt(std::unique_ptr<Expr>& condition, std::unique_ptr<Block>& block1
                         , const ScopeId id, const Locus& locus);
 
-  std::unique_ptr<IfStmt>&&
+  std::unique_ptr<IfStmt>
   NewIfStmt(std::unique_ptr<Expr>& condition, std::unique_ptr<Block>& block1, std::unique_ptr<Block>& block2
                         , const ScopeId id, const Locus& locus);
 
-  std::unique_ptr<DeclStmt>&&
+  std::unique_ptr<DeclStmt>
   NewDeclStmt(std::unique_ptr<VarDeclList>& list, const ScopeId id
                         , const Locus& locus);
 
-  std::unique_ptr<VarDeclList>&&
+  std::unique_ptr<VarDeclList>
   NewVarDeclList(std::vector<std::unique_ptr<VarDecl>>& list
                         , const ScopeId id, const Locus& locus);
 
@@ -94,11 +94,11 @@ protected:
   NewVarDecl(const std::string& name, const Type& type
                         , const ScopeId id, const Locus& locus);
 
-  std::unique_ptr<AssignStmt>&&
+  std::unique_ptr<AssignStmt>
   NewAssignStmt(std::unique_ptr<Expr>& lhs, std::unique_ptr<Expr>& rhs
                         , const ScopeId id, const Locus& locus);
 
-  std::unique_ptr<WhileStmt>&&
+  std::unique_ptr<WhileStmt>
   NewWhileStmt(std::unique_ptr<Expr>& condition, std::unique_ptr<Block>& body
                         , const ScopeId id, const Locus& locus);
 private:

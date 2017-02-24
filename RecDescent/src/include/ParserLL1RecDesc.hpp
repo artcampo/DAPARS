@@ -27,30 +27,30 @@ private:
   void  Prog();
 
   //Exprs
-  std::unique_ptr<Expr>&& Exprs(const ScopeId scope_inht);
-  std::unique_ptr<Expr>&& ExprPrime(std::unique_ptr<Expr>& eprime_inht
+  std::unique_ptr<Expr> Exprs(const ScopeId scope_inht);
+  std::unique_ptr<Expr> ExprPrime(std::unique_ptr<Expr>& eprime_inht
                           , const ScopeId scope_inht); // make it const
-  std::unique_ptr<Expr>&& Term(const ScopeId scope_inht);
-  std::unique_ptr<Expr>&& Factor(const ScopeId scope_inht);
-  std::unique_ptr<Expr>&& FactorPrime(const ScopeId scope_inht);
+  std::unique_ptr<Expr> Term(const ScopeId scope_inht);
+  std::unique_ptr<Expr> Factor(const ScopeId scope_inht);
+  std::unique_ptr<Expr> FactorPrime(const ScopeId scope_inht);
 
   //Control Flow
-  std::unique_ptr<Block>&&      Stmts(std::vector<std::unique_ptr<Statement>>& stmts_inht, const ScopeId scope_inht);
-  std::unique_ptr<Statement>&&  Stmt(const ScopeId scope_inht);
-  std::unique_ptr<Block>&&      IfElse(const ScopeId scope_inht);
+  std::unique_ptr<Block>      Stmts(std::vector<std::unique_ptr<Statement>>& stmts_inht, const ScopeId scope_inht);
+  std::unique_ptr<Statement>  Stmt(const ScopeId scope_inht);
+  std::unique_ptr<Block>      IfElse(const ScopeId scope_inht);
 
   //Variables declaration
-  std::unique_ptr<VarDeclList>&&  Decl(const ScopeId scope_inht);
-  std::unique_ptr<VarDeclList>&&  NameList(std::vector<std::unique_ptr<VarDecl>>& name_list_inht
+  std::unique_ptr<VarDeclList>  Decl(const ScopeId scope_inht);
+  std::unique_ptr<VarDeclList>  NameList(std::vector<std::unique_ptr<VarDecl>>& name_list_inht
                        , const Compiler::AST::Type& type_inht, const ScopeId scope_inht
                        , const Locus& locus_inht);
-  std::unique_ptr<VarDeclList>&&  NameListPrime(std::vector<std::unique_ptr<VarDecl>>& name_list_inht
+  std::unique_ptr<VarDeclList>  NameListPrime(std::vector<std::unique_ptr<VarDecl>>& name_list_inht
                        , const Compiler::AST::Type& type_inht, const ScopeId scope_inht
                        , const Locus& locus_inht);
   const Compiler::AST::Type&  Type_();
 
 
-  std::unique_ptr<Block>&& ParseSubBlock(const ScopeId scope_inht, const std::string& error);
+  std::unique_ptr<Block> ParseSubBlock(const ScopeId scope_inht, const std::string& error);
 
 };
 
