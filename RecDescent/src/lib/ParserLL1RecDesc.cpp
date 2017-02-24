@@ -230,39 +230,46 @@ PtrExpr ParserLL1RecDesc::Factor(const ScopeId scope_inht){
   //F := *F'
   if(TryAndAccept(kToken::astk)){
 //     f_synt = New
+    PtrExpr fp_synt = FactorPrime(scope_inht);
+    f_synt = NewDerefOp(fp_synt, scope_inht, l);
+    return std::move(f_synt);
   }
 
   //F := &F'
   if(TryAndAccept(kToken::ampersand)){
+    PtrExpr fp_synt = FactorPrime(scope_inht);
+    f_synt = NewRefOp(fp_synt, scope_inht, l);
+    return std::move(f_synt);
   }
 
   return std::move(FactorPrime(scope_inht));
 }
+
 // F := ( E ) | numerical
 PtrExpr ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
 //   std::cout << "Fact\n";
-  PtrExpr f_synt(nullptr);
+  PtrExpr fp_synt(nullptr);
   Locus l = CurrentLocus();
 
   //F' := numerical
   if(TryAndAccept(kToken::numerical)){
     const AST::Type& t = unit_.GetType(kBasicTypeId::kInt);
-    f_synt = NewLiteral(prev_token_int_value_, t
+    fp_synt = NewLiteral(prev_token_int_value_, t
                       , scope_inht, l);
-    return std::move(f_synt);
+    return std::move(fp_synt);
   }
 
   //F' := true
   if(TryAndAccept(kToken::kwd_true)){
-    f_synt = NewLiteral(1, unit_.GetType(kBasicTypeId::kBool) , scope_inht, l);
-    //f_synt = NewLiteral(1, AST::Type::Bool() , scope_inht, l);
-    return std::move(f_synt);
+    fp_synt = NewLiteral(1, unit_.GetType(kBasicTypeId::kBool) , scope_inht, l);
+    //fp_synt = NewLiteral(1, AST::Type::Bool() , scope_inht, l);
+    return std::move(fp_synt);
   }
 
   //F' := false
   if(TryAndAccept(kToken::kwd_false)){
-    f_synt = NewLiteral(0, unit_.GetType(kBasicTypeId::kBool) , scope_inht, l);
-    return std::move(f_synt);
+    fp_synt = NewLiteral(0, unit_.GetType(kBasicTypeId::kBool) , scope_inht, l);
+    return std::move(fp_synt);
   }
 
   //F' := name
@@ -272,27 +279,27 @@ PtrExpr ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
       //Error recovery: insert it as int
       unit_.Scope().RegDecl(prev_token_string_value_, unit_.GetType(kBasicTypeId::kInt));
     }
-    f_synt = NewVar(prev_token_string_value_
+    fp_synt = NewVar(prev_token_string_value_
                   , unit_.Scope().GetType(prev_token_string_value_)
                   , scope_inht, l);
-    return std::move(f_synt);
+    return std::move(fp_synt);
   }
 
   //F := ( E )
   if(TryAndAccept(kToken::lpar)){
-    f_synt = Exprs(scope_inht);
+    fp_synt = Exprs(scope_inht);
     Accept(kToken::rpar, "[err:14] Expecting rpar.");
   }else{
     //Error recover
     Error("Expecting numerical or lpar");
     if(not ContinueParsing())
-      return std::move(f_synt);
+      return std::move(fp_synt);
     NextToken();
     return std::move(Factor(scope_inht));
   }
 
 //   std::cout << "<-Fact\n";
-  return std::move(f_synt);
+  return std::move(fp_synt);
 }
 
 

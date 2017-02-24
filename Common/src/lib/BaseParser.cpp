@@ -248,5 +248,17 @@ BaseParser::NewWhileStmt(PtrExpr& condition, PtrBlock& body
   return std::make_unique<WhileStmt>( condition, body, id, locus);
 }
 
+PtrRefOp
+BaseParser::NewRefOp(PtrExpr& rhs, const ScopeId id, const Locus& locus){
+  if(rhs.get() == nullptr) return PtrRefOp(nullptr);
+  return std::make_unique<RefOp>(rhs, id, locus);
+}
+
+PtrDerefOp
+BaseParser::NewDerefOp(PtrExpr& rhs, const ScopeId id, const Locus& locus){
+  if(rhs.get() == nullptr) return PtrDerefOp(nullptr);
+  return std::make_unique<DerefOp>(rhs, id, locus);
+}
+
 } //end namespace Common
 

@@ -102,6 +102,13 @@ protected:
   PtrWhileStmt
   NewWhileStmt(PtrExpr& condition, PtrBlock& body
                         , const ScopeId id, const Locus& locus);
+
+  PtrRefOp
+  NewRefOp(PtrExpr& rhs, const ScopeId id, const Locus& locus);
+
+  PtrDerefOp
+  NewDerefOp(PtrExpr& rhs, const ScopeId id, const Locus& locus);
+
 private:
   int               num_errors_;
   bool              continue_parsing_;
