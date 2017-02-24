@@ -612,8 +612,6 @@ AST dump:
 
 ---------------------------------------------------
 Parsing: "int* a; int b, c; b = 2; a = &b; c = *a;"
-Expecting numerical or lpar at: "= 2; a = &" -> "b; c = *a;"
-Expecting numerical or lpar at: " &b; c = *" -> "a;"
 [err:18] Incompatible types in assignment at: "; b = 2; a" -> " = &b; c = *a;"
 [err:18] Incompatible types in assignment at: " a = &b; c" -> " = *a;"
 
