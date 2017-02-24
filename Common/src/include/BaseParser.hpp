@@ -90,7 +90,7 @@ protected:
   NewVarDeclList(std::vector<std::unique_ptr<VarDecl>>& list
                         , const ScopeId id, const Locus& locus);
 
-  std::unique_ptr<VarDecl>&&
+  std::unique_ptr<VarDecl>
   NewVarDecl(const std::string& name, const Type& type
                         , const ScopeId id, const Locus& locus);
 

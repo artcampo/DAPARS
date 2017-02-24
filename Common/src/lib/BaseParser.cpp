@@ -219,12 +219,12 @@ BaseParser::NewVarDeclList(std::vector<std::unique_ptr<VarDecl>>& list
   return std::move(std::make_unique<VarDeclList>(list, id, locus));
 }
 
-std::unique_ptr<VarDecl>&&
+std::unique_ptr<VarDecl>
 BaseParser::NewVarDecl(const std::string& name
                               , const Type& type
                               , const ScopeId id
                                , const Locus& locus){
-  return std::move(std::make_unique<VarDecl>(name, type, id, locus));
+  return std::make_unique<VarDecl>(name, type, id, locus);
 }
 
 std::unique_ptr<AssignStmt>&&
