@@ -14,16 +14,6 @@ F -> {nam}
 
 ---------------------------------------------------
 Parsing: "if(1+2){int a;} int b;"
-Decl
-Type
-NameList
-VarDec: int a
-NameList'
-Decl
-Type
-NameList
-VarDec: int b
-NameList'
 [err:21] if condition is not a bool at: "if(1+" -> "2){int a;} int b;"
 
 AST dump:
@@ -47,21 +37,6 @@ AST dump:
 
 ---------------------------------------------------
 Parsing: "int a; while(1+2){int b;} int c;"
-Decl
-Type
-NameList
-VarDec: int a
-NameList'
-Decl
-Type
-NameList
-VarDec: int b
-NameList'
-Decl
-Type
-NameList
-VarDec: int c
-NameList'
 [err:20] while condition is not a bool at: "; while(1+" -> "2){int b;} int c;"
 
 AST dump:

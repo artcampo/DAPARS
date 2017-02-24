@@ -37,14 +37,8 @@ AST not build at: "1 )" -> ""
 
 ------------------------------------------------------------------
 Parsing: "int a"
-Decl
-Type
-NameList
-VarDec: int 
-NameList'
 Name missing at: "int a" -> ""
 [err:1] NextToken performed after reaching eof at: "int a" -> ""
-NameList'
 Name missing at: "int a" -> ""
 [err:5] Expecting semicolon after variable declaration. at: "int a" -> ""
 AST not build at: "int a" -> ""
@@ -119,22 +113,7 @@ AST not build at: "1+(;" -> ""
 
 ------------------------------------------------------------------
 Parsing: "int a; int b; int a;"
-Decl
-Type
-NameList
-VarDec: int a
-NameList'
-Decl
-Type
-NameList
-VarDec: int b
-NameList'
-Decl
-Type
-NameList
-VarDec: int a
 [err:15] Symbol already declared. at: " b; int a;" -> ""
-NameList'
 
 AST dump:
 -int a 
@@ -143,11 +122,6 @@ AST dump:
 
 ------------------------------------------------------------------
 Parsing: "int a; a=1+b;"
-Decl
-Type
-NameList
-VarDec: int a
-NameList'
 [error:16] Var used before declaration at: " a; a=1+b;" -> ""
 
 AST dump:
@@ -160,16 +134,6 @@ AST dump:
 
 ------------------------------------------------------------------
 Parsing: "int a; bool b; a=a+b;"
-Decl
-Type
-NameList
-VarDec: int a
-NameList'
-Decl
-Type
-NameList
-VarDec: bool b
-NameList'
 [err:17] Incompatible types in op at: "ol b; a=a+" -> "b;"
 
 AST dump:
@@ -183,16 +147,6 @@ AST dump:
 
 ------------------------------------------------------------------
 Parsing: "int a; bool b; a=b+b;"
-Decl
-Type
-NameList
-VarDec: int a
-NameList'
-Decl
-Type
-NameList
-VarDec: bool b
-NameList'
 [err:18] Incompatible types in assignment at: " bool b; a" -> "=b+b;"
 
 AST dump:
@@ -206,28 +160,14 @@ AST dump:
 
 ------------------------------------------------------------------
 Parsing: "int a b c;"
-Decl
-Type
-NameList
-VarDec: int a
-NameList'
 [err:19] Variables must be separated with comma. at: "int a b" -> " c;"
-NameList'
 [err:19] Variables must be separated with comma. at: "int a b c" -> ";"
-NameList'
 
 AST dump:
 -int a int b int c 
 
 ------------------------------------------------------------------
 Parsing: "int a,b,c; a= 2+1; a = b+c; 2 = 2;"
-Decl
-Type
-NameList
-VarDec: int a
-NameList'
-NameList'
-NameList'
 [err:22] left of assignment is not an Lval at: "a = b+c; 2" -> " = 2;"
 
 AST dump:
@@ -248,16 +188,6 @@ AST dump:
 
 ------------------------------------------------------------------
 Parsing: "bool a; int b; a = true; b = 1; a = b; b = true; a = 2;"
-Decl
-Type
-NameList
-VarDec: bool a
-NameList'
-Decl
-Type
-NameList
-VarDec: int b
-NameList'
 [err:18] Incompatible types in assignment at: "; b = 1; a" -> " = b; b = true; a = 2;"
 [err:18] Incompatible types in assignment at: "; a = b; b" -> " = true; a = 2;"
 [err:18] Incompatible types in assignment at: " = true; a" -> " = 2;"

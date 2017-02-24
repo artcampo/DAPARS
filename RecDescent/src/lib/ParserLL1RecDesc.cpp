@@ -326,7 +326,7 @@ std::unique_ptr<Block> ParserLL1RecDesc::IfElse(const ScopeId scope_inht){
 }
 
 std::unique_ptr<VarDeclList>  ParserLL1RecDesc::Decl(const ScopeId scope_inht){
-  std::cout << "Decl\n";
+//   std::cout << "Decl\n";
   const AST::Type& type_id = Type_();
   const Locus l = CurrentLocus();
   std::vector<std::unique_ptr<VarDecl>> name_list_inht;
@@ -340,7 +340,7 @@ ParserLL1RecDesc::NameList(std::vector<std::unique_ptr<VarDecl>>& name_list_inht
                          , const AST::Type& type_inht
                          , const ScopeId scope_inht
                          , const Locus& locus_inht){
-  std::cout << "NameList\n";
+//   std::cout << "NameList\n";
   std::unique_ptr<VarDeclList> name_list_synt(nullptr);
 
   //NAME_LIST := name NAME_LIST'
@@ -349,13 +349,6 @@ ParserLL1RecDesc::NameList(std::vector<std::unique_ptr<VarDecl>>& name_list_inht
     name_list_inht.push_back(
       std::move(NewVarDecl(prev_token_string_value_, type_inht, scope_inht, locus_inht))
     );
-    std::cout <<"VarDec: "<<name_list_inht[0]->str()<<"\n";
-/*
-     std::unique_ptr<VarDecl> v = NewVarDecl(prev_token_string_value_, type_inht, scope_inht, locus_inht);
-     std::cout <<"VarDec: "<<v->str()<<"\n";
-    name_list_inht.push_back(
-      std::move(v)
-    );*/
 
 //     std::cout << "new var: "<< prev_token_string_value_ << "\n";
     if(not unit_.Scope().RegDecl(prev_token_string_value_, type_inht)){
@@ -377,7 +370,7 @@ ParserLL1RecDesc::NameListPrime(std::vector<std::unique_ptr<VarDecl>>& name_list
                          , const ScopeId scope_inht
                          , const Locus& locus_inht){
   std::unique_ptr<VarDeclList> name_list_synt(nullptr);
-    std::cout << "NameList'\n";
+//     std::cout << "NameList'\n";
 
   //NAME_LIST':= , name NAME_LIST'
   bool has_comma = TryAndAccept(kToken::comma);
@@ -414,7 +407,7 @@ ParserLL1RecDesc::NameListPrime(std::vector<std::unique_ptr<VarDecl>>& name_list
 }
 
 const AST::Type&  ParserLL1RecDesc::Type_(){
-  std::cout << "Type\n";
+//   std::cout << "Type\n";
 
   if(TryAndAccept(kToken::kwd_int)){
     if(TryAndAccept(kToken::astk)) return unit_.GetTypePtrToInt();
