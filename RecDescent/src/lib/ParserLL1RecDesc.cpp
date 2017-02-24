@@ -42,7 +42,7 @@ void ParserLL1RecDesc::Prog(){
   NextToken();
   std::vector<std::unique_ptr<Statement>> stmts_inht;
   const ScopeId id = unit_.NewFirstScope();
-  std::unique_ptr<Block> stmts_synt = Stmts(stmts_inht, id);
+  PtrBlock stmts_synt = Stmts(stmts_inht, id);
 
   if(stmts_synt.get() != nullptr){
 //     std::cout << "Prog" << std::endl;
@@ -50,7 +50,7 @@ void ParserLL1RecDesc::Prog(){
 
     std::unique_ptr<AST::ProgInit> pinit= std::make_unique<AST::ProgInit>(id, CurrentLocus());
     std::unique_ptr<AST::ProgEnd> pend = std::make_unique<AST::ProgEnd>(id, CurrentLocus());
-    std::unique_ptr<Block> block = std::move(stmts_synt);
+    PtrBlock block = std::move(stmts_synt);
 
     std::unique_ptr<AST::ProgBody> prog =
       std::make_unique<AST::ProgBody>(id, CurrentLocus(), pinit, pend, block);
@@ -62,10 +62,10 @@ void ParserLL1RecDesc::Prog(){
 
 }
 
-std::unique_ptr<Block> ParserLL1RecDesc::Stmts(std::vector<std::unique_ptr<Statement>>& stmts_inht, const ScopeId scope_inht){
+PtrBlock ParserLL1RecDesc::Stmts(std::vector<std::unique_ptr<Statement>>& stmts_inht, const ScopeId scope_inht){
 //   std::cout << "stmts\n";
 //   if(not ContinueParsing()) return nullptr;
-  std::unique_ptr<Block> stmts_synt(nullptr);
+  PtrBlock stmts_synt(nullptr);
   Locus l = CurrentLocus();
 
   //STMTS => bool {empty} if int ( {nam} {num}
@@ -107,12 +107,12 @@ std::unique_ptr<Statement> ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
 
     if(not Accept(kToken::lcbr, "[err:9] if missing lcbr.")) return std::move(stmt_synt);
     const ScopeId nested_id = unit_.NewNestedScope();
-    std::unique_ptr<Block> stmts_synt = ParseSubBlock(nested_id, "[err:10] if missing then statement.");
+    PtrBlock stmts_synt = ParseSubBlock(nested_id, "[err:10] if missing then statement.");
     if(stmts_synt.get() == nullptr) return std::move(stmt_synt);
     if(not Accept(kToken::rcbr, "[err:11] if missing rcbr.")) return std::move(stmt_synt);
 
     unit_.RestoreScope();
-    std::unique_ptr<Block> ifelse_synt = IfElse(scope_inht);
+    PtrBlock ifelse_synt = IfElse(scope_inht);
 
     if(ifelse_synt.get() == nullptr)
       stmt_synt = NewIfStmt(expr_synt, stmts_synt, scope_inht, l);
@@ -131,7 +131,7 @@ std::unique_ptr<Statement> ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
 
     if(not Accept(kToken::lcbr, "[err:] while missing lcbr.")) return std::move(stmt_synt);
     const ScopeId nested_id = unit_.NewNestedScope();
-    std::unique_ptr<Block> stmts_synt = ParseSubBlock(nested_id, "[err:] while missing body.");
+    PtrBlock stmts_synt = ParseSubBlock(nested_id, "[err:] while missing body.");
     if(stmts_synt.get() == nullptr) return std::move(stmt_synt);
     if(not Accept(kToken::rcbr, "[err:] while missing rcbr.")) return std::move(stmt_synt);
 
@@ -296,9 +296,9 @@ std::unique_ptr<Expr> ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
 }
 
 
-std::unique_ptr<Block> ParserLL1RecDesc::IfElse(const ScopeId scope_inht){
+PtrBlock ParserLL1RecDesc::IfElse(const ScopeId scope_inht){
 //   std::cout << "IfElse\n";
-  std::unique_ptr<Block> ifelse_synt(nullptr);
+  PtrBlock ifelse_synt(nullptr);
   if(not ContinueParsing())
     return std::move(ifelse_synt);
 
@@ -308,7 +308,7 @@ std::unique_ptr<Block> ParserLL1RecDesc::IfElse(const ScopeId scope_inht){
     Accept(kToken::lcbr, "else missing lcbr.");
     std::vector<std::unique_ptr<Statement>> stmts_inht;
     const ScopeId nested_id = unit_.NewNestedScope();
-    std::unique_ptr<Block> stmts_synt = Stmts(stmts_inht, nested_id);
+    PtrBlock stmts_synt = Stmts(stmts_inht, nested_id);
     if(stmts_synt.get() == nullptr) Error("Statements within else wrong.");
     ifelse_synt = std::move(stmts_synt);
     Accept(kToken::rcbr, "else missing rcbr.");
@@ -424,9 +424,9 @@ const AST::Type&  ParserLL1RecDesc::Type_(){
   return unit_.GetTypeInt();
 }
 
-std::unique_ptr<Block> ParserLL1RecDesc::ParseSubBlock(const ScopeId scope, const std::string& error){
+PtrBlock ParserLL1RecDesc::ParseSubBlock(const ScopeId scope, const std::string& error){
   std::vector<std::unique_ptr<Statement>> stmts_inht;
-  std::unique_ptr<Block> stmts_synt = Stmts(stmts_inht, scope);
+  PtrBlock stmts_synt = Stmts(stmts_inht, scope);
   if(stmts_synt.get() == nullptr) Error(error);
   return std::move(stmts_synt);
 }

@@ -171,14 +171,14 @@ BaseParser::NewLiteral(const uint32_t &value, const Type& type
   return std::make_unique<Literal>(value, type, id, locus);
 }
 
-std::unique_ptr<Block>
+PtrBlock
 BaseParser::NewBlock(std::vector<std::unique_ptr<Statement>>& stmts_inht
   , const ScopeId id, const Locus& locus){
-  if(stmts_inht.empty()) return std::unique_ptr<Block>(nullptr);
+  if(stmts_inht.empty()) return PtrBlock(nullptr);
   for(auto& stmt : stmts_inht)
-    if(stmt.get() == nullptr) return std::unique_ptr<Block>(nullptr);
+    if(stmt.get() == nullptr) return PtrBlock(nullptr);
 
-  std::unique_ptr<Block> new_block = std::make_unique<Block>(id, locus);
+  PtrBlock new_block = std::make_unique<Block>(id, locus);
   for(auto& stmt : stmts_inht){
     new_block->AddStatement(stmt);
   }
@@ -186,7 +186,7 @@ BaseParser::NewBlock(std::vector<std::unique_ptr<Statement>>& stmts_inht
 }
 
 std::unique_ptr<IfStmt>
-BaseParser::NewIfStmt(std::unique_ptr<Expr>& condition, std::unique_ptr<Block>& block1
+BaseParser::NewIfStmt(std::unique_ptr<Expr>& condition, PtrBlock& block1
   , const ScopeId id, const Locus& locus){
   if(condition.get() == nullptr or block1.get() == nullptr)
     return std::unique_ptr<IfStmt>(nullptr);
@@ -195,8 +195,8 @@ BaseParser::NewIfStmt(std::unique_ptr<Expr>& condition, std::unique_ptr<Block>& 
 }
 
 std::unique_ptr<IfStmt>
-BaseParser::NewIfStmt(std::unique_ptr<Expr>& condition, std::unique_ptr<Block>& block1
-  , std::unique_ptr<Block>& block2, const ScopeId id, const Locus& locus){
+BaseParser::NewIfStmt(std::unique_ptr<Expr>& condition, PtrBlock& block1
+  , PtrBlock& block2, const ScopeId id, const Locus& locus){
 
   return std::make_unique<IfStmt>(condition, block1, block2, id, locus);
 }
@@ -238,7 +238,7 @@ BaseParser::NewAssignStmt(std::unique_ptr<Expr>& lhs
 }
 
 std::unique_ptr<WhileStmt>
-BaseParser::NewWhileStmt(std::unique_ptr<Expr>& condition, std::unique_ptr<Block>& body
+BaseParser::NewWhileStmt(std::unique_ptr<Expr>& condition, PtrBlock& body
     , const ScopeId id, const Locus& locus){
   if(condition.get() == nullptr or body.get() == nullptr){
     std::cout << "Null NewWhileStmt\n";

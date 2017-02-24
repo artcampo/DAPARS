@@ -15,6 +15,7 @@ using namespace Tokenizer;
 using namespace Compiler::AST;
 using Compiler::CompilationUnit;
 using Compiler::Locus;
+using namespace Compiler::AST::Ptrs;
 
 
 class BaseParser{
@@ -70,16 +71,16 @@ protected:
   NewLiteral(const uint32_t &value, const Type& type
                         , const ScopeId id, const Locus& locus);
 
-  std::unique_ptr<Block>
+  PtrBlock
   NewBlock(std::vector<std::unique_ptr<Statement>>& stmts_inht
                         , const ScopeId id, const Locus& locus);
 
   std::unique_ptr<IfStmt>
-  NewIfStmt(std::unique_ptr<Expr>& condition, std::unique_ptr<Block>& block1
+  NewIfStmt(std::unique_ptr<Expr>& condition, PtrBlock& block1
                         , const ScopeId id, const Locus& locus);
 
   std::unique_ptr<IfStmt>
-  NewIfStmt(std::unique_ptr<Expr>& condition, std::unique_ptr<Block>& block1, std::unique_ptr<Block>& block2
+  NewIfStmt(std::unique_ptr<Expr>& condition, PtrBlock& block1, PtrBlock& block2
                         , const ScopeId id, const Locus& locus);
 
   std::unique_ptr<DeclStmt>
@@ -99,7 +100,7 @@ protected:
                         , const ScopeId id, const Locus& locus);
 
   std::unique_ptr<WhileStmt>
-  NewWhileStmt(std::unique_ptr<Expr>& condition, std::unique_ptr<Block>& body
+  NewWhileStmt(std::unique_ptr<Expr>& condition, PtrBlock& body
                         , const ScopeId id, const Locus& locus);
 private:
   int               num_errors_;

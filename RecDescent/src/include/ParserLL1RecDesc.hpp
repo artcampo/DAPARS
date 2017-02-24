@@ -8,11 +8,13 @@
 #include "Grammar.hpp"
 #include "CompilationUnit.hpp"
 #include "Types.hpp"
+#include "Node.hpp"
 
 namespace RecDescent{
 
 using namespace Common;
 using namespace Common::Tokenizer;
+using namespace Compiler::AST::Ptrs;
 
 class ParserLL1RecDesc : public BaseParser{
 
@@ -35,9 +37,9 @@ private:
   std::unique_ptr<Expr> FactorPrime(const ScopeId scope_inht);
 
   //Control Flow
-  std::unique_ptr<Block>      Stmts(std::vector<std::unique_ptr<Statement>>& stmts_inht, const ScopeId scope_inht);
+  PtrBlock      Stmts(std::vector<std::unique_ptr<Statement>>& stmts_inht, const ScopeId scope_inht);
   std::unique_ptr<Statement>  Stmt(const ScopeId scope_inht);
-  std::unique_ptr<Block>      IfElse(const ScopeId scope_inht);
+  PtrBlock      IfElse(const ScopeId scope_inht);
 
   //Variables declaration
   std::unique_ptr<VarDeclList>  Decl(const ScopeId scope_inht);
@@ -50,7 +52,7 @@ private:
   const Compiler::AST::Type&  Type_();
 
 
-  std::unique_ptr<Block> ParseSubBlock(const ScopeId scope_inht, const std::string& error);
+  PtrBlock ParseSubBlock(const ScopeId scope_inht, const std::string& error);
 
 };
 
