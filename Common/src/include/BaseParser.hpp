@@ -58,26 +58,44 @@ protected:
   void ErrorCritical(const std::string& message);
 
   //Creation of AST nodes with error checking
-  BinaryOp*     NewBinaryOp(Expr* const lhs, const int op, Expr* const rhs
-                        , const ScopeId id, const Locus& locus);
-  Var*          NewVar(const std::string& name, const Type& type
+  std::unique_ptr<BinaryOp>
+  NewBinaryOp(std::unique_ptr<Expr>& lhs, const int op, std::unique_ptr<Expr>& rhs
                         , const ScopeId id, const Locus& locus);
 
-  Literal*      NewLiteral(const uint32_t &value, const Type& type
+  std::unique_ptr<Var>
+  NewVar(const std::string& name, const Type& type
                         , const ScopeId id, const Locus& locus);
-  Block*        NewBlock(const std::vector<Statement*>& stmts_inht
+
+  std::unique_ptr<Literal>
+  NewLiteral(const uint32_t &value, const Type& type
                         , const ScopeId id, const Locus& locus);
-  IfStmt*       NewIfStmt(Expr* const condition, Block* block1
+
+  std::unique_ptr<Block>
+  NewBlock(std::vector<std::unique_ptr<Statement>>& stmts_inht
                         , const ScopeId id, const Locus& locus);
-  IfStmt*       NewIfStmt(Expr* const condition, Block* block1, Block* block2
+
+  std::unique_ptr<IfStmt>
+  NewIfStmt(std::unique_ptr<Expr>& condition, std::unique_ptr<Block>& block1
                         , const ScopeId id, const Locus& locus);
-  DeclStmt*     NewDeclStmt(VarDeclList* const list, const ScopeId id
+
+  std::unique_ptr<IfStmt>
+  NewIfStmt(std::unique_ptr<Expr>& condition, std::unique_ptr<Block>& block1, std::unique_ptr<Block>& block2
+                        , const ScopeId id, const Locus& locus);
+
+  std::unique_ptr<DeclStmt>
+  NewDeclStmt(std::unique_ptr<VarDeclList>& list, const ScopeId id
                         , const Locus& locus);
-  VarDeclList*  NewVarDeclList(const std::vector<VarDecl*>& list
+
+  std::unique_ptr<VarDeclList>
+  NewVarDeclList(std::vector<std::unique_ptr<VarDecl>>& list
                         , const ScopeId id, const Locus& locus);
-  VarDecl*      NewVarDecl(const std::string& name, const Type& type
+
+  std::unique_ptr<VarDecl>
+  NewVarDecl(const std::string& name, const Type& type
                         , const ScopeId id, const Locus& locus);
-  AssignStmt*   NewAssignStmt(Expr* const lhs, Expr* const rhs
+
+  std::unique_ptr<AssignStmt>
+  NewAssignStmt(std::unique_ptr<Expr>& lhs, std::unique_ptr<Expr>& rhs
                         , const ScopeId id, const Locus& locus);
 
   std::unique_ptr<WhileStmt>

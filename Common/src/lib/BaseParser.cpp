@@ -147,91 +147,89 @@ void BaseParser::ErrorCritical(const std::string& message){
 //   exit(1);
 }
 
-BinaryOp* BaseParser::NewBinaryOp(Expr* const lhs, const int op
-  , Expr* const rhs, const ScopeId id, const Locus& locus){
+std::unique_ptr<BinaryOp>
+BaseParser::NewBinaryOp(std::unique_ptr<Expr>& lhs, const int op
+  , std::unique_ptr<Expr>& rhs, const ScopeId id, const Locus& locus){
 //   if(lhs == nullptr) ErrorCritical("lhs invalid");
 //   if(rhs == nullptr) ErrorCritical("rhs invalid");
-  if(lhs == nullptr or rhs == nullptr) return nullptr;
+  if(lhs.get() == nullptr or.get() rhs == nullptr) return nullptr;
 
-  Expr* const lhs_exp = dynamic_cast<Expr*>(lhs);
-  Expr* const rhs_exp = dynamic_cast<Expr*>(rhs);
-  BinaryOp* new_node = new BinaryOp(lhs_exp, op, rhs_exp, id, locus);
-  return new_node;
+  return std::move(std::make_unique<BinaryOp>(lhs, op, rhs, id, locus));
 }
 
 
-Var* BaseParser::NewVar(const std::string& name, const Type& type
+std::unique_ptr<Var>
+BaseParser::NewVar(const std::string& name, const Type& type
   , const ScopeId id, const Locus& locus){
-  Var* v = new Var(name, type, id, locus);
-  return v;
+  return std::move(std::make_unique<Var>(name, type, id, locus));
 }
 
-Literal* BaseParser::NewLiteral(const uint32_t &value, const Type& type
+std::unique_ptr<Literal>
+BaseParser::NewLiteral(const uint32_t &value, const Type& type
   , const ScopeId id, const Locus& locus){
-  Literal* new_node = new Literal(value, type, id, locus);
-  return new_node;
+  return std::move(std::make_unique<Literal>(value, type, id, locus));
 }
 
-Block* BaseParser::NewBlock(const std::vector<Statement*>& stmts_inht
+std::unique_ptr<Block>
+BaseParser::NewBlock(std::vector<std::unique_ptr<Statement>>& stmts_inht
   , const ScopeId id, const Locus& locus){
   if(stmts_inht.empty()) return nullptr;
-  for(const auto stmt : stmts_inht) if(stmt == nullptr) return nullptr;
+  for(auto& stmt : stmts_inht) if(stmt.get() == nullptr) return nullptr;
 
-  Block* new_block;
-  new_block = new Block(id, locus);
-  for(const auto stmt : stmts_inht){
-    new_block->AddStatement(stmt);
+  std::unique_ptr<Block> new_block = std::make_unique<Block>(id, locus);
+  for(auto& stmt : stmts_inht){
+    new_block->AddStatement(std::move(stmt));
   }
-  return new_block;
+  return std::move(new_block);
 }
 
-IfStmt* BaseParser::NewIfStmt(Expr* const condition, Block* block1
+std::unique_ptr<IfStmt>
+BaseParser::NewIfStmt(std::unique_ptr<Expr>& condition, std::unique_ptr<Block>& block1
   , const ScopeId id, const Locus& locus){
-  if(condition == nullptr or block1 == nullptr) return nullptr;
+  if(condition.get() == nullptr or block1.get() == nullptr) return nullptr;
 
-  IfStmt* new_stmt_if = new IfStmt(condition, block1, id, locus);
-  return new_stmt_if;
+  return std::move(std::make_unique<IfStmt>(condition, block1, id, locus));
 }
 
-IfStmt* BaseParser::NewIfStmt(Expr* const condition, Block* block1
-  , Block* block2, const ScopeId id, const Locus& locus){
-  IfStmt* new_stmt_if = new IfStmt(condition, block1, block2, id, locus);
+std::unique_ptr<IfStmt>
+BaseParser::NewIfStmt(std::unique_ptr<Expr>& condition, std::unique_ptr<Block>& block1
+  , std::unique_ptr<Block>& block2, const ScopeId id, const Locus& locus){
 
-  return new_stmt_if;
+  return std::move(std::make_unique<IfStmt>(condition, block1, block2, id, locus));
 }
 
-DeclStmt* BaseParser::NewDeclStmt(VarDeclList* const list, const ScopeId id
+std::unique_ptr<DeclStmt>
+BaseParser::NewDeclStmt(std::unique_ptr<VarDeclList>& list, const ScopeId id
   , const Locus& locus){
-  if(list == nullptr) return nullptr;
+  if(list.get() == nullptr) return nullptr;
 
-  DeclStmt* s = new DeclStmt(list, id, locus);
-  return s;
+  return std::move(std::make_unique<DeclStmt>(list, id, locus));
 }
 
-VarDeclList* BaseParser::NewVarDeclList(const std::vector<VarDecl*>& list
+std::unique_ptr<VarDeclList>
+BaseParser::NewVarDeclList(std::vector<std::unique_ptr<VarDecl>>& list
   , const ScopeId id, const Locus& locus){
   if(list.empty()) return nullptr;
-  for(const auto dec : list) if(dec == nullptr) return nullptr;
+  for(auto& dec : list) if(dec.get() == nullptr) return nullptr;
 
-  VarDeclList* l = new VarDeclList(list, id, locus);
-  return l;
+  return std::move(std::make_unique<VarDeclList>(list, id, locus));
 }
 
-VarDecl* BaseParser::NewVarDecl(const std::string& name
+std::unique_ptr<VarDecl>
+BaseParser::NewVarDecl(const std::string& name
                               , const Type& type
                               , const ScopeId id
                                , const Locus& locus){
-  VarDecl* d = new VarDecl(name, type, id, locus);
-  return d;
+  return std::move(std::make_unique<VarDecl>(name, type, id, locus));
 }
 
-AssignStmt* BaseParser::NewAssignStmt(Expr* const lhs
-                                    , Expr* const rhs
+std::unique_ptr<AssignStmt*>
+BaseParser::NewAssignStmt(std::unique_ptr<Expr>& lhs
+                                    , std::unique_ptr<Expr>& rhs
                                      , const ScopeId id
                                      , const Locus& locus){
-  if(lhs == nullptr or rhs == nullptr) return nullptr;
-  AssignStmt* a = new AssignStmt(lhs,rhs, id, locus);
-  return a;
+  if(lhs.get() == nullptr or rhs.get() == nullptr) return nullptr;
+  return std::move(std::make_unique<AssignStmt>(lhs,rhs, id, locus));
 }
 
 std::unique_ptr<WhileStmt>

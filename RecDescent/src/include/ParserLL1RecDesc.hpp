@@ -27,11 +27,11 @@ private:
   void  Prog();
 
   //Exprs
-  Expr* Exprs(const ScopeId scope_inht);
-  Expr* ExprPrime(Expr* eprime_inht, const ScopeId scope_inht); // make it const
-  Expr* Term(const ScopeId scope_inht);
-  Expr* Factor(const ScopeId scope_inht);
-  Expr* FactorPrime(const ScopeId scope_inht);
+  std::unique_ptr<Expr> Exprs(const ScopeId scope_inht);
+  std::unique_ptr<Expr> ExprPrime(std::unique_ptr<Expr>& eprime_inht, const ScopeId scope_inht); // make it const
+  std::unique_ptr<Expr> Term(const ScopeId scope_inht);
+  std::unique_ptr<Expr> Factor(const ScopeId scope_inht);
+  std::unique_ptr<Expr> FactorPrime(const ScopeId scope_inht);
 
   //Control Flow
   Block*      Stmts(std::vector<Statement*>& stmts_inht, const ScopeId scope_inht);
