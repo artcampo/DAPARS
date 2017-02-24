@@ -40,7 +40,7 @@ void ParserLL1RecDesc::Parse(){
 
 void ParserLL1RecDesc::Prog(){
   NextToken();
-  std::vector<std::unique_ptr<Statement>> stmts_inht;
+  std::vector<PtrStatement> stmts_inht;
   const ScopeId id = unit_.NewFirstScope();
   PtrBlock stmts_synt = Stmts(stmts_inht, id);
 
@@ -62,7 +62,7 @@ void ParserLL1RecDesc::Prog(){
 
 }
 
-PtrBlock ParserLL1RecDesc::Stmts(std::vector<std::unique_ptr<Statement>>& stmts_inht, const ScopeId scope_inht){
+PtrBlock ParserLL1RecDesc::Stmts(std::vector<PtrStatement>& stmts_inht, const ScopeId scope_inht){
 //   std::cout << "stmts\n";
 //   if(not ContinueParsing()) return nullptr;
   PtrBlock stmts_synt(nullptr);
@@ -71,7 +71,7 @@ PtrBlock ParserLL1RecDesc::Stmts(std::vector<std::unique_ptr<Statement>>& stmts_
   //STMTS => bool {empty} if int ( {nam} {num}
   if( Check({kToken::kwd_if, kToken::kwd_int, kToken::kwd_bool, kToken::lpar
           , kToken::numerical, kToken::name, kToken::kwd_while})){
-      std::unique_ptr<Statement> stmt_synth = Stmt(scope_inht);
+      PtrStatement stmt_synth = Stmt(scope_inht);
 
       stmts_inht.push_back(std::move(stmt_synth));
       stmts_synt = Stmts(stmts_inht, scope_inht);
@@ -89,10 +89,10 @@ PtrBlock ParserLL1RecDesc::Stmts(std::vector<std::unique_ptr<Statement>>& stmts_
   return std::move(stmts_synt);
 }
 
-std::unique_ptr<Statement> ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
+PtrStatement ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
 //   std::cout << "stmt\n";
 //   if(not ContinueParsing()) return nullptr;
-  std::unique_ptr<Statement> stmt_synt(nullptr);
+  PtrStatement stmt_synt(nullptr);
   Locus l = CurrentLocus();
 
   //if(E){STMTS}
@@ -100,7 +100,7 @@ std::unique_ptr<Statement> ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
 
 //     std::cout << "stmt::if\n";
     if(not Accept(kToken::lpar, "[err:6] if missing lpar.")) return std::move(stmt_synt);
-    std::unique_ptr<Expr> expr_synt = Exprs(scope_inht);
+    PtrExpr expr_synt = Exprs(scope_inht);
     if(expr_synt.get() == nullptr) Error("[err:7] if condition wrong.");
 
     if(not Accept(kToken::rpar, "[err:8] if missing rpar.")) return std::move(stmt_synt);
@@ -125,7 +125,7 @@ std::unique_ptr<Statement> ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
   //while(E){STMTS}
   if(TryAndAccept(kToken::kwd_while)){
     if(not Accept(kToken::lpar, "[err:] while missing lpar.")) return std::move(stmt_synt);
-    std::unique_ptr<Expr> expr_synt = Exprs(scope_inht);
+    PtrExpr expr_synt = Exprs(scope_inht);
     if(expr_synt.get() == nullptr) Error("[err:] while condition wrong.");
     if(not Accept(kToken::rpar, "[err:] while missing rpar.")) return std::move(stmt_synt);
 
@@ -143,7 +143,7 @@ std::unique_ptr<Statement> ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
   //VarDecl
   if(Check({kToken::kwd_int, kToken::kwd_bool})){
 //     std::cout << "stmt::decl stmt\n";
-    std::unique_ptr<VarDeclList> decl_synt = Decl(scope_inht);
+    PtrVarDeclList decl_synt = Decl(scope_inht);
     stmt_synt = NewDeclStmt(decl_synt, scope_inht, l);
     Accept(kToken::semicolon, "[err:5] Expecting semicolon after variable declaration.");
     return std::move(stmt_synt);
@@ -151,11 +151,11 @@ std::unique_ptr<Statement> ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
 
   if(Check({kToken::lpar, kToken::name, kToken::numerical})){
 //     std::cout << "stmt::assign stmt\n";
-    std::unique_ptr<Expr> expr_lhs  = Exprs(scope_inht);
+    PtrExpr expr_lhs  = Exprs(scope_inht);
     if(not Accept(kToken::equality, "[err:] assignment missing '='")){
       return std::move(stmt_synt);
     }
-    std::unique_ptr<Expr> expr_rhs  = Exprs(scope_inht);
+    PtrExpr expr_rhs  = Exprs(scope_inht);
     stmt_synt       = NewAssignStmt(expr_lhs, expr_rhs, scope_inht, l);
 
     Accept(kToken::semicolon, "[err:4] Expecting semicolon after Expr.");
@@ -166,11 +166,11 @@ std::unique_ptr<Statement> ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
   return std::move(stmt_synt);
 }
 
-//TODO: should return std::unique_ptr<Expr>
-std::unique_ptr<Expr> ParserLL1RecDesc::Exprs(const ScopeId scope_inht){
+//TODO: should return PtrExpr
+PtrExpr ParserLL1RecDesc::Exprs(const ScopeId scope_inht){
 //   std::cout << "Exp\n";
-  std::unique_ptr<Expr> eprime_synt(nullptr);
-  std::unique_ptr<Expr> term_synth  = Term(scope_inht);
+  PtrExpr eprime_synt(nullptr);
+  PtrExpr term_synth  = Term(scope_inht);
 
   if(term_synth.get() != nullptr){
     eprime_synt = ExprPrime(term_synth, scope_inht);
@@ -185,7 +185,7 @@ std::unique_ptr<Expr> ParserLL1RecDesc::Exprs(const ScopeId scope_inht){
 }
 
 
-std::unique_ptr<Expr> ParserLL1RecDesc::Term(const ScopeId scope_inht){
+PtrExpr ParserLL1RecDesc::Term(const ScopeId scope_inht){
 //   std::cout << "T\n";
   return std::move(Factor(scope_inht));
 }
@@ -195,14 +195,14 @@ std::unique_ptr<Expr> ParserLL1RecDesc::Term(const ScopeId scope_inht){
 // E'    := + T E'     ** E'1.inht = new Node(+, E'.inht, T.node)
 //                        E'.synt  = E'1.synt
 //       |  empty      ** E'.synt  = E'1.synt
-std::unique_ptr<Expr> ParserLL1RecDesc::ExprPrime(std::unique_ptr<Expr>& eprime_inht, const ScopeId scope_inht){
+PtrExpr ParserLL1RecDesc::ExprPrime(PtrExpr& eprime_inht, const ScopeId scope_inht){
 //   std::cout << "Exp'\n";
-  std::unique_ptr<Expr> eprime_synt(nullptr);
+  PtrExpr eprime_synt(nullptr);
   Locus l = CurrentLocus();
 
   if(TryAndAccept(kToken::plus)){
-    std::unique_ptr<Expr> t_synt = Term(scope_inht);
-    std::unique_ptr<Expr> eprime1_inht = NewBinaryOp(eprime_inht, IR_ADD, t_synt, scope_inht, l);
+    PtrExpr t_synt = Term(scope_inht);
+    PtrExpr eprime1_inht = NewBinaryOp(eprime_inht, IR_ADD, t_synt, scope_inht, l);
 
     //A new E' will op against current op+
     eprime_synt = ExprPrime(eprime1_inht, scope_inht);
@@ -223,8 +223,8 @@ std::unique_ptr<Expr> ParserLL1RecDesc::ExprPrime(std::unique_ptr<Expr>& eprime_
 }
 
 
-std::unique_ptr<Expr> ParserLL1RecDesc::Factor(const ScopeId scope_inht){
-  std::unique_ptr<Expr> f_synt;
+PtrExpr ParserLL1RecDesc::Factor(const ScopeId scope_inht){
+  PtrExpr f_synt;
   Locus l = CurrentLocus();
 
   //F := *F'
@@ -239,9 +239,9 @@ std::unique_ptr<Expr> ParserLL1RecDesc::Factor(const ScopeId scope_inht){
   return std::move(FactorPrime(scope_inht));
 }
 // F := ( E ) | numerical
-std::unique_ptr<Expr> ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
+PtrExpr ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
 //   std::cout << "Fact\n";
-  std::unique_ptr<Expr> f_synt(nullptr);
+  PtrExpr f_synt(nullptr);
   Locus l = CurrentLocus();
 
   //F' := numerical
@@ -306,7 +306,7 @@ PtrBlock ParserLL1RecDesc::IfElse(const ScopeId scope_inht){
   if(TryAndAccept(kToken::kwd_else)){
 
     Accept(kToken::lcbr, "else missing lcbr.");
-    std::vector<std::unique_ptr<Statement>> stmts_inht;
+    std::vector<PtrStatement> stmts_inht;
     const ScopeId nested_id = unit_.NewNestedScope();
     PtrBlock stmts_synt = Stmts(stmts_inht, nested_id);
     if(stmts_synt.get() == nullptr) Error("Statements within else wrong.");
@@ -325,23 +325,23 @@ PtrBlock ParserLL1RecDesc::IfElse(const ScopeId scope_inht){
   return std::move(ifelse_synt);
 }
 
-std::unique_ptr<VarDeclList>  ParserLL1RecDesc::Decl(const ScopeId scope_inht){
+PtrVarDeclList  ParserLL1RecDesc::Decl(const ScopeId scope_inht){
 //   std::cout << "Decl\n";
   const AST::Type& type_id = Type_();
   const Locus l = CurrentLocus();
-  std::vector<std::unique_ptr<VarDecl>> name_list_inht;
-  std::unique_ptr<VarDeclList> decl_synt = NameList(name_list_inht, type_id, scope_inht, l);
+  std::vector<PtrVarDecl> name_list_inht;
+  PtrVarDeclList decl_synt = NameList(name_list_inht, type_id, scope_inht, l);
   return std::move(decl_synt);
 }
 
 
-std::unique_ptr<VarDeclList>
-ParserLL1RecDesc::NameList(std::vector<std::unique_ptr<VarDecl>>& name_list_inht
+PtrVarDeclList
+ParserLL1RecDesc::NameList(std::vector<PtrVarDecl>& name_list_inht
                          , const AST::Type& type_inht
                          , const ScopeId scope_inht
                          , const Locus& locus_inht){
 //   std::cout << "NameList\n";
-  std::unique_ptr<VarDeclList> name_list_synt(nullptr);
+  PtrVarDeclList name_list_synt(nullptr);
 
   //NAME_LIST := name NAME_LIST'
   if(TryAndAccept(kToken::name)){
@@ -364,12 +364,12 @@ ParserLL1RecDesc::NameList(std::vector<std::unique_ptr<VarDecl>>& name_list_inht
   return NameList(name_list_inht, type_inht, scope_inht, locus_inht);
 }
 
-std::unique_ptr<VarDeclList>
-ParserLL1RecDesc::NameListPrime(std::vector<std::unique_ptr<VarDecl>>& name_list_inht
+PtrVarDeclList
+ParserLL1RecDesc::NameListPrime(std::vector<PtrVarDecl>& name_list_inht
                          , const AST::Type& type_inht
                          , const ScopeId scope_inht
                          , const Locus& locus_inht){
-  std::unique_ptr<VarDeclList> name_list_synt(nullptr);
+  PtrVarDeclList name_list_synt(nullptr);
 //     std::cout << "NameList'\n";
 
   //NAME_LIST':= , name NAME_LIST'
@@ -425,7 +425,7 @@ const AST::Type&  ParserLL1RecDesc::Type_(){
 }
 
 PtrBlock ParserLL1RecDesc::ParseSubBlock(const ScopeId scope, const std::string& error){
-  std::vector<std::unique_ptr<Statement>> stmts_inht;
+  std::vector<PtrStatement> stmts_inht;
   PtrBlock stmts_synt = Stmts(stmts_inht, scope);
   if(stmts_synt.get() == nullptr) Error(error);
   return std::move(stmts_synt);

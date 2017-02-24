@@ -147,32 +147,32 @@ void BaseParser::ErrorCritical(const std::string& message){
 //   exit(1);
 }
 
-std::unique_ptr<BinaryOp>
-BaseParser::NewBinaryOp(std::unique_ptr<Expr>& lhs, const int op
-  , std::unique_ptr<Expr>& rhs, const ScopeId id, const Locus& locus){
+PtrBinaryOp
+BaseParser::NewBinaryOp(PtrExpr& lhs, const int op
+  , PtrExpr& rhs, const ScopeId id, const Locus& locus){
 //   if(lhs == nullptr) ErrorCritical("lhs invalid");
 //   if(rhs == nullptr) ErrorCritical("rhs invalid");
   if(lhs.get() == nullptr or rhs.get() == nullptr)
-    return std::unique_ptr<BinaryOp>(nullptr);
+    return PtrBinaryOp(nullptr);
 
   return std::make_unique<BinaryOp>(lhs, op, rhs, id, locus);
 }
 
 
-std::unique_ptr<Var>
+PtrVar
 BaseParser::NewVar(const std::string& name, const Type& type
   , const ScopeId id, const Locus& locus){
   return std::make_unique<Var>(name, type, id, locus);
 }
 
-std::unique_ptr<Literal>
+PtrLiteral
 BaseParser::NewLiteral(const uint32_t &value, const Type& type
   , const ScopeId id, const Locus& locus){
   return std::make_unique<Literal>(value, type, id, locus);
 }
 
 PtrBlock
-BaseParser::NewBlock(std::vector<std::unique_ptr<Statement>>& stmts_inht
+BaseParser::NewBlock(std::vector<PtrStatement>& stmts_inht
   , const ScopeId id, const Locus& locus){
   if(stmts_inht.empty()) return PtrBlock(nullptr);
   for(auto& stmt : stmts_inht)
@@ -185,41 +185,41 @@ BaseParser::NewBlock(std::vector<std::unique_ptr<Statement>>& stmts_inht
   return new_block;
 }
 
-std::unique_ptr<IfStmt>
-BaseParser::NewIfStmt(std::unique_ptr<Expr>& condition, PtrBlock& block1
+PtrIfStmt
+BaseParser::NewIfStmt(PtrExpr& condition, PtrBlock& block1
   , const ScopeId id, const Locus& locus){
   if(condition.get() == nullptr or block1.get() == nullptr)
-    return std::unique_ptr<IfStmt>(nullptr);
+    return PtrIfStmt(nullptr);
 
   return std::make_unique<IfStmt>(condition, block1, id, locus);
 }
 
-std::unique_ptr<IfStmt>
-BaseParser::NewIfStmt(std::unique_ptr<Expr>& condition, PtrBlock& block1
+PtrIfStmt
+BaseParser::NewIfStmt(PtrExpr& condition, PtrBlock& block1
   , PtrBlock& block2, const ScopeId id, const Locus& locus){
 
   return std::make_unique<IfStmt>(condition, block1, block2, id, locus);
 }
 
-std::unique_ptr<DeclStmt>
-BaseParser::NewDeclStmt(std::unique_ptr<VarDeclList>& list, const ScopeId id
+PtrDeclStmt
+BaseParser::NewDeclStmt(PtrVarDeclList& list, const ScopeId id
   , const Locus& locus){
   if(list.get() == nullptr)
-    return std::unique_ptr<DeclStmt>(nullptr);
+    return PtrDeclStmt(nullptr);
 
   return std::make_unique<DeclStmt>(list, id, locus);
 }
 
-std::unique_ptr<VarDeclList>
-BaseParser::NewVarDeclList(std::vector<std::unique_ptr<VarDecl>>& list
+PtrVarDeclList
+BaseParser::NewVarDeclList(std::vector<PtrVarDecl>& list
   , const ScopeId id, const Locus& locus){
-  if(list.empty()) return std::unique_ptr<VarDeclList>(nullptr);
-  for(auto& dec : list) if(dec.get() == nullptr) return std::unique_ptr<VarDeclList>(nullptr);
+  if(list.empty()) return PtrVarDeclList(nullptr);
+  for(auto& dec : list) if(dec.get() == nullptr) return PtrVarDeclList(nullptr);
 
   return std::make_unique<VarDeclList>(list, id, locus);
 }
 
-std::unique_ptr<VarDecl>
+PtrVarDecl
 BaseParser::NewVarDecl(const std::string& name
                               , const Type& type
                               , const ScopeId id
@@ -227,22 +227,22 @@ BaseParser::NewVarDecl(const std::string& name
   return std::make_unique<VarDecl>(name, type, id, locus);
 }
 
-std::unique_ptr<AssignStmt>
-BaseParser::NewAssignStmt(std::unique_ptr<Expr>& lhs
-                                    , std::unique_ptr<Expr>& rhs
+PtrAssignStmt
+BaseParser::NewAssignStmt(PtrExpr& lhs
+                                    , PtrExpr& rhs
                                      , const ScopeId id
                                      , const Locus& locus){
   if(lhs.get() == nullptr or rhs.get() == nullptr)
-    return std::unique_ptr<AssignStmt>(nullptr);
+    return PtrAssignStmt(nullptr);
   return std::make_unique<AssignStmt>(lhs,rhs, id, locus);
 }
 
-std::unique_ptr<WhileStmt>
-BaseParser::NewWhileStmt(std::unique_ptr<Expr>& condition, PtrBlock& body
+PtrWhileStmt
+BaseParser::NewWhileStmt(PtrExpr& condition, PtrBlock& body
     , const ScopeId id, const Locus& locus){
   if(condition.get() == nullptr or body.get() == nullptr){
     std::cout << "Null NewWhileStmt\n";
-    return std::unique_ptr<WhileStmt>(nullptr);
+    return PtrWhileStmt(nullptr);
   }
 
   return std::make_unique<WhileStmt>( condition, body, id, locus);

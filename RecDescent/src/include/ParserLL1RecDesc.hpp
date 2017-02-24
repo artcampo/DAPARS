@@ -29,24 +29,24 @@ private:
   void  Prog();
 
   //Exprs
-  std::unique_ptr<Expr> Exprs(const ScopeId scope_inht);
-  std::unique_ptr<Expr> ExprPrime(std::unique_ptr<Expr>& eprime_inht
+  PtrExpr Exprs(const ScopeId scope_inht);
+  PtrExpr ExprPrime(PtrExpr& eprime_inht
                           , const ScopeId scope_inht); // make it const
-  std::unique_ptr<Expr> Term(const ScopeId scope_inht);
-  std::unique_ptr<Expr> Factor(const ScopeId scope_inht);
-  std::unique_ptr<Expr> FactorPrime(const ScopeId scope_inht);
+  PtrExpr Term(const ScopeId scope_inht);
+  PtrExpr Factor(const ScopeId scope_inht);
+  PtrExpr FactorPrime(const ScopeId scope_inht);
 
   //Control Flow
-  PtrBlock      Stmts(std::vector<std::unique_ptr<Statement>>& stmts_inht, const ScopeId scope_inht);
-  std::unique_ptr<Statement>  Stmt(const ScopeId scope_inht);
+  PtrBlock      Stmts(std::vector<PtrStatement>& stmts_inht, const ScopeId scope_inht);
+  PtrStatement  Stmt(const ScopeId scope_inht);
   PtrBlock      IfElse(const ScopeId scope_inht);
 
   //Variables declaration
-  std::unique_ptr<VarDeclList>  Decl(const ScopeId scope_inht);
-  std::unique_ptr<VarDeclList>  NameList(std::vector<std::unique_ptr<VarDecl>>& name_list_inht
+  PtrVarDeclList  Decl(const ScopeId scope_inht);
+  PtrVarDeclList  NameList(std::vector<PtrVarDecl>& name_list_inht
                        , const Compiler::AST::Type& type_inht, const ScopeId scope_inht
                        , const Locus& locus_inht);
-  std::unique_ptr<VarDeclList>  NameListPrime(std::vector<std::unique_ptr<VarDecl>>& name_list_inht
+  PtrVarDeclList  NameListPrime(std::vector<PtrVarDecl>& name_list_inht
                        , const Compiler::AST::Type& type_inht, const ScopeId scope_inht
                        , const Locus& locus_inht);
   const Compiler::AST::Type&  Type_();
