@@ -127,10 +127,10 @@ Parsing: "int a; a=1+b;"
 AST dump:
 -int a 
 -Assign
---a
---Op: + 
----Literal: 1 int Rvalue
----b int Rvalue
+--a [int Lvalue]
+--Op: +  [int Rvalue]
+---Literal: 1 [int Rvalue]
+---b [int Lvalue]
 
 ------------------------------------------------------------------
 Parsing: "int a; bool b; a=a+b;"
@@ -140,10 +140,10 @@ AST dump:
 -int a 
 -bool b 
 -Assign
---a
---Op: + 
----a
----b int Rvalue
+--a [int Lvalue]
+--Op: +  [int Rvalue]
+---a [int Lvalue]
+---b [bool Lvalue]
 
 ------------------------------------------------------------------
 Parsing: "int a; bool b; a=b+b;"
@@ -153,10 +153,10 @@ AST dump:
 -int a 
 -bool b 
 -Assign
---a
---Op: + 
----b
----b bool Rvalue
+--a [int Lvalue]
+--Op: +  [bool Rvalue]
+---b [bool Lvalue]
+---b [bool Lvalue]
 
 ------------------------------------------------------------------
 Parsing: "int a b c;"
@@ -173,18 +173,18 @@ Parsing: "int a,b,c; a= 2+1; a = b+c; 2 = 2;"
 AST dump:
 -int a int b int c 
 -Assign
---a
---Op: + 
----Literal: 2 int Rvalue
----Literal: 1 int Rvalue int Rvalue
+--a [int Lvalue]
+--Op: +  [int Rvalue]
+---Literal: 2 [int Rvalue]
+---Literal: 1 [int Rvalue]
 -Assign
---a
---Op: + 
----b
----c int Rvalue
+--a [int Lvalue]
+--Op: +  [int Rvalue]
+---b [int Lvalue]
+---c [int Lvalue]
 -Assign
---Literal: 2 int Rvalue
---Literal: 2 int Rvalue
+--Literal: 2 [int Rvalue]
+--Literal: 2 [int Rvalue]
 
 ------------------------------------------------------------------
 Parsing: "bool a; int b; a = true; b = 1; a = b; b = true; a = 2;"
@@ -196,20 +196,20 @@ AST dump:
 -bool a 
 -int b 
 -Assign
---a
---Literal: 1 bool Rvalue
+--a [bool Lvalue]
+--Literal: 1 [bool Rvalue]
 -Assign
---b
---Literal: 1 int Rvalue
+--b [int Lvalue]
+--Literal: 1 [int Rvalue]
 -Assign
---a
---b
+--a [bool Lvalue]
+--b [int Lvalue]
 -Assign
---b
---Literal: 1 bool Rvalue
+--b [int Lvalue]
+--Literal: 1 [bool Rvalue]
 -Assign
---a
---Literal: 2 int Rvalue
+--a [bool Lvalue]
+--Literal: 2 [int Rvalue]
 
 ------------------------------------------------------------------
 Parsing: "1+(2));"
