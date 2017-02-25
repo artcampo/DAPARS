@@ -129,8 +129,8 @@ AST dump:
 -Assign
 --a
 --Op: + 
----Literal: 1
----b
+---Literal: 1 int Rvalue
+---b int Rvalue
 
 ------------------------------------------------------------------
 Parsing: "int a; bool b; a=a+b;"
@@ -143,7 +143,7 @@ AST dump:
 --a
 --Op: + 
 ---a
----b
+---b int Rvalue
 
 ------------------------------------------------------------------
 Parsing: "int a; bool b; a=b+b;"
@@ -156,7 +156,7 @@ AST dump:
 --a
 --Op: + 
 ---b
----b
+---b bool Rvalue
 
 ------------------------------------------------------------------
 Parsing: "int a b c;"
@@ -175,16 +175,16 @@ AST dump:
 -Assign
 --a
 --Op: + 
----Literal: 2
----Literal: 1
+---Literal: 2 int Rvalue
+---Literal: 1 int Rvalue int Rvalue
 -Assign
 --a
 --Op: + 
 ---b
----c
+---c int Rvalue
 -Assign
---Literal: 2
---Literal: 2
+--Literal: 2 int Rvalue
+--Literal: 2 int Rvalue
 
 ------------------------------------------------------------------
 Parsing: "bool a; int b; a = true; b = 1; a = b; b = true; a = 2;"
@@ -197,19 +197,19 @@ AST dump:
 -int b 
 -Assign
 --a
---Literal: 1
+--Literal: 1 bool Rvalue
 -Assign
 --b
---Literal: 1
+--Literal: 1 int Rvalue
 -Assign
 --a
 --b
 -Assign
 --b
---Literal: 1
+--Literal: 1 bool Rvalue
 -Assign
 --a
---Literal: 2
+--Literal: 2 int Rvalue
 
 ------------------------------------------------------------------
 Parsing: "1+(2));"

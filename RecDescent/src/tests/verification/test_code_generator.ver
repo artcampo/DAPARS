@@ -14,13 +14,13 @@ F -> {nam}
 
 ---------------------------------------------------
 Parsing: "if(1+2){int a;} int b;"
-[err:21] if condition is not a bool at: "if(1+" -> "2){int a;} int b;"
+[err:21] if's condition is not a bool at: "if(1+" -> "2){int a;} int b;"
 
 AST dump:
 -IfStmt:
 --Cond: Op: + 
----Literal: 1
----Literal: 2
+---Literal: 1 int Rvalue
+---Literal: 2 int Rvalue int Rvalue
 --Then:
 ---int a 
 
@@ -37,14 +37,14 @@ AST dump:
 
 ---------------------------------------------------
 Parsing: "int a; while(1+2){int b;} int c;"
-[err:20] while condition is not a bool at: "; while(1+" -> "2){int b;} int c;"
+[err:20] while's condition is not a bool at: "; while(1+" -> "2){int b;} int c;"
 
 AST dump:
 -int a 
 -WhileStmt:
 --Cond: Op: + 
----Literal: 1
----Literal: 2
+---Literal: 1 int Rvalue
+---Literal: 2 int Rvalue int Rvalue
 --Body:
 ---int b 
 

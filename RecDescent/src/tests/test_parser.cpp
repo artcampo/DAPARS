@@ -46,7 +46,7 @@ void parse(const std::string& str, G& g)
     ASTVisitorPrettyPrinter visitor;
     visitor.Visit(*unit.GetAstProg());
     std::cout << "\nAST dump:\n";
-    ASTVisitorDump visitor_dump;
+    ASTVisitorDump visitor_dump(unit, true);
     visitor_dump.Visit(*unit.GetAstProg());
     if(unit.NumScopes()>1){
       ASTVisitorScopes v(unit);

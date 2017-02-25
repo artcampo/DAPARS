@@ -32,13 +32,13 @@ AST dump:
 -int a 
 -Assign
 --a
---Literal: 1
+--Literal: 1 int Rvalue
 -Assign
 --a
---Literal: 2
+--Literal: 2 int Rvalue
 -Assign
 --a
---Literal: 3
+--Literal: 3 int Rvalue
 
 ---------------------------------------------------
 Parsing: "int a;a=2+3+4;"
@@ -53,9 +53,9 @@ AST dump:
 --a
 --Op: + 
 ---Op: + 
-----Literal: 2
-----Literal: 3
----Literal: 4
+----Literal: 2 int Rvalue
+----Literal: 3 int Rvalue int Rvalue
+---Literal: 4 int Rvalue int Rvalue
 
 
 ---------------------------------------------------
@@ -72,9 +72,9 @@ AST dump:
 --a
 --Op: + 
 ---Op: + 
-----Literal: 2
-----Literal: 3
----Literal: 4
+----Literal: 2 int Rvalue
+----Literal: 3 int Rvalue int Rvalue
+---Literal: 4 int Rvalue int Rvalue
 
 
 ---------------------------------------------------
@@ -90,13 +90,13 @@ AST dump:
 -Assign
 --a
 --Op: + 
----Literal: 1
----Literal: 2
+---Literal: 1 int Rvalue
+---Literal: 2 int Rvalue int Rvalue
 -Assign
 --a
 --Op: + 
----Literal: 3
----Literal: 4
+---Literal: 3 int Rvalue
+---Literal: 4 int Rvalue int Rvalue
 
 
 ---------------------------------------------------
@@ -113,18 +113,18 @@ AST dump:
 -Assign
 --a
 --Op: + 
----Literal: 1
----Literal: 2
+---Literal: 1 int Rvalue
+---Literal: 2 int Rvalue int Rvalue
 -Assign
 --a
 --Op: + 
----Literal: 3
----Literal: 4
+---Literal: 3 int Rvalue
+---Literal: 4 int Rvalue int Rvalue
 -Assign
 --a
 --Op: + 
----Literal: 5
----Literal: 6
+---Literal: 5 int Rvalue
+---Literal: 6 int Rvalue int Rvalue
 
 
 Grammar:
@@ -143,7 +143,7 @@ F -> {nam}
 
 ---------------------------------------------------
 Parsing: "int a;a=1; if(2){a=3;}"
-[err:21] if condition is not a bool at: ";a=1; if(2" -> "){a=3;}"
+[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;}"
 
 AST pretty:
 int a 
@@ -156,20 +156,20 @@ AST dump:
 -int a 
 -Assign
 --a
---Literal: 1
+--Literal: 1 int Rvalue
 -IfStmt:
---Cond: Literal: 2
+--Cond: Literal: 2 int Rvalue
 --Then:
 ---Assign
 ----a
-----Literal: 3
+----Literal: 3 int Rvalue
 
 Scope 0: {0, a }
 Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "int a;a=1; if(2){a=3;} a=4;"
-[err:21] if condition is not a bool at: ";a=1; if(2" -> "){a=3;} a=4;"
+[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;} a=4;"
 
 AST pretty:
 int a 
@@ -183,23 +183,23 @@ AST dump:
 -int a 
 -Assign
 --a
---Literal: 1
+--Literal: 1 int Rvalue
 -IfStmt:
---Cond: Literal: 2
+--Cond: Literal: 2 int Rvalue
 --Then:
 ---Assign
 ----a
-----Literal: 3
+----Literal: 3 int Rvalue
 
 -Assign
 --a
---Literal: 4
+--Literal: 4 int Rvalue
 Scope 0: {0, a }
 Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "int a;a=1; if(2){a=3+4+5;}"
-[err:21] if condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;}"
+[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;}"
 
 AST pretty:
 int a 
@@ -212,24 +212,24 @@ AST dump:
 -int a 
 -Assign
 --a
---Literal: 1
+--Literal: 1 int Rvalue
 -IfStmt:
---Cond: Literal: 2
+--Cond: Literal: 2 int Rvalue
 --Then:
 ---Assign
 ----a
 ----Op: + 
 -----Op: + 
-------Literal: 3
-------Literal: 4
------Literal: 5
+------Literal: 3 int Rvalue
+------Literal: 4 int Rvalue int Rvalue
+-----Literal: 5 int Rvalue int Rvalue
 
 Scope 0: {0, a }
 Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "int a;a=1; if(2){a=3+4+5;} a=6;"
-[err:21] if condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;} a=6;"
+[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;} a=6;"
 
 AST pretty:
 int a 
@@ -243,29 +243,29 @@ AST dump:
 -int a 
 -Assign
 --a
---Literal: 1
+--Literal: 1 int Rvalue
 -IfStmt:
---Cond: Literal: 2
+--Cond: Literal: 2 int Rvalue
 --Then:
 ---Assign
 ----a
 ----Op: + 
 -----Op: + 
-------Literal: 3
-------Literal: 4
------Literal: 5
+------Literal: 3 int Rvalue
+------Literal: 4 int Rvalue int Rvalue
+-----Literal: 5 int Rvalue int Rvalue
 
 -Assign
 --a
---Literal: 6
+--Literal: 6 int Rvalue
 Scope 0: {0, a }
 Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "int a;a=1; if(2){if(3){a=4;if(5){a=6;}}}"
-[err:21] if condition is not a bool at: "){a=4;if(5" -> "){a=6;}}}"
-[err:21] if condition is not a bool at: "if(2){if(3" -> "){a=4;if(5){a=6;}}}"
-[err:21] if condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4;if(5){a=6;}}}"
+[err:21] if's condition is not a bool at: "){a=4;if(5" -> "){a=6;}}}"
+[err:21] if's condition is not a bool at: "if(2){if(3" -> "){a=4;if(5){a=6;}}}"
+[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4;if(5){a=6;}}}"
 
 AST pretty:
 int a 
@@ -283,22 +283,22 @@ AST dump:
 -int a 
 -Assign
 --a
---Literal: 1
+--Literal: 1 int Rvalue
 -IfStmt:
---Cond: Literal: 2
+--Cond: Literal: 2 int Rvalue
 --Then:
 ---IfStmt:
-----Cond: Literal: 3
+----Cond: Literal: 3 int Rvalue
 ----Then:
 -----Assign
 ------a
-------Literal: 4
+------Literal: 4 int Rvalue
 -----IfStmt:
-------Cond: Literal: 5
+------Cond: Literal: 5 int Rvalue
 ------Then:
 -------Assign
 --------a
---------Literal: 6
+--------Literal: 6 int Rvalue
 
 
 
@@ -309,9 +309,9 @@ Scope 3: {}
 
 ---------------------------------------------------
 Parsing: "int a;a=1; if(2){if(3){a=4+5;if(6){a=7+8;}}}"
-[err:21] if condition is not a bool at: "a=4+5;if(6" -> "){a=7+8;}}}"
-[err:21] if condition is not a bool at: "if(2){if(3" -> "){a=4+5;if(6){a=7+8;}}}"
-[err:21] if condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4+5;if(6){a=7+8;}}}"
+[err:21] if's condition is not a bool at: "a=4+5;if(6" -> "){a=7+8;}}}"
+[err:21] if's condition is not a bool at: "if(2){if(3" -> "){a=4+5;if(6){a=7+8;}}}"
+[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4+5;if(6){a=7+8;}}}"
 
 AST pretty:
 int a 
@@ -329,26 +329,26 @@ AST dump:
 -int a 
 -Assign
 --a
---Literal: 1
+--Literal: 1 int Rvalue
 -IfStmt:
---Cond: Literal: 2
+--Cond: Literal: 2 int Rvalue
 --Then:
 ---IfStmt:
-----Cond: Literal: 3
+----Cond: Literal: 3 int Rvalue
 ----Then:
 -----Assign
 ------a
 ------Op: + 
--------Literal: 4
--------Literal: 5
+-------Literal: 4 int Rvalue
+-------Literal: 5 int Rvalue int Rvalue
 -----IfStmt:
-------Cond: Literal: 6
+------Cond: Literal: 6 int Rvalue
 ------Then:
 -------Assign
 --------a
 --------Op: + 
----------Literal: 7
----------Literal: 8
+---------Literal: 7 int Rvalue
+---------Literal: 8 int Rvalue int Rvalue
 
 
 
@@ -368,8 +368,8 @@ AST not build at: "3;}else{4;" -> "}"
 
 ---------------------------------------------------
 Parsing: "int a;a=1; if(2){a=3;}if(4){a=5;}else{a=6;}"
-[err:21] if condition is not a bool at: ";a=1; if(2" -> "){a=3;}if(4){a=5;}else{a=6;}"
-[err:21] if condition is not a bool at: "{a=3;}if(4" -> "){a=5;}else{a=6;}"
+[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;}if(4){a=5;}else{a=6;}"
+[err:21] if's condition is not a bool at: "{a=3;}if(4" -> "){a=5;}else{a=6;}"
 
 AST pretty:
 int a 
@@ -388,24 +388,24 @@ AST dump:
 -int a 
 -Assign
 --a
---Literal: 1
+--Literal: 1 int Rvalue
 -IfStmt:
---Cond: Literal: 2
+--Cond: Literal: 2 int Rvalue
 --Then:
 ---Assign
 ----a
-----Literal: 3
+----Literal: 3 int Rvalue
 
 -IfStmt:
---Cond: Literal: 4
+--Cond: Literal: 4 int Rvalue
 --Then:
 ---Assign
 ----a
-----Literal: 5
+----Literal: 5 int Rvalue
 --Else:
 ---Assign
 ----a
-----Literal: 6
+----Literal: 6 int Rvalue
 
 Scope 0: {0, a }
 Scope 1: {}
@@ -448,7 +448,7 @@ AST dump:
 -int a 
 -Assign
 --a
---Literal: 1
+--Literal: 1 int Rvalue
 
 ---------------------------------------------------
 Parsing: "int a; a=(1+2+3);"
@@ -463,9 +463,9 @@ AST dump:
 --a
 --Op: + 
 ---Op: + 
-----Literal: 1
-----Literal: 2
----Literal: 3
+----Literal: 1 int Rvalue
+----Literal: 2 int Rvalue int Rvalue
+---Literal: 3 int Rvalue int Rvalue
 
 ---------------------------------------------------
 Parsing: "int a b c; b=1; c=2; a=(1+b+c);"
@@ -482,17 +482,17 @@ AST dump:
 -int a int b int c 
 -Assign
 --b
---Literal: 1
+--Literal: 1 int Rvalue
 -Assign
 --c
---Literal: 2
+--Literal: 2 int Rvalue
 -Assign
 --a
 --Op: + 
 ---Op: + 
-----Literal: 1
-----b
----c
+----Literal: 1 int Rvalue
+----b int Rvalue
+---c int Rvalue
 
 ---------------------------------------------------
 Parsing: "int a; int b; int a;"
@@ -510,7 +510,7 @@ AST dump:
 
 ---------------------------------------------------
 Parsing: "int a; if(1){int b;}"
-[err:21] if condition is not a bool at: "nt a; if(1" -> "){int b;}"
+[err:21] if's condition is not a bool at: "nt a; if(1" -> "){int b;}"
 
 AST pretty:
 int a 
@@ -521,7 +521,7 @@ if(1){
 AST dump:
 -int a 
 -IfStmt:
---Cond: Literal: 1
+--Cond: Literal: 1 int Rvalue
 --Then:
 ---int b 
 
@@ -530,7 +530,7 @@ Scope 1: {0, b }
 
 ---------------------------------------------------
 Parsing: "int a; if(1){int b;}else{int c;}"
-[err:21] if condition is not a bool at: "nt a; if(1" -> "){int b;}else{int c;}"
+[err:21] if's condition is not a bool at: "nt a; if(1" -> "){int b;}else{int c;}"
 
 AST pretty:
 int a 
@@ -544,7 +544,7 @@ else{
 AST dump:
 -int a 
 -IfStmt:
---Cond: Literal: 1
+--Cond: Literal: 1 int Rvalue
 --Then:
 ---int b 
 --Else:
@@ -556,7 +556,7 @@ Scope 2: {0, c }
 
 ---------------------------------------------------
 Parsing: "int a; while(1 + 2){ int c; c = 1+2; }"
-[err:20] while condition is not a bool at: " while(1 +" -> " 2){ int c; c = 1+2; }"
+[err:20] while's condition is not a bool at: " while(1 +" -> " 2){ int c; c = 1+2; }"
 
 AST pretty:
 int a 
@@ -569,15 +569,15 @@ AST dump:
 -int a 
 -WhileStmt:
 --Cond: Op: + 
----Literal: 1
----Literal: 2
+---Literal: 1 int Rvalue
+---Literal: 2 int Rvalue int Rvalue
 --Body:
 ---int c 
 ---Assign
 ----c
 ----Op: + 
------Literal: 1
------Literal: 2
+-----Literal: 1 int Rvalue
+-----Literal: 2 int Rvalue int Rvalue
 
 Scope 0: {0, a }
 Scope 1: {0, c }
@@ -594,10 +594,10 @@ AST dump:
 -bool a bool b 
 -Assign
 --a
---Literal: 1
+--Literal: 1 bool Rvalue
 -Assign
 --b
---Literal: 0
+--Literal: 0 bool Rvalue
 
 ---------------------------------------------------
 Parsing: "int* a; int* b;"
@@ -625,13 +625,13 @@ AST dump:
 -int b int c 
 -Assign
 --b
---Literal: 2
+--Literal: 2 int Rvalue
 -Assign
 --a
 --@---
----b
+---b int*
 -Assign
 --c
 --*---
----a
+---a int
 

@@ -43,7 +43,7 @@ void parse(const std::string& str, G& g)
   }
   if(unit.GetAstProg() != nullptr){
     std::cout << "\nAST dump:\n";
-    ASTVisitorDump visitor_dump;
+    ASTVisitorDump visitor_dump(unit, true);
     visitor_dump.Visit(*unit.GetAstProg());
     CodeGen visitor_codegen;
     visitor_codegen.Visit(*unit.GetAstProg(), nullptr);
