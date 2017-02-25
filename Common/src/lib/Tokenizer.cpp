@@ -7,20 +7,6 @@ namespace Common{
 namespace Tokenizer{
 
 bool
-ParseNumerical(std::vector<char>::const_iterator& current_position
-             , std::vector<char>::const_iterator end_position) noexcept{
-  bool matched = false;
-  if(*current_position >= '0' and *current_position <= '9'){
-    matched = true;
-    ++current_position;
-    while(*current_position >= '0' and *current_position <= '9'
-      and current_position != end_position)
-      ++current_position;
-  }
-  return matched;
-}
-
-bool
 ParseKeyword(std::vector<char>::const_iterator& current_position
              , std::vector<char>::const_iterator end_position
            , kToken& t) noexcept{
@@ -89,20 +75,41 @@ ParseKeyword(std::vector<char>::const_iterator& current_position
   return false;
 }
 
+bool IsLetter(const char& c){
+ return((c >= 'a' and c <= 'z') or (c >= 'A' and c <= 'Z') );
+}
+
+bool IsNumber(const char& c){
+ return(c >= '0' and c <= '9');
+}
+
 bool
 ParseName(std::vector<char>::const_iterator& current_position
              , std::vector<char>::const_iterator end_position) noexcept{
   //TODO check +1 still valid
-  if(*current_position >= 'a' and *current_position <= 'z')
+  if(IsLetter(*current_position))
   {
     ++current_position;
-    while( ((*current_position >= '0' and *current_position <= '9')
-        or (*current_position >= 'a' and *current_position <= 'z'))
-         and current_position != end_position)
+    while( ((IsLetter(*current_position) or IsNumber(*current_position))
+         and current_position != end_position))
       ++current_position;
     return true;
   }
   return false;
+}
+
+
+bool
+ParseNumerical(std::vector<char>::const_iterator& current_position
+             , std::vector<char>::const_iterator end_position) noexcept{
+  bool matched = false;
+  if(IsNumber(*current_position)){
+    matched = true;
+    ++current_position;
+    while(IsNumber(*current_position) and current_position != end_position)
+      ++current_position;
+  }
+  return matched;
 }
 
 // returns current token starting at current_position, and
