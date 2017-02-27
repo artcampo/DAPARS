@@ -13,50 +13,66 @@ F -> {num}
 F -> {nam} 
 
 ---------------------------------------------------
-Parsing: "if(1+2){int a;} int b;"
-[err:21] if's condition is not a bool at: "if(1+" -> "2){int a;} int b;"
+Parsing: "int a, b; if(true){a=2+3;} b=3+4;"
 
 AST dump:
+-int a int b 
 -IfStmt:
---Cond: Op: +  [int Rvalue]
----Literal: 1 [int Rvalue]
----Literal: 2 [int Rvalue]
+--Cond: Literal: 1 [bool Rvalue]
 --Then:
----int a 
+---Assign
+----a [int Lvalue]
+----Op: +  [int Rvalue]
+-----Literal: 2 [int Rvalue]
+-----Literal: 3 [int Rvalue]
 
--int b 
-0: Load, r:0 val: 1
-1: Load, r:1 val: 2
-2: ADD, rs1:0 rs2: 1 rd:2
-3: jump if trueto:5
-4: jump if falseto:7
-5: NewVar: TypeId0
-6: JUMP: @7
-7: NewVar: TypeId0
-8: STOP
+-Assign
+--b [int Lvalue]
+--Op: +  [int Rvalue]
+---Literal: 3 [int Rvalue]
+---Literal: 4 [int Rvalue]
+
+IR dump:
+0: r0 = LoadI of 1
+1: JumpCondTrue reg:0 to:3
+2: JumpCondFalse reg:0 to:7
+3: r1 = LoadI of 2
+4: r2 = LoadI of 3
+5: r3 = Arith r1 + r2
+6: JumpIncond7
+7: r4 = LoadI of 3
+8: r5 = LoadI of 4
+9: r6 = Arith r4 + r5
 
 ---------------------------------------------------
-Parsing: "int a; while(1+2){int b;} int c;"
-[err:20] while's condition is not a bool at: "; while(1+" -> "2){int b;} int c;"
+Parsing: "int a,b,c; while(true){b=2+3;} c=3+4;"
 
 AST dump:
--int a 
+-int a int b int c 
 -WhileStmt:
---Cond: Op: +  [int Rvalue]
----Literal: 1 [int Rvalue]
----Literal: 2 [int Rvalue]
+--Cond: Literal: 1 [bool Rvalue]
 --Body:
----int b 
+---Assign
+----b [int Lvalue]
+----Op: +  [int Rvalue]
+-----Literal: 2 [int Rvalue]
+-----Literal: 3 [int Rvalue]
 
---int c 
-0: NewVar: TypeId0
-1: Load, r:0 val: 1
-2: Load, r:1 val: 2
-3: ADD, rs1:0 rs2: 1 rd:2
-4: jump if trueto:6
-5: jump if falseto:8
-6: NewVar: TypeId0
-7: jump if falseto:1
-8: NewVar: TypeId0
-9: STOP
+--Assign
+---c [int Lvalue]
+---Op: +  [int Rvalue]
+----Literal: 3 [int Rvalue]
+----Literal: 4 [int Rvalue]
+
+IR dump:
+0: r0 = LoadI of 1
+1: JumpCondTrue reg:0 to:3
+2: JumpCondFalse reg:0 to:7
+3: r1 = LoadI of 2
+4: r2 = LoadI of 3
+5: r3 = Arith r1 + r2
+6: JumpCondFalse reg:0 to:0
+7: r4 = LoadI of 3
+8: r5 = LoadI of 4
+9: r6 = Arith r4 + r5
 

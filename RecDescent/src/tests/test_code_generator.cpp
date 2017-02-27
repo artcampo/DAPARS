@@ -47,7 +47,9 @@ void parse(const std::string& str, G& g)
     visitor_dump.Visit(*unit.GetAstProg());
     IRGenerator visitor_irgen(unit);
     visitor_irgen.Visit(*unit.GetAstProg(), nullptr);
-//     visitor_codegen.EndOfProgram();
+
+    std::cout << "\nIR dump:\n";
+    visitor_irgen.EndOfProgram();
   }
 
   std::cout << "\n";
@@ -61,10 +63,10 @@ int main()
   std::cout << g;
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "if(1+2){int a;} int b;"), g);
+    "int a, b; if(true){a=2+3;} b=3+4;"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int a; while(1+2){int b;} int c;"), g);
+    "int a,b,c; while(true){b=2+3;} c=3+4;"), g);
 
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(
