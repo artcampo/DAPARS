@@ -7,7 +7,7 @@
 #include "ASTVisitorDump.hpp"
 #include "ASTVisitorPrettyPrinter.hpp"
 #include "ASTVisitorScopes.hpp"
-#include "ASTVisitorCodeGenerator.hpp"
+#include "IR/IRGenerator.hpp"
 #include "CompilationUnit.hpp"
 #include "Passes/PassManager.hpp"
 #include <iostream>
@@ -45,8 +45,8 @@ void parse(const std::string& str, G& g)
     std::cout << "\nAST dump:\n";
     ASTVisitorDump visitor_dump(unit, true);
     visitor_dump.Visit(*unit.GetAstProg());
-    CodeGen visitor_codegen;
-    visitor_codegen.Visit(*unit.GetAstProg(), nullptr);
+    IRGenerator visitor_irgen(unit);
+    visitor_irgen.Visit(*unit.GetAstProg(), nullptr);
 //     visitor_codegen.EndOfProgram();
   }
 

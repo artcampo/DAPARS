@@ -7,7 +7,6 @@
 #include "ASTVisitorDump.hpp"
 #include "ASTVisitorPrettyPrinter.hpp"
 #include "ASTVisitorScopes.hpp"
-#include "ASTVisitorCodeGenerator.hpp"
 #include "CompilationUnit.hpp"
 #include "Passes/PassManager.hpp"
 #include <iostream>
