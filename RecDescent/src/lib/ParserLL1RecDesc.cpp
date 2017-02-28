@@ -25,12 +25,12 @@ using namespace Compiler;
 
 ParserLL1RecDesc::ParserLL1RecDesc(std::string const &file_name, CompilationUnit& unit)
 //   , Grammar& grammar)
-  : BaseParser(file_name, unit){}
+  : BaseParser(file_name, unit), undeclared_name_(std::string("undeclared_name")){}
 //   , grammar_(grammar){}
 
 ParserLL1RecDesc::ParserLL1RecDesc(const std::vector<char>& parse_data, CompilationUnit& unit)
 //   , Grammar& grammar)
-  : BaseParser(parse_data, unit){}
+  : BaseParser(parse_data, unit), undeclared_name_(std::string("undeclared_name")){}
 //   , grammar_(grammar){}
 
 void ParserLL1RecDesc::Parse(){
@@ -42,7 +42,7 @@ void ParserLL1RecDesc::Prog(){
   NextToken();
   std::vector<PtrStatement> stmts_inht;
   std::string main_name("main");
-  unit_.NewFunction(main_name);
+
   const ScopeId id = unit_.NewFirstScope();
   PtrProgInit pinit = std::make_unique<AST::ProgInit>(id, CurrentLocus());
   PtrProgEnd  pend  = std::make_unique<AST::ProgEnd> (id, CurrentLocus());
@@ -57,6 +57,7 @@ void ParserLL1RecDesc::Prog(){
 
     PtrFuncDecl pfunc =
       std::make_unique<AST::FuncDecl>(id, CurrentLocus(), main_name, block);
+    unit_.NewFunction(main_name, *pfunc);
 
     std::unique_ptr<AST::ProgBody> prog =
       std::make_unique<AST::ProgBody>(id, CurrentLocus(), pinit, pend, pfunc);
@@ -283,7 +284,9 @@ PtrExpr ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
     if(not unit_.Scope().IsDecl(prev_token_string_value_)){
       Error("[error:16] Var used before declaration");
       //Error recovery: insert it as int
-      unit_.Scope().RegDecl(prev_token_string_value_, unit_.GetType(kBasicTypeId::kInt));
+      VarDecl* n = new VarDecl(undeclared_name_, unit_.GetType(kBasicTypeId::kInt)
+                           , scope_inht, l);
+      unit_.Scope().RegisterDecl(prev_token_string_value_, unit_.GetType(kBasicTypeId::kInt), *n);
     }
     fp_synt = NewVar(prev_token_string_value_
                   , unit_.Scope().GetType(prev_token_string_value_)
@@ -362,9 +365,10 @@ ParserLL1RecDesc::NameList(std::vector<PtrVarDecl>& name_list_inht
     name_list_inht.push_back(
       std::move(NewVarDecl(prev_token_string_value_, type_inht, scope_inht, locus_inht))
     );
+    VarDecl& n = *name_list_inht[name_list_inht.size() - 1];
 
 //     std::cout << "new var: "<< prev_token_string_value_ << "\n";
-    if(not unit_.Scope().RegDecl(prev_token_string_value_, type_inht)){
+    if(not unit_.Scope().RegisterDecl(prev_token_string_value_, type_inht, n)){
       Error("[err:15] Symbol already declared.");
     }
     name_list_synt = NameListPrime(name_list_inht, type_inht, scope_inht, locus_inht);
@@ -396,7 +400,9 @@ ParserLL1RecDesc::NameListPrime(std::vector<PtrVarDecl>& name_list_inht
       name_list_inht.push_back(
         std::move(NewVarDecl(prev_token_string_value_, type_inht, scope_inht, locus_inht) ));
 
-      if(not unit_.Scope().RegDecl(prev_token_string_value_, type_inht)){
+      VarDecl& n = *name_list_inht[name_list_inht.size() - 1];
+
+      if(not unit_.Scope().RegisterDecl(prev_token_string_value_, type_inht, n)){
         Error("[err:15] Symbol already declared.");
       }
       name_list_synt = NameListPrime(name_list_inht, type_inht, scope_inht, locus_inht);

@@ -54,6 +54,8 @@ private:
 
   PtrBlock ParseSubBlock(const ScopeId scope_inht, const std::string& error);
 
+  std::string undeclared_name_;
+
 };
 
 } //end namespace RecDescent
