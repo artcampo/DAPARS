@@ -41,6 +41,8 @@ void ParserLL1RecDesc::Parse(){
 void ParserLL1RecDesc::Prog(){
   NextToken();
   std::vector<PtrStatement> stmts_inht;
+  std::string main_name("main");
+  unit_.NewFunction(main_name);
   const ScopeId id = unit_.NewFirstScope();
   PtrBlock stmts_synt = Stmts(stmts_inht, id);
 
