@@ -4,9 +4,9 @@
 
 #include "ParserLL1RecDesc.hpp"
 #include "Grammar.hpp"
-#include "ASTVisitorDump.hpp"
-#include "ASTVisitorPrettyPrinter.hpp"
-#include "ASTVisitorScopes.hpp"
+#include "ASTVisitors/ASTVisitorDump.hpp"
+#include "ASTVisitors/ASTVisitorPrettyPrinter.hpp"
+#include "ASTVisitors/ASTVisitorScopes.hpp"
 #include "CompilationUnit.hpp"
 #include "Passes/PassManager.hpp"
 #include <iostream>
