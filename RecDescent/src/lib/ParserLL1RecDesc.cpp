@@ -44,18 +44,22 @@ void ParserLL1RecDesc::Prog(){
   std::string main_name("main");
   unit_.NewFunction(main_name);
   const ScopeId id = unit_.NewFirstScope();
-  PtrBlock stmts_synt = Stmts(stmts_inht, id);
+  PtrProgInit pinit = std::make_unique<AST::ProgInit>(id, CurrentLocus());
+  PtrProgEnd  pend  = std::make_unique<AST::ProgEnd> (id, CurrentLocus());
 
+  //parse main function
+  PtrBlock stmts_synt = Stmts(stmts_inht, id);
   if(stmts_synt.get() != nullptr){
 //     std::cout << "Prog" << std::endl;
     if(token_ != Tokenizer::kToken::eof) Error("More data after program.");
 
-    std::unique_ptr<AST::ProgInit> pinit= std::make_unique<AST::ProgInit>(id, CurrentLocus());
-    std::unique_ptr<AST::ProgEnd> pend = std::make_unique<AST::ProgEnd>(id, CurrentLocus());
     PtrBlock block = std::move(stmts_synt);
 
+    PtrFuncDecl pfunc =
+      std::make_unique<AST::FuncDecl>(id, CurrentLocus(), main_name, block);
+
     std::unique_ptr<AST::ProgBody> prog =
-      std::make_unique<AST::ProgBody>(id, CurrentLocus(), pinit, pend, block);
+      std::make_unique<AST::ProgBody>(id, CurrentLocus(), pinit, pend, pfunc);
 
     unit_.InitAst(prog);
   }else{
