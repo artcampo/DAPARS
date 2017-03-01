@@ -7,6 +7,7 @@
 #include "AST.hpp"
 #include "CompilationUnit.hpp"
 #include "Locus.hpp"
+#include "Symbol.hpp"
 
 
 namespace Common{
@@ -65,7 +66,7 @@ protected:
 
   PtrVar
   NewVar(const std::string& name, const Type& type
-                        , const ScopeId id, const Locus& locus);
+                  , Compiler::AST::Symbols::SymbolId id, const ScopeId scope_id, const Locus& locus);
 
   PtrLiteral
   NewLiteral(const uint32_t &value, const Type& type

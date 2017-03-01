@@ -318,6 +318,7 @@ PtrExpr ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
     }
     fp_synt = NewVar(prev_token_string_value_
                   , unit_.Scope().GetType(prev_token_string_value_)
+                  , unit_.Scope().DeclId(prev_token_string_value_)
                   , scope_inht, l);
     return std::move(fp_synt);
   }

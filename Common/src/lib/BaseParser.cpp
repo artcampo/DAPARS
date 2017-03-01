@@ -159,8 +159,9 @@ BaseParser::NewBinaryOp(PtrExpr& lhs, const int op
 
 PtrVar
 BaseParser::NewVar(const std::string& name, const Type& type
-  , const ScopeId id, const Locus& locus){
-  return std::make_unique<Var>(name, type, id, locus);
+  , Compiler::AST::Symbols::SymbolId id
+  , const ScopeId scope_id, const Locus& locus){
+  return std::make_unique<Var>(name, type, id, scope_id, locus);
 }
 
 PtrLiteral

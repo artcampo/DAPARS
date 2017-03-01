@@ -70,11 +70,15 @@ int main()
   CreateGrammarExpr(g);
   std::cout << g;
 
-  parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){ int a, b; if(true){a=2+3;} b=3+4; }"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "main(){int a,b,c; while(true){b=2+3;} c=3+4; }"), g);
+
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "main(){ int a, b; if(true){int c; a=2+3;} else{ int d, e,f; } int g; b=3+4; }"), g);
+
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "main(){int a,b,c; a = 2; b = 3 + a; c = a + b; }"), g);
 
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(
