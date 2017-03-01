@@ -14,20 +14,14 @@ F -> {nam}
 
 ---------------------------------------------------
 Parsing: "main(){ int a, b; if(true){a=2+3;} b=3+4; }"
-Reg: n:0x55d0e6fec310 s: 0x55d0e6fec3d0 symbol: Symbol: [a] int a
-Reg: n:0x55d0e6fec4f0 s: 0x55d0e6fec5b0 symbol: Symbol: [b] int b
 Scope 1: {0, a 1, b }
 Scope 2: {}
 
 Local offset
 int a to offset: 0
-Asking n: 0x55d0e6fec310 int a
 Symbol: [a]
-Asking n: 0x55d0e6fec310 int a
 int b to offset: 1
-Asking n: 0x55d0e6fec4f0 int b
 Symbol: [b]
-Asking n: 0x55d0e6fec4f0 int b
 
 AST dump:
 -int a int b 
@@ -60,25 +54,16 @@ IR dump:
 
 ---------------------------------------------------
 Parsing: "main(){int a,b,c; while(true){b=2+3;} c=3+4; }"
-Reg: n:0x55d0e6fecb50 s: 0x55d0e6fecf00 symbol: Symbol: [a] int a
-Reg: n:0x55d0e6fec4f0 s: 0x55d0e6fed040 symbol: Symbol: [b] int b
-Reg: n:0x55d0e6fec170 s: 0x55d0e6fec780 symbol: Symbol: [c] int c
 Scope 1: {0, a 1, b 2, c }
 Scope 2: {}
 
 Local offset
 int a to offset: 0
-Asking n: 0x55d0e6fecb50 int a
 Symbol: [a]
-Asking n: 0x55d0e6fecb50 int a
 int b to offset: 1
-Asking n: 0x55d0e6fec4f0 int b
 Symbol: [b]
-Asking n: 0x55d0e6fec4f0 int b
 int c to offset: 2
-Asking n: 0x55d0e6fec170 int c
 Symbol: [c]
-Asking n: 0x55d0e6fec170 int c
 
 AST dump:
 -int a int b int c 

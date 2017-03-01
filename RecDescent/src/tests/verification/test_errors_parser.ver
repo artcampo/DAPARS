@@ -44,7 +44,6 @@ AST not build at: "ain(){ 1 )" -> " }"
 
 ------------------------------------------------------------------
 Parsing: "main(){ int a }"
-Reg: n:0x55db2287d350 s: 0x55db2287d2f0 symbol: Symbol: [a] int a
 Name missing at: "){ int a }" -> ""
 Name missing at: "){ int a }" -> ""
 [err:1] NextToken performed after reaching eof at: "){ int a }" -> ""
@@ -141,22 +140,16 @@ AST not build at: "(){ 1+(; }" -> ""
 
 ------------------------------------------------------------------
 Parsing: "main(){ int a; int b; int a; }"
-Reg: n:0x55db2287d3a0 s: 0x55db2287d2f0 symbol: Symbol: [a] int a
-Reg: n:0x55db2287d680 s: 0x55db2287d610 symbol: Symbol: [b] int b
 [err:15] Symbol already declared. at: " b; int a;" -> " }"
 [err:31] function body empty at: "; int a; }" -> ""
 AST not build at: "; int a; }" -> ""
 
 ------------------------------------------------------------------
 Parsing: "main(){int a; a=1+b; }"
-Reg: n:0x55db2287d680 s: 0x55db2287d2f0 symbol: Symbol: [a] int a
 [error:16] Var used before declaration at: " a; a=1+b;" -> " }"
-Reg: n:0x55db2287d350 s: 0x55db2287d3f0 symbol: Symbol: [b] int undeclared_name
 Local offset
 int a to offset: 0
-Asking n: 0x55db2287d680 int a
 Symbol: [a]
-Asking n: 0x55db2287d680 int a
 
 AST dump:
 -int a 
@@ -168,18 +161,12 @@ AST dump:
 
 ------------------------------------------------------------------
 Parsing: "main(){int a; bool b; a=a+b; }"
-Reg: n:0x55db2287d6d0 s: 0x55db2287dbf0 symbol: Symbol: [a] int a
-Reg: n:0x55db2287d680 s: 0x55db2287da30 symbol: Symbol: [b] bool b
 [err:17] Incompatible types in op at: "ol b; a=a+" -> "b; }"
 Local offset
 int a to offset: 0
-Asking n: 0x55db2287d6d0 int a
 Symbol: [a]
-Asking n: 0x55db2287d6d0 int a
 bool b to offset: 1
-Asking n: 0x55db2287d680 bool b
 Symbol: [b]
-Asking n: 0x55db2287d680 bool b
 
 AST dump:
 -int a 
@@ -192,18 +179,12 @@ AST dump:
 
 ------------------------------------------------------------------
 Parsing: "main(){int a; bool b; a=b+b; }"
-Reg: n:0x55db2287d940 s: 0x55db2287dcb0 symbol: Symbol: [a] int a
-Reg: n:0x55db2287de30 s: 0x55db2287d880 symbol: Symbol: [b] bool b
 [err:18] Incompatible types in assignment at: " bool b; a" -> "=b+b; }"
 Local offset
 int a to offset: 0
-Asking n: 0x55db2287d940 int a
 Symbol: [a]
-Asking n: 0x55db2287d940 int a
 bool b to offset: 1
-Asking n: 0x55db2287de30 bool b
 Symbol: [b]
-Asking n: 0x55db2287de30 bool b
 
 AST dump:
 -int a 
@@ -216,47 +197,29 @@ AST dump:
 
 ------------------------------------------------------------------
 Parsing: "main(){int a b c; }"
-Reg: n:0x55db2287d6d0 s: 0x55db2287d4d0 symbol: Symbol: [a] int a
 [err:19] Variables must be separated with comma. at: "(){int a b" -> " c; }"
-Reg: n:0x55db2287d0a0 s: 0x55db2287d470 symbol: Symbol: [b] int b
 [err:19] Variables must be separated with comma. at: "{int a b c" -> "; }"
-Reg: n:0x55db2287d940 s: 0x55db2287d880 symbol: Symbol: [c] int c
 Local offset
 int a to offset: 0
-Asking n: 0x55db2287d6d0 int a
 Symbol: [a]
-Asking n: 0x55db2287d6d0 int a
 int b to offset: 1
-Asking n: 0x55db2287d0a0 int b
 Symbol: [b]
-Asking n: 0x55db2287d0a0 int b
 int c to offset: 2
-Asking n: 0x55db2287d940 int c
 Symbol: [c]
-Asking n: 0x55db2287d940 int c
 
 AST dump:
 -int a int b int c 
 
 ------------------------------------------------------------------
 Parsing: "main(){int a,b,c; a= 2+1; a = b+c; 2 = 2; }"
-Reg: n:0x55db2287d940 s: 0x55db2287d470 symbol: Symbol: [a] int a
-Reg: n:0x55db2287d6d0 s: 0x55db2287d190 symbol: Symbol: [b] int b
-Reg: n:0x55db2287daf0 s: 0x55db2287d840 symbol: Symbol: [c] int c
 [err:22] left of assignment is not an Lval at: "a = b+c; 2" -> " = 2; }"
 Local offset
 int a to offset: 0
-Asking n: 0x55db2287d940 int a
 Symbol: [a]
-Asking n: 0x55db2287d940 int a
 int b to offset: 1
-Asking n: 0x55db2287d6d0 int b
 Symbol: [b]
-Asking n: 0x55db2287d6d0 int b
 int c to offset: 2
-Asking n: 0x55db2287daf0 int c
 Symbol: [c]
-Asking n: 0x55db2287daf0 int c
 
 AST dump:
 -int a int b int c 
@@ -276,20 +239,14 @@ AST dump:
 
 ------------------------------------------------------------------
 Parsing: "main(){bool a; int b; a = true; b = 1; a = b; b = true; a = 2; }"
-Reg: n:0x55db2287d640 s: 0x55db2287e0f0 symbol: Symbol: [a] bool a
-Reg: n:0x55db2287d6d0 s: 0x55db2287e1f0 symbol: Symbol: [b] int b
 [err:18] Incompatible types in assignment at: "; b = 1; a" -> " = b; b = true; a = 2; }"
 [err:18] Incompatible types in assignment at: "; a = b; b" -> " = true; a = 2; }"
 [err:18] Incompatible types in assignment at: " = true; a" -> " = 2; }"
 Local offset
 bool a to offset: 0
-Asking n: 0x55db2287d640 bool a
 Symbol: [a]
-Asking n: 0x55db2287d640 bool a
 int b to offset: 1
-Asking n: 0x55db2287d6d0 int b
 Symbol: [b]
-Asking n: 0x55db2287d6d0 int b
 
 AST dump:
 -bool a 
