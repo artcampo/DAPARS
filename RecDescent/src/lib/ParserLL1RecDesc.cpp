@@ -43,6 +43,7 @@ void ParserLL1RecDesc::Prog(){
   std::vector<PtrStatement> stmts_inht;
   std::string main_name("main");
 
+  unit_.NewFunction(main_name);
   const ScopeId id = unit_.NewFirstScope();
   PtrProgInit pinit = std::make_unique<AST::ProgInit>(id, CurrentLocus());
   PtrProgEnd  pend  = std::make_unique<AST::ProgEnd> (id, CurrentLocus());
@@ -57,7 +58,7 @@ void ParserLL1RecDesc::Prog(){
 
     PtrFuncDecl pfunc =
       std::make_unique<AST::FuncDecl>(id, CurrentLocus(), main_name, block);
-    unit_.NewFunction(main_name, *pfunc);
+    unit_.GetFunc("main").SetOriginNode(*pfunc);
 
     std::unique_ptr<AST::ProgBody> prog =
       std::make_unique<AST::ProgBody>(id, CurrentLocus(), pinit, pend, pfunc);

@@ -41,6 +41,12 @@ void CreateGrammarDalang(G& g){
   //Prog
   const Symbol P      = g.AddNonTerminal("PROG");
 
+//   const Symbol FDECLS = g.AddNonTerminal("FDECLS");
+  const Symbol FDECL  = g.AddNonTerminal("FDECL");
+//   const Symbol RET_TYPE  = g.AddNonTerminal("FRETT");
+//   const Symbol ARG    = g.AddNonTerminal("ARG");
+//   const Symbol F_RET  = g.AddNonTerminal("FRET");
+
   //Statements
   const Symbol STMTS  = g.AddNonTerminal("STMTS");
   const Symbol STMT   = g.AddNonTerminal("STMT");
@@ -64,7 +70,9 @@ void CreateGrammarDalang(G& g){
 
   //Non-terminals
 
-  g.AddStartingRule(Rule(P,  {STMTS}, true));
+  g.AddStartingRule(Rule(P,  {FDECL}, true));
+
+  g.AddRule(Rule(FDECL,  {name, lpar, rpar, lcbr, STMTS, rcbr}));
 
   //Statements
   g.AddRule(Rule(STMTS,  {STMT, STMTS}));
