@@ -38,6 +38,12 @@ void parse(const std::string& str, G& g)
 
   parser->Parse();
   if(unit.ValidAst()){
+    if(unit.NumScopes()>1){
+      ASTVisitorScopes v(unit);
+      v.Visit(*unit.GetAstProg());
+      std::cout << std::endl;
+    }
+
     PassManager pm(unit);
     pm.Run();
   }
@@ -45,6 +51,8 @@ void parse(const std::string& str, G& g)
     std::cout << "\nAST dump:\n";
     ASTVisitorDump visitor_dump(unit, true);
     visitor_dump.Visit(*unit.GetAstProg());
+
+
     IRGenerator visitor_irgen(unit);
     visitor_irgen.Visit(*unit.GetAstProg(), nullptr);
 
