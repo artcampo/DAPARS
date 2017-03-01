@@ -393,15 +393,19 @@ ParserLL1RecDesc::NameList(std::vector<PtrVarDecl>& name_list_inht
   //NAME_LIST := name NAME_LIST'
   if(TryAndAccept(kToken::name)){
 
+    if(not unit_.IsDeclValid(prev_token_string_value_, type_inht)){
+      Error("[err:15] Symbol already declared.");
+      return std::move(name_list_synt);
+    }
+
     name_list_inht.push_back(
       std::move(NewVarDecl(prev_token_string_value_, type_inht, scope_inht, locus_inht))
     );
     VarDecl& n = *name_list_inht[name_list_inht.size() - 1];
+    unit_.RegisterDecl(prev_token_string_value_, type_inht, n);
 
 //     std::cout << "new var: "<< prev_token_string_value_ << "\n";
-    if(not unit_.RegisterDecl(prev_token_string_value_, type_inht, n)){
-      Error("[err:15] Symbol already declared.");
-    }
+
     name_list_synt = NameListPrime(name_list_inht, type_inht, scope_inht, locus_inht);
     if(name_list_synt.get() != nullptr) return std::move(name_list_synt);
   }
@@ -428,14 +432,17 @@ ParserLL1RecDesc::NameListPrime(std::vector<PtrVarDecl>& name_list_inht
   }
   if(has_comma){
     if(TryAndAccept(kToken::name)){
+      if(not unit_.IsDeclValid(prev_token_string_value_, type_inht)){
+        Error("[err:15] Symbol already declared.");
+        return std::move(name_list_synt);
+      }
+
       name_list_inht.push_back(
         std::move(NewVarDecl(prev_token_string_value_, type_inht, scope_inht, locus_inht) ));
 
       VarDecl& n = *name_list_inht[name_list_inht.size() - 1];
+      unit_.RegisterDecl(prev_token_string_value_, type_inht, n);
 
-      if(not unit_.RegisterDecl(prev_token_string_value_, type_inht, n)){
-        Error("[err:15] Symbol already declared.");
-      }
       name_list_synt = NameListPrime(name_list_inht, type_inht, scope_inht, locus_inht);
       if(name_list_synt.get() != nullptr) return std::move(name_list_synt);
     }

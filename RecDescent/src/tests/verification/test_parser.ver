@@ -14,17 +14,34 @@ F -> {nam}
 
 ---------------------------------------------------
 Parsing: "main(){int a; (a=1); }"
+Reg: n:0x558029b182c0 s: 0x558029b18380 symbol: Symbol: [a] int a
 [err:14] Expecting rpar. at: "int a; (a=" -> "1); }"
 [err:4] Expecting semicolon after Expr. at: "t a; (a=1)" -> "; }"
 [err:3] Block not finishing in eof or rcbr at: "t a; (a=1)" -> "; }"
 [err:31] function body empty at: "t a; (a=1)" -> "; }"
 [err:30] function declaration's body not closed with '}' at: "t a; (a=1)" -> "; }"
-Undo end
 AST not build at: "t a; (a=1)" -> "; }"
 
 ---------------------------------------------------
 Parsing: "main(){int a;a=1;a=2;a=3; }"
-Undo end
+Reg: n:0x558029b185c0 s: 0x558029b18380 symbol: Symbol: [a] int a
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Literal: 1
+-Assign
+--a
+--Literal: 2
+-Assign
+--a
+--Literal: 3
+Local offset
+int a to offset: 0
+Asking n: 0x558029b185c0 int a
+Symbol: [a]
+Asking n: 0x558029b185c0 int a
 
 AST pretty:
 int a 
@@ -47,7 +64,22 @@ Scope 1: {0, a }
 
 ---------------------------------------------------
 Parsing: "main(){int a;a=2+3+4; }"
-Undo end
+Reg: n:0x558029b187b0 s: 0x558029b18a30 symbol: Symbol: [a] int a
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Op: + 
+---Op: + 
+----Literal: 2
+----Literal: 3
+---Literal: 4
+Local offset
+int a to offset: 0
+Asking n: 0x558029b187b0 int a
+Symbol: [a]
+Asking n: 0x558029b187b0 int a
 
 AST pretty:
 int a 
@@ -67,8 +99,23 @@ Scope 1: {0, a }
 
 ---------------------------------------------------
 Parsing: "main(){int a;a=2++3+4; }"
+Reg: n:0x558029b18330 s: 0x558029b18bb0 symbol: Symbol: [a] int a
 Expecting numerical or lpar at: "nt a;a=2++" -> "3+4; }"
-Undo end
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Op: + 
+---Op: + 
+----Literal: 2
+----Literal: 3
+---Literal: 4
+Local offset
+int a to offset: 0
+Asking n: 0x558029b18330 int a
+Symbol: [a]
+Asking n: 0x558029b18330 int a
 
 AST pretty:
 int a 
@@ -88,7 +135,25 @@ Scope 1: {0, a }
 
 ---------------------------------------------------
 Parsing: "main(){int a;a=1+2;a=3+4; }"
-Undo end
+Reg: n:0x558029b18860 s: 0x558029b18460 symbol: Symbol: [a] int a
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Op: + 
+---Literal: 1
+---Literal: 2
+-Assign
+--a
+--Op: + 
+---Literal: 3
+---Literal: 4
+Local offset
+int a to offset: 0
+Asking n: 0x558029b18860 int a
+Symbol: [a]
+Asking n: 0x558029b18860 int a
 
 AST pretty:
 int a 
@@ -112,7 +177,30 @@ Scope 1: {0, a }
 
 ---------------------------------------------------
 Parsing: "main(){int a;a=1+2;a=3+4;a=5+6; }"
-Undo end
+Reg: n:0x558029b187b0 s: 0x558029b18af0 symbol: Symbol: [a] int a
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Op: + 
+---Literal: 1
+---Literal: 2
+-Assign
+--a
+--Op: + 
+---Literal: 3
+---Literal: 4
+-Assign
+--a
+--Op: + 
+---Literal: 5
+---Literal: 6
+Local offset
+int a to offset: 0
+Asking n: 0x558029b187b0 int a
+Symbol: [a]
+Asking n: 0x558029b187b0 int a
 
 AST pretty:
 int a 
@@ -156,9 +244,26 @@ F -> {nam}
 
 ---------------------------------------------------
 Parsing: "main(){int a;a=1; if(2){a=3;} }"
-Undo end
-Undo end
+Reg: n:0x558029b18330 s: 0x558029b183d0 symbol: Symbol: [a] int a
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---Assign
+----a
+----Literal: 3
+
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;} }"
+Local offset
+int a to offset: 0
+Asking n: 0x558029b18330 int a
+Symbol: [a]
+Asking n: 0x558029b18330 int a
 
 AST pretty:
 int a 
@@ -184,9 +289,29 @@ Scope 2: {}
 
 ---------------------------------------------------
 Parsing: "main(){int a;a=1; if(2){a=3;} a=4; }"
-Undo end
-Undo end
+Reg: n:0x558029b185e0 s: 0x558029b18bb0 symbol: Symbol: [a] int a
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---Assign
+----a
+----Literal: 3
+
+-Assign
+--a
+--Literal: 4
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;} a=4; }"
+Local offset
+int a to offset: 0
+Asking n: 0x558029b185e0 int a
+Symbol: [a]
+Asking n: 0x558029b185e0 int a
 
 AST pretty:
 int a 
@@ -216,9 +341,30 @@ Scope 2: {}
 
 ---------------------------------------------------
 Parsing: "main(){int a;a=1; if(2){a=3+4+5;} }"
-Undo end
-Undo end
+Reg: n:0x558029b18e20 s: 0x558029b18550 symbol: Symbol: [a] int a
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---Assign
+----a
+----Op: + 
+-----Op: + 
+------Literal: 3
+------Literal: 4
+-----Literal: 5
+
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;} }"
+Local offset
+int a to offset: 0
+Asking n: 0x558029b18e20 int a
+Symbol: [a]
+Asking n: 0x558029b18e20 int a
 
 AST pretty:
 int a 
@@ -248,9 +394,33 @@ Scope 2: {}
 
 ---------------------------------------------------
 Parsing: "main(){int a;a=1; if(2){a=3+4+5;} a=6; }"
-Undo end
-Undo end
+Reg: n:0x558029b185e0 s: 0x558029b18cf0 symbol: Symbol: [a] int a
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---Assign
+----a
+----Op: + 
+-----Op: + 
+------Literal: 3
+------Literal: 4
+-----Literal: 5
+
+-Assign
+--a
+--Literal: 6
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;} a=6; }"
+Local offset
+int a to offset: 0
+Asking n: 0x558029b185e0 int a
+Symbol: [a]
+Asking n: 0x558029b185e0 int a
 
 AST pretty:
 int a 
@@ -284,13 +454,39 @@ Scope 2: {}
 
 ---------------------------------------------------
 Parsing: "main(){int a;a=1; if(2){if(3){a=4;if(5){a=6;}}} }"
-Undo end
-Undo end
-Undo end
-Undo end
+Reg: n:0x558029b18380 s: 0x558029b184b0 symbol: Symbol: [a] int a
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---IfStmt:
+----Cond: Literal: 3
+----Then:
+-----Assign
+------a
+------Literal: 4
+-----IfStmt:
+------Cond: Literal: 5
+------Then:
+-------Assign
+--------a
+--------Literal: 6
+
+
+
 [err:21] if's condition is not a bool at: "){a=4;if(5" -> "){a=6;}}} }"
 [err:21] if's condition is not a bool at: "if(2){if(3" -> "){a=4;if(5){a=6;}}} }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4;if(5){a=6;}}} }"
+Local offset
+int a to offset: 0
+Asking n: 0x558029b18380 int a
+Symbol: [a]
+Asking n: 0x558029b18380 int a
 
 AST pretty:
 int a 
@@ -334,13 +530,43 @@ Scope 4: {}
 
 ---------------------------------------------------
 Parsing: "main(){int a;a=1; if(2){if(3){a=4+5;if(6){a=7+8;}}} }"
-Undo end
-Undo end
-Undo end
-Undo end
+Reg: n:0x558029b18790 s: 0x558029b19190 symbol: Symbol: [a] int a
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---IfStmt:
+----Cond: Literal: 3
+----Then:
+-----Assign
+------a
+------Op: + 
+-------Literal: 4
+-------Literal: 5
+-----IfStmt:
+------Cond: Literal: 6
+------Then:
+-------Assign
+--------a
+--------Op: + 
+---------Literal: 7
+---------Literal: 8
+
+
+
 [err:21] if's condition is not a bool at: "a=4+5;if(6" -> "){a=7+8;}}} }"
 [err:21] if's condition is not a bool at: "if(2){if(3" -> "){a=4+5;if(6){a=7+8;}}} }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4+5;if(6){a=7+8;}}} }"
+Local offset
+int a to offset: 0
+Asking n: 0x558029b18790 int a
+Symbol: [a]
+Asking n: 0x558029b18790 int a
 
 AST pretty:
 int a 
@@ -388,26 +614,50 @@ Scope 4: {}
 
 ---------------------------------------------------
 Parsing: "main(){int a;a=1; if(2){a=3;}else{4;} }"
-Undo end
+Reg: n:0x558029b18330 s: 0x558029b190a0 symbol: Symbol: [a] int a
 [err:] assignment missing '=' at: "3;}else{4;" -> "} }"
 [err:3] Block not finishing in eof or rcbr at: "3;}else{4;" -> "} }"
 Statements within else wrong. at: "3;}else{4;" -> "} }"
 else missing rcbr. at: "3;}else{4;" -> "} }"
-Undo end
 [err:3] Block not finishing in eof or rcbr at: "3;}else{4;" -> "} }"
 [err:31] function body empty at: "3;}else{4;" -> "} }"
 [err:30] function declaration's body not closed with '}' at: "3;}else{4;" -> "} }"
-Undo end
 AST not build at: "3;}else{4;" -> "} }"
 
 ---------------------------------------------------
 Parsing: "main(){int a;a=1; if(2){a=3;}if(4){a=5;}else{a=6;} }"
-Undo end
-Undo end
-Undo end
-Undo end
+Reg: n:0x558029b18790 s: 0x558029b16e50 symbol: Symbol: [a] int a
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---Assign
+----a
+----Literal: 3
+
+-IfStmt:
+--Cond: Literal: 4
+--Then:
+---Assign
+----a
+----Literal: 5
+--Else:
+---Assign
+----a
+----Literal: 6
+
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;}if(4){a=5;}else{a=6;} }"
 [err:21] if's condition is not a bool at: "{a=3;}if(4" -> "){a=5;}else{a=6;} }"
+Local offset
+int a to offset: 0
+Asking n: 0x558029b18790 int a
+Symbol: [a]
+Asking n: 0x558029b18790 int a
 
 AST pretty:
 int a 
@@ -452,7 +702,27 @@ Scope 4: {}
 
 ---------------------------------------------------
 Parsing: "main(){int a; int b; bool c; }"
-Undo end
+Reg: n:0x558029b12980 s: 0x558029b18cf0 symbol: Symbol: [a] int a
+Reg: n:0x558029b18380 s: 0x558029b19060 symbol: Symbol: [b] int b
+Reg: n:0x558029b18790 s: 0x558029b18af0 symbol: Symbol: [c] bool c
+
+AST dump (without extra info):
+-int a 
+-int b 
+-bool c 
+Local offset
+int a to offset: 0
+Asking n: 0x558029b12980 int a
+Symbol: [a]
+Asking n: 0x558029b12980 int a
+int b to offset: 1
+Asking n: 0x558029b18380 int b
+Symbol: [b]
+Asking n: 0x558029b18380 int b
+bool c to offset: 2
+Asking n: 0x558029b18790 bool c
+Symbol: [c]
+Asking n: 0x558029b18790 bool c
 
 AST pretty:
 int a 
@@ -467,8 +737,37 @@ Scope 1: {0, a 1, b 2, c }
 
 ---------------------------------------------------
 Parsing: "main(){int b, c, d; bool e f; }"
+Reg: n:0x558029b18790 s: 0x558029b18c30 symbol: Symbol: [b] int b
+Reg: n:0x558029b12980 s: 0x558029b19060 symbol: Symbol: [c] int c
+Reg: n:0x558029b197a0 s: 0x558029b19210 symbol: Symbol: [d] int d
+Reg: n:0x558029b185e0 s: 0x558029b19250 symbol: Symbol: [e] bool e
 [err:19] Variables must be separated with comma. at: "; bool e f" -> "; }"
-Undo end
+Reg: n:0x558029b19940 s: 0x558029b18840 symbol: Symbol: [f] bool f
+
+AST dump (without extra info):
+-int b int c int d 
+-bool e bool f 
+Local offset
+int b to offset: 0
+Asking n: 0x558029b18790 int b
+Symbol: [b]
+Asking n: 0x558029b18790 int b
+int c to offset: 1
+Asking n: 0x558029b12980 int c
+Symbol: [c]
+Asking n: 0x558029b12980 int c
+int d to offset: 2
+Asking n: 0x558029b197a0 int d
+Symbol: [d]
+Asking n: 0x558029b197a0 int d
+bool e to offset: 3
+Asking n: 0x558029b185e0 bool e
+Symbol: [e]
+Asking n: 0x558029b185e0 bool e
+bool f to offset: 4
+Asking n: 0x558029b19940 bool f
+Symbol: [f]
+Asking n: 0x558029b19940 bool f
 
 AST pretty:
 int b int c int d 
@@ -481,7 +780,18 @@ Scope 1: {0, b 1, c 2, d 3, e 4, f }
 
 ---------------------------------------------------
 Parsing: "main(){int a; a=1; }"
-Undo end
+Reg: n:0x558029b19940 s: 0x558029b15f20 symbol: Symbol: [a] int a
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Literal: 1
+Local offset
+int a to offset: 0
+Asking n: 0x558029b19940 int a
+Symbol: [a]
+Asking n: 0x558029b19940 int a
 
 AST pretty:
 int a 
@@ -496,7 +806,22 @@ Scope 1: {0, a }
 
 ---------------------------------------------------
 Parsing: "main(){int a; a=(1+2+3); }"
-Undo end
+Reg: n:0x558029b197a0 s: 0x558029b18a70 symbol: Symbol: [a] int a
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Op: + 
+---Op: + 
+----Literal: 1
+----Literal: 2
+---Literal: 3
+Local offset
+int a to offset: 0
+Asking n: 0x558029b197a0 int a
+Symbol: [a]
+Asking n: 0x558029b197a0 int a
 
 AST pretty:
 int a 
@@ -515,9 +840,40 @@ Scope 1: {0, a }
 
 ---------------------------------------------------
 Parsing: "main(){int a b c; b=1; c=2; a=(1+b+c); }"
+Reg: n:0x558029b18330 s: 0x558029b18f60 symbol: Symbol: [a] int a
 [err:19] Variables must be separated with comma. at: "(){int a b" -> " c; b=1; c=2; a=(1+b+c); }"
+Reg: n:0x558029b12980 s: 0x558029b18970 symbol: Symbol: [b] int b
 [err:19] Variables must be separated with comma. at: "{int a b c" -> "; b=1; c=2; a=(1+b+c); }"
-Undo end
+Reg: n:0x558029b18790 s: 0x558029b18bf0 symbol: Symbol: [c] int c
+
+AST dump (without extra info):
+-int a int b int c 
+-Assign
+--b
+--Literal: 1
+-Assign
+--c
+--Literal: 2
+-Assign
+--a
+--Op: + 
+---Op: + 
+----Literal: 1
+----b
+---c
+Local offset
+int a to offset: 0
+Asking n: 0x558029b18330 int a
+Symbol: [a]
+Asking n: 0x558029b18330 int a
+int b to offset: 1
+Asking n: 0x558029b12980 int b
+Symbol: [b]
+Asking n: 0x558029b12980 int b
+int c to offset: 2
+Asking n: 0x558029b18790 int c
+Symbol: [c]
+Asking n: 0x558029b18790 int c
 
 AST pretty:
 int a int b int c 
@@ -544,25 +900,34 @@ Scope 1: {0, a 1, b 2, c }
 
 ---------------------------------------------------
 Parsing: "main(){ int a; int b; int a; }"
+Reg: n:0x558029b18cc0 s: 0x558029b19190 symbol: Symbol: [a] int a
+Reg: n:0x558029b18c70 s: 0x558029b19290 symbol: Symbol: [b] int b
 [err:15] Symbol already declared. at: " b; int a;" -> " }"
-Undo end
-
-AST pretty:
-int a 
-int b 
-int a 
-
-AST dump:
--int a 
--int b 
--int a 
-Scope 1: {0, a 1, b }
+[err:31] function body empty at: "; int a; }" -> ""
+AST not build at: "; int a; }" -> ""
 
 ---------------------------------------------------
 Parsing: "main(){ int a; if(1){int b;} }"
-Undo end
-Undo end
+Reg: n:0x558029b18c70 s: 0x558029b19190 symbol: Symbol: [a] int a
+Reg: n:0x558029b183d0 s: 0x558029b187e0 symbol: Symbol: [b] int b
+
+AST dump (without extra info):
+-int a 
+-IfStmt:
+--Cond: Literal: 1
+--Then:
+---int b 
+
 [err:21] if's condition is not a bool at: "nt a; if(1" -> "){int b;} }"
+Local offset
+int a to offset: 0
+Asking n: 0x558029b18c70 int a
+Symbol: [a]
+Asking n: 0x558029b18c70 int a
+int b to offset: 1
+Asking n: 0x558029b183d0 int b
+Symbol: [b]
+Asking n: 0x558029b183d0 int b
 
 AST pretty:
 int a 
@@ -582,10 +947,33 @@ Scope 2: {1, b }
 
 ---------------------------------------------------
 Parsing: "main(){ int a; if(1){int b;}else{int c;} }"
-Undo end
-Undo end
-Undo end
+Reg: n:0x558029b183d0 s: 0x558029b188e0 symbol: Symbol: [a] int a
+Reg: n:0x558029b18ea0 s: 0x558029b18d70 symbol: Symbol: [b] int b
+Reg: n:0x558029b18cc0 s: 0x558029b19290 symbol: Symbol: [c] int c
+
+AST dump (without extra info):
+-int a 
+-IfStmt:
+--Cond: Literal: 1
+--Then:
+---int b 
+--Else:
+---int c 
+
 [err:21] if's condition is not a bool at: "nt a; if(1" -> "){int b;}else{int c;} }"
+Local offset
+int a to offset: 0
+Asking n: 0x558029b183d0 int a
+Symbol: [a]
+Asking n: 0x558029b183d0 int a
+int b to offset: 1
+Asking n: 0x558029b18ea0 int b
+Symbol: [b]
+Asking n: 0x558029b18ea0 int b
+int c to offset: 1
+Asking n: 0x558029b18cc0 int c
+Symbol: [c]
+Asking n: 0x558029b18cc0 int c
 
 AST pretty:
 int a 
@@ -611,9 +999,33 @@ Scope 3: {2, c }
 
 ---------------------------------------------------
 Parsing: "main(){ int a; while(1 + 2){ int c; c = 1+2; } }"
-Undo end
-Undo end
+Reg: n:0x558029b18ea0 s: 0x558029b188e0 symbol: Symbol: [a] int a
+Reg: n:0x558029b183d0 s: 0x558029b191d0 symbol: Symbol: [c] int c
+
+AST dump (without extra info):
+-int a 
+-WhileStmt:
+--Cond: Op: + 
+---Literal: 1
+---Literal: 2
+--Body:
+---int c 
+---Assign
+----c
+----Op: + 
+-----Literal: 1
+-----Literal: 2
+
 [err:20] while's condition is not a bool at: " while(1 +" -> " 2){ int c; c = 1+2; } }"
+Local offset
+int a to offset: 0
+Asking n: 0x558029b18ea0 int a
+Symbol: [a]
+Asking n: 0x558029b18ea0 int a
+int c to offset: 1
+Asking n: 0x558029b183d0 int c
+Symbol: [c]
+Asking n: 0x558029b183d0 int c
 
 AST pretty:
 int a 
@@ -641,7 +1053,26 @@ Scope 2: {1, c }
 
 ---------------------------------------------------
 Parsing: "main(){ bool a, b; a = true; b = false; }"
-Undo end
+Reg: n:0x558029b18c70 s: 0x558029b18bf0 symbol: Symbol: [a] bool a
+Reg: n:0x558029b18ea0 s: 0x558029b192d0 symbol: Symbol: [b] bool b
+
+AST dump (without extra info):
+-bool a bool b 
+-Assign
+--a
+--Literal: 1
+-Assign
+--b
+--Literal: 0
+Local offset
+bool a to offset: 0
+Asking n: 0x558029b18c70 bool a
+Symbol: [a]
+Asking n: 0x558029b18c70 bool a
+bool b to offset: 1
+Asking n: 0x558029b18ea0 bool b
+Symbol: [b]
+Asking n: 0x558029b18ea0 bool b
 
 AST pretty:
 bool a bool b 
@@ -660,7 +1091,21 @@ Scope 1: {0, a 1, b }
 
 ---------------------------------------------------
 Parsing: "main(){ int* a; int* b; }"
-Undo end
+Reg: n:0x558029b12980 s: 0x558029b18840 symbol: Symbol: [a] int* a
+Reg: n:0x558029b18ea0 s: 0x558029b19020 symbol: Symbol: [b] int* b
+
+AST dump (without extra info):
+-int* a 
+-int* b 
+Local offset
+int* a to offset: 0
+Asking n: 0x558029b12980 int* a
+Symbol: [a]
+Asking n: 0x558029b12980 int* a
+int* b to offset: 1
+Asking n: 0x558029b18ea0 int* b
+Symbol: [b]
+Asking n: 0x558029b18ea0 int* b
 
 AST pretty:
 int* a 
@@ -673,7 +1118,37 @@ Scope 1: {0, a 1, b }
 
 ---------------------------------------------------
 Parsing: "main(){ int* a; int b, c; b = 2; a = &b; c = *a; }"
-Undo end
+Reg: n:0x558029b18ea0 s: 0x558029b19020 symbol: Symbol: [a] int* a
+Reg: n:0x558029b18330 s: 0x558029b192d0 symbol: Symbol: [b] int b
+Reg: n:0x558029b18cc0 s: 0x558029b187e0 symbol: Symbol: [c] int c
+
+AST dump (without extra info):
+-int* a 
+-int b int c 
+-Assign
+--b
+--Literal: 2
+-Assign
+--a
+--@
+---b
+-Assign
+--c
+--*
+---a
+Local offset
+int* a to offset: 0
+Asking n: 0x558029b18ea0 int* a
+Symbol: [a]
+Asking n: 0x558029b18ea0 int* a
+int b to offset: 1
+Asking n: 0x558029b18330 int b
+Symbol: [b]
+Asking n: 0x558029b18330 int b
+int c to offset: 2
+Asking n: 0x558029b18cc0 int c
+Symbol: [c]
+Asking n: 0x558029b18cc0 int c
 
 AST pretty:
 int* a 

@@ -36,6 +36,12 @@ void parse(const std::string& str, G& g)
                 P(std::vector<char> (str.begin(), str.end()), unit));
 
   parser->Parse();
+  if(unit.GetAstProg() != nullptr){
+    std::cout << "\nAST dump (without extra info):\n";
+    ASTVisitorDump visitor_dump(unit);
+    visitor_dump.Visit(*unit.GetAstProg());
+  }
+
   if(unit.ValidAst()){
     PassManager pm(unit);
     pm.Run();
