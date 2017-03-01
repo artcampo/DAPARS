@@ -31,7 +31,6 @@ BaseParser::BaseParser(const std::vector<char>& parse_data
   for(const auto& it : parse_data ) std::cout << it;
   std::cout << "\"\n";
   unit_.SetFileData(&file_data_);
-//   unit_.scope_ = new LexicalScope(nullptr);
 }
 
 BaseParser::BaseParser(std::string const &file_name, CompilationUnit& unit)
@@ -44,7 +43,6 @@ BaseParser::BaseParser(std::string const &file_name, CompilationUnit& unit)
   , num_errors_(0)
   , continue_parsing_(true)
 {
-//   unit_.scope_ = new LexicalScope(nullptr);
   unit_.SetFileData(&file_data_);
 }
 
@@ -75,12 +73,12 @@ void BaseParser::NextToken() noexcept{
       Error("[err:2] Token not recognized");
     }
   }
-  /*
+/*
   std::cout << "NextToken: " <<  str(token_);
   if(token_ == Tokenizer::kToken::numerical) std::cout << ": " << token_int_value_;
   if(token_ == Tokenizer::kToken::name) std::cout << ": " << token_string_value_;
   std::cout << "\n";
-  */
+*/
 }
 
 bool BaseParser::Accept(const kToken& token, const std::string& error) noexcept{

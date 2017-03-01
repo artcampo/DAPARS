@@ -54,47 +54,47 @@ int main()
   std::cout << g;
 
   //Proper error identification
-  parse<Grammar,ParserLL1RecDesc>( std::string("  "), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("@"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("1; )"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("1 )"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("int a"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("main(){    }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ @ }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ 1; ) }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ 1 ) }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ int a }"), g);
 
-  parse<Grammar,ParserLL1RecDesc>( std::string("if"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("if("), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("if(int"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("if(1)"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("if(1){"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("if(1){2;"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ if }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ if( }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ if(int }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ if(1) }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ if(1){ }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ if(1){2; }"), g);
 
-  parse<Grammar,ParserLL1RecDesc>( std::string("1+;"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ 1+; }"), g);
 
-  parse<Grammar,ParserLL1RecDesc>( std::string("1+(;"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ 1+(; }"), g);
 
   //error:15
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int a; int b; int a;"), g);
+    "main(){ int a; int b; int a; }"), g);
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int a; a=1+b;"), g);
+    "main(){int a; a=1+b; }"), g);
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int a; bool b; a=a+b;"), g);
+    "main(){int a; bool b; a=a+b; }"), g);
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int a; bool b; a=b+b;"), g);
+    "main(){int a; bool b; a=b+b; }"), g);
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int a b c;"), g);
+    "main(){int a b c; }"), g);
 
   //22
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int a,b,c; a= 2+1; a = b+c; 2 = 2;"), g);
+    "main(){int a,b,c; a= 2+1; a = b+c; 2 = 2; }"), g);
 
 
 
   //Chaotic cluster fuck
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "bool a; int b; a = true; b = 1; a = b; b = true; a = 2;"), g);
+    "main(){bool a; int b; a = true; b = 1; a = b; b = true; a = 2; }"), g);
 
-  parse<Grammar,ParserLL1RecDesc>( std::string("1+(2));"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("1++2;"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("main(){1+(2)); }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("main(){1++2; }"), g);
 
   return 0;
 }

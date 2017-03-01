@@ -13,14 +13,18 @@ F -> {num}
 F -> {nam} 
 
 ---------------------------------------------------
-Parsing: "int a; (a=1);"
-[err:14] Expecting rpar. at: "int a; (a=" -> "1);"
-[err:4] Expecting semicolon after Expr. at: "t a; (a=1)" -> ";"
-[err:3] Block not finishing in eof or rcbr at: "t a; (a=1)" -> ";"
-AST not build at: "t a; (a=1)" -> ";"
+Parsing: "main(){int a; (a=1); }"
+[err:14] Expecting rpar. at: "int a; (a=" -> "1); }"
+[err:4] Expecting semicolon after Expr. at: "t a; (a=1)" -> "; }"
+[err:3] Block not finishing in eof or rcbr at: "t a; (a=1)" -> "; }"
+[err:31] function body empty at: "t a; (a=1)" -> "; }"
+[err:30] function declaration's body not closed with '}' at: "t a; (a=1)" -> "; }"
+Undo end
+AST not build at: "t a; (a=1)" -> "; }"
 
 ---------------------------------------------------
-Parsing: "int a;a=1;a=2;a=3;"
+Parsing: "main(){int a;a=1;a=2;a=3; }"
+Undo end
 
 AST pretty:
 int a 
@@ -39,9 +43,11 @@ AST dump:
 -Assign
 --a [int Lvalue]
 --Literal: 3 [int Rvalue]
+Scope 1: {0, a }
 
 ---------------------------------------------------
-Parsing: "int a;a=2+3+4;"
+Parsing: "main(){int a;a=2+3+4; }"
+Undo end
 
 AST pretty:
 int a 
@@ -56,11 +62,13 @@ AST dump:
 ----Literal: 2 [int Rvalue]
 ----Literal: 3 [int Rvalue]
 ---Literal: 4 [int Rvalue]
+Scope 1: {0, a }
 
 
 ---------------------------------------------------
-Parsing: "int a;a=2++3+4;"
-Expecting numerical or lpar at: "nt a;a=2++" -> "3+4;"
+Parsing: "main(){int a;a=2++3+4; }"
+Expecting numerical or lpar at: "nt a;a=2++" -> "3+4; }"
+Undo end
 
 AST pretty:
 int a 
@@ -75,10 +83,12 @@ AST dump:
 ----Literal: 2 [int Rvalue]
 ----Literal: 3 [int Rvalue]
 ---Literal: 4 [int Rvalue]
+Scope 1: {0, a }
 
 
 ---------------------------------------------------
-Parsing: "int a;a=1+2;a=3+4;"
+Parsing: "main(){int a;a=1+2;a=3+4; }"
+Undo end
 
 AST pretty:
 int a 
@@ -97,10 +107,12 @@ AST dump:
 --Op: +  [int Rvalue]
 ---Literal: 3 [int Rvalue]
 ---Literal: 4 [int Rvalue]
+Scope 1: {0, a }
 
 
 ---------------------------------------------------
-Parsing: "int a;a=1+2;a=3+4;a=5+6;"
+Parsing: "main(){int a;a=1+2;a=3+4;a=5+6; }"
+Undo end
 
 AST pretty:
 int a 
@@ -125,6 +137,7 @@ AST dump:
 --Op: +  [int Rvalue]
 ---Literal: 5 [int Rvalue]
 ---Literal: 6 [int Rvalue]
+Scope 1: {0, a }
 
 
 Grammar:
@@ -142,8 +155,10 @@ F -> {num}
 F -> {nam} 
 
 ---------------------------------------------------
-Parsing: "int a;a=1; if(2){a=3;}"
-[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;}"
+Parsing: "main(){int a;a=1; if(2){a=3;} }"
+Undo end
+Undo end
+[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;} }"
 
 AST pretty:
 int a 
@@ -164,12 +179,14 @@ AST dump:
 ----a [int Lvalue]
 ----Literal: 3 [int Rvalue]
 
-Scope 0: {0, a }
-Scope 1: {}
+Scope 1: {0, a }
+Scope 2: {}
 
 ---------------------------------------------------
-Parsing: "int a;a=1; if(2){a=3;} a=4;"
-[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;} a=4;"
+Parsing: "main(){int a;a=1; if(2){a=3;} a=4; }"
+Undo end
+Undo end
+[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;} a=4; }"
 
 AST pretty:
 int a 
@@ -194,12 +211,14 @@ AST dump:
 -Assign
 --a [int Lvalue]
 --Literal: 4 [int Rvalue]
-Scope 0: {0, a }
-Scope 1: {}
+Scope 1: {0, a }
+Scope 2: {}
 
 ---------------------------------------------------
-Parsing: "int a;a=1; if(2){a=3+4+5;}"
-[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;}"
+Parsing: "main(){int a;a=1; if(2){a=3+4+5;} }"
+Undo end
+Undo end
+[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;} }"
 
 AST pretty:
 int a 
@@ -224,12 +243,14 @@ AST dump:
 ------Literal: 4 [int Rvalue]
 -----Literal: 5 [int Rvalue]
 
-Scope 0: {0, a }
-Scope 1: {}
+Scope 1: {0, a }
+Scope 2: {}
 
 ---------------------------------------------------
-Parsing: "int a;a=1; if(2){a=3+4+5;} a=6;"
-[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;} a=6;"
+Parsing: "main(){int a;a=1; if(2){a=3+4+5;} a=6; }"
+Undo end
+Undo end
+[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;} a=6; }"
 
 AST pretty:
 int a 
@@ -258,14 +279,18 @@ AST dump:
 -Assign
 --a [int Lvalue]
 --Literal: 6 [int Rvalue]
-Scope 0: {0, a }
-Scope 1: {}
+Scope 1: {0, a }
+Scope 2: {}
 
 ---------------------------------------------------
-Parsing: "int a;a=1; if(2){if(3){a=4;if(5){a=6;}}}"
-[err:21] if's condition is not a bool at: "){a=4;if(5" -> "){a=6;}}}"
-[err:21] if's condition is not a bool at: "if(2){if(3" -> "){a=4;if(5){a=6;}}}"
-[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4;if(5){a=6;}}}"
+Parsing: "main(){int a;a=1; if(2){if(3){a=4;if(5){a=6;}}} }"
+Undo end
+Undo end
+Undo end
+Undo end
+[err:21] if's condition is not a bool at: "){a=4;if(5" -> "){a=6;}}} }"
+[err:21] if's condition is not a bool at: "if(2){if(3" -> "){a=4;if(5){a=6;}}} }"
+[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4;if(5){a=6;}}} }"
 
 AST pretty:
 int a 
@@ -302,16 +327,20 @@ AST dump:
 
 
 
-Scope 0: {0, a }
-Scope 1: {}
+Scope 1: {0, a }
 Scope 2: {}
 Scope 3: {}
+Scope 4: {}
 
 ---------------------------------------------------
-Parsing: "int a;a=1; if(2){if(3){a=4+5;if(6){a=7+8;}}}"
-[err:21] if's condition is not a bool at: "a=4+5;if(6" -> "){a=7+8;}}}"
-[err:21] if's condition is not a bool at: "if(2){if(3" -> "){a=4+5;if(6){a=7+8;}}}"
-[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4+5;if(6){a=7+8;}}}"
+Parsing: "main(){int a;a=1; if(2){if(3){a=4+5;if(6){a=7+8;}}} }"
+Undo end
+Undo end
+Undo end
+Undo end
+[err:21] if's condition is not a bool at: "a=4+5;if(6" -> "){a=7+8;}}} }"
+[err:21] if's condition is not a bool at: "if(2){if(3" -> "){a=4+5;if(6){a=7+8;}}} }"
+[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4+5;if(6){a=7+8;}}} }"
 
 AST pretty:
 int a 
@@ -352,24 +381,33 @@ AST dump:
 
 
 
-Scope 0: {0, a }
-Scope 1: {}
+Scope 1: {0, a }
 Scope 2: {}
 Scope 3: {}
+Scope 4: {}
 
 ---------------------------------------------------
-Parsing: "int a;a=1; if(2){a=3;}else{4;}"
-[err:] assignment missing '=' at: "3;}else{4;" -> "}"
-[err:3] Block not finishing in eof or rcbr at: "3;}else{4;" -> "}"
-Statements within else wrong. at: "3;}else{4;" -> "}"
-else missing rcbr. at: "3;}else{4;" -> "}"
-[err:3] Block not finishing in eof or rcbr at: "3;}else{4;" -> "}"
-AST not build at: "3;}else{4;" -> "}"
+Parsing: "main(){int a;a=1; if(2){a=3;}else{4;} }"
+Undo end
+[err:] assignment missing '=' at: "3;}else{4;" -> "} }"
+[err:3] Block not finishing in eof or rcbr at: "3;}else{4;" -> "} }"
+Statements within else wrong. at: "3;}else{4;" -> "} }"
+else missing rcbr. at: "3;}else{4;" -> "} }"
+Undo end
+[err:3] Block not finishing in eof or rcbr at: "3;}else{4;" -> "} }"
+[err:31] function body empty at: "3;}else{4;" -> "} }"
+[err:30] function declaration's body not closed with '}' at: "3;}else{4;" -> "} }"
+Undo end
+AST not build at: "3;}else{4;" -> "} }"
 
 ---------------------------------------------------
-Parsing: "int a;a=1; if(2){a=3;}if(4){a=5;}else{a=6;}"
-[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;}if(4){a=5;}else{a=6;}"
-[err:21] if's condition is not a bool at: "{a=3;}if(4" -> "){a=5;}else{a=6;}"
+Parsing: "main(){int a;a=1; if(2){a=3;}if(4){a=5;}else{a=6;} }"
+Undo end
+Undo end
+Undo end
+Undo end
+[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;}if(4){a=5;}else{a=6;} }"
+[err:21] if's condition is not a bool at: "{a=3;}if(4" -> "){a=5;}else{a=6;} }"
 
 AST pretty:
 int a 
@@ -407,13 +445,14 @@ AST dump:
 ----a [int Lvalue]
 ----Literal: 6 [int Rvalue]
 
-Scope 0: {0, a }
-Scope 1: {}
+Scope 1: {0, a }
 Scope 2: {}
 Scope 3: {}
+Scope 4: {}
 
 ---------------------------------------------------
-Parsing: "int a; int b; bool c;"
+Parsing: "main(){int a; int b; bool c; }"
+Undo end
 
 AST pretty:
 int a 
@@ -424,10 +463,12 @@ AST dump:
 -int a 
 -int b 
 -bool c 
+Scope 1: {0, a 1, b 2, c }
 
 ---------------------------------------------------
-Parsing: "int b, c, d; bool e f;"
-[err:19] Variables must be separated with comma. at: "; bool e f" -> ";"
+Parsing: "main(){int b, c, d; bool e f; }"
+[err:19] Variables must be separated with comma. at: "; bool e f" -> "; }"
+Undo end
 
 AST pretty:
 int b int c int d 
@@ -436,9 +477,11 @@ bool e bool f
 AST dump:
 -int b int c int d 
 -bool e bool f 
+Scope 1: {0, b 1, c 2, d 3, e 4, f }
 
 ---------------------------------------------------
-Parsing: "int a; a=1;"
+Parsing: "main(){int a; a=1; }"
+Undo end
 
 AST pretty:
 int a 
@@ -449,9 +492,11 @@ AST dump:
 -Assign
 --a [int Lvalue]
 --Literal: 1 [int Rvalue]
+Scope 1: {0, a }
 
 ---------------------------------------------------
-Parsing: "int a; a=(1+2+3);"
+Parsing: "main(){int a; a=(1+2+3); }"
+Undo end
 
 AST pretty:
 int a 
@@ -466,11 +511,13 @@ AST dump:
 ----Literal: 1 [int Rvalue]
 ----Literal: 2 [int Rvalue]
 ---Literal: 3 [int Rvalue]
+Scope 1: {0, a }
 
 ---------------------------------------------------
-Parsing: "int a b c; b=1; c=2; a=(1+b+c);"
-[err:19] Variables must be separated with comma. at: "int a b" -> " c; b=1; c=2; a=(1+b+c);"
-[err:19] Variables must be separated with comma. at: "int a b c" -> "; b=1; c=2; a=(1+b+c);"
+Parsing: "main(){int a b c; b=1; c=2; a=(1+b+c); }"
+[err:19] Variables must be separated with comma. at: "(){int a b" -> " c; b=1; c=2; a=(1+b+c); }"
+[err:19] Variables must be separated with comma. at: "{int a b c" -> "; b=1; c=2; a=(1+b+c); }"
+Undo end
 
 AST pretty:
 int a int b int c 
@@ -493,10 +540,12 @@ AST dump:
 ----Literal: 1 [int Rvalue]
 ----b [int Lvalue]
 ---c [int Lvalue]
+Scope 1: {0, a 1, b 2, c }
 
 ---------------------------------------------------
-Parsing: "int a; int b; int a;"
-[err:15] Symbol already declared. at: " b; int a;" -> ""
+Parsing: "main(){ int a; int b; int a; }"
+[err:15] Symbol already declared. at: " b; int a;" -> " }"
+Undo end
 
 AST pretty:
 int a 
@@ -507,10 +556,13 @@ AST dump:
 -int a 
 -int b 
 -int a 
+Scope 1: {0, a 1, b }
 
 ---------------------------------------------------
-Parsing: "int a; if(1){int b;}"
-[err:21] if's condition is not a bool at: "nt a; if(1" -> "){int b;}"
+Parsing: "main(){ int a; if(1){int b;} }"
+Undo end
+Undo end
+[err:21] if's condition is not a bool at: "nt a; if(1" -> "){int b;} }"
 
 AST pretty:
 int a 
@@ -525,12 +577,15 @@ AST dump:
 --Then:
 ---int b 
 
-Scope 0: {0, a }
-Scope 1: {0, b }
+Scope 1: {0, a }
+Scope 2: {1, b }
 
 ---------------------------------------------------
-Parsing: "int a; if(1){int b;}else{int c;}"
-[err:21] if's condition is not a bool at: "nt a; if(1" -> "){int b;}else{int c;}"
+Parsing: "main(){ int a; if(1){int b;}else{int c;} }"
+Undo end
+Undo end
+Undo end
+[err:21] if's condition is not a bool at: "nt a; if(1" -> "){int b;}else{int c;} }"
 
 AST pretty:
 int a 
@@ -550,13 +605,15 @@ AST dump:
 --Else:
 ---int c 
 
-Scope 0: {0, a }
-Scope 1: {0, b }
-Scope 2: {0, c }
+Scope 1: {0, a }
+Scope 2: {1, b }
+Scope 3: {2, c }
 
 ---------------------------------------------------
-Parsing: "int a; while(1 + 2){ int c; c = 1+2; }"
-[err:20] while's condition is not a bool at: " while(1 +" -> " 2){ int c; c = 1+2; }"
+Parsing: "main(){ int a; while(1 + 2){ int c; c = 1+2; } }"
+Undo end
+Undo end
+[err:20] while's condition is not a bool at: " while(1 +" -> " 2){ int c; c = 1+2; } }"
 
 AST pretty:
 int a 
@@ -579,11 +636,12 @@ AST dump:
 -----Literal: 1 [int Rvalue]
 -----Literal: 2 [int Rvalue]
 
-Scope 0: {0, a }
-Scope 1: {0, c }
+Scope 1: {0, a }
+Scope 2: {1, c }
 
 ---------------------------------------------------
-Parsing: "bool a, b; a = true; b = false;"
+Parsing: "main(){ bool a, b; a = true; b = false; }"
+Undo end
 
 AST pretty:
 bool a bool b 
@@ -598,9 +656,11 @@ AST dump:
 -Assign
 --b [bool Lvalue]
 --Literal: 0 [bool Rvalue]
+Scope 1: {0, a 1, b }
 
 ---------------------------------------------------
-Parsing: "int* a; int* b;"
+Parsing: "main(){ int* a; int* b; }"
+Undo end
 
 AST pretty:
 int* a 
@@ -609,9 +669,11 @@ int* b
 AST dump:
 -int* a 
 -int* b 
+Scope 1: {0, a 1, b }
 
 ---------------------------------------------------
-Parsing: "int* a; int b, c; b = 2; a = &b; c = *a;"
+Parsing: "main(){ int* a; int b, c; b = 2; a = &b; c = *a; }"
+Undo end
 
 AST pretty:
 int* a 
@@ -634,4 +696,5 @@ AST dump:
 --c [int Lvalue]
 --* [int]
 ---a [int* Lvalue]
+Scope 1: {0, a 1, b 2, c }
 

@@ -7,7 +7,8 @@ KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
 Dalang grammar v0.3
 Grammar:
-PROG -> STMTS  init 
+PROG -> FDECL  init 
+FDECL -> {nam} ( ) { STMTS } 
 STMTS -> STMT STMTS 
 STMTS -> {empty} 
 STMT -> E = E ; 
@@ -44,10 +45,11 @@ E => & * false ( {nam} {num}  true
 E' => {empty} + 
 F => & * false ( {nam} {num}  true 
 F' => false ( {nam} {num}  true 
+FDECL => {nam} 
 IFELSE => else {empty} 
 NAME_LIST => {nam} 
 NAME_LIST' => , {empty} 
-PROG => & * bool {empty} false if int ( {nam} {num}  true while 
+PROG => {nam} 
 STMT => & * bool false if int ( {nam} {num}  true while 
 STMTS => & * bool {empty} false if int ( {nam} {num}  true while 
 T => & * false ( {nam} {num}  true 
@@ -60,12 +62,13 @@ E => = ) ;
 E' => = ) ; 
 F => = + ) ; 
 F' => = + ) ; 
-IFELSE => & * bool {eof} false if int ( {nam} {num} }  true while 
+FDECL => {eof} 
+IFELSE => & * bool false if int ( {nam} {num} }  true while 
 NAME_LIST => ; 
 NAME_LIST' => ; 
 PROG => {eof} 
-STMT => & * bool {eof} false if int ( {nam} {num} }  true while 
-STMTS => {eof} } 
+STMT => & * bool false if int ( {nam} {num} }  true while 
+STMTS => } 
 T => = + ) ; 
 TYPE => {nam} 
 TYPE' => {nam} 
@@ -83,17 +86,18 @@ F' -> ( E )  => (
 F' -> {nam}  => {nam} 
 F' -> {num}  => {num} 
 F' ->  true  =>  true 
+FDECL -> {nam} ( ) { STMTS }  => {nam} 
 IFELSE -> else { STMTS }  => else 
-IFELSE -> {empty}  => & * bool {empty} {eof} false if int ( {nam} {num} }  true while 
+IFELSE -> {empty}  => & * bool {empty} false if int ( {nam} {num} }  true while 
 NAME_LIST -> {nam} NAME_LIST'  => {nam} 
 NAME_LIST' -> , {nam} NAME_LIST'  => , 
 NAME_LIST' -> {empty}  => {empty} ; 
-PROG -> STMTS  init  => & * bool {empty} false if int ( {nam} {num}  true while 
+PROG -> FDECL  init  => {nam} 
 STMT -> DECL ;  => bool int 
 STMT -> E = E ;  => & * false ( {nam} {num}  true 
 STMT -> if ( E ) { STMTS } IFELSE  => if 
 STMT -> while ( E ) { STMTS }  => while 
-STMTS -> {empty}  => {empty} {eof} } 
+STMTS -> {empty}  => {empty} } 
 STMTS -> STMT STMTS  => & * bool false if int ( {nam} {num}  true while 
 T -> F  => & * false ( {nam} {num}  true 
 TYPE -> bool TYPE'  => bool 

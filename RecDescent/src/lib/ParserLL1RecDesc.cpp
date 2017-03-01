@@ -41,23 +41,17 @@ void ParserLL1RecDesc::Parse(){
 
 void ParserLL1RecDesc::Prog(){
   NextToken();
-  std::vector<PtrStatement> stmts_inht;
-  std::string main_name("main");
 
-  unit_.NewFunction(main_name);
   const ScopeId id = unit_.NewFirstScope();
   PtrProgInit pinit = std::make_unique<AST::ProgInit>(id, CurrentLocus());
   PtrProgEnd  pend  = std::make_unique<AST::ProgEnd> (id, CurrentLocus());
 
   //parse main function
-  PtrBlock stmts_synt = Stmts(stmts_inht, id);
-  if(stmts_synt.get() != nullptr){
+
+  PtrFuncDecl pfunc = FuncDecl_(id);
+  if(pfunc){
 //     std::cout << "Prog" << std::endl;
     if(token_ != Tokenizer::kToken::eof) Error("More data after program.");
-
-    PtrBlock block = std::move(stmts_synt);
-
-    PtrFuncDecl pfunc = FuncDecl_(id);
 
     std::unique_ptr<AST::ProgBody> prog =
       std::make_unique<AST::ProgBody>(id, CurrentLocus(), pinit, pend, pfunc);
@@ -76,12 +70,14 @@ PtrFuncDecl ParserLL1RecDesc::FuncDecl_(const ScopeId scope_inht){
   Locus       l = CurrentLocus();
 
   if(Accept(kToken::name, kErr26)) name = prev_token_string_value_;
-  unit_.NewFunction(name);
-  const ScopeId id = unit_.NewFirstScope();
+
 
   Accept(kToken::lpar, kErr27);
   Accept(kToken::rpar, kErr28);
+
+
   Accept(kToken::lcbr, kErr29);
+  const ScopeId id = unit_.NewFunction(name);
 
   //STMTS
   std::vector<PtrStatement> stmts_inht;
@@ -91,7 +87,11 @@ PtrFuncDecl ParserLL1RecDesc::FuncDecl_(const ScopeId scope_inht){
   Accept(kToken::rcbr, kErr30);
 
   func_decl_synth = NewFuncDecl(name, stmts_synt, scope_inht, l);
+
   unit_.GetFunc(name).SetOriginNode(*func_decl_synth);
+
+  unit_.ExitFunctionDefinition();
+
 
   return std::move(func_decl_synth);
 }
@@ -132,7 +132,7 @@ PtrStatement ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
   //if(E){STMTS}
   if(TryAndAccept(kToken::kwd_if)){
 
-//     std::cout << "stmt::if\n";
+//      std::cout << "stmt::if\n";
     if(not Accept(kToken::lpar, "[err:6] if missing lpar.")) return std::move(stmt_synt);
     PtrExpr expr_synt = Exprs(scope_inht);
     if(expr_synt.get() == nullptr) Error("[err:7] if condition wrong.");
@@ -152,6 +152,7 @@ PtrStatement ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
       stmt_synt = NewIfStmt(expr_synt, stmts_synt, scope_inht, l);
     else
       stmt_synt = NewIfStmt(expr_synt, stmts_synt, ifelse_synt, scope_inht, l);
+//     std::cout << "<-stmt::if\n";
     return std::move(stmt_synt);
 
   }
@@ -246,8 +247,8 @@ PtrExpr ParserLL1RecDesc::ExprPrime(PtrExpr& eprime_inht, const ScopeId scope_in
 
   }
 
-  //check Follow(E')
-  if(AcceptEmpty({kToken::rpar, kToken::semicolon, kToken::equality},
+  //E' -> {empty}  => {empty} = ) ;
+  if(AcceptEmpty({kToken::equality, kToken::rpar, kToken::semicolon},
       "Expecting +")){
     eprime_synt = std::move(eprime_inht);
   }
@@ -309,11 +310,11 @@ PtrExpr ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
   //F' := name
   if(TryAndAccept(kToken::name)){
     if(not unit_.Scope().IsDecl(prev_token_string_value_)){
-      Error("[error:16] Var used before declaration");
+      Error(kErr16);
       //Error recovery: insert it as int
       VarDecl* n = new VarDecl(undeclared_name_, unit_.GetType(kBasicTypeId::kInt)
                            , scope_inht, l);
-      unit_.Scope().RegisterDecl(prev_token_string_value_, unit_.GetType(kBasicTypeId::kInt), *n);
+      unit_.RegisterDecl(prev_token_string_value_, unit_.GetType(kBasicTypeId::kInt), *n);
     }
     fp_synt = NewVar(prev_token_string_value_
                   , unit_.Scope().GetType(prev_token_string_value_)
@@ -359,12 +360,15 @@ PtrBlock ParserLL1RecDesc::IfElse(const ScopeId scope_inht){
     return std::move(ifelse_synt);
   }
 
-  AcceptEmpty( {kToken::kwd_bool, kToken::eof, kToken::kwd_if
+  //IFELSE -> {empty}  => & * bool {empty} false if int ( {nam} {num} }  true while
+  AcceptEmpty( { kToken::astk, kToken::ampersand, kToken::kwd_bool
+                , kToken::kwd_false, kToken::kwd_if
                 , kToken::kwd_int, kToken::lpar, kToken::name
-                , kToken::numerical, kToken::rcbr, kToken::kwd_while},
+                , kToken::numerical, kToken::rcbr, kToken::kwd_true
+                , kToken::kwd_while},
                 "Invalid token after if");
 
-//   std::cout << "<-IfElse\n";
+//    std::cout << "<-IfElse\n";
   return std::move(ifelse_synt);
 }
 
@@ -395,7 +399,7 @@ ParserLL1RecDesc::NameList(std::vector<PtrVarDecl>& name_list_inht
     VarDecl& n = *name_list_inht[name_list_inht.size() - 1];
 
 //     std::cout << "new var: "<< prev_token_string_value_ << "\n";
-    if(not unit_.Scope().RegisterDecl(prev_token_string_value_, type_inht, n)){
+    if(not unit_.RegisterDecl(prev_token_string_value_, type_inht, n)){
       Error("[err:15] Symbol already declared.");
     }
     name_list_synt = NameListPrime(name_list_inht, type_inht, scope_inht, locus_inht);
@@ -429,7 +433,7 @@ ParserLL1RecDesc::NameListPrime(std::vector<PtrVarDecl>& name_list_inht
 
       VarDecl& n = *name_list_inht[name_list_inht.size() - 1];
 
-      if(not unit_.Scope().RegisterDecl(prev_token_string_value_, type_inht, n)){
+      if(not unit_.RegisterDecl(prev_token_string_value_, type_inht, n)){
         Error("[err:15] Symbol already declared.");
       }
       name_list_synt = NameListPrime(name_list_inht, type_inht, scope_inht, locus_inht);
@@ -437,7 +441,7 @@ ParserLL1RecDesc::NameListPrime(std::vector<PtrVarDecl>& name_list_inht
     }
   }
 
-  //NAME_LIST':= empty
+  //NAME_LIST' -> {empty}  => {empty} ;
   if(AcceptEmpty({kToken::semicolon}, "Name missing")){
     //empty
     name_list_synt = NewVarDeclList(name_list_inht, scope_inht, locus_inht);

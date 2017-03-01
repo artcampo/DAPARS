@@ -13,7 +13,9 @@ F -> {num}
 F -> {nam} 
 
 ---------------------------------------------------
-Parsing: "int a, b; if(true){a=2+3;} b=3+4;"
+Parsing: "main(){ int a, b; if(true){a=2+3;} b=3+4; }"
+Undo end
+Undo end
 
 AST dump:
 -int a int b 
@@ -45,7 +47,9 @@ IR dump:
 9: r6 = Arith r4 + r5
 
 ---------------------------------------------------
-Parsing: "int a,b,c; while(true){b=2+3;} c=3+4;"
+Parsing: "main(){int a,b,c; while(true){b=2+3;} c=3+4; }"
+Undo end
+Undo end
 
 AST dump:
 -int a int b int c 
