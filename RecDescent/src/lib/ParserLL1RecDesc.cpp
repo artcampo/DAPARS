@@ -2,6 +2,7 @@
 #include "Node.hpp"
 #include "IRDefinition.hpp"
 // #include "CompilationUnit.hpp"
+#include "ErrorLog/Messages.hpp"
 #include "Types.hpp"
 #include <iterator>
 #include <fstream>
@@ -56,9 +57,7 @@ void ParserLL1RecDesc::Prog(){
 
     PtrBlock block = std::move(stmts_synt);
 
-    PtrFuncDecl pfunc =
-      std::make_unique<AST::FuncDecl>(id, CurrentLocus(), main_name, block);
-    unit_.GetFunc("main").SetOriginNode(*pfunc);
+    PtrFuncDecl pfunc = FuncDecl_(id);
 
     std::unique_ptr<AST::ProgBody> prog =
       std::make_unique<AST::ProgBody>(id, CurrentLocus(), pinit, pend, pfunc);
@@ -68,6 +67,33 @@ void ParserLL1RecDesc::Prog(){
     Error("AST not build");
   }
 
+}
+
+//FDECL :=  name (){ STMTS }
+PtrFuncDecl ParserLL1RecDesc::FuncDecl_(const ScopeId scope_inht){
+  PtrFuncDecl func_decl_synth(nullptr);
+  std::string name("func_name");
+  Locus       l = CurrentLocus();
+
+  if(Accept(kToken::name, kErr26)) name = prev_token_string_value_;
+  unit_.NewFunction(name);
+  const ScopeId id = unit_.NewFirstScope();
+
+  Accept(kToken::lpar, kErr27);
+  Accept(kToken::rpar, kErr28);
+  Accept(kToken::lcbr, kErr29);
+
+  //STMTS
+  std::vector<PtrStatement> stmts_inht;
+  PtrBlock stmts_synt = Stmts(stmts_inht, id);
+  if(not stmts_synt) Error(kErr31);
+
+  Accept(kToken::rcbr, kErr30);
+
+  func_decl_synth = NewFuncDecl(name, stmts_synt, scope_inht, l);
+  unit_.GetFunc(name).SetOriginNode(*func_decl_synth);
+
+  return std::move(func_decl_synth);
 }
 
 PtrBlock ParserLL1RecDesc::Stmts(std::vector<PtrStatement>& stmts_inht, const ScopeId scope_inht){

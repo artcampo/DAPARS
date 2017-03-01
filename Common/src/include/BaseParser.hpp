@@ -109,6 +109,10 @@ protected:
   PtrDerefOp
   NewDerefOp(PtrExpr& rhs, const ScopeId id, const Locus& locus);
 
+  PtrFuncDecl
+  NewFuncDecl(const std::string& name, PtrBlock& block
+            , const ScopeId id, const Locus& locus);
+
 private:
   int               num_errors_;
   bool              continue_parsing_;
