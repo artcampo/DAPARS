@@ -16,7 +16,7 @@ F -> {nam}
 Parsing: "main(){int a; (a=1); }"
 [err:14] Expecting rpar. at: "int a; (a=" -> "1); }"
 [err:4] Expecting semicolon after Expr. at: "t a; (a=1)" -> "; }"
-[err:3] Block not finishing in eof or rcbr at: "t a; (a=1)" -> "; }"
+[err:3] Block not finishing in rcbr at: "t a; (a=1)" -> "; }"
 [err:31] function body empty at: "t a; (a=1)" -> "; }"
 [err:30] function declaration's body not closed with '}' at: "t a; (a=1)" -> "; }"
 AST not build at: "t a; (a=1)" -> "; }"
@@ -548,10 +548,10 @@ Scope 4: {}
 ---------------------------------------------------
 Parsing: "main(){int a;a=1; if(2){a=3;}else{4;} }"
 [err:] assignment missing '=' at: "3;}else{4;" -> "} }"
-[err:3] Block not finishing in eof or rcbr at: "3;}else{4;" -> "} }"
+[err:3] Block not finishing in rcbr at: "3;}else{4;" -> "} }"
 Statements within else wrong. at: "3;}else{4;" -> "} }"
 else missing rcbr. at: "3;}else{4;" -> "} }"
-[err:3] Block not finishing in eof or rcbr at: "3;}else{4;" -> "} }"
+[err:3] Block not finishing in rcbr at: "3;}else{4;" -> "} }"
 [err:31] function body empty at: "3;}else{4;" -> "} }"
 [err:30] function declaration's body not closed with '}' at: "3;}else{4;" -> "} }"
 AST not build at: "3;}else{4;" -> "} }"
@@ -943,11 +943,11 @@ AST dump:
 --Literal: 2 [int Rvalue]
 -Assign
 --a [int* Lvalue]
---@ [int*]
+--@ [int* Lvalue]
 ---b [int Lvalue]
 -Assign
 --c [int Lvalue]
---* [int]
+--* [int Lvalue]
 ---a [int* Lvalue]
 Scope 1: {0, a 1, b 2, c }
 

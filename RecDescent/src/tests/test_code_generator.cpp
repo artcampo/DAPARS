@@ -78,7 +78,10 @@ int main()
     "main(){ int a, b; if(true){int c; a=2+3;} else{ int d, e,f; d = 4; } int g; b=5+6; }"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){int a,b,c; a = 2; b = 3 + a; c = a + b; }"), g);
+    "main(){int a,b; int* p; a = 2; p = &a; *p = a + b; }"), g);
+
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "main(){int a,b; int* p; a=*p; b=2; p = &b; a = b + *p; }"), g);
 
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(

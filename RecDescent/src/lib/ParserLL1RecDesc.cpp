@@ -102,9 +102,10 @@ PtrBlock ParserLL1RecDesc::Stmts(std::vector<PtrStatement>& stmts_inht, const Sc
   PtrBlock stmts_synt(nullptr);
   Locus l = CurrentLocus();
 
-  //STMTS => bool {empty} if int ( {nam} {num}
-  if( Check({kToken::kwd_if, kToken::kwd_int, kToken::kwd_bool, kToken::lpar
-          , kToken::numerical, kToken::name, kToken::kwd_while})){
+  //STMTS -> STMT STMTS  => & * bool false if int ( {nam} {num}  true while
+  if( Check({ kToken::ampersand, kToken::astk, kToken::kwd_bool, kToken::kwd_if
+            , kToken::kwd_int,  kToken::lpar, kToken::name, kToken::numerical
+            , kToken::kwd_while})){
       PtrStatement stmt_synth = Stmt(scope_inht);
 
       stmts_inht.push_back(std::move(stmt_synth));
@@ -113,8 +114,8 @@ PtrBlock ParserLL1RecDesc::Stmts(std::vector<PtrStatement>& stmts_inht, const Sc
 
     }
 
-  //check follow(Stmts)
-  if(AcceptEmpty({kToken::eof, kToken::rcbr}, "[err:3] Block not finishing in eof or rcbr")){
+  //STMTS => }
+  if(AcceptEmpty({kToken::rcbr}, "[err:3] Block not finishing in rcbr")){
 //       unit.
     stmts_synt = NewBlock(stmts_inht, scope_inht, l);
   }
@@ -129,7 +130,7 @@ PtrStatement ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
   PtrStatement stmt_synt(nullptr);
   Locus l = CurrentLocus();
 
-  //if(E){STMTS}
+  //STMT -> if ( E ) { STMTS } IFELSE  => if
   if(TryAndAccept(kToken::kwd_if)){
 
 //      std::cout << "stmt::if\n";
@@ -157,6 +158,7 @@ PtrStatement ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
 
   }
 
+  //STMT -> while ( E ) { STMTS }  => while
   //while(E){STMTS}
   if(TryAndAccept(kToken::kwd_while)){
     if(not Accept(kToken::lpar, "[err:] while missing lpar.")) return std::move(stmt_synt);
@@ -175,7 +177,7 @@ PtrStatement ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
     return std::move(stmt_synt);
   }
 
-  //VarDecl
+  //STMT -> DECL ;  => bool int
   if(Check({kToken::kwd_int, kToken::kwd_bool})){
 //     std::cout << "stmt::decl stmt\n";
     PtrVarDeclList decl_synt = Decl(scope_inht);
@@ -184,7 +186,9 @@ PtrStatement ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
     return std::move(stmt_synt);
   }
 
-  if(Check({kToken::lpar, kToken::name, kToken::numerical})){
+  //STMT -> E = E ;  => & * false ( {nam} {num}  true
+  if(Check({kToken::ampersand, kToken::astk, kToken::kwd_false, kToken::lpar
+          , kToken::name, kToken::numerical, kToken::kwd_true})){
 //     std::cout << "stmt::assign stmt\n";
     PtrExpr expr_lhs  = Exprs(scope_inht);
     if(not Accept(kToken::equality, "[err:] assignment missing '='")){
