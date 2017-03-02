@@ -88,6 +88,11 @@ int main()
     "main(){int a,b,c; a= 2+1; a = b+c; 2 = 2; }"), g);
 
 
+  //tests that sigsev
+  /*
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "main(){ int a, b; if(true){int c; a=2+3;} else{ int d, e,f; d = 4 } int g; b=5+6; }"), g);
+   */
 
   //Chaotic cluster fuck
   parse<Grammar,ParserLL1RecDesc>( std::string(
