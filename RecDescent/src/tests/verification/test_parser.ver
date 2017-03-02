@@ -35,9 +35,6 @@ AST dump (without extra info):
 -Assign
 --a
 --Literal: 3
-Local offset
-int a to offset: 0
-Symbol: [a]
 
 AST pretty:
 int a 
@@ -70,9 +67,6 @@ AST dump (without extra info):
 ----Literal: 2
 ----Literal: 3
 ---Literal: 4
-Local offset
-int a to offset: 0
-Symbol: [a]
 
 AST pretty:
 int a 
@@ -103,9 +97,6 @@ AST dump (without extra info):
 ----Literal: 2
 ----Literal: 3
 ---Literal: 4
-Local offset
-int a to offset: 0
-Symbol: [a]
 
 AST pretty:
 int a 
@@ -138,9 +129,6 @@ AST dump (without extra info):
 --Op: + 
 ---Literal: 3
 ---Literal: 4
-Local offset
-int a to offset: 0
-Symbol: [a]
 
 AST pretty:
 int a 
@@ -182,9 +170,6 @@ AST dump (without extra info):
 --Op: + 
 ---Literal: 5
 ---Literal: 6
-Local offset
-int a to offset: 0
-Symbol: [a]
 
 AST pretty:
 int a 
@@ -242,9 +227,6 @@ AST dump (without extra info):
 ----Literal: 3
 
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;} }"
-Local offset
-int a to offset: 0
-Symbol: [a]
 
 AST pretty:
 int a 
@@ -287,9 +269,6 @@ AST dump (without extra info):
 --a
 --Literal: 4
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;} a=4; }"
-Local offset
-int a to offset: 0
-Symbol: [a]
 
 AST pretty:
 int a 
@@ -337,9 +316,6 @@ AST dump (without extra info):
 -----Literal: 5
 
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;} }"
-Local offset
-int a to offset: 0
-Symbol: [a]
 
 AST pretty:
 int a 
@@ -390,9 +366,6 @@ AST dump (without extra info):
 --a
 --Literal: 6
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;} a=6; }"
-Local offset
-int a to offset: 0
-Symbol: [a]
 
 AST pretty:
 int a 
@@ -453,9 +426,6 @@ AST dump (without extra info):
 [err:21] if's condition is not a bool at: "){a=4;if(5" -> "){a=6;}}} }"
 [err:21] if's condition is not a bool at: "if(2){if(3" -> "){a=4;if(5){a=6;}}} }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4;if(5){a=6;}}} }"
-Local offset
-int a to offset: 0
-Symbol: [a]
 
 AST pretty:
 int a 
@@ -530,9 +500,6 @@ AST dump (without extra info):
 [err:21] if's condition is not a bool at: "a=4+5;if(6" -> "){a=7+8;}}} }"
 [err:21] if's condition is not a bool at: "if(2){if(3" -> "){a=4+5;if(6){a=7+8;}}} }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4+5;if(6){a=7+8;}}} }"
-Local offset
-int a to offset: 0
-Symbol: [a]
 
 AST pretty:
 int a 
@@ -617,9 +584,6 @@ AST dump (without extra info):
 
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;}if(4){a=5;}else{a=6;} }"
 [err:21] if's condition is not a bool at: "{a=3;}if(4" -> "){a=5;}else{a=6;} }"
-Local offset
-int a to offset: 0
-Symbol: [a]
 
 AST pretty:
 int a 
@@ -669,13 +633,6 @@ AST dump (without extra info):
 -int a 
 -int b 
 -bool c 
-Local offset
-int a to offset: 0
-Symbol: [a]
-int b to offset: 1
-Symbol: [b]
-bool c to offset: 2
-Symbol: [c]
 
 AST pretty:
 int a 
@@ -695,17 +652,6 @@ Parsing: "main(){int b, c, d; bool e f; }"
 AST dump (without extra info):
 -int b int c int d 
 -bool e bool f 
-Local offset
-int b to offset: 0
-Symbol: [b]
-int c to offset: 1
-Symbol: [c]
-int d to offset: 2
-Symbol: [d]
-bool e to offset: 3
-Symbol: [e]
-bool f to offset: 4
-Symbol: [f]
 
 AST pretty:
 int b int c int d 
@@ -724,9 +670,6 @@ AST dump (without extra info):
 -Assign
 --a
 --Literal: 1
-Local offset
-int a to offset: 0
-Symbol: [a]
 
 AST pretty:
 int a 
@@ -751,9 +694,6 @@ AST dump (without extra info):
 ----Literal: 1
 ----Literal: 2
 ---Literal: 3
-Local offset
-int a to offset: 0
-Symbol: [a]
 
 AST pretty:
 int a 
@@ -790,13 +730,6 @@ AST dump (without extra info):
 ----Literal: 1
 ----b
 ---c
-Local offset
-int a to offset: 0
-Symbol: [a]
-int b to offset: 1
-Symbol: [b]
-int c to offset: 2
-Symbol: [c]
 
 AST pretty:
 int a int b int c 
@@ -838,11 +771,6 @@ AST dump (without extra info):
 ---int b 
 
 [err:21] if's condition is not a bool at: "nt a; if(1" -> "){int b;} }"
-Local offset
-int a to offset: 0
-Symbol: [a]
-int b to offset: 1
-Symbol: [b]
 
 AST pretty:
 int a 
@@ -873,13 +801,6 @@ AST dump (without extra info):
 ---int c 
 
 [err:21] if's condition is not a bool at: "nt a; if(1" -> "){int b;}else{int c;} }"
-Local offset
-int a to offset: 0
-Symbol: [a]
-int b to offset: 1
-Symbol: [b]
-int c to offset: 1
-Symbol: [c]
 
 AST pretty:
 int a 
@@ -921,11 +842,6 @@ AST dump (without extra info):
 -----Literal: 2
 
 [err:20] while's condition is not a bool at: " while(1 +" -> " 2){ int c; c = 1+2; } }"
-Local offset
-int a to offset: 0
-Symbol: [a]
-int c to offset: 1
-Symbol: [c]
 
 AST pretty:
 int a 
@@ -962,11 +878,6 @@ AST dump (without extra info):
 -Assign
 --b
 --Literal: 0
-Local offset
-bool a to offset: 0
-Symbol: [a]
-bool b to offset: 1
-Symbol: [b]
 
 AST pretty:
 bool a bool b 
@@ -989,11 +900,6 @@ Parsing: "main(){ int* a; int* b; }"
 AST dump (without extra info):
 -int* a 
 -int* b 
-Local offset
-int* a to offset: 0
-Symbol: [a]
-int* b to offset: 1
-Symbol: [b]
 
 AST pretty:
 int* a 
@@ -1021,13 +927,6 @@ AST dump (without extra info):
 --c
 --*
 ---a
-Local offset
-int* a to offset: 0
-Symbol: [a]
-int b to offset: 1
-Symbol: [b]
-int c to offset: 2
-Symbol: [c]
 
 AST pretty:
 int* a 

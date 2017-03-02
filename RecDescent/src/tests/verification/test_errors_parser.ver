@@ -147,9 +147,6 @@ AST not build at: "; int a; }" -> ""
 ------------------------------------------------------------------
 Parsing: "main(){int a; a=1+b; }"
 [error:16] Var used before declaration at: " a; a=1+b;" -> " }"
-Local offset
-int a to offset: 0
-Symbol: [a]
 
 AST dump:
 -int a 
@@ -162,11 +159,6 @@ AST dump:
 ------------------------------------------------------------------
 Parsing: "main(){int a; bool b; a=a+b; }"
 [err:17] Incompatible types in op at: "ol b; a=a+" -> "b; }"
-Local offset
-int a to offset: 0
-Symbol: [a]
-bool b to offset: 1
-Symbol: [b]
 
 AST dump:
 -int a 
@@ -180,11 +172,6 @@ AST dump:
 ------------------------------------------------------------------
 Parsing: "main(){int a; bool b; a=b+b; }"
 [err:18] Incompatible types in assignment at: " bool b; a" -> "=b+b; }"
-Local offset
-int a to offset: 0
-Symbol: [a]
-bool b to offset: 1
-Symbol: [b]
 
 AST dump:
 -int a 
@@ -199,13 +186,6 @@ AST dump:
 Parsing: "main(){int a b c; }"
 [err:19] Variables must be separated with comma. at: "(){int a b" -> " c; }"
 [err:19] Variables must be separated with comma. at: "{int a b c" -> "; }"
-Local offset
-int a to offset: 0
-Symbol: [a]
-int b to offset: 1
-Symbol: [b]
-int c to offset: 2
-Symbol: [c]
 
 AST dump:
 -int a int b int c 
@@ -213,13 +193,6 @@ AST dump:
 ------------------------------------------------------------------
 Parsing: "main(){int a,b,c; a= 2+1; a = b+c; 2 = 2; }"
 [err:22] left of assignment is not an Lval at: "a = b+c; 2" -> " = 2; }"
-Local offset
-int a to offset: 0
-Symbol: [a]
-int b to offset: 1
-Symbol: [b]
-int c to offset: 2
-Symbol: [c]
 
 AST dump:
 -int a int b int c 
@@ -242,11 +215,6 @@ Parsing: "main(){bool a; int b; a = true; b = 1; a = b; b = true; a = 2; }"
 [err:18] Incompatible types in assignment at: "; b = 1; a" -> " = b; b = true; a = 2; }"
 [err:18] Incompatible types in assignment at: "; a = b; b" -> " = true; a = 2; }"
 [err:18] Incompatible types in assignment at: " = true; a" -> " = 2; }"
-Local offset
-bool a to offset: 0
-Symbol: [a]
-int b to offset: 1
-Symbol: [b]
 
 AST dump:
 -bool a 

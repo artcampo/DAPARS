@@ -48,9 +48,9 @@ void parse(const std::string& str, G& g)
     pm.Run();
   }
   if(unit.GetAstProg() != nullptr){
-    std::cout << "\nAST dump:\n";
-    ASTVisitorDump visitor_dump(unit, true);
-    visitor_dump.Visit(*unit.GetAstProg());
+//     std::cout << "\nAST dump:\n";
+//     ASTVisitorDump visitor_dump(unit, true);
+//     visitor_dump.Visit(*unit.GetAstProg());
 
 
     IRGenerator visitor_irgen(unit);

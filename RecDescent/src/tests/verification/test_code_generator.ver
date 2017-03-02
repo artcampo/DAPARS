@@ -17,44 +17,20 @@ Parsing: "main(){int a,b,c; while(true){b=2+3;} c=3+4; }"
 Scope 1: {0, a 1, b 2, c }
 Scope 2: {}
 
-Local offset
-int a to offset: 0
-Symbol: [a]
-int b to offset: 1
-Symbol: [b]
-int c to offset: 2
-Symbol: [c]
-
-AST dump:
--int a int b int c 
--WhileStmt:
---Cond: Literal: 1 [bool Rvalue]
---Body:
----Assign
-----b [int Lvalue]
-----Op: +  [int Rvalue]
------Literal: 2 [int Rvalue]
------Literal: 3 [int Rvalue]
-
---Assign
----c [int Lvalue]
----Op: +  [int Rvalue]
-----Literal: 3 [int Rvalue]
-----Literal: 4 [int Rvalue]
 
 IR dump:
-0: r0 = LoadI of 1
-1: JumpCondTrue reg:0 to:3
-2: JumpCondFalse reg:0 to:8
-3: r1 = LoadI of 2
-4: r2 = LoadI of 3
-5: r3 = Arith r1 + r2
-6: store r3 to LabelLT: 01 Symbol: [b]
-7: JumpCondFalse reg:0 to:0
-8: r5 = LoadI of 3
-9: r6 = LoadI of 4
-10: r7 = Arith r5 + r6
-11: store r7 to LabelLT: 02 Symbol: [c]
+0: %0 = LoadI(1)
+1: JumpCondTrue %0 to:3
+2: JumpCondFalse %0 to:8
+3: %1 = LoadI(2)
+4: %2 = LoadI(3)
+5: %3 = %1 + %2
+6: store %3 to [Main:b]
+7: JumpCondFalse %0 to:0
+8: %5 = LoadI(3)
+9: %6 = LoadI(4)
+10: %7 = %5 + %6
+11: store %7 to [Main:c]
 
 ---------------------------------------------------
 Parsing: "main(){ int a, b; if(true){int c; a=2+3;} else{ int d, e,f; } int g; b=3+4; }"
@@ -62,94 +38,35 @@ Scope 1: {0, a 1, b 6, g }
 Scope 2: {2, c }
 Scope 3: {3, d 4, e 5, f }
 
-Local offset
-int a to offset: 0
-Symbol: [a]
-int b to offset: 1
-Symbol: [b]
-int c to offset: 2
-Symbol: [c]
-int d to offset: 2
-Symbol: [d]
-int e to offset: 3
-Symbol: [e]
-int f to offset: 4
-Symbol: [f]
-int g to offset: 5
-Symbol: [g]
-
-AST dump:
--int a int b 
--IfStmt:
---Cond: Literal: 1 [bool Rvalue]
---Then:
----int c 
----Assign
-----a [int Lvalue]
-----Op: +  [int Rvalue]
------Literal: 2 [int Rvalue]
------Literal: 3 [int Rvalue]
---Else:
----int d int e int f 
-
--int g 
--Assign
---b [int Lvalue]
---Op: +  [int Rvalue]
----Literal: 3 [int Rvalue]
----Literal: 4 [int Rvalue]
 
 IR dump:
-0: r0 = LoadI of 1
-1: JumpCondTrue reg:0 to:3
-2: JumpCondFalse reg:0 to:0
-3: r1 = LoadI of 2
-4: r2 = LoadI of 3
-5: r3 = Arith r1 + r2
-6: store r3 to LabelLT: 00 Symbol: [a]
+0: %0 = LoadI(1)
+1: JumpCondTrue %0 to:3
+2: JumpCondFalse %0 to:0
+3: %1 = LoadI(2)
+4: %2 = LoadI(3)
+5: %3 = %1 + %2
+6: store %3 to [Main:a]
 7: JumpIncond8
-8: r5 = LoadI of 3
-9: r6 = LoadI of 4
-10: r7 = Arith r5 + r6
-11: store r7 to LabelLT: 01 Symbol: [b]
+8: %5 = LoadI(3)
+9: %6 = LoadI(4)
+10: %7 = %5 + %6
+11: store %7 to [Main:b]
 
 ---------------------------------------------------
 Parsing: "main(){int a,b,c; a = 2; b = 3 + a; c = a + b; }"
 Scope 1: {0, a 1, b 2, c }
 
-Local offset
-int a to offset: 0
-Symbol: [a]
-int b to offset: 1
-Symbol: [b]
-int c to offset: 2
-Symbol: [c]
-
-AST dump:
--int a int b int c 
--Assign
---a [int Lvalue]
---Literal: 2 [int Rvalue]
--Assign
---b [int Lvalue]
---Op: +  [int Rvalue]
----Literal: 3 [int Rvalue]
----a [int Lvalue]
--Assign
---c [int Lvalue]
---Op: +  [int Rvalue]
----a [int Lvalue]
----b [int Lvalue]
 
 IR dump:
-0: r0 = LoadI of 2
-1: store r0 to LabelLT: 00 Symbol: [a]
-2: r2 = LoadI of 3
-3: r3 = Load of LabelLT: 00 Symbol: [a]
-4: r4 = Arith r2 + r3
-5: store r4 to LabelLT: 01 Symbol: [b]
-6: r6 = Load of LabelLT: 00 Symbol: [a]
-7: r7 = Load of LabelLT: 01 Symbol: [b]
-8: r8 = Arith r6 + r7
-9: store r8 to LabelLT: 02 Symbol: [c]
+0: %0 = LoadI(2)
+1: store %0 to [Main:a]
+2: %2 = LoadI(3)
+3: %3 = Load [Main:a]
+4: %4 = %2 + %3
+5: store %4 to [Main:b]
+6: %6 = Load [Main:a]
+7: %7 = Load [Main:b]
+8: %8 = %6 + %7
+9: store %8 to [Main:c]
 
