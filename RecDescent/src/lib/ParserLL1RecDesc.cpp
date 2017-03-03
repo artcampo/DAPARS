@@ -46,21 +46,34 @@ void ParserLL1RecDesc::Prog(){
   PtrProgInit pinit = std::make_unique<AST::ProgInit>(id, CurrentLocus());
   PtrProgEnd  pend  = std::make_unique<AST::ProgEnd> (id, CurrentLocus());
 
-  //parse main function
+  //parse all functions
+  std::vector<PtrFuncDef> func_defs;
+  FuncDefList(func_defs, id);
 
-  PtrFuncDef pfunc = FuncDef_(id);
-  if(pfunc){
-//     std::cout << "Prog" << std::endl;
+  if(func_defs.size() > 0){
     if(token_ != Tokenizer::kToken::eof) Error("More data after program.");
 
     std::unique_ptr<AST::ProgBody> prog =
-      std::make_unique<AST::ProgBody>(id, CurrentLocus(), pinit, pend, pfunc);
+      std::make_unique<AST::ProgBody>(id, CurrentLocus(), pinit, pend, func_defs);
 
     unit_.InitAst(prog);
   }else{
     Error("AST not build");
   }
 
+}
+
+void ParserLL1RecDesc::FuncDefList(std::vector<PtrFuncDef>& fdefl_inht,
+    const ScopeId scope_inht
+){
+  PtrFuncDef fdef(nullptr);
+  if(Check({ kToken::name })){
+    fdef = FuncDef_(scope_inht);
+    fdefl_inht.push_back( std::move(fdef));
+    return;
+  }
+
+  AcceptEmpty({kToken::eof}, "[err:] File not ending in eof");
 }
 
 //FDECL :=  name (){ STMTS }

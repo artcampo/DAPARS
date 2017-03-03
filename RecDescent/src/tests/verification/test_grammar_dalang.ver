@@ -7,8 +7,10 @@ KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
 Dalang grammar v0.3
 Grammar:
-PROG -> FDECL  init 
-FDECL -> {nam} ( ) { STMTS } 
+PROG -> FDEFL  init 
+FDEFL -> FDEF FDEFL 
+FDEFL -> {empty} 
+FDEF -> {nam} ( ) { STMTS } 
 STMTS -> STMT STMTS 
 STMTS -> {empty} 
 STMT -> E = E ; 
@@ -45,11 +47,12 @@ E => & * false ( {nam} {num}  true
 E' => {empty} + 
 F => & * false ( {nam} {num}  true 
 F' => false ( {nam} {num}  true 
-FDECL => {nam} 
+FDEF => {nam} 
+FDEFL => {empty} {nam} 
 IFELSE => else {empty} 
 NAME_LIST => {nam} 
 NAME_LIST' => , {empty} 
-PROG => {nam} 
+PROG => {empty} {nam} 
 STMT => & * bool false if int ( {nam} {num}  true while 
 STMTS => & * bool {empty} false if int ( {nam} {num}  true while 
 T => & * false ( {nam} {num}  true 
@@ -62,7 +65,8 @@ E => = ) ;
 E' => = ) ; 
 F => = + ) ; 
 F' => = + ) ; 
-FDECL => {eof} 
+FDEF => {eof} {nam} 
+FDEFL => {eof} 
 IFELSE => & * bool false if int ( {nam} {num} }  true while 
 NAME_LIST => ; 
 NAME_LIST' => ; 
@@ -86,13 +90,15 @@ F' -> ( E )  => (
 F' -> {nam}  => {nam} 
 F' -> {num}  => {num} 
 F' ->  true  =>  true 
-FDECL -> {nam} ( ) { STMTS }  => {nam} 
+FDEF -> {nam} ( ) { STMTS }  => {nam} 
+FDEFL -> {empty}  => {empty} {eof} 
+FDEFL -> FDEF FDEFL  => {nam} 
 IFELSE -> else { STMTS }  => else 
 IFELSE -> {empty}  => & * bool {empty} false if int ( {nam} {num} }  true while 
 NAME_LIST -> {nam} NAME_LIST'  => {nam} 
 NAME_LIST' -> , {nam} NAME_LIST'  => , 
 NAME_LIST' -> {empty}  => {empty} ; 
-PROG -> FDECL  init  => {nam} 
+PROG -> FDEFL  init  => {empty} {nam} 
 STMT -> DECL ;  => bool int 
 STMT -> E = E ;  => & * false ( {nam} {num}  true 
 STMT -> if ( E ) { STMTS } IFELSE  => if 

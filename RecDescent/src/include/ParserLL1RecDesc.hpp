@@ -28,6 +28,7 @@ private:
 
   void  Prog();
 
+  void FuncDefList(std::vector<PtrFuncDef>& fdefl_inht, const ScopeId scope_inht);
   PtrFuncDef FuncDef_(const ScopeId scope_inht);
 
   //Exprs

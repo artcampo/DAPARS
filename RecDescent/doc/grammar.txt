@@ -1,7 +1,10 @@
 conditional flow
-Prog   := P_INIT STMTS P_END
+Prog   := P_INIT FDEFL P_END
 P_INIT := empty
 P_END  := empty
+
+FDEFL  := FDEF FDEFL
+       |  empty
 
 FDEF  :=  name (){ STMTS }
 

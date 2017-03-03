@@ -57,3 +57,12 @@ STMT  := if(E){STMTS} IFELSE  ** STMTS.inht = new ScopeId()
 
 IFELSE:= else{STMTS}          ** STMTS.inht = new ScopeId()
       |  empty
+
+------------------------------------------------------------------------------
+L-attributed SDD for FuncDef vector creation.
+
+Prog   := P_INIT FDEFL P_END  ** FDEFL.inht  = {}
+
+FDEFL  := FDEF FDEFL          ** FDEFL1.inht = {FDEFL.inht, FDEF.synt}
+       |  empty               ** FDEFL.synt = vec< FDEFL.inht>
+
