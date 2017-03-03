@@ -131,7 +131,7 @@ IR dump:
 8: store %0 to [%6]
 
 ---------------------------------------------------
-Parsing: "main(){int a,b; int* p; a=*p; b=2; p = &b; a = b + *p; }"
+Parsing: "main(){int a,b; int* p; a=*p; b=2; p = &b; a = b + *p;}"
 Scope 1: {0, a 1, b 2, p }
 
 
@@ -169,26 +169,4 @@ IR dump:
 9: %9 = Load [ %8]
 10: %10 = %7 + %9
 11: store %10 to [Main:a]
-
----------------------------------------------------
-Parsing: "main(){int a,b; int* p; a = b + *p; }"
-Scope 1: {0, a 1, b 2, p }
-
-
-AST dump:
--int a int b 
--int* p 
--Assign
---a [int Lvalue Write Value]
---Op: +  [int Rvalue]
----b [int Lvalue Read Value]
----* [int Lvalue Read]
-----p [int* Lvalue Read Value]
-
-IR dump:
-0: %0 = Load [Main:b]
-1: %1 = Load [Main:p]
-2: %2 = Load [ %1]
-3: %3 = %0 + %2
-4: store %3 to [Main:a]
 
