@@ -45,13 +45,13 @@ a=3
 AST dump:
 -int a 
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Literal: 1 [int Rvalue]
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Literal: 2 [int Rvalue]
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Literal: 3 [int Rvalue]
 Scope 1: {0, a }
 
@@ -75,7 +75,7 @@ a=( ( 2 + 3 ) + 4 )
 AST dump:
 -int a 
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Op: +  [int Rvalue]
 ---Op: +  [int Rvalue]
 ----Literal: 2 [int Rvalue]
@@ -105,7 +105,7 @@ a=( ( 2 + 3 ) + 4 )
 AST dump:
 -int a 
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Op: +  [int Rvalue]
 ---Op: +  [int Rvalue]
 ----Literal: 2 [int Rvalue]
@@ -138,12 +138,12 @@ a=( 3 + 4 )
 AST dump:
 -int a 
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Op: +  [int Rvalue]
 ---Literal: 1 [int Rvalue]
 ---Literal: 2 [int Rvalue]
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Op: +  [int Rvalue]
 ---Literal: 3 [int Rvalue]
 ---Literal: 4 [int Rvalue]
@@ -180,17 +180,17 @@ a=( 5 + 6 )
 AST dump:
 -int a 
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Op: +  [int Rvalue]
 ---Literal: 1 [int Rvalue]
 ---Literal: 2 [int Rvalue]
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Op: +  [int Rvalue]
 ---Literal: 3 [int Rvalue]
 ---Literal: 4 [int Rvalue]
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Op: +  [int Rvalue]
 ---Literal: 5 [int Rvalue]
 ---Literal: 6 [int Rvalue]
@@ -238,13 +238,13 @@ if(2){
 AST dump:
 -int a 
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Literal: 1 [int Rvalue]
 -IfStmt:
 --Cond: Literal: 2 [int Rvalue]
 --Then:
 ---Assign
-----a [int Lvalue]
+----a [int Lvalue Write Value]
 ----Literal: 3 [int Rvalue]
 
 Scope 1: {0, a }
@@ -281,17 +281,17 @@ a=4
 AST dump:
 -int a 
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Literal: 1 [int Rvalue]
 -IfStmt:
 --Cond: Literal: 2 [int Rvalue]
 --Then:
 ---Assign
-----a [int Lvalue]
+----a [int Lvalue Write Value]
 ----Literal: 3 [int Rvalue]
 
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Literal: 4 [int Rvalue]
 Scope 1: {0, a }
 Scope 2: {}
@@ -327,13 +327,13 @@ if(2){
 AST dump:
 -int a 
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Literal: 1 [int Rvalue]
 -IfStmt:
 --Cond: Literal: 2 [int Rvalue]
 --Then:
 ---Assign
-----a [int Lvalue]
+----a [int Lvalue Write Value]
 ----Op: +  [int Rvalue]
 -----Op: +  [int Rvalue]
 ------Literal: 3 [int Rvalue]
@@ -378,13 +378,13 @@ a=6
 AST dump:
 -int a 
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Literal: 1 [int Rvalue]
 -IfStmt:
 --Cond: Literal: 2 [int Rvalue]
 --Then:
 ---Assign
-----a [int Lvalue]
+----a [int Lvalue Write Value]
 ----Op: +  [int Rvalue]
 -----Op: +  [int Rvalue]
 ------Literal: 3 [int Rvalue]
@@ -392,7 +392,7 @@ AST dump:
 -----Literal: 5 [int Rvalue]
 
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Literal: 6 [int Rvalue]
 Scope 1: {0, a }
 Scope 2: {}
@@ -442,7 +442,7 @@ if(2){
 AST dump:
 -int a 
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Literal: 1 [int Rvalue]
 -IfStmt:
 --Cond: Literal: 2 [int Rvalue]
@@ -451,13 +451,13 @@ AST dump:
 ----Cond: Literal: 3 [int Rvalue]
 ----Then:
 -----Assign
-------a [int Lvalue]
+------a [int Lvalue Write Value]
 ------Literal: 4 [int Rvalue]
 -----IfStmt:
 ------Cond: Literal: 5 [int Rvalue]
 ------Then:
 -------Assign
---------a [int Lvalue]
+--------a [int Lvalue Write Value]
 --------Literal: 6 [int Rvalue]
 
 
@@ -516,7 +516,7 @@ if(2){
 AST dump:
 -int a 
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Literal: 1 [int Rvalue]
 -IfStmt:
 --Cond: Literal: 2 [int Rvalue]
@@ -525,7 +525,7 @@ AST dump:
 ----Cond: Literal: 3 [int Rvalue]
 ----Then:
 -----Assign
-------a [int Lvalue]
+------a [int Lvalue Write Value]
 ------Op: +  [int Rvalue]
 -------Literal: 4 [int Rvalue]
 -------Literal: 5 [int Rvalue]
@@ -533,7 +533,7 @@ AST dump:
 ------Cond: Literal: 6 [int Rvalue]
 ------Then:
 -------Assign
---------a [int Lvalue]
+--------a [int Lvalue Write Value]
 --------Op: +  [int Rvalue]
 ---------Literal: 7 [int Rvalue]
 ---------Literal: 8 [int Rvalue]
@@ -601,24 +601,24 @@ else{
 AST dump:
 -int a 
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Literal: 1 [int Rvalue]
 -IfStmt:
 --Cond: Literal: 2 [int Rvalue]
 --Then:
 ---Assign
-----a [int Lvalue]
+----a [int Lvalue Write Value]
 ----Literal: 3 [int Rvalue]
 
 -IfStmt:
 --Cond: Literal: 4 [int Rvalue]
 --Then:
 ---Assign
-----a [int Lvalue]
+----a [int Lvalue Write Value]
 ----Literal: 5 [int Rvalue]
 --Else:
 ---Assign
-----a [int Lvalue]
+----a [int Lvalue Write Value]
 ----Literal: 6 [int Rvalue]
 
 Scope 1: {0, a }
@@ -678,7 +678,7 @@ a=1
 AST dump:
 -int a 
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Literal: 1 [int Rvalue]
 Scope 1: {0, a }
 
@@ -702,7 +702,7 @@ a=( ( 1 + 2 ) + 3 )
 AST dump:
 -int a 
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Op: +  [int Rvalue]
 ---Op: +  [int Rvalue]
 ----Literal: 1 [int Rvalue]
@@ -740,18 +740,18 @@ a=( ( 1 + b ) + c )
 AST dump:
 -int a int b int c 
 -Assign
---b [int Lvalue]
+--b [int Lvalue Write Value]
 --Literal: 1 [int Rvalue]
 -Assign
---c [int Lvalue]
+--c [int Lvalue Write Value]
 --Literal: 2 [int Rvalue]
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Op: +  [int Rvalue]
 ---Op: +  [int Rvalue]
 ----Literal: 1 [int Rvalue]
-----b [int Lvalue]
----c [int Lvalue]
+----b [int Lvalue Read Value]
+---c [int Lvalue Read Value]
 Scope 1: {0, a 1, b 2, c }
 
 ---------------------------------------------------
@@ -859,7 +859,7 @@ AST dump:
 --Body:
 ---int c 
 ---Assign
-----c [int Lvalue]
+----c [int Lvalue Write Value]
 ----Op: +  [int Rvalue]
 -----Literal: 1 [int Rvalue]
 -----Literal: 2 [int Rvalue]
@@ -887,10 +887,10 @@ b=0
 AST dump:
 -bool a bool b 
 -Assign
---a [bool Lvalue]
+--a [bool Lvalue Write Value]
 --Literal: 1 [bool Rvalue]
 -Assign
---b [bool Lvalue]
+--b [bool Lvalue Write Value]
 --Literal: 0 [bool Rvalue]
 Scope 1: {0, a 1, b }
 
@@ -939,15 +939,15 @@ AST dump:
 -int* a 
 -int b int c 
 -Assign
---b [int Lvalue]
+--b [int Lvalue Write Value]
 --Literal: 2 [int Rvalue]
 -Assign
---a [int* Lvalue]
+--a [int* Lvalue Write Value]
 --@ [int* Lvalue]
----b [int Lvalue]
+---b [int Lvalue Read Address]
 -Assign
---c [int Lvalue]
---* [int Lvalue]
----a [int* Lvalue]
+--c [int Lvalue Write Value]
+--* [int Lvalue Read]
+---a [int* Lvalue Read Value]
 Scope 1: {0, a 1, b 2, c }
 

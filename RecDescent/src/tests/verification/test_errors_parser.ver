@@ -156,10 +156,10 @@ Parsing: "main(){int a; a=1+b; }"
 AST dump:
 -int a 
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Op: +  [int Rvalue]
 ---Literal: 1 [int Rvalue]
----b [int Lvalue]
+---b [int Lvalue Read Value]
 
 ------------------------------------------------------------------
 Parsing: "main(){int a; bool b; a=a+b; }"
@@ -169,10 +169,10 @@ AST dump:
 -int a 
 -bool b 
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Op: +  [int Rvalue]
----a [int Lvalue]
----b [bool Lvalue]
+---a [int Lvalue Read Value]
+---b [bool Lvalue Read Value]
 
 ------------------------------------------------------------------
 Parsing: "main(){int a; bool b; a=b+b; }"
@@ -182,10 +182,10 @@ AST dump:
 -int a 
 -bool b 
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Op: +  [bool Rvalue]
----b [bool Lvalue]
----b [bool Lvalue]
+---b [bool Lvalue Read Value]
+---b [bool Lvalue Read Value]
 
 ------------------------------------------------------------------
 Parsing: "main(){int a b c; }"
@@ -202,15 +202,15 @@ Parsing: "main(){int a,b,c; a= 2+1; a = b+c; 2 = 2; }"
 AST dump:
 -int a int b int c 
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Op: +  [int Rvalue]
 ---Literal: 2 [int Rvalue]
 ---Literal: 1 [int Rvalue]
 -Assign
---a [int Lvalue]
+--a [int Lvalue Write Value]
 --Op: +  [int Rvalue]
----b [int Lvalue]
----c [int Lvalue]
+---b [int Lvalue Read Value]
+---c [int Lvalue Read Value]
 -Assign
 --Literal: 2 [int Rvalue]
 --Literal: 2 [int Rvalue]
@@ -225,19 +225,19 @@ AST dump:
 -bool a 
 -int b 
 -Assign
---a [bool Lvalue]
+--a [bool Lvalue Write Value]
 --Literal: 1 [bool Rvalue]
 -Assign
---b [int Lvalue]
+--b [int Lvalue Write Value]
 --Literal: 1 [int Rvalue]
 -Assign
---a [bool Lvalue]
---b [int Lvalue]
+--a [bool Lvalue Write Value]
+--b [int Lvalue Read Value]
 -Assign
---b [int Lvalue]
+--b [int Lvalue Write Value]
 --Literal: 1 [bool Rvalue]
 -Assign
---a [bool Lvalue]
+--a [bool Lvalue Write Value]
 --Literal: 2 [int Rvalue]
 
 ------------------------------------------------------------------

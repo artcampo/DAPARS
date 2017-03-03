@@ -18,17 +18,36 @@ Scope 1: {0, a 1, b 2, c }
 Scope 2: {}
 
 
+AST dump:
+-int a int b int c 
+-WhileStmt:
+--Cond: Literal: 1 [bool Rvalue]
+--Body:
+---Assign
+----b [int Lvalue Write Value]
+----Op: +  [int Rvalue]
+-----Literal: 2 [int Rvalue]
+-----Literal: 3 [int Rvalue]
+
+--Assign
+---c [int Lvalue Write Value]
+---Op: +  [int Rvalue]
+----Literal: 3 [int Rvalue]
+----Literal: 4 [int Rvalue]
+
 IR dump:
 0: %0 = LoadI(1)
 1: JumpCondTrue %0 to:3
-2: JumpCondFalse %0 to:7
-3: %1 = LoadI(3)
-4: %2 = %0 + %1
-5: store %2 to [Main:b]
-6: JumpCondFalse %0 to:0
-7: %4 = LoadI(4)
-8: %5 = %0 + %4
-9: store %5 to [Main:c]
+2: JumpCondFalse %0 to:8
+3: %1 = LoadI(2)
+4: %2 = LoadI(3)
+5: %3 = %1 + %2
+6: store %3 to [Main:b]
+7: JumpCondFalse %0 to:0
+8: %5 = LoadI(3)
+9: %6 = LoadI(4)
+10: %7 = %5 + %6
+11: store %7 to [Main:c]
 
 ---------------------------------------------------
 Parsing: "main(){ int a, b; if(true){int c; a=2+3;} else{ int d, e,f; d = 4; } int g; b=5+6; }"
@@ -37,52 +56,139 @@ Scope 2: {2, c }
 Scope 3: {3, d 4, e 5, f }
 
 
+AST dump:
+-int a int b 
+-IfStmt:
+--Cond: Literal: 1 [bool Rvalue]
+--Then:
+---int c 
+---Assign
+----a [int Lvalue Write Value]
+----Op: +  [int Rvalue]
+-----Literal: 2 [int Rvalue]
+-----Literal: 3 [int Rvalue]
+--Else:
+---int d int e int f 
+---Assign
+----d [int Lvalue Write Value]
+----Literal: 4 [int Rvalue]
+
+-int g 
+-Assign
+--b [int Lvalue Write Value]
+--Op: +  [int Rvalue]
+---Literal: 5 [int Rvalue]
+---Literal: 6 [int Rvalue]
+
 IR dump:
 0: %0 = LoadI(1)
 1: JumpCondTrue %0 to:3
-2: JumpCondFalse %0 to:7
-3: %1 = LoadI(3)
-4: %2 = %0 + %1
-5: store %2 to [Main:a]
-6: JumpIncond10
-7: %4 = LoadI(4)
-8: store %4 to [Main:d]
-9: JumpIncond10
-10: %6 = LoadI(6)
-11: %7 = %0 + %6
-12: store %7 to [Main:b]
+2: JumpCondFalse %0 to:8
+3: %1 = LoadI(2)
+4: %2 = LoadI(3)
+5: %3 = %1 + %2
+6: store %3 to [Main:a]
+7: JumpIncond11
+8: %5 = LoadI(4)
+9: store %5 to [Main:d]
+10: JumpIncond11
+11: %7 = LoadI(5)
+12: %8 = LoadI(6)
+13: %9 = %7 + %8
+14: store %9 to [Main:b]
 
 ---------------------------------------------------
 Parsing: "main(){int a,b; int* p; a = 2; p = &a; *p = a + b; }"
 Scope 1: {0, a 1, b 2, p }
 
 
+AST dump:
+-int a int b 
+-int* p 
+-Assign
+--a [int Lvalue Write Value]
+--Literal: 2 [int Rvalue]
+-Assign
+--p [int* Lvalue Write Value]
+--@ [int* Lvalue]
+---a [int Lvalue Read Address]
+-Assign
+--* [int Lvalue Write]
+---p [int* Lvalue Write Value]
+--Op: +  [int Rvalue]
+---a [int Lvalue Read Value]
+---b [int Lvalue Read Value]
+
 IR dump:
 0: %0 = LoadI(2)
 1: store %0 to [Main:a]
-2: %2 = Load [Main:a]
-3: %3 = & %2
-4: store %3 to [Main:p]
+2: %2 = PtrElem( Main:a)
+3: store %2 to [Main:p]
+4: %4 = Load [Main:a]
 5: %5 = Load [Main:b]
-6: %6 = %0 + %5
+6: %6 = %4 + %5
 7: store %0 to [Main:p]
-8: %8 = * %0
+8: store %0 to [%6]
 
 ---------------------------------------------------
-Parsing: "main(){int a,b; int* p; a=1; b=2; p = &b; a = b + *p; }"
+Parsing: "main(){int a,b; int* p; a=*p; b=2; p = &b; a = b + *p; }"
 Scope 1: {0, a 1, b 2, p }
 
 
+AST dump:
+-int a int b 
+-int* p 
+-Assign
+--a [int Lvalue Write Value]
+--* [int Lvalue Read]
+---p [int* Lvalue Read Value]
+-Assign
+--b [int Lvalue Write Value]
+--Literal: 2 [int Rvalue]
+-Assign
+--p [int* Lvalue Write Value]
+--@ [int* Lvalue]
+---b [int Lvalue Read Address]
+-Assign
+--a [int Lvalue Write Value]
+--Op: +  [int Rvalue]
+---b [int Lvalue Read Value]
+---* [int Lvalue Read]
+----p [int* Lvalue Read Value]
+
 IR dump:
-0: %0 = LoadI(1)
-1: store %0 to [Main:a]
-2: %2 = LoadI(2)
-3: store %2 to [Main:b]
-4: %4 = Load [Main:b]
-5: %5 = & %4
+0: %0 = Load [Main:p]
+1: %1 = Load [ %0]
+2: store %1 to [Main:a]
+3: %3 = LoadI(2)
+4: store %3 to [Main:b]
+5: %5 = PtrElem( Main:b)
 6: store %5 to [Main:p]
-7: %7 = Load [Main:p]
-8: %8 = * %7
-9: %9 = %0 + %8
-10: store %9 to [Main:a]
+7: %7 = Load [Main:b]
+8: %8 = Load [Main:p]
+9: %9 = Load [ %8]
+10: %10 = %7 + %9
+11: store %10 to [Main:a]
+
+---------------------------------------------------
+Parsing: "main(){int a,b; int* p; a = b + *p; }"
+Scope 1: {0, a 1, b 2, p }
+
+
+AST dump:
+-int a int b 
+-int* p 
+-Assign
+--a [int Lvalue Write Value]
+--Op: +  [int Rvalue]
+---b [int Lvalue Read Value]
+---* [int Lvalue Read]
+----p [int* Lvalue Read Value]
+
+IR dump:
+0: %0 = Load [Main:b]
+1: %1 = Load [Main:p]
+2: %2 = Load [ %1]
+3: %3 = %0 + %2
+4: store %3 to [Main:a]
 
