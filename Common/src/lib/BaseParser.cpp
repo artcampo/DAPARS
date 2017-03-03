@@ -259,11 +259,11 @@ BaseParser::NewDerefOp(PtrExpr& rhs, const ScopeId id, const Locus& locus){
   return std::make_unique<DerefOp>(rhs, id, locus);
 }
 
-PtrFuncDecl
-BaseParser::NewFuncDecl(const std::string& name, PtrBlock& block
+PtrFuncDef
+BaseParser::NewFuncDef(const std::string& name, PtrBlock& block
             , const ScopeId id, const Locus& locus){
-  if(not block) return PtrFuncDecl(nullptr);
-  return std::make_unique<FuncDecl>(name, block, id, locus);
+  if(not block) return PtrFuncDef(nullptr);
+  return std::make_unique<FuncDef>(name, block, id, locus);
 }
 
 } //end namespace Common

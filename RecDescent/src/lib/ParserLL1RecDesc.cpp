@@ -48,7 +48,7 @@ void ParserLL1RecDesc::Prog(){
 
   //parse main function
 
-  PtrFuncDecl pfunc = FuncDecl_(id);
+  PtrFuncDef pfunc = FuncDef_(id);
   if(pfunc){
 //     std::cout << "Prog" << std::endl;
     if(token_ != Tokenizer::kToken::eof) Error("More data after program.");
@@ -64,8 +64,8 @@ void ParserLL1RecDesc::Prog(){
 }
 
 //FDECL :=  name (){ STMTS }
-PtrFuncDecl ParserLL1RecDesc::FuncDecl_(const ScopeId scope_inht){
-  PtrFuncDecl func_decl_synth(nullptr);
+PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
+  PtrFuncDef func_decl_synth(nullptr);
   std::string name("func_name");
   Locus       l = CurrentLocus();
 
@@ -86,7 +86,7 @@ PtrFuncDecl ParserLL1RecDesc::FuncDecl_(const ScopeId scope_inht){
 
   Accept(kToken::rcbr, kErr30);
 
-  func_decl_synth = NewFuncDecl(name, stmts_synt, scope_inht, l);
+  func_decl_synth = NewFuncDef(name, stmts_synt, scope_inht, l);
 
   unit_.GetFunc(name).SetOriginNode(*func_decl_synth);
 

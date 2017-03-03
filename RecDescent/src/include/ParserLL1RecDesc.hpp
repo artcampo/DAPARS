@@ -28,7 +28,7 @@ private:
 
   void  Prog();
 
-  PtrFuncDecl FuncDecl_(const ScopeId scope_inht);
+  PtrFuncDef FuncDef_(const ScopeId scope_inht);
 
   //Exprs
   PtrExpr Exprs(const ScopeId scope_inht);

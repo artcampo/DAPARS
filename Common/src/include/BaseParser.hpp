@@ -110,8 +110,8 @@ protected:
   PtrDerefOp
   NewDerefOp(PtrExpr& rhs, const ScopeId id, const Locus& locus);
 
-  PtrFuncDecl
-  NewFuncDecl(const std::string& name, PtrBlock& block
+  PtrFuncDef
+  NewFuncDef(const std::string& name, PtrBlock& block
             , const ScopeId id, const Locus& locus);
 
 private:

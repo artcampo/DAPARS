@@ -42,7 +42,7 @@ void CreateGrammarDalang(G& g){
   const Symbol P      = g.AddNonTerminal("PROG");
 
 //   const Symbol FDECLS = g.AddNonTerminal("FDECLS");
-  const Symbol FDECL  = g.AddNonTerminal("FDECL");
+  const Symbol FDEF  = g.AddNonTerminal("FDEF");
 //   const Symbol RET_TYPE  = g.AddNonTerminal("FRETT");
 //   const Symbol ARG    = g.AddNonTerminal("ARG");
 //   const Symbol F_RET  = g.AddNonTerminal("FRET");
@@ -70,9 +70,9 @@ void CreateGrammarDalang(G& g){
 
   //Non-terminals
 
-  g.AddStartingRule(Rule(P,  {FDECL}, true));
+  g.AddStartingRule(Rule(P,  {FDEF}, true));
 
-  g.AddRule(Rule(FDECL,  {name, lpar, rpar, lcbr, STMTS, rcbr}));
+  g.AddRule(Rule(FDEF,  {name, lpar, rpar, lcbr, STMTS, rcbr}));
 
   //Statements
   g.AddRule(Rule(STMTS,  {STMT, STMTS}));

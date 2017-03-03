@@ -3,7 +3,7 @@ Prog   := P_INIT STMTS P_END
 P_INIT := empty
 P_END  := empty
 
-FDECL :=  name (){ STMTS }
+FDEF  :=  name (){ STMTS }
 
 STMTS := STMT STMTS
       |  empty
