@@ -69,7 +69,7 @@ void ParserLL1RecDesc::FuncDefList(std::vector<PtrFuncDef>& fdefl_inht,
   PtrFuncDef fdef(nullptr);
   if(Check({ kToken::name })){
     fdef = FuncDef_(scope_inht);
-    fdefl_inht.push_back( std::move(fdef));
+    if(fdef) fdefl_inht.push_back( std::move(fdef));
     return;
   }
 

@@ -54,6 +54,7 @@ int main()
   std::cout << g;
 
   //Proper error identification
+
   parse<Grammar,ParserLL1RecDesc>( std::string("main(){    }"), g);
   parse<Grammar,ParserLL1RecDesc>( std::string("main(){ @ }"), g);
   parse<Grammar,ParserLL1RecDesc>( std::string("main(){ 1; ) }"), g);
@@ -92,6 +93,7 @@ int main()
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "main(){ int a, b; if(true){int c; a=2+3;} else{ int d, e,f; d = 4 } int g; b=5+6; }"), g);
+
    */
 
   //Chaotic cluster fuck

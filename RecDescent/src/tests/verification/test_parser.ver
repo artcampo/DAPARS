@@ -19,4 +19,935 @@ Parsing: "main(){int a; (a=1); }"
 [err:3] Block not finishing in rcbr at: "t a; (a=1)" -> "; }"
 [err:31] function body empty at: "t a; (a=1)" -> "; }"
 [err:30] function declaration's body not closed with '}' at: "t a; (a=1)" -> "; }"
-More data after program. at: "t a; (a=1)" -> "; }"
+AST not build at: "t a; (a=1)" -> "; }"
+
+---------------------------------------------------
+Parsing: "main(){int a;a=1;a=2;a=3; }"
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Literal: 1
+-Assign
+--a
+--Literal: 2
+-Assign
+--a
+--Literal: 3
+
+AST pretty:
+int a 
+a=1
+a=2
+a=3
+
+AST dump:
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--Literal: 1 [int Rvalue]
+-Assign
+--a [int Lvalue Write Value]
+--Literal: 2 [int Rvalue]
+-Assign
+--a [int Lvalue Write Value]
+--Literal: 3 [int Rvalue]
+Scope 1: {0, a }
+
+---------------------------------------------------
+Parsing: "main(){int a;a=2+3+4; }"
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Op: + 
+---Op: + 
+----Literal: 2
+----Literal: 3
+---Literal: 4
+
+AST pretty:
+int a 
+a=( ( 2 + 3 ) + 4 )
+
+AST dump:
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--Op: +  [int Rvalue]
+---Op: +  [int Rvalue]
+----Literal: 2 [int Rvalue]
+----Literal: 3 [int Rvalue]
+---Literal: 4 [int Rvalue]
+Scope 1: {0, a }
+
+
+---------------------------------------------------
+Parsing: "main(){int a;a=2++3+4; }"
+Expecting numerical or lpar at: "nt a;a=2++" -> "3+4; }"
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Op: + 
+---Op: + 
+----Literal: 2
+----Literal: 3
+---Literal: 4
+
+AST pretty:
+int a 
+a=( ( 2 + 3 ) + 4 )
+
+AST dump:
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--Op: +  [int Rvalue]
+---Op: +  [int Rvalue]
+----Literal: 2 [int Rvalue]
+----Literal: 3 [int Rvalue]
+---Literal: 4 [int Rvalue]
+Scope 1: {0, a }
+
+
+---------------------------------------------------
+Parsing: "main(){int a;a=1+2;a=3+4; }"
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Op: + 
+---Literal: 1
+---Literal: 2
+-Assign
+--a
+--Op: + 
+---Literal: 3
+---Literal: 4
+
+AST pretty:
+int a 
+a=( 1 + 2 )
+a=( 3 + 4 )
+
+AST dump:
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--Op: +  [int Rvalue]
+---Literal: 1 [int Rvalue]
+---Literal: 2 [int Rvalue]
+-Assign
+--a [int Lvalue Write Value]
+--Op: +  [int Rvalue]
+---Literal: 3 [int Rvalue]
+---Literal: 4 [int Rvalue]
+Scope 1: {0, a }
+
+
+---------------------------------------------------
+Parsing: "main(){int a;a=1+2;a=3+4;a=5+6; }"
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Op: + 
+---Literal: 1
+---Literal: 2
+-Assign
+--a
+--Op: + 
+---Literal: 3
+---Literal: 4
+-Assign
+--a
+--Op: + 
+---Literal: 5
+---Literal: 6
+
+AST pretty:
+int a 
+a=( 1 + 2 )
+a=( 3 + 4 )
+a=( 5 + 6 )
+
+AST dump:
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--Op: +  [int Rvalue]
+---Literal: 1 [int Rvalue]
+---Literal: 2 [int Rvalue]
+-Assign
+--a [int Lvalue Write Value]
+--Op: +  [int Rvalue]
+---Literal: 3 [int Rvalue]
+---Literal: 4 [int Rvalue]
+-Assign
+--a [int Lvalue Write Value]
+--Op: +  [int Rvalue]
+---Literal: 5 [int Rvalue]
+---Literal: 6 [int Rvalue]
+Scope 1: {0, a }
+
+
+Grammar:
+PROG -> E  init 
+E -> T E' 
+E' -> + T E' 
+E' -> - T E' 
+E' -> {empty} 
+T -> F T' 
+T' -> * F T' 
+T' -> / F T' 
+T' -> {empty} 
+F -> ( E ) 
+F -> {num} 
+F -> {nam} 
+
+---------------------------------------------------
+Parsing: "main(){int a;a=1; if(2){a=3;} }"
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---Assign
+----a
+----Literal: 3
+
+[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;} }"
+
+AST pretty:
+int a 
+a=1
+if(2){
+  a=3
+  }
+
+AST dump:
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--Literal: 1 [int Rvalue]
+-IfStmt:
+--Cond: Literal: 2 [int Rvalue]
+--Then:
+---Assign
+----a [int Lvalue Write Value]
+----Literal: 3 [int Rvalue]
+
+Scope 1: {0, a }
+Scope 2: {}
+
+---------------------------------------------------
+Parsing: "main(){int a;a=1; if(2){a=3;} a=4; }"
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---Assign
+----a
+----Literal: 3
+
+-Assign
+--a
+--Literal: 4
+[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;} a=4; }"
+
+AST pretty:
+int a 
+a=1
+if(2){
+  a=3
+  }
+a=4
+
+AST dump:
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--Literal: 1 [int Rvalue]
+-IfStmt:
+--Cond: Literal: 2 [int Rvalue]
+--Then:
+---Assign
+----a [int Lvalue Write Value]
+----Literal: 3 [int Rvalue]
+
+-Assign
+--a [int Lvalue Write Value]
+--Literal: 4 [int Rvalue]
+Scope 1: {0, a }
+Scope 2: {}
+
+---------------------------------------------------
+Parsing: "main(){int a;a=1; if(2){a=3+4+5;} }"
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---Assign
+----a
+----Op: + 
+-----Op: + 
+------Literal: 3
+------Literal: 4
+-----Literal: 5
+
+[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;} }"
+
+AST pretty:
+int a 
+a=1
+if(2){
+  a=( ( 3 + 4 ) + 5 )
+  }
+
+AST dump:
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--Literal: 1 [int Rvalue]
+-IfStmt:
+--Cond: Literal: 2 [int Rvalue]
+--Then:
+---Assign
+----a [int Lvalue Write Value]
+----Op: +  [int Rvalue]
+-----Op: +  [int Rvalue]
+------Literal: 3 [int Rvalue]
+------Literal: 4 [int Rvalue]
+-----Literal: 5 [int Rvalue]
+
+Scope 1: {0, a }
+Scope 2: {}
+
+---------------------------------------------------
+Parsing: "main(){int a;a=1; if(2){a=3+4+5;} a=6; }"
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---Assign
+----a
+----Op: + 
+-----Op: + 
+------Literal: 3
+------Literal: 4
+-----Literal: 5
+
+-Assign
+--a
+--Literal: 6
+[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;} a=6; }"
+
+AST pretty:
+int a 
+a=1
+if(2){
+  a=( ( 3 + 4 ) + 5 )
+  }
+a=6
+
+AST dump:
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--Literal: 1 [int Rvalue]
+-IfStmt:
+--Cond: Literal: 2 [int Rvalue]
+--Then:
+---Assign
+----a [int Lvalue Write Value]
+----Op: +  [int Rvalue]
+-----Op: +  [int Rvalue]
+------Literal: 3 [int Rvalue]
+------Literal: 4 [int Rvalue]
+-----Literal: 5 [int Rvalue]
+
+-Assign
+--a [int Lvalue Write Value]
+--Literal: 6 [int Rvalue]
+Scope 1: {0, a }
+Scope 2: {}
+
+---------------------------------------------------
+Parsing: "main(){int a;a=1; if(2){if(3){a=4;if(5){a=6;}}} }"
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---IfStmt:
+----Cond: Literal: 3
+----Then:
+-----Assign
+------a
+------Literal: 4
+-----IfStmt:
+------Cond: Literal: 5
+------Then:
+-------Assign
+--------a
+--------Literal: 6
+
+
+
+[err:21] if's condition is not a bool at: "){a=4;if(5" -> "){a=6;}}} }"
+[err:21] if's condition is not a bool at: "if(2){if(3" -> "){a=4;if(5){a=6;}}} }"
+[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4;if(5){a=6;}}} }"
+
+AST pretty:
+int a 
+a=1
+if(2){
+  if(3){
+    a=4
+    if(5){
+      a=6
+      }
+    }
+  }
+
+AST dump:
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--Literal: 1 [int Rvalue]
+-IfStmt:
+--Cond: Literal: 2 [int Rvalue]
+--Then:
+---IfStmt:
+----Cond: Literal: 3 [int Rvalue]
+----Then:
+-----Assign
+------a [int Lvalue Write Value]
+------Literal: 4 [int Rvalue]
+-----IfStmt:
+------Cond: Literal: 5 [int Rvalue]
+------Then:
+-------Assign
+--------a [int Lvalue Write Value]
+--------Literal: 6 [int Rvalue]
+
+
+
+Scope 1: {0, a }
+Scope 2: {}
+Scope 3: {}
+Scope 4: {}
+
+---------------------------------------------------
+Parsing: "main(){int a;a=1; if(2){if(3){a=4+5;if(6){a=7+8;}}} }"
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---IfStmt:
+----Cond: Literal: 3
+----Then:
+-----Assign
+------a
+------Op: + 
+-------Literal: 4
+-------Literal: 5
+-----IfStmt:
+------Cond: Literal: 6
+------Then:
+-------Assign
+--------a
+--------Op: + 
+---------Literal: 7
+---------Literal: 8
+
+
+
+[err:21] if's condition is not a bool at: "a=4+5;if(6" -> "){a=7+8;}}} }"
+[err:21] if's condition is not a bool at: "if(2){if(3" -> "){a=4+5;if(6){a=7+8;}}} }"
+[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4+5;if(6){a=7+8;}}} }"
+
+AST pretty:
+int a 
+a=1
+if(2){
+  if(3){
+    a=( 4 + 5 )
+    if(6){
+      a=( 7 + 8 )
+      }
+    }
+  }
+
+AST dump:
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--Literal: 1 [int Rvalue]
+-IfStmt:
+--Cond: Literal: 2 [int Rvalue]
+--Then:
+---IfStmt:
+----Cond: Literal: 3 [int Rvalue]
+----Then:
+-----Assign
+------a [int Lvalue Write Value]
+------Op: +  [int Rvalue]
+-------Literal: 4 [int Rvalue]
+-------Literal: 5 [int Rvalue]
+-----IfStmt:
+------Cond: Literal: 6 [int Rvalue]
+------Then:
+-------Assign
+--------a [int Lvalue Write Value]
+--------Op: +  [int Rvalue]
+---------Literal: 7 [int Rvalue]
+---------Literal: 8 [int Rvalue]
+
+
+
+Scope 1: {0, a }
+Scope 2: {}
+Scope 3: {}
+Scope 4: {}
+
+---------------------------------------------------
+Parsing: "main(){int a;a=1; if(2){a=3;}else{4;} }"
+[err:] assignment missing '=' at: "3;}else{4;" -> "} }"
+[err:3] Block not finishing in rcbr at: "3;}else{4;" -> "} }"
+Statements within else wrong. at: "3;}else{4;" -> "} }"
+else missing rcbr. at: "3;}else{4;" -> "} }"
+[err:3] Block not finishing in rcbr at: "3;}else{4;" -> "} }"
+[err:31] function body empty at: "3;}else{4;" -> "} }"
+[err:30] function declaration's body not closed with '}' at: "3;}else{4;" -> "} }"
+AST not build at: "3;}else{4;" -> "} }"
+
+---------------------------------------------------
+Parsing: "main(){int a;a=1; if(2){a=3;}if(4){a=5;}else{a=6;} }"
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Literal: 1
+-IfStmt:
+--Cond: Literal: 2
+--Then:
+---Assign
+----a
+----Literal: 3
+
+-IfStmt:
+--Cond: Literal: 4
+--Then:
+---Assign
+----a
+----Literal: 5
+--Else:
+---Assign
+----a
+----Literal: 6
+
+[err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;}if(4){a=5;}else{a=6;} }"
+[err:21] if's condition is not a bool at: "{a=3;}if(4" -> "){a=5;}else{a=6;} }"
+
+AST pretty:
+int a 
+a=1
+if(2){
+  a=3
+  }
+if(4){
+  a=5
+  }
+else{
+  a=6
+  }
+
+AST dump:
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--Literal: 1 [int Rvalue]
+-IfStmt:
+--Cond: Literal: 2 [int Rvalue]
+--Then:
+---Assign
+----a [int Lvalue Write Value]
+----Literal: 3 [int Rvalue]
+
+-IfStmt:
+--Cond: Literal: 4 [int Rvalue]
+--Then:
+---Assign
+----a [int Lvalue Write Value]
+----Literal: 5 [int Rvalue]
+--Else:
+---Assign
+----a [int Lvalue Write Value]
+----Literal: 6 [int Rvalue]
+
+Scope 1: {0, a }
+Scope 2: {}
+Scope 3: {}
+Scope 4: {}
+
+---------------------------------------------------
+Parsing: "main(){int a; int b; bool c; }"
+
+AST dump (without extra info):
+-int a 
+-int b 
+-bool c 
+
+AST pretty:
+int a 
+int b 
+bool c 
+
+AST dump:
+-int a 
+-int b 
+-bool c 
+Scope 1: {0, a 1, b 2, c }
+
+---------------------------------------------------
+Parsing: "main(){int b, c, d; bool e f; }"
+[err:19] Variables must be separated with comma. at: "; bool e f" -> "; }"
+
+AST dump (without extra info):
+-int b int c int d 
+-bool e bool f 
+
+AST pretty:
+int b int c int d 
+bool e bool f 
+
+AST dump:
+-int b int c int d 
+-bool e bool f 
+Scope 1: {0, b 1, c 2, d 3, e 4, f }
+
+---------------------------------------------------
+Parsing: "main(){int a; a=1; }"
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Literal: 1
+
+AST pretty:
+int a 
+a=1
+
+AST dump:
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--Literal: 1 [int Rvalue]
+Scope 1: {0, a }
+
+---------------------------------------------------
+Parsing: "main(){int a; a=(1+2+3); }"
+
+AST dump (without extra info):
+-int a 
+-Assign
+--a
+--Op: + 
+---Op: + 
+----Literal: 1
+----Literal: 2
+---Literal: 3
+
+AST pretty:
+int a 
+a=( ( 1 + 2 ) + 3 )
+
+AST dump:
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--Op: +  [int Rvalue]
+---Op: +  [int Rvalue]
+----Literal: 1 [int Rvalue]
+----Literal: 2 [int Rvalue]
+---Literal: 3 [int Rvalue]
+Scope 1: {0, a }
+
+---------------------------------------------------
+Parsing: "main(){int a b c; b=1; c=2; a=(1+b+c); }"
+[err:19] Variables must be separated with comma. at: "(){int a b" -> " c; b=1; c=2; a=(1+b+c); }"
+[err:19] Variables must be separated with comma. at: "{int a b c" -> "; b=1; c=2; a=(1+b+c); }"
+
+AST dump (without extra info):
+-int a int b int c 
+-Assign
+--b
+--Literal: 1
+-Assign
+--c
+--Literal: 2
+-Assign
+--a
+--Op: + 
+---Op: + 
+----Literal: 1
+----b
+---c
+
+AST pretty:
+int a int b int c 
+b=1
+c=2
+a=( ( 1 + b ) + c )
+
+AST dump:
+-int a int b int c 
+-Assign
+--b [int Lvalue Write Value]
+--Literal: 1 [int Rvalue]
+-Assign
+--c [int Lvalue Write Value]
+--Literal: 2 [int Rvalue]
+-Assign
+--a [int Lvalue Write Value]
+--Op: +  [int Rvalue]
+---Op: +  [int Rvalue]
+----Literal: 1 [int Rvalue]
+----b [int Lvalue Read Value]
+---c [int Lvalue Read Value]
+Scope 1: {0, a 1, b 2, c }
+
+---------------------------------------------------
+Parsing: "main(){ int a; int b; int a; }"
+[err:15] Symbol already declared. at: " b; int a;" -> " }"
+[err:31] function body empty at: "; int a; }" -> ""
+AST not build at: "; int a; }" -> ""
+
+---------------------------------------------------
+Parsing: "main(){ int a; if(1){int b;} }"
+
+AST dump (without extra info):
+-int a 
+-IfStmt:
+--Cond: Literal: 1
+--Then:
+---int b 
+
+[err:21] if's condition is not a bool at: "nt a; if(1" -> "){int b;} }"
+
+AST pretty:
+int a 
+if(1){
+  int b 
+  }
+
+AST dump:
+-int a 
+-IfStmt:
+--Cond: Literal: 1 [int Rvalue]
+--Then:
+---int b 
+
+Scope 1: {0, a }
+Scope 2: {1, b }
+
+---------------------------------------------------
+Parsing: "main(){ int a; if(1){int b;}else{int c;} }"
+
+AST dump (without extra info):
+-int a 
+-IfStmt:
+--Cond: Literal: 1
+--Then:
+---int b 
+--Else:
+---int c 
+
+[err:21] if's condition is not a bool at: "nt a; if(1" -> "){int b;}else{int c;} }"
+
+AST pretty:
+int a 
+if(1){
+  int b 
+  }
+else{
+  int c 
+  }
+
+AST dump:
+-int a 
+-IfStmt:
+--Cond: Literal: 1 [int Rvalue]
+--Then:
+---int b 
+--Else:
+---int c 
+
+Scope 1: {0, a }
+Scope 2: {1, b }
+Scope 3: {2, c }
+
+---------------------------------------------------
+Parsing: "main(){ int a; while(1 + 2){ int c; c = 1+2; } }"
+
+AST dump (without extra info):
+-int a 
+-WhileStmt:
+--Cond: Op: + 
+---Literal: 1
+---Literal: 2
+--Body:
+---int c 
+---Assign
+----c
+----Op: + 
+-----Literal: 1
+-----Literal: 2
+
+[err:20] while's condition is not a bool at: " while(1 +" -> " 2){ int c; c = 1+2; } }"
+
+AST pretty:
+int a 
+while(( 1 + 2 )){
+  int c 
+  c=( 1 + 2 )
+  }
+
+AST dump:
+-int a 
+-WhileStmt:
+--Cond: Op: +  [int Rvalue]
+---Literal: 1 [int Rvalue]
+---Literal: 2 [int Rvalue]
+--Body:
+---int c 
+---Assign
+----c [int Lvalue Write Value]
+----Op: +  [int Rvalue]
+-----Literal: 1 [int Rvalue]
+-----Literal: 2 [int Rvalue]
+
+Scope 1: {0, a }
+Scope 2: {1, c }
+
+---------------------------------------------------
+Parsing: "main(){ bool a, b; a = true; b = false; }"
+
+AST dump (without extra info):
+-bool a bool b 
+-Assign
+--a
+--Literal: 1
+-Assign
+--b
+--Literal: 0
+
+AST pretty:
+bool a bool b 
+a=1
+b=0
+
+AST dump:
+-bool a bool b 
+-Assign
+--a [bool Lvalue Write Value]
+--Literal: 1 [bool Rvalue]
+-Assign
+--b [bool Lvalue Write Value]
+--Literal: 0 [bool Rvalue]
+Scope 1: {0, a 1, b }
+
+---------------------------------------------------
+Parsing: "main(){ int* a; int* b; }"
+
+AST dump (without extra info):
+-int* a 
+-int* b 
+
+AST pretty:
+int* a 
+int* b 
+
+AST dump:
+-int* a 
+-int* b 
+Scope 1: {0, a 1, b }
+
+---------------------------------------------------
+Parsing: "main(){ int* a; int b, c; b = 2; a = &b; c = *a; }"
+
+AST dump (without extra info):
+-int* a 
+-int b int c 
+-Assign
+--b
+--Literal: 2
+-Assign
+--a
+--@
+---b
+-Assign
+--c
+--*
+---a
+
+AST pretty:
+int* a 
+int b int c 
+b=2
+a=@b
+c=*a
+
+AST dump:
+-int* a 
+-int b int c 
+-Assign
+--b [int Lvalue Write Value]
+--Literal: 2 [int Rvalue]
+-Assign
+--a [int* Lvalue Write Value]
+--@ [int* Lvalue]
+---b [int Lvalue Read Address]
+-Assign
+--c [int Lvalue Write Value]
+--* [int Lvalue Read]
+---a [int* Lvalue Read Value]
+Scope 1: {0, a 1, b 2, c }
+
