@@ -26,17 +26,27 @@ using namespace Compiler;
 
 ParserLL1RecDesc::ParserLL1RecDesc(std::string const &file_name, CompilationUnit& unit)
 //   , Grammar& grammar)
-  : BaseParser(file_name, unit), undeclared_name_(std::string("undeclared_name")){}
+  : BaseParser(file_name, unit)
+  , undeclared_name_(std::string("undeclared_name")){ BuildTokenVectors();}
 //   , grammar_(grammar){}
 
 ParserLL1RecDesc::ParserLL1RecDesc(const std::vector<char>& parse_data, CompilationUnit& unit)
 //   , Grammar& grammar)
-  : BaseParser(parse_data, unit), undeclared_name_(std::string("undeclared_name")){}
+  : BaseParser(parse_data, unit)
+  , undeclared_name_(std::string("undeclared_name")){}
 //   , grammar_(grammar){}
 
 void ParserLL1RecDesc::Parse(){
   Prog();
 }
+
+void ParserLL1RecDesc::BuildTokenVectors(){
+
+  set_types_ =  std::vector<kToken>({
+    kToken::kwd_void, kToken::kwd_int, kToken::kwd_bool});
+}
+
+
 
 
 void ParserLL1RecDesc::Prog(){
@@ -63,51 +73,6 @@ void ParserLL1RecDesc::Prog(){
 
 }
 
-void ParserLL1RecDesc::FuncDefList(std::vector<PtrFuncDef>& fdefl_inht,
-    const ScopeId scope_inht
-){
-  PtrFuncDef fdef(nullptr);
-  if(Check({ kToken::name })){
-    fdef = FuncDef_(scope_inht);
-    if(fdef) fdefl_inht.push_back( std::move(fdef));
-    return;
-  }
-
-  AcceptEmpty({kToken::eof}, "[err:] File not ending in eof");
-}
-
-//FDECL :=  name (){ STMTS }
-PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
-  PtrFuncDef func_decl_synth(nullptr);
-  std::string name("func_name");
-  Locus       l = CurrentLocus();
-
-  if(Accept(kToken::name, kErr26)) name = prev_token_string_value_;
-
-
-  Accept(kToken::lpar, kErr27);
-  Accept(kToken::rpar, kErr28);
-
-
-  Accept(kToken::lcbr, kErr29);
-  const ScopeId id = unit_.NewFunction(name);
-
-  //STMTS
-  std::vector<PtrStatement> stmts_inht;
-  PtrBlock stmts_synt = Stmts(stmts_inht, id);
-  if(not stmts_synt) Error(kErr31);
-
-  Accept(kToken::rcbr, kErr30);
-
-  func_decl_synth = NewFuncDef(name, stmts_synt, scope_inht, l);
-
-  unit_.GetFunc(name).SetOriginNode(*func_decl_synth);
-
-  unit_.ExitFunctionDefinition();
-
-
-  return std::move(func_decl_synth);
-}
 
 PtrBlock ParserLL1RecDesc::Stmts(std::vector<PtrStatement>& stmts_inht, const ScopeId scope_inht){
 //   std::cout << "stmts\n";
@@ -392,10 +357,10 @@ PtrBlock ParserLL1RecDesc::IfElse(const ScopeId scope_inht){
 
 PtrVarDeclList  ParserLL1RecDesc::Decl(const ScopeId scope_inht){
 //   std::cout << "Decl\n";
-  const AST::Type& type_id = Type_();
+  const AST::Type& type = Type_();
   const Locus l = CurrentLocus();
   std::vector<PtrVarDecl> name_list_inht;
-  PtrVarDeclList decl_synt = NameList(name_list_inht, type_id, scope_inht, l);
+  PtrVarDeclList decl_synt = NameList(name_list_inht, type, scope_inht, l);
   return std::move(decl_synt);
 }
 
@@ -481,23 +446,7 @@ ParserLL1RecDesc::NameListPrime(std::vector<PtrVarDecl>& name_list_inht
 
 }
 
-const AST::Type&  ParserLL1RecDesc::Type_(){
-//   std::cout << "Type\n";
 
-  if(TryAndAccept(kToken::kwd_int)){
-    if(TryAndAccept(kToken::astk)) return unit_.GetTypePtrToInt();
-    else                           return unit_.GetTypeInt();
-  }
-
-  if(TryAndAccept(kToken::kwd_bool)){
-    if(TryAndAccept(kToken::astk))  return unit_.GetTypePtrToBool();
-    else                            return unit_.GetTypeBool();
-  }
-
-  //Error recover
-  Error("Type missing");
-  return unit_.GetTypeInt();
-}
 
 PtrBlock ParserLL1RecDesc::ParseSubBlock(const ScopeId scope, const std::string& error){
   std::vector<PtrStatement> stmts_inht;

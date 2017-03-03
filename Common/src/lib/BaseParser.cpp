@@ -90,6 +90,12 @@ bool BaseParser::Accept(const kToken& token, const std::string& error) noexcept{
   return true;
 }
 
+bool BaseParser::Accept(const std::vector<kToken>& tokens
+      , const std::string& error) noexcept{
+  if(Check(tokens)) { NextToken();  return true; }
+  else              { Error(error); return false;}
+}
+
 bool BaseParser::TryAndAccept(const kToken& token) noexcept{
   if(token_ == token){
     NextToken();

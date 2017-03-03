@@ -43,6 +43,7 @@ protected:
   void Skip() noexcept;
 
   bool Accept(const kToken& token, const std::string& error) noexcept;
+  bool Accept(const std::vector<kToken>& tokens, const std::string& error) noexcept;
   bool AcceptEmpty(const std::vector<kToken>& tokens
                  , const std::string& error) noexcept;
   bool Check(const std::vector<kToken>& tokens) const noexcept;

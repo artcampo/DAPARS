@@ -59,6 +59,9 @@ private:
 
   std::string undeclared_name_;
 
+  void BuildTokenVectors();
+  std::vector<kToken> set_types_;
+
 };
 
 } //end namespace RecDescent
