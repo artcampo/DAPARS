@@ -13,22 +13,159 @@ F -> {num}
 F -> {nam} 
 
 ---------------------------------------------------
-Parsing: "main(){int a,b,c; while(true){b=2+3;} c=3+4; }"
-[err:33] function must start with return type at: "main" -> "(){int a,b,c; while(true){b=2+3;} c=3+4; }"
-AST not build at: "main" -> "(){int a,b,c; while(true){b=2+3;} c=3+4; }"
+Parsing: "void main(){int a,b,c; while(true){b=2+3;} c=3+4; }"
+fdef
+Type: f: ()->void
+Scope 1: {0, a 1, b 2, c }
+Scope 2: {}
+
+
+AST dump:
+-int a int b int c 
+-WhileStmt:
+--Cond: Literal: 1 [bool Rvalue]
+--Body:
+---Assign
+----b [int Lvalue Write Value]
+----Op: +  [int Rvalue]
+-----Literal: 2 [int Rvalue]
+-----Literal: 3 [int Rvalue]
+
+--Assign
+---c [int Lvalue Write Value]
+---Op: +  [int Rvalue]
+----Literal: 3 [int Rvalue]
+----Literal: 4 [int Rvalue]
+
+IR dump:
+0: %0 = LoadI(1)
+1: JumpCondTrue %0 to:3
+2: JumpCondFalse %0 to:8
+3: %1 = LoadI(2)
+4: %2 = LoadI(3)
+5: %3 = %1 + %2
+6: store %3 to [Main:b]
+7: JumpCondFalse %0 to:0
+8: %5 = LoadI(3)
+9: %6 = LoadI(4)
+10: %7 = %5 + %6
+11: store %7 to [Main:c]
 
 ---------------------------------------------------
-Parsing: "main(){ int a, b; if(true){int c; a=2+3;} else{ int d, e,f; d = 4; } int g; b=5+6; }"
-[err:33] function must start with return type at: "main" -> "(){ int a, b; if(true){int c; a=2+3;} else{ int d, e,f; d = 4; } int g; b=5+6; }"
-AST not build at: "main" -> "(){ int a, b; if(true){int c; a=2+3;} else{ int d, e,f; d = 4; } int g; b=5+6; }"
+Parsing: "void main(){ int a, b; if(true){int c; a=2+3;} else{ int d, e,f; d = 4; } int g; b=5+6; }"
+fdef
+Type: f: ()->void
+Scope 1: {0, a 1, b 6, g }
+Scope 2: {2, c }
+Scope 3: {3, d 4, e 5, f }
+
+
+AST dump:
+-int a int b 
+-IfStmt:
+--Cond: Literal: 1 [bool Rvalue]
+--Then:
+---int c 
+---Assign
+----a [int Lvalue Write Value]
+----Op: +  [int Rvalue]
+-----Literal: 2 [int Rvalue]
+-----Literal: 3 [int Rvalue]
+--Else:
+---int d int e int f 
+---Assign
+----d [int Lvalue Write Value]
+----Literal: 4 [int Rvalue]
+
+-int g 
+-Assign
+--b [int Lvalue Write Value]
+--Op: +  [int Rvalue]
+---Literal: 5 [int Rvalue]
+---Literal: 6 [int Rvalue]
+
+IR dump:
+0: %0 = LoadI(1)
+1: JumpCondTrue %0 to:3
+2: JumpCondFalse %0 to:8
+3: %1 = LoadI(2)
+4: %2 = LoadI(3)
+5: %3 = %1 + %2
+6: store %3 to [Main:a]
+7: JumpIncond11
+8: %5 = LoadI(4)
+9: store %5 to [Main:d]
+10: JumpIncond11
+11: %7 = LoadI(5)
+12: %8 = LoadI(6)
+13: %9 = %7 + %8
+14: store %9 to [Main:b]
 
 ---------------------------------------------------
-Parsing: "main(){int a,b; int* p; a=*p; b=2; p = &b; a = b + *p;}"
-[err:33] function must start with return type at: "main" -> "(){int a,b; int* p; a=*p; b=2; p = &b; a = b + *p;}"
-AST not build at: "main" -> "(){int a,b; int* p; a=*p; b=2; p = &b; a = b + *p;}"
+Parsing: "void main(){int a,b; int* p; a=*p; b=2; p = &b; a = b + *p;}"
+fdef
+Type: f: ()->void
+Scope 1: {0, a 1, b 2, p }
+
+
+AST dump:
+-int a int b 
+-int* p 
+-Assign
+--a [int Lvalue Write Value]
+--* [int Lvalue Read]
+---p [int* Lvalue Read Value]
+-Assign
+--b [int Lvalue Write Value]
+--Literal: 2 [int Rvalue]
+-Assign
+--p [int* Lvalue Write Value]
+--@ [int* Lvalue]
+---b [int Lvalue Read Address]
+-Assign
+--a [int Lvalue Write Value]
+--Op: +  [int Rvalue]
+---b [int Lvalue Read Value]
+---* [int Lvalue Read]
+----p [int* Lvalue Read Value]
+
+IR dump:
+0: %0 = Load [Main:p]
+1: %1 = Load [ %0]
+2: store %1 to [Main:a]
+3: %3 = LoadI(2)
+4: store %3 to [Main:b]
+5: %5 = PtrElem( Main:b)
+6: store %5 to [Main:p]
+7: %7 = Load [Main:b]
+8: %8 = Load [Main:p]
+9: %9 = Load [ %8]
+10: %10 = %7 + %9
+11: store %10 to [Main:a]
 
 ---------------------------------------------------
-Parsing: "main(){int a; a= 2;} f(){int a; a=3;}"
-[err:33] function must start with return type at: "main" -> "(){int a; a= 2;} f(){int a; a=3;}"
-AST not build at: "main" -> "(){int a; a= 2;} f(){int a; a=3;}"
+Parsing: "void main(){int a; a= 2;} void f(){int a; a=3;}"
+fdef
+Type: f: ()->void
+fdef
+Type: f: ()->void
+Scope 1: {0, a }
+Scope 2: {1, a }
+
+
+AST dump:
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--Literal: 2 [int Rvalue]
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--Literal: 3 [int Rvalue]
+
+IR dump:
+0: %0 = LoadI(2)
+1: store %0 to [Main:a]
+2: %2 = LoadI(3)
+3: store %2 to [Main:a]
 

@@ -72,21 +72,21 @@ int main()
 
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){int a,b,c; while(true){b=2+3;} c=3+4; }"), g);
+    "void main(){int a,b,c; while(true){b=2+3;} c=3+4; }"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){ int a, b; if(true){int c; a=2+3;} else{ int d, e,f; d = 4; } int g; b=5+6; }"), g);
+    "void main(){ int a, b; if(true){int c; a=2+3;} else{ int d, e,f; d = 4; } int g; b=5+6; }"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){int a,b; int* p; a=*p; b=2; p = &b; a = b + *p;}"), g);
+    "void main(){int a,b; int* p; a=*p; b=2; p = &b; a = b + *p;}"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){int a; a= 2;} f(){int a; a=3;}"), g);
+    "void main(){int a; a= 2;} void f(){int a; a=3;}"), g);
 
   /*
   //Causes sigsev (hahah)
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){int a; a= *&a;}"), g);
+    "void main(){int a; a= *&a;}"), g);
 */
 
   return 0;

@@ -15,8 +15,7 @@ void ParserLL1RecDesc::FuncDefList(std::vector<PtrFuncDef>& fdefl_inht,
     return;
   }
 
-  if(fdefl_inht.empty()) Error(kErr33);
-  else AcceptEmpty({kToken::eof}, "[err:] File not ending in eof");
+  if(not Check({kToken::eof})) Error(kErr33);
 }
 
 //FDECL :=  name (){ STMTS }
@@ -39,6 +38,7 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
 
   std::vector<AST::Type*> arg_types;
   const AST::Type& type_func = unit_.GetFuncType(ret_type, arg_types);
+  std::cout << "Type: " << type_func.str() << "\n";
 
   if(not unit_.IsDeclValid(name, type_func)){
     Error(kErr32);

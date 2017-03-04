@@ -55,53 +55,53 @@ int main()
 
   //Proper error identification
 
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){    }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ @ }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ 1; ) }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ 1 ) }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ int a }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){    }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ @ }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ 1; ) }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ 1 ) }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ int a }"), g);
 
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ if }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ if( }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ if(int }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ if(1) }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ if(1){ }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ if(1){2; }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ if }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ if( }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ if(int }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ if(1) }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ if(1){ }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ if(1){2; }"), g);
 
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ 1+; }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ 1+; }"), g);
 
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){ 1+(; }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ 1+(; }"), g);
 
   //error:15
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){ int a; int b; int a; }"), g);
+    "void main(){ int a; int b; int a; }"), g);
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){int a; a=1+b; }"), g);
+    "void main(){int a; a=1+b; }"), g);
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){int a; bool b; a=a+b; }"), g);
+    "void main(){int a; bool b; a=a+b; }"), g);
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){int a; bool b; a=b+b; }"), g);
+    "void main(){int a; bool b; a=b+b; }"), g);
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){int a b c; }"), g);
+    "void main(){int a b c; }"), g);
 
   //22
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){int a,b,c; a= 2+1; a = b+c; 2 = 2; }"), g);
+    "void main(){int a,b,c; a= 2+1; a = b+c; 2 = 2; }"), g);
 
 
   //tests that sigsev
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){ int a, b; if(true){int c; a=2+3;} else{ int d, e,f; d = 4 } int g; b=5+6; }"), g);
+    "void main(){ int a, b; if(true){int c; a=2+3;} else{ int d, e,f; d = 4 } int g; b=5+6; }"), g);
 
    */
 
   //Chaotic cluster fuck
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){bool a; int b; a = true; b = 1; a = b; b = true; a = 2; }"), g);
+    "void main(){bool a; int b; a = true; b = 1; a = b; b = true; a = 2; }"), g);
 
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){1+(2)); }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){1++2; }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){1+(2)); }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){1++2; }"), g);
 
   return 0;
 }

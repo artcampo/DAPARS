@@ -19,7 +19,7 @@ ParserLL1RecDesc::ParserLL1RecDesc(std::string const &file_name, CompilationUnit
 ParserLL1RecDesc::ParserLL1RecDesc(const std::vector<char>& parse_data, CompilationUnit& unit)
 //   , Grammar& grammar)
   : BaseParser(parse_data, unit)
-  , undeclared_name_(std::string("undeclared_name")){}
+  , undeclared_name_(std::string("undeclared_name")){ BuildTokenVectors(); }
 //   , grammar_(grammar){}
 
 void ParserLL1RecDesc::Parse(){

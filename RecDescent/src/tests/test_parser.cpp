@@ -72,12 +72,12 @@ int main()
   std::cout << g;
 
   //pass
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){int a; (a=1); }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){int a;a=1;a=2;a=3; }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){int a;a=2+3+4; }"), g); std::cout << "\n";
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){int a;a=2++3+4; }"), g); std::cout << "\n";
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){int a;a=1+2;a=3+4; }" ), g); std::cout << "\n";
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){int a;a=1+2;a=3+4;a=5+6; }"), g); std::cout << "\n";
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){int a; (a=1); }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){int a;a=1;a=2;a=3; }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){int a;a=2+3+4; }"), g); std::cout << "\n";
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){int a;a=2++3+4; }"), g); std::cout << "\n";
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){int a;a=1+2;a=3+4; }" ), g); std::cout << "\n";
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){int a;a=1+2;a=3+4;a=5+6; }"), g); std::cout << "\n";
   }
 
   {
@@ -85,50 +85,50 @@ int main()
   CreateGrammarExpr(g);
   std::cout << g;
 
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){int a;a=1; if(2){a=3;} }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){int a;a=1; if(2){a=3;} a=4; }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){int a;a=1; if(2){a=3+4+5;} }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){int a;a=1; if(2){a=3+4+5;} a=6; }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){int a;a=1; if(2){if(3){a=4;if(5){a=6;}}} }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){int a;a=1; if(2){if(3){a=4+5;if(6){a=7+8;}}} }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){int a;a=1; if(2){a=3;} }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){int a;a=1; if(2){a=3;} a=4; }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){int a;a=1; if(2){a=3+4+5;} }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){int a;a=1; if(2){a=3+4+5;} a=6; }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){int a;a=1; if(2){if(3){a=4;if(5){a=6;}}} }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){int a;a=1; if(2){if(3){a=4+5;if(6){a=7+8;}}} }"), g);
 
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){int a;a=1; if(2){a=3;}else{4;} }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("main(){int a;a=1; if(2){a=3;}if(4){a=5;}else{a=6;} }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){int a;a=1; if(2){a=3;}else{4;} }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){int a;a=1; if(2){a=3;}if(4){a=5;}else{a=6;} }"), g);
 
-
-  parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){int a; int b; bool c; }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){int b, c, d; bool e f; }"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){int a; a=1; }"), g);
+    "void main(){int a; int b; bool c; }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "void main(){int b, c, d; bool e f; }"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){int a; a=(1+2+3); }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){int a b c; b=1; c=2; a=(1+b+c); }"), g);
+    "void main(){int a; a=1; }"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){ int a; int b; int a; }"), g);
+    "void main(){int a; a=(1+2+3); }"), g);
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "void main(){int a b c; b=1; c=2; a=(1+b+c); }"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){ int a; if(1){int b;} }"), g);
+    "void main(){ int a; int b; int a; }"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){ int a; if(1){int b;}else{int c;} }"), g);
+    "void main(){ int a; if(1){int b;} }"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){ int a; while(1 + 2){ int c; c = 1+2; } }"), g);
+    "void main(){ int a; if(1){int b;}else{int c;} }"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){ bool a, b; a = true; b = false; }"), g);
+    "void main(){ int a; while(1 + 2){ int c; c = 1+2; } }"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){ int* a; int* b; }"), g);
+    "void main(){ bool a, b; a = true; b = false; }"), g);
+
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "void main(){ int* a; int* b; }"), g);
 
     parse<Grammar,ParserLL1RecDesc>( std::string(
-    "main(){ int* a; int b, c; b = 2; a = &b; c = *a; }"), g);
+    "void main(){ int* a; int b, c; b = 2; a = &b; c = *a; }"), g);
 
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(
