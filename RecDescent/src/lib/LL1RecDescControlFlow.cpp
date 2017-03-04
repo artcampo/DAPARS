@@ -19,7 +19,7 @@ PtrStatement ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
     if(not Accept(kToken::rpar, "[err:8] if missing rpar.")) return std::move(stmt_synt);
 
     if(not Accept(kToken::lcbr, "[err:9] if missing lcbr.")) return std::move(stmt_synt);
-    const ScopeId nested_id = unit_.NewNestedScope();
+    const ScopeId nested_id = unit_.NewNestedScope( scope_owner_id_.top());
     PtrBlock stmts_synt = ParseSubBlock(nested_id, "[err:10] if missing then statement.");
     if(stmts_synt.get() == nullptr) return std::move(stmt_synt);
     if(not Accept(kToken::rcbr, "[err:11] if missing rcbr.")) return std::move(stmt_synt);
@@ -45,7 +45,7 @@ PtrStatement ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
     if(not Accept(kToken::rpar, "[err:] while missing rpar.")) return std::move(stmt_synt);
 
     if(not Accept(kToken::lcbr, "[err:] while missing lcbr.")) return std::move(stmt_synt);
-    const ScopeId nested_id = unit_.NewNestedScope();
+    const ScopeId nested_id = unit_.NewNestedScope(scope_owner_id_.top());
     PtrBlock stmts_synt = ParseSubBlock(nested_id, "[err:] while missing body.");
     if(stmts_synt.get() == nullptr) return std::move(stmt_synt);
     if(not Accept(kToken::rcbr, "[err:] while missing rcbr.")) return std::move(stmt_synt);
@@ -96,7 +96,7 @@ PtrBlock ParserLL1RecDesc::IfElse(const ScopeId scope_inht){
 
     Accept(kToken::lcbr, "else missing lcbr.");
     std::vector<PtrStatement> stmts_inht;
-    const ScopeId nested_id = unit_.NewNestedScope();
+    const ScopeId nested_id = unit_.NewNestedScope(scope_owner_id_.top());
     PtrBlock stmts_synt = Stmts(stmts_inht, nested_id);
     if(stmts_synt.get() == nullptr) Error("Statements within else wrong.");
     ifelse_synt = std::move(stmts_synt);

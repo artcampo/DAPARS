@@ -33,6 +33,9 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
 
 
   Accept(kToken::lpar, kErr27);
+
+  scope_owner_id_.push( unit_.NewScopeOwner() );
+
   Accept(kToken::rpar, kErr28);
 
 
@@ -46,7 +49,7 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
   }
 
   Accept(kToken::lcbr, kErr29);
-  const ScopeId id = unit_.NewFunction(name);
+  const ScopeId id = unit_.NewFunction(name, scope_owner_id_.top());
 
   //STMTS
   std::vector<PtrStatement> stmts_inht;
@@ -54,7 +57,7 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
   if(not stmts_synt) Error(kErr31);
 
   Accept(kToken::rcbr, kErr30);
-
+  scope_owner_id_.pop();
 
   func_decl_synth = NewFuncDef(name, stmts_synt, ret_type, scope_inht, l);
 

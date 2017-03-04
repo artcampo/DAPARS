@@ -62,6 +62,9 @@ private:
   void BuildTokenVectors();
   std::vector<kToken> set_types_;
 
+  //top() points to current owner
+  std::stack<ScopeOwnerId> scope_owner_id_;
+
 };
 
 } //end namespace RecDescent

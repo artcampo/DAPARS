@@ -14,8 +14,8 @@ F -> {nam}
 
 ---------------------------------------------------
 Parsing: "void main(){int a; (a=1); }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 [err:14] Expecting rpar. at: "int a; (a=" -> "1); }"
 [err:4] Expecting semicolon after Expr. at: "t a; (a=1)" -> "; }"
 [err:3] Block not finishing in rcbr at: "t a; (a=1)" -> "; }"
@@ -25,8 +25,8 @@ AST not build at: "t a; (a=1)" -> "; }"
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1;a=2;a=3; }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 
 AST dump (without extra info):
 -int a 
@@ -61,8 +61,8 @@ Scope 1: {0, a }
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=2+3+4; }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 
 AST dump (without extra info):
 -int a 
@@ -92,8 +92,8 @@ Scope 1: {0, a }
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=2++3+4; }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 Expecting numerical or lpar at: "nt a;a=2++" -> "3+4; }"
 
 AST dump (without extra info):
@@ -124,8 +124,8 @@ Scope 1: {0, a }
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1+2;a=3+4; }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 
 AST dump (without extra info):
 -int a 
@@ -162,8 +162,8 @@ Scope 1: {0, a }
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1+2;a=3+4;a=5+6; }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 
 AST dump (without extra info):
 -int a 
@@ -225,8 +225,8 @@ F -> {nam}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3;} }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 
 AST dump (without extra info):
 -int a 
@@ -266,8 +266,8 @@ Scope 2: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3;} a=4; }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 
 AST dump (without extra info):
 -int a 
@@ -314,8 +314,8 @@ Scope 2: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3+4+5;} }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 
 AST dump (without extra info):
 -int a 
@@ -363,8 +363,8 @@ Scope 2: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3+4+5;} a=6; }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 
 AST dump (without extra info):
 -int a 
@@ -419,8 +419,8 @@ Scope 2: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){if(3){a=4;if(5){a=6;}}} }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 
 AST dump (without extra info):
 -int a 
@@ -491,8 +491,8 @@ Scope 4: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){if(3){a=4+5;if(6){a=7+8;}}} }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 
 AST dump (without extra info):
 -int a 
@@ -571,8 +571,8 @@ Scope 4: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3;}else{4;} }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 [err:] assignment missing '=' at: "3;}else{4;" -> "} }"
 [err:3] Block not finishing in rcbr at: "3;}else{4;" -> "} }"
 Statements within else wrong. at: "3;}else{4;" -> "} }"
@@ -584,8 +584,8 @@ AST not build at: "3;}else{4;" -> "} }"
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3;}if(4){a=5;}else{a=6;} }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 
 AST dump (without extra info):
 -int a 
@@ -656,8 +656,8 @@ Scope 4: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a; int b; bool c; }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 
 AST dump (without extra info):
 -int a 
@@ -677,8 +677,8 @@ Scope 1: {0, a 1, b 2, c }
 
 ---------------------------------------------------
 Parsing: "void main(){int b, c, d; bool e f; }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 [err:19] Variables must be separated with comma. at: "; bool e f" -> "; }"
 
 AST dump (without extra info):
@@ -696,8 +696,8 @@ Scope 1: {0, b 1, c 2, d 3, e 4, f }
 
 ---------------------------------------------------
 Parsing: "void main(){int a; a=1; }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 
 AST dump (without extra info):
 -int a 
@@ -718,8 +718,8 @@ Scope 1: {0, a }
 
 ---------------------------------------------------
 Parsing: "void main(){int a; a=(1+2+3); }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 
 AST dump (without extra info):
 -int a 
@@ -748,8 +748,8 @@ Scope 1: {0, a }
 
 ---------------------------------------------------
 Parsing: "void main(){int a b c; b=1; c=2; a=(1+b+c); }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 [err:19] Variables must be separated with comma. at: "(){int a b" -> " c; b=1; c=2; a=(1+b+c); }"
 [err:19] Variables must be separated with comma. at: "{int a b c" -> "; b=1; c=2; a=(1+b+c); }"
 
@@ -794,16 +794,16 @@ Scope 1: {0, a 1, b 2, c }
 
 ---------------------------------------------------
 Parsing: "void main(){ int a; int b; int a; }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 [err:15] Symbol already declared. at: " b; int a;" -> " }"
 [err:31] function body empty at: "; int a; }" -> ""
 AST not build at: "; int a; }" -> ""
 
 ---------------------------------------------------
 Parsing: "void main(){ int a; if(1){int b;} }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 
 AST dump (without extra info):
 -int a 
@@ -832,8 +832,8 @@ Scope 2: {1, b }
 
 ---------------------------------------------------
 Parsing: "void main(){ int a; if(1){int b;}else{int c;} }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 
 AST dump (without extra info):
 -int a 
@@ -870,8 +870,8 @@ Scope 3: {2, c }
 
 ---------------------------------------------------
 Parsing: "void main(){ int a; while(1 + 2){ int c; c = 1+2; } }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 
 AST dump (without extra info):
 -int a 
@@ -915,8 +915,8 @@ Scope 2: {1, c }
 
 ---------------------------------------------------
 Parsing: "void main(){ bool a, b; a = true; b = false; }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 
 AST dump (without extra info):
 -bool a bool b 
@@ -944,8 +944,8 @@ Scope 1: {0, a 1, b }
 
 ---------------------------------------------------
 Parsing: "void main(){ int* a; int* b; }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 
 AST dump (without extra info):
 -int* a 
@@ -962,8 +962,8 @@ Scope 1: {0, a 1, b }
 
 ---------------------------------------------------
 Parsing: "void main(){ int* a; int b, c; b = 2; a = &b; c = *a; }"
-fdef
-Type: f: ()->void
+0 0fdef
+Type: function: ()->void
 
 AST dump (without extra info):
 -int* a 
