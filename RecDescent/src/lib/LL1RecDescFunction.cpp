@@ -1,29 +1,6 @@
-#include "ParserLL1RecDesc.hpp"
-#include "Node.hpp"
-#include "IRDefinition.hpp"
-// #include "CompilationUnit.hpp"
-#include "ErrorLog/Messages.hpp"
-#include "Types.hpp"
-#include <iterator>
-#include <fstream>
-#include <iostream>
-#include <exception>
-#include <memory>
-
-/*
-  Functions for non-terminals have at least a return for each derivation
-  (can also have some for error recovery). While in general it's a better
-  idea to have a single exit point for each function, this makes the code
-  easier to read.
- */
+#include "ParserLL1RecDescSourceHeaders.hpp"
 
 namespace RecDescent{
-
-using namespace Common;
-using namespace IRDefinition;
-using namespace SubtypesArithmetic;
-using namespace Compiler;
-
 
 
 void ParserLL1RecDesc::FuncDefList(std::vector<PtrFuncDef>& fdefl_inht,
