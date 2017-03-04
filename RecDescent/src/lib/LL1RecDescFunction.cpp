@@ -15,7 +15,8 @@ void ParserLL1RecDesc::FuncDefList(std::vector<PtrFuncDef>& fdefl_inht,
     return;
   }
 
-  AcceptEmpty({kToken::eof}, "[err:] File not ending in eof");
+  if(fdefl_inht.empty()) Error(kErr33);
+  else AcceptEmpty({kToken::eof}, "[err:] File not ending in eof");
 }
 
 //FDECL :=  name (){ STMTS }
@@ -27,7 +28,7 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
   Locus       l = CurrentLocus();
 
 
-  const AST::Type& ret_type = Type_();
+  const AST::Type& ret_type = this->Type();
 
   if(Accept(kToken::name, kErr26)) name = prev_token_string_value_;
 
@@ -36,7 +37,13 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
   Accept(kToken::rpar, kErr28);
 
 
-//   const AST::Type& type_func;
+  std::vector<AST::Type*> arg_types;
+  const AST::Type& type_func = unit_.GetFuncType(ret_type, arg_types);
+
+  if(not unit_.IsDeclValid(name, type_func)){
+    Error(kErr32);
+    return std::move(func_decl_synth);
+  }
 
   Accept(kToken::lcbr, kErr29);
   const ScopeId id = unit_.NewFunction(name);
@@ -47,16 +54,11 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
   if(not stmts_synt) Error(kErr31);
 
   Accept(kToken::rcbr, kErr30);
-/*
-  if(not unit_.IsDeclValid(name, type_func)){
-    Error(kErr32);
-    return std::move(func_decl_synth);
-  }
-*/
+
 
   func_decl_synth = NewFuncDef(name, stmts_synt, ret_type, scope_inht, l);
 
-//   unit_.RegisterDecl(prev_token_string_value_, type_func, func_decl_synth);
+  unit_.RegisterDecl(prev_token_string_value_, type_func, *func_decl_synth);
   unit_.GetFunc(name).SetOriginNode(*func_decl_synth);
 
   unit_.ExitFunctionDefinition();
@@ -66,7 +68,7 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
 }
 
 
-const AST::Type&  ParserLL1RecDesc::Type_(){
+const AST::Type&  ParserLL1RecDesc::Type(){
 //   std::cout << "Type\n";
   if(TryAndAccept(kToken::kwd_void))  return unit_.GetTypeVoid();
 

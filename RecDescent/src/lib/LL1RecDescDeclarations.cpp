@@ -4,7 +4,7 @@ namespace RecDescent{
 
 PtrVarDeclList  ParserLL1RecDesc::Decl(const ScopeId scope_inht){
 //   std::cout << "Decl\n";
-  const AST::Type& type = Type_();
+  const AST::Type& type = this->Type();
   const Locus l = CurrentLocus();
   std::vector<PtrVarDecl> name_list_inht;
   PtrVarDeclList decl_synt = NameList(name_list_inht, type, scope_inht, l);

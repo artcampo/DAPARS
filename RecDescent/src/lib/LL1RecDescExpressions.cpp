@@ -90,7 +90,7 @@ PtrExpr ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
 
   //F' := numerical
   if(TryAndAccept(kToken::numerical)){
-    const AST::Type& t = unit_.GetType(kBasicTypeId::kInt);
+    const AST::Type& t = unit_.GetTypeInt();
     fp_synt = NewLiteral(prev_token_int_value_, t
                       , scope_inht, l);
     return std::move(fp_synt);
@@ -98,14 +98,13 @@ PtrExpr ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
 
   //F' := true
   if(TryAndAccept(kToken::kwd_true)){
-    fp_synt = NewLiteral(1, unit_.GetType(kBasicTypeId::kBool) , scope_inht, l);
-    //fp_synt = NewLiteral(1, AST::Type::Bool() , scope_inht, l);
+    fp_synt = NewLiteral(1, unit_.GetTypeBool(), scope_inht, l);
     return std::move(fp_synt);
   }
 
   //F' := false
   if(TryAndAccept(kToken::kwd_false)){
-    fp_synt = NewLiteral(0, unit_.GetType(kBasicTypeId::kBool) , scope_inht, l);
+    fp_synt = NewLiteral(0, unit_.GetTypeBool() , scope_inht, l);
     return std::move(fp_synt);
   }
 
@@ -114,9 +113,9 @@ PtrExpr ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
     if(not unit_.Scope().IsDecl(prev_token_string_value_)){
       Error(kErr16);
       //Error recovery: insert it as int
-      VarDecl* n = new VarDecl(undeclared_name_, unit_.GetType(kBasicTypeId::kInt)
+      VarDecl* n = new VarDecl(undeclared_name_, unit_.GetTypeInt()
                            , scope_inht, l);
-      unit_.RegisterDecl(prev_token_string_value_, unit_.GetType(kBasicTypeId::kInt), *n);
+      unit_.RegisterDecl(prev_token_string_value_, unit_.GetTypeInt(), *n);
     }
     fp_synt = NewVar(prev_token_string_value_
                   , unit_.Scope().GetType(prev_token_string_value_)
