@@ -20,7 +20,7 @@ void ParserLL1RecDesc::FuncDefList(std::vector<PtrFuncDef>& fdefl_inht,
 
 //FDECL :=  name (){ STMTS }
 PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
-  std::cout << "fdef\n";
+//   std::cout << "fdef\n";
   PtrFuncDef func_decl_synth(nullptr);
   std::string name("func_name");
 
@@ -41,7 +41,7 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
 
   std::vector<AST::Type*> arg_types;
   const AST::Type& type_func = unit_.GetFuncType(ret_type, arg_types);
-  std::cout << "Type: " << type_func.str() << "\n";
+//   std::cout << "Type: " << type_func.str() << "\n";
 
   if(not unit_.IsDeclValid(name, type_func)){
     Error(kErr32);
@@ -61,10 +61,10 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
 
   func_decl_synth = NewFuncDef(name, stmts_synt, ret_type, scope_inht, l);
 
-  unit_.RegisterDecl(prev_token_string_value_, type_func, *func_decl_synth);
-  unit_.GetFunc(name).SetOriginNode(*func_decl_synth);
 
+  unit_.GetFunc(name).SetOriginNode(*func_decl_synth);
   unit_.ExitFunctionDefinition();
+  unit_.RegisterDecl(name, type_func, *func_decl_synth);
 
 
   return std::move(func_decl_synth);

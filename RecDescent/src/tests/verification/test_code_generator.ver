@@ -14,9 +14,10 @@ F -> {nam}
 
 ---------------------------------------------------
 Parsing: "void main(){int a,b,c; while(true){b=2+3;} c=3+4; }"
-0 0fdef
-Type: function: ()->void
-Scope 1: {0, a 1, b 2, c }
+
+Scopes of module:
+Scope 0: {(3:main) }
+Scope 1: {(0:a) (1:b) (2:c) }
 Scope 2: {}
 
 
@@ -37,6 +38,12 @@ AST dump:
 ----Literal: 3 [int Rvalue]
 ----Literal: 4 [int Rvalue]
 
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 1 b of type int]
+2: Symbol: [ in scope 1 c of type int]
+3: Symbol: [ in scope 0 main of type function: ()->void]
+
 IR dump:
 0: %0 = LoadI(1)
 1: JumpCondTrue %0 to:3
@@ -53,11 +60,12 @@ IR dump:
 
 ---------------------------------------------------
 Parsing: "void main(){ int a, b; if(true){int c; a=2+3;} else{ int d, e,f; d = 4; } int g; b=5+6; }"
-0 0fdef
-Type: function: ()->void
-Scope 1: {0, a 1, b 6, g }
-Scope 2: {2, c }
-Scope 3: {3, d 4, e 5, f }
+
+Scopes of module:
+Scope 0: {(7:main) }
+Scope 1: {(0:a) (1:b) (6:g) }
+Scope 2: {(2:c) }
+Scope 3: {(3:d) (4:e) (5:f) }
 
 
 AST dump:
@@ -84,6 +92,16 @@ AST dump:
 ---Literal: 5 [int Rvalue]
 ---Literal: 6 [int Rvalue]
 
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 1 b of type int]
+2: Symbol: [ in scope 2 c of type int]
+3: Symbol: [ in scope 3 d of type int]
+4: Symbol: [ in scope 3 e of type int]
+5: Symbol: [ in scope 3 f of type int]
+6: Symbol: [ in scope 1 g of type int]
+7: Symbol: [ in scope 0 main of type function: ()->void]
+
 IR dump:
 0: %0 = LoadI(1)
 1: JumpCondTrue %0 to:3
@@ -103,9 +121,10 @@ IR dump:
 
 ---------------------------------------------------
 Parsing: "void main(){int a,b; int* p; a=*p; b=2; p = &b; a = b + *p;}"
-0 0fdef
-Type: function: ()->void
-Scope 1: {0, a 1, b 2, p }
+
+Scopes of module:
+Scope 0: {(3:main) }
+Scope 1: {(0:a) (1:b) (2:p) }
 
 
 AST dump:
@@ -129,6 +148,12 @@ AST dump:
 ---* [int Lvalue Read]
 ----p [int* Lvalue Read Value]
 
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 1 b of type int]
+2: Symbol: [ in scope 1 p of type int*]
+3: Symbol: [ in scope 0 main of type function: ()->void]
+
 IR dump:
 0: %0 = Load [Main:p]
 1: %1 = Load [ %0]
@@ -145,12 +170,11 @@ IR dump:
 
 ---------------------------------------------------
 Parsing: "void main(){int a; a= 2;} void f(){int a; a=3;}"
-0 0fdef
-Type: function: ()->void
-fdef
-Type: function: ()->void
-Scope 1: {0, a }
-Scope 2: {1, a }
+
+Scopes of module:
+Scope 0: {(1:main) (3:f) }
+Scope 1: {(0:a) }
+Scope 2: {(2:a) }
 
 
 AST dump:
@@ -162,6 +186,12 @@ AST dump:
 -Assign
 --a [int Lvalue Write Value]
 --Literal: 3 [int Rvalue]
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 0 main of type function: ()->void]
+2: Symbol: [ in scope 2 a of type int]
+3: Symbol: [ in scope 0 f of type function: ()->void]
 
 IR dump:
 0: %0 = LoadI(2)

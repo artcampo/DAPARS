@@ -43,7 +43,7 @@ void ParserLL1RecDesc::Prog(){
   NextToken();
 
   scope_owner_id_.push(unit_.GlobalScopeOwnerId());
-  const ScopeId id = unit_.NewFirstScope( scope_owner_id_.top() );
+  const ScopeId id = unit_.GlobalScopeId( scope_owner_id_.top() );
   PtrProgInit pinit = std::make_unique<AST::ProgInit>(id, CurrentLocus());
   PtrProgEnd  pend  = std::make_unique<AST::ProgEnd> (id, CurrentLocus());
 

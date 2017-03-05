@@ -36,11 +36,14 @@ void parse(const std::string& str, G& g)
                 P(std::vector<char> (str.begin(), str.end()), unit));
 
   parser->Parse();
+  /*
+  //Pre passes ASTdump, for when attributes lead to sigsev
   if(unit.GetAstProg() != nullptr){
     std::cout << "\nAST dump (without extra info):\n";
     ASTVisitorDump visitor_dump(unit);
     visitor_dump.Visit(*unit.GetAstProg());
   }
+  */
 
   if(unit.ValidAst()){
     PassManager pm(unit);
@@ -127,8 +130,11 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "void main(){ int* a; int* b; }"), g);
 
-    parse<Grammar,ParserLL1RecDesc>( std::string(
+  parse<Grammar,ParserLL1RecDesc>( std::string(
     "void main(){ int* a; int b, c; b = 2; a = &b; c = *a; }"), g);
+
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "void main(){int a; a= 2;} void f(){bool a; a=3;}"), g);
 
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(

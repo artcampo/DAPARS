@@ -14,8 +14,6 @@ F -> {nam}
 
 ---------------------------------------------------
 Parsing: "void main(){int a; (a=1); }"
-0 0fdef
-Type: function: ()->void
 [err:14] Expecting rpar. at: "int a; (a=" -> "1); }"
 [err:4] Expecting semicolon after Expr. at: "t a; (a=1)" -> "; }"
 [err:3] Block not finishing in rcbr at: "t a; (a=1)" -> "; }"
@@ -25,20 +23,6 @@ AST not build at: "t a; (a=1)" -> "; }"
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1;a=2;a=3; }"
-0 0fdef
-Type: function: ()->void
-
-AST dump (without extra info):
--int a 
--Assign
---a
---Literal: 1
--Assign
---a
---Literal: 2
--Assign
---a
---Literal: 3
 
 AST pretty:
 int a 
@@ -57,22 +41,17 @@ AST dump:
 -Assign
 --a [int Lvalue Write Value]
 --Literal: 3 [int Rvalue]
-Scope 1: {0, a }
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(1:main) }
+Scope 1: {(0:a) }
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=2+3+4; }"
-0 0fdef
-Type: function: ()->void
-
-AST dump (without extra info):
--int a 
--Assign
---a
---Op: + 
----Op: + 
-----Literal: 2
-----Literal: 3
----Literal: 4
 
 AST pretty:
 int a 
@@ -87,24 +66,19 @@ AST dump:
 ----Literal: 2 [int Rvalue]
 ----Literal: 3 [int Rvalue]
 ---Literal: 4 [int Rvalue]
-Scope 1: {0, a }
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(1:main) }
+Scope 1: {(0:a) }
 
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=2++3+4; }"
-0 0fdef
-Type: function: ()->void
 Expecting numerical or lpar at: "nt a;a=2++" -> "3+4; }"
-
-AST dump (without extra info):
--int a 
--Assign
---a
---Op: + 
----Op: + 
-----Literal: 2
-----Literal: 3
----Literal: 4
 
 AST pretty:
 int a 
@@ -119,26 +93,18 @@ AST dump:
 ----Literal: 2 [int Rvalue]
 ----Literal: 3 [int Rvalue]
 ---Literal: 4 [int Rvalue]
-Scope 1: {0, a }
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(1:main) }
+Scope 1: {(0:a) }
 
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1+2;a=3+4; }"
-0 0fdef
-Type: function: ()->void
-
-AST dump (without extra info):
--int a 
--Assign
---a
---Op: + 
----Literal: 1
----Literal: 2
--Assign
---a
---Op: + 
----Literal: 3
----Literal: 4
 
 AST pretty:
 int a 
@@ -157,31 +123,18 @@ AST dump:
 --Op: +  [int Rvalue]
 ---Literal: 3 [int Rvalue]
 ---Literal: 4 [int Rvalue]
-Scope 1: {0, a }
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(1:main) }
+Scope 1: {(0:a) }
 
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1+2;a=3+4;a=5+6; }"
-0 0fdef
-Type: function: ()->void
-
-AST dump (without extra info):
--int a 
--Assign
---a
---Op: + 
----Literal: 1
----Literal: 2
--Assign
---a
---Op: + 
----Literal: 3
----Literal: 4
--Assign
---a
---Op: + 
----Literal: 5
----Literal: 6
 
 AST pretty:
 int a 
@@ -206,7 +159,14 @@ AST dump:
 --Op: +  [int Rvalue]
 ---Literal: 5 [int Rvalue]
 ---Literal: 6 [int Rvalue]
-Scope 1: {0, a }
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(1:main) }
+Scope 1: {(0:a) }
 
 
 Grammar:
@@ -225,21 +185,6 @@ F -> {nam}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3;} }"
-0 0fdef
-Type: function: ()->void
-
-AST dump (without extra info):
--int a 
--Assign
---a
---Literal: 1
--IfStmt:
---Cond: Literal: 2
---Then:
----Assign
-----a
-----Literal: 3
-
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;} }"
 
 AST pretty:
@@ -261,29 +206,18 @@ AST dump:
 ----a [int Lvalue Write Value]
 ----Literal: 3 [int Rvalue]
 
-Scope 1: {0, a }
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(1:main) }
+Scope 1: {(0:a) }
 Scope 2: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3;} a=4; }"
-0 0fdef
-Type: function: ()->void
-
-AST dump (without extra info):
--int a 
--Assign
---a
---Literal: 1
--IfStmt:
---Cond: Literal: 2
---Then:
----Assign
-----a
-----Literal: 3
-
--Assign
---a
---Literal: 4
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;} a=4; }"
 
 AST pretty:
@@ -309,30 +243,18 @@ AST dump:
 -Assign
 --a [int Lvalue Write Value]
 --Literal: 4 [int Rvalue]
-Scope 1: {0, a }
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(1:main) }
+Scope 1: {(0:a) }
 Scope 2: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3+4+5;} }"
-0 0fdef
-Type: function: ()->void
-
-AST dump (without extra info):
--int a 
--Assign
---a
---Literal: 1
--IfStmt:
---Cond: Literal: 2
---Then:
----Assign
-----a
-----Op: + 
------Op: + 
-------Literal: 3
-------Literal: 4
------Literal: 5
-
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;} }"
 
 AST pretty:
@@ -358,33 +280,18 @@ AST dump:
 ------Literal: 4 [int Rvalue]
 -----Literal: 5 [int Rvalue]
 
-Scope 1: {0, a }
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(1:main) }
+Scope 1: {(0:a) }
 Scope 2: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3+4+5;} a=6; }"
-0 0fdef
-Type: function: ()->void
-
-AST dump (without extra info):
--int a 
--Assign
---a
---Literal: 1
--IfStmt:
---Cond: Literal: 2
---Then:
----Assign
-----a
-----Op: + 
------Op: + 
-------Literal: 3
-------Literal: 4
------Literal: 5
-
--Assign
---a
---Literal: 6
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;} a=6; }"
 
 AST pretty:
@@ -414,37 +321,18 @@ AST dump:
 -Assign
 --a [int Lvalue Write Value]
 --Literal: 6 [int Rvalue]
-Scope 1: {0, a }
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(1:main) }
+Scope 1: {(0:a) }
 Scope 2: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){if(3){a=4;if(5){a=6;}}} }"
-0 0fdef
-Type: function: ()->void
-
-AST dump (without extra info):
--int a 
--Assign
---a
---Literal: 1
--IfStmt:
---Cond: Literal: 2
---Then:
----IfStmt:
-----Cond: Literal: 3
-----Then:
------Assign
-------a
-------Literal: 4
------IfStmt:
-------Cond: Literal: 5
-------Then:
--------Assign
---------a
---------Literal: 6
-
-
-
 [err:21] if's condition is not a bool at: "){a=4;if(5" -> "){a=6;}}} }"
 [err:21] if's condition is not a bool at: "if(2){if(3" -> "){a=4;if(5){a=6;}}} }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4;if(5){a=6;}}} }"
@@ -484,43 +372,20 @@ AST dump:
 
 
 
-Scope 1: {0, a }
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(1:main) }
+Scope 1: {(0:a) }
 Scope 2: {}
 Scope 3: {}
 Scope 4: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){if(3){a=4+5;if(6){a=7+8;}}} }"
-0 0fdef
-Type: function: ()->void
-
-AST dump (without extra info):
--int a 
--Assign
---a
---Literal: 1
--IfStmt:
---Cond: Literal: 2
---Then:
----IfStmt:
-----Cond: Literal: 3
-----Then:
------Assign
-------a
-------Op: + 
--------Literal: 4
--------Literal: 5
------IfStmt:
-------Cond: Literal: 6
-------Then:
--------Assign
---------a
---------Op: + 
----------Literal: 7
----------Literal: 8
-
-
-
 [err:21] if's condition is not a bool at: "a=4+5;if(6" -> "){a=7+8;}}} }"
 [err:21] if's condition is not a bool at: "if(2){if(3" -> "){a=4+5;if(6){a=7+8;}}} }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4+5;if(6){a=7+8;}}} }"
@@ -564,15 +429,20 @@ AST dump:
 
 
 
-Scope 1: {0, a }
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(1:main) }
+Scope 1: {(0:a) }
 Scope 2: {}
 Scope 3: {}
 Scope 4: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3;}else{4;} }"
-0 0fdef
-Type: function: ()->void
 [err:] assignment missing '=' at: "3;}else{4;" -> "} }"
 [err:3] Block not finishing in rcbr at: "3;}else{4;" -> "} }"
 Statements within else wrong. at: "3;}else{4;" -> "} }"
@@ -584,32 +454,6 @@ AST not build at: "3;}else{4;" -> "} }"
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3;}if(4){a=5;}else{a=6;} }"
-0 0fdef
-Type: function: ()->void
-
-AST dump (without extra info):
--int a 
--Assign
---a
---Literal: 1
--IfStmt:
---Cond: Literal: 2
---Then:
----Assign
-----a
-----Literal: 3
-
--IfStmt:
---Cond: Literal: 4
---Then:
----Assign
-----a
-----Literal: 5
---Else:
----Assign
-----a
-----Literal: 6
-
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;}if(4){a=5;}else{a=6;} }"
 [err:21] if's condition is not a bool at: "{a=3;}if(4" -> "){a=5;}else{a=6;} }"
 
@@ -649,20 +493,20 @@ AST dump:
 ----a [int Lvalue Write Value]
 ----Literal: 6 [int Rvalue]
 
-Scope 1: {0, a }
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(1:main) }
+Scope 1: {(0:a) }
 Scope 2: {}
 Scope 3: {}
 Scope 4: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a; int b; bool c; }"
-0 0fdef
-Type: function: ()->void
-
-AST dump (without extra info):
--int a 
--int b 
--bool c 
 
 AST pretty:
 int a 
@@ -673,17 +517,20 @@ AST dump:
 -int a 
 -int b 
 -bool c 
-Scope 1: {0, a 1, b 2, c }
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 1 b of type int]
+2: Symbol: [ in scope 1 c of type bool]
+3: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(3:main) }
+Scope 1: {(0:a) (1:b) (2:c) }
 
 ---------------------------------------------------
 Parsing: "void main(){int b, c, d; bool e f; }"
-0 0fdef
-Type: function: ()->void
 [err:19] Variables must be separated with comma. at: "; bool e f" -> "; }"
-
-AST dump (without extra info):
--int b int c int d 
--bool e bool f 
 
 AST pretty:
 int b int c int d 
@@ -692,18 +539,21 @@ bool e bool f
 AST dump:
 -int b int c int d 
 -bool e bool f 
-Scope 1: {0, b 1, c 2, d 3, e 4, f }
+
+Declaration Table:
+0: Symbol: [ in scope 1 b of type int]
+1: Symbol: [ in scope 1 c of type int]
+2: Symbol: [ in scope 1 d of type int]
+3: Symbol: [ in scope 1 e of type bool]
+4: Symbol: [ in scope 1 f of type bool]
+5: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(5:main) }
+Scope 1: {(0:b) (1:c) (2:d) (3:e) (4:f) }
 
 ---------------------------------------------------
 Parsing: "void main(){int a; a=1; }"
-0 0fdef
-Type: function: ()->void
-
-AST dump (without extra info):
--int a 
--Assign
---a
---Literal: 1
 
 AST pretty:
 int a 
@@ -714,22 +564,17 @@ AST dump:
 -Assign
 --a [int Lvalue Write Value]
 --Literal: 1 [int Rvalue]
-Scope 1: {0, a }
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(1:main) }
+Scope 1: {(0:a) }
 
 ---------------------------------------------------
 Parsing: "void main(){int a; a=(1+2+3); }"
-0 0fdef
-Type: function: ()->void
-
-AST dump (without extra info):
--int a 
--Assign
---a
---Op: + 
----Op: + 
-----Literal: 1
-----Literal: 2
----Literal: 3
 
 AST pretty:
 int a 
@@ -744,30 +589,19 @@ AST dump:
 ----Literal: 1 [int Rvalue]
 ----Literal: 2 [int Rvalue]
 ---Literal: 3 [int Rvalue]
-Scope 1: {0, a }
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(1:main) }
+Scope 1: {(0:a) }
 
 ---------------------------------------------------
 Parsing: "void main(){int a b c; b=1; c=2; a=(1+b+c); }"
-0 0fdef
-Type: function: ()->void
 [err:19] Variables must be separated with comma. at: "(){int a b" -> " c; b=1; c=2; a=(1+b+c); }"
 [err:19] Variables must be separated with comma. at: "{int a b c" -> "; b=1; c=2; a=(1+b+c); }"
-
-AST dump (without extra info):
--int a int b int c 
--Assign
---b
---Literal: 1
--Assign
---c
---Literal: 2
--Assign
---a
---Op: + 
----Op: + 
-----Literal: 1
-----b
----c
 
 AST pretty:
 int a int b int c 
@@ -790,28 +624,25 @@ AST dump:
 ----Literal: 1 [int Rvalue]
 ----b [int Lvalue Read Value]
 ---c [int Lvalue Read Value]
-Scope 1: {0, a 1, b 2, c }
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 1 b of type int]
+2: Symbol: [ in scope 1 c of type int]
+3: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(3:main) }
+Scope 1: {(0:a) (1:b) (2:c) }
 
 ---------------------------------------------------
 Parsing: "void main(){ int a; int b; int a; }"
-0 0fdef
-Type: function: ()->void
 [err:15] Symbol already declared. at: " b; int a;" -> " }"
 [err:31] function body empty at: "; int a; }" -> ""
 AST not build at: "; int a; }" -> ""
 
 ---------------------------------------------------
 Parsing: "void main(){ int a; if(1){int b;} }"
-0 0fdef
-Type: function: ()->void
-
-AST dump (without extra info):
--int a 
--IfStmt:
---Cond: Literal: 1
---Then:
----int b 
-
 [err:21] if's condition is not a bool at: "nt a; if(1" -> "){int b;} }"
 
 AST pretty:
@@ -827,23 +658,19 @@ AST dump:
 --Then:
 ---int b 
 
-Scope 1: {0, a 2, b }
-Scope 2: {1, b }
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 2 b of type int]
+2: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(2:main) }
+Scope 1: {(0:a) }
+Scope 2: {(1:b) }
 
 ---------------------------------------------------
 Parsing: "void main(){ int a; if(1){int b;}else{int c;} }"
-0 0fdef
-Type: function: ()->void
-
-AST dump (without extra info):
--int a 
--IfStmt:
---Cond: Literal: 1
---Then:
----int b 
---Else:
----int c 
-
 [err:21] if's condition is not a bool at: "nt a; if(1" -> "){int b;}else{int c;} }"
 
 AST pretty:
@@ -864,29 +691,21 @@ AST dump:
 --Else:
 ---int c 
 
-Scope 1: {0, a 3, c }
-Scope 2: {1, b }
-Scope 3: {2, c }
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 2 b of type int]
+2: Symbol: [ in scope 3 c of type int]
+3: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(3:main) }
+Scope 1: {(0:a) }
+Scope 2: {(1:b) }
+Scope 3: {(2:c) }
 
 ---------------------------------------------------
 Parsing: "void main(){ int a; while(1 + 2){ int c; c = 1+2; } }"
-0 0fdef
-Type: function: ()->void
-
-AST dump (without extra info):
--int a 
--WhileStmt:
---Cond: Op: + 
----Literal: 1
----Literal: 2
---Body:
----int c 
----Assign
-----c
-----Op: + 
------Literal: 1
------Literal: 2
-
 [err:20] while's condition is not a bool at: " while(1 +" -> " 2){ int c; c = 1+2; } }"
 
 AST pretty:
@@ -910,22 +729,19 @@ AST dump:
 -----Literal: 1 [int Rvalue]
 -----Literal: 2 [int Rvalue]
 
-Scope 1: {0, a 2, c }
-Scope 2: {1, c }
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 2 c of type int]
+2: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(2:main) }
+Scope 1: {(0:a) }
+Scope 2: {(1:c) }
 
 ---------------------------------------------------
 Parsing: "void main(){ bool a, b; a = true; b = false; }"
-0 0fdef
-Type: function: ()->void
-
-AST dump (without extra info):
--bool a bool b 
--Assign
---a
---Literal: 1
--Assign
---b
---Literal: 0
 
 AST pretty:
 bool a bool b 
@@ -940,16 +756,18 @@ AST dump:
 -Assign
 --b [bool Lvalue Write Value]
 --Literal: 0 [bool Rvalue]
-Scope 1: {0, a 1, b }
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type bool]
+1: Symbol: [ in scope 1 b of type bool]
+2: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(2:main) }
+Scope 1: {(0:a) (1:b) }
 
 ---------------------------------------------------
 Parsing: "void main(){ int* a; int* b; }"
-0 0fdef
-Type: function: ()->void
-
-AST dump (without extra info):
--int* a 
--int* b 
 
 AST pretty:
 int* a 
@@ -958,27 +776,18 @@ int* b
 AST dump:
 -int* a 
 -int* b 
-Scope 1: {0, a 1, b }
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int*]
+1: Symbol: [ in scope 1 b of type int*]
+2: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(2:main) }
+Scope 1: {(0:a) (1:b) }
 
 ---------------------------------------------------
 Parsing: "void main(){ int* a; int b, c; b = 2; a = &b; c = *a; }"
-0 0fdef
-Type: function: ()->void
-
-AST dump (without extra info):
--int* a 
--int b int c 
--Assign
---b
---Literal: 2
--Assign
---a
---@
----b
--Assign
---c
---*
----a
 
 AST pretty:
 int* a 
@@ -1001,5 +810,45 @@ AST dump:
 --c [int Lvalue Write Value]
 --* [int Lvalue Read]
 ---a [int* Lvalue Read Value]
-Scope 1: {0, a 1, b 2, c }
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int*]
+1: Symbol: [ in scope 1 b of type int]
+2: Symbol: [ in scope 1 c of type int]
+3: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(3:main) }
+Scope 1: {(0:a) (1:b) (2:c) }
+
+---------------------------------------------------
+Parsing: "void main(){int a; a= 2;} void f(){bool a; a=3;}"
+[err:18] Incompatible types in assignment at: "{bool a; a" -> "=3;}"
+
+AST pretty:
+int a 
+a=2
+bool a 
+a=3
+
+AST dump:
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--Literal: 2 [int Rvalue]
+-bool a 
+-Assign
+--a [bool Lvalue Write Value]
+--Literal: 3 [int Rvalue]
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 0 main of type function: ()->void]
+2: Symbol: [ in scope 2 a of type bool]
+3: Symbol: [ in scope 0 f of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(1:main) (3:f) }
+Scope 1: {(0:a) }
+Scope 2: {(2:a) }
 
