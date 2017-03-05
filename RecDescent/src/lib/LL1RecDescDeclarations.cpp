@@ -67,7 +67,7 @@ ParserLL1RecDesc::NameListPrime(std::vector<PtrVarDecl>& name_list_inht
   //NAME_LIST':= , name NAME_LIST'
   bool has_comma = TryAndAccept(kToken::comma);
   if(not has_comma and Check({kToken::name}) and not Check({kToken::semicolon})){
-    Error("[err:19] Variables must be separated with comma.");
+    Error(kErr19);
     has_comma = true;
   }
   if(has_comma){

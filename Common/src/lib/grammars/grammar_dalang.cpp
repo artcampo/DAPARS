@@ -90,13 +90,13 @@ void CreateGrammarDalang(G& g){
 
   g.AddRule(Rule(PARL,    {PAR, PARLP}));
   g.AddRule(Rule(PARL,    {empty}));
-  g.AddRule(Rule(PARLP,   {PAR, PARLP}));
+  g.AddRule(Rule(PARLP,   {comma, PAR, PARLP}));
   g.AddRule(Rule(PARLP,   {empty}));
   g.AddRule(Rule(PAR,     {TYPE, name}));
 
   g.AddRule(Rule(ARGL,    {E, ARGLP}));
   g.AddRule(Rule(ARGL,    {empty}));
-  g.AddRule(Rule(ARGLP,   {E, ARGLP}));
+  g.AddRule(Rule(ARGLP,   {comma, E, ARGLP}));
   g.AddRule(Rule(ARGLP,   {empty}));
 
   //Statements

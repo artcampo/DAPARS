@@ -14,12 +14,12 @@ FDEFL -> {empty}
 FDEF -> TYPE {nam} ( PARL ) { STMTS } 
 PARL -> PAR PARLP 
 PARL -> {empty} 
-PARLP -> PAR PARLP 
+PARLP -> , PAR PARLP 
 PARLP -> {empty} 
 PAR -> TYPE {nam} 
 ARGL -> E ARGLP 
 ARGL -> {empty} 
-ARGLP -> E ARGLP 
+ARGLP -> , E ARGLP 
 ARGLP -> {empty} 
 STMTS -> STMT STMTS 
 STMTS -> {empty} 
@@ -56,7 +56,7 @@ ARGM -> ( PARL )
 -----------------------------
 First Table
 ARGL => & * {empty} false ( {nam} {num}  true 
-ARGLP => & * {empty} false ( {nam} {num}  true 
+ARGLP => , {empty} 
 ARGM => {empty} ( 
 DECL => bool int void 
 E => & * false ( {nam} {num}  true 
@@ -70,7 +70,7 @@ NAME_LIST => {nam}
 NAME_LIST' => , {empty} 
 PAR => bool int void 
 PARL => bool {empty} int void 
-PARLP => bool {empty} int void 
+PARLP => , {empty} 
 PROG => bool {empty} int void 
 STMT => & * bool false if int ( {nam} {num}  true void while 
 STMTS => & * bool {empty} false if int ( {nam} {num}  true void while 
@@ -83,35 +83,35 @@ ARGL =>
 ARGLP => 
 ARGM => 
 DECL => ; 
-E => & * = false ( {nam} {num} ) ;  true 
-E' => & * = false ( {nam} {num} ) ;  true 
-F => & * = false ( {nam} {num} + ) ;  true 
-F' => & * = false ( {nam} {num} + ) ;  true 
+E => , = ) ; 
+E' => , = ) ; 
+F => , = + ) ; 
+F' => , = + ) ; 
 FDEF => bool {eof} int void 
 FDEFL => {eof} 
 IFELSE => & * bool false if int ( {nam} {num} }  true void while 
 NAME_LIST => ; 
 NAME_LIST' => ; 
-PAR => bool int ) void 
+PAR => , ) 
 PARL => ) 
 PARLP => ) 
 PROG => {eof} 
 STMT => & * bool false if int ( {nam} {num} }  true void while 
 STMTS => } 
-T => & * = false ( {nam} {num} + ) ;  true 
+T => , = + ) ; 
 TYPE => {nam} 
 TYPE' => {nam} 
 -----------------------------
 First+ Table
 ARGL -> E ARGLP  => & * false ( {nam} {num}  true 
 ARGL -> {empty}  => {empty} 
-ARGLP -> E ARGLP  => & * false ( {nam} {num}  true 
+ARGLP -> , E ARGLP  => , 
 ARGLP -> {empty}  => {empty} 
 ARGM -> {empty}  => {empty} 
 ARGM -> ( PARL )  => ( 
 DECL -> TYPE NAME_LIST  => bool int void 
 E -> T E'  => & * false ( {nam} {num}  true 
-E' -> {empty}  => & * {empty} = false ( {nam} {num} ) ;  true 
+E' -> {empty}  => , {empty} = ) ; 
 E' -> + T E'  => + 
 F -> & F'  => & 
 F -> * F'  => * 
@@ -132,8 +132,8 @@ NAME_LIST' -> {empty}  => {empty} ;
 PAR -> TYPE {nam}  => bool int void 
 PARL -> {empty}  => {empty} ) 
 PARL -> PAR PARLP  => bool int void 
+PARLP -> , PAR PARLP  => , 
 PARLP -> {empty}  => {empty} ) 
-PARLP -> PAR PARLP  => bool int void 
 PROG -> FDEFL  init  => bool {empty} int void 
 STMT -> DECL ;  => bool int void 
 STMT -> E = E ;  => & * false ( {nam} {num}  true 

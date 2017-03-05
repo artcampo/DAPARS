@@ -36,7 +36,7 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
 
   scope_owner_id_.push( unit_.NewScopeOwner() );
   std::vector<PtrVarDecl> par_list_inht;
-  ParList(par_list_inht);
+  ParList(par_list_inht, scope_inht);
 
   Accept(kToken::rpar, kErr28);
 
@@ -73,19 +73,44 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
 }
 
 
-void ParserLL1RecDesc::ParList(std::vector<PtrVarDecl>& par_list_inht){
+void ParserLL1RecDesc::ParList(std::vector<PtrVarDecl>& par_list_inht
+  , const ScopeId scope_inht){
   //PARL -> PAR PARLP  => bool int void
   if(Check(set_types_)){
-//     par_list_inht.push_back( std::move( Par()) );
+    PtrVarDecl var_decl = Par(scope_inht);
+    if(not var_decl) return;
+    par_list_inht.push_back( std::move(var_decl));
+    ParListPrime(par_list_inht, scope_inht);
     return;
   }
 
   //PARL -> {empty}  => {empty} )
   if(Check({kToken::rpar})) return;
 }
-/*
-PtrVarDecl Par
-*/
+
+void ParserLL1RecDesc::ParListPrime(std::vector<PtrVarDecl>& par_list_inht
+  , const ScopeId scope_inht){
+  //PARLP -> {empty}  => {empty} )
+  if(Check({kToken::rpar})) return;
+
+  //PARLP -> , PAR PARLP  => ,
+  if(not TryAndAccept(kToken::comma)) Error(kErr34);
+
+  if(Check(set_types_)){
+    PtrVarDecl var_decl = Par(scope_inht);
+    if(not var_decl) return;
+    par_list_inht.push_back( std::move(var_decl));
+    ParListPrime(par_list_inht, scope_inht);
+    return;
+  }
+}
+
+PtrVarDecl ParserLL1RecDesc::Par(const ScopeId scope_inht){
+  const Locus l = CurrentLocus();
+  const AST::Type& type = this->Type();
+  return NameDecl(type, scope_inht, l);
+}
+
 const AST::Type&  ParserLL1RecDesc::Type(){
 //   std::cout << "Type\n";
   if(TryAndAccept(kToken::kwd_void))  return unit_.GetTypeVoid();

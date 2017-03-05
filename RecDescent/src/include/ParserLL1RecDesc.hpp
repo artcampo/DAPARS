@@ -55,8 +55,9 @@ private:
   const Compiler::AST::Type&  Type();
 
   //Function
-  void ParList(std::vector<PtrVarDecl>& par_list_inht);
-
+  void ParList(std::vector<PtrVarDecl>& par_list_inht, const ScopeId scope_inht);
+  void ParListPrime(std::vector<PtrVarDecl>& par_list_inht, const ScopeId scope_inht);
+  PtrVarDecl Par(const ScopeId scope_inht);
 
   //Helpers not associated to a rule
   PtrBlock ParseSubBlock(const ScopeId scope_inht, const std::string& error);
