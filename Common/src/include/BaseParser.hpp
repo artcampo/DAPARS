@@ -113,7 +113,7 @@ protected:
 
   PtrFuncDef
   NewFuncDef(const std::string& name, PtrBlock& block, const Type& ret_type
-            , const ScopeId id, const Locus& locus);
+            , std::vector<PtrVarDecl>& par_list, const ScopeId id, const Locus& locus);
 
 private:
   int               num_errors_;

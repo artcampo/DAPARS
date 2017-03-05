@@ -37,8 +37,8 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
 
   Accept(kToken::lpar, kErr27);
 
-  std::vector<PtrVarDecl> par_list_inht;
-  ParList(par_list_inht, scope_inht);
+  std::vector<PtrVarDecl> par_list;
+  ParList(par_list, id);
 
   Accept(kToken::rpar, kErr28);
 
@@ -63,7 +63,7 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
   Accept(kToken::rcbr, kErr30);
   scope_owner_id_.pop();
 
-  func_decl_synth = NewFuncDef(name, stmts_synt, ret_type, scope_inht, l);
+  func_decl_synth = NewFuncDef(name, stmts_synt, ret_type, par_list, scope_inht, l);
 
 
   unit_.SetFuncOriginNode(*func_decl_synth);
