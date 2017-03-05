@@ -62,7 +62,7 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
   func_decl_synth = NewFuncDef(name, stmts_synt, ret_type, scope_inht, l);
 
 
-  unit_.GetFunc(name).SetOriginNode(*func_decl_synth);
+  unit_.SetFuncOriginNode(*func_decl_synth);
   unit_.ExitFunctionDefinition();
   unit_.RegisterDecl(name, type_func, *func_decl_synth);
 
