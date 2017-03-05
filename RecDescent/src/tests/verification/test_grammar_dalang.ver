@@ -10,7 +10,16 @@ Grammar:
 PROG -> FDEFL  init 
 FDEFL -> FDEF FDEFL 
 FDEFL -> {empty} 
-FDEF -> {nam} ( ) { STMTS } 
+FDEF -> TYPE {nam} ( PARL ) { STMTS } 
+PARL -> PAR PARLP 
+PARL -> {empty} 
+PARLP -> PAR PARLP 
+PARLP -> {empty} 
+PAR -> TYPE {nam} 
+ARGL -> E ARGLP 
+ARGL -> {empty} 
+ARGLP -> E ARGLP 
+ARGLP -> {empty} 
 STMTS -> STMT STMTS 
 STMTS -> {empty} 
 STMT -> E = E ; 
@@ -39,20 +48,28 @@ F' -> {num}
 F' -> {nam} 
 F' ->  true 
 F' -> false 
+ARGM -> {empty} 
+ARGM -> ( PARL ) 
 
 -----------------------------
 First Table
+ARGL => & * {empty} false ( {nam} {num}  true 
+ARGLP => & * {empty} false ( {nam} {num}  true 
+ARGM => {empty} ( 
 DECL => bool int 
 E => & * false ( {nam} {num}  true 
 E' => {empty} + 
 F => & * false ( {nam} {num}  true 
 F' => false ( {nam} {num}  true 
-FDEF => {nam} 
-FDEFL => {empty} {nam} 
+FDEF => bool int 
+FDEFL => bool {empty} int 
 IFELSE => else {empty} 
 NAME_LIST => {nam} 
 NAME_LIST' => , {empty} 
-PROG => {empty} {nam} 
+PAR => bool int 
+PARL => bool {empty} int 
+PARLP => bool {empty} int 
+PROG => bool {empty} int 
 STMT => & * bool false if int ( {nam} {num}  true while 
 STMTS => & * bool {empty} false if int ( {nam} {num}  true while 
 T => & * false ( {nam} {num}  true 
@@ -60,27 +77,39 @@ TYPE => bool int
 TYPE' => * {empty} 
 -----------------------------
 Follow Table
+ARGL => 
+ARGLP => 
+ARGM => 
 DECL => ; 
-E => = ) ; 
-E' => = ) ; 
-F => = + ) ; 
-F' => = + ) ; 
-FDEF => {eof} {nam} 
+E => & * = false ( {nam} {num} ) ;  true 
+E' => & * = false ( {nam} {num} ) ;  true 
+F => & * = false ( {nam} {num} + ) ;  true 
+F' => & * = false ( {nam} {num} + ) ;  true 
+FDEF => bool {eof} int 
 FDEFL => {eof} 
 IFELSE => & * bool false if int ( {nam} {num} }  true while 
 NAME_LIST => ; 
 NAME_LIST' => ; 
+PAR => bool int ) 
+PARL => ) 
+PARLP => ) 
 PROG => {eof} 
 STMT => & * bool false if int ( {nam} {num} }  true while 
 STMTS => } 
-T => = + ) ; 
+T => & * = false ( {nam} {num} + ) ;  true 
 TYPE => {nam} 
 TYPE' => {nam} 
 -----------------------------
 First+ Table
+ARGL -> E ARGLP  => & * false ( {nam} {num}  true 
+ARGL -> {empty}  => {empty} 
+ARGLP -> E ARGLP  => & * false ( {nam} {num}  true 
+ARGLP -> {empty}  => {empty} 
+ARGM -> {empty}  => {empty} 
+ARGM -> ( PARL )  => ( 
 DECL -> TYPE NAME_LIST  => bool int 
 E -> T E'  => & * false ( {nam} {num}  true 
-E' -> {empty}  => {empty} = ) ; 
+E' -> {empty}  => & * {empty} = false ( {nam} {num} ) ;  true 
 E' -> + T E'  => + 
 F -> & F'  => & 
 F -> * F'  => * 
@@ -90,15 +119,20 @@ F' -> ( E )  => (
 F' -> {nam}  => {nam} 
 F' -> {num}  => {num} 
 F' ->  true  =>  true 
-FDEF -> {nam} ( ) { STMTS }  => {nam} 
+FDEF -> TYPE {nam} ( PARL ) { STMTS }  => bool int 
 FDEFL -> {empty}  => {empty} {eof} 
-FDEFL -> FDEF FDEFL  => {nam} 
+FDEFL -> FDEF FDEFL  => bool int 
 IFELSE -> else { STMTS }  => else 
 IFELSE -> {empty}  => & * bool {empty} false if int ( {nam} {num} }  true while 
 NAME_LIST -> {nam} NAME_LIST'  => {nam} 
 NAME_LIST' -> , {nam} NAME_LIST'  => , 
 NAME_LIST' -> {empty}  => {empty} ; 
-PROG -> FDEFL  init  => {empty} {nam} 
+PAR -> TYPE {nam}  => bool int 
+PARL -> {empty}  => {empty} ) 
+PARL -> PAR PARLP  => bool int 
+PARLP -> {empty}  => {empty} ) 
+PARLP -> PAR PARLP  => bool int 
+PROG -> FDEFL  init  => bool {empty} int 
 STMT -> DECL ;  => bool int 
 STMT -> E = E ;  => & * false ( {nam} {num}  true 
 STMT -> if ( E ) { STMTS } IFELSE  => if 

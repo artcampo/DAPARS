@@ -44,15 +44,19 @@ void CreateGrammarDalang(G& g){
   const Symbol FDEF   = g.AddNonTerminal("FDEF");
   const Symbol FDEFL  = g.AddNonTerminal("FDEFL");
 
-//   const Symbol RET_TYPE  = g.AddNonTerminal("FRETT");
-//   const Symbol ARG    = g.AddNonTerminal("ARG");
-//   const Symbol F_RET  = g.AddNonTerminal("FRET");
+  const Symbol ARGL   = g.AddNonTerminal("ARGL");
+  const Symbol ARGLP  = g.AddNonTerminal("ARGLP");
+
+  const Symbol PARL   = g.AddNonTerminal("PARL");
+  const Symbol PARLP  = g.AddNonTerminal("PARLP");
+  const Symbol PAR    = g.AddNonTerminal("PAR");
 
   //Statements
   const Symbol STMTS  = g.AddNonTerminal("STMTS");
   const Symbol STMT   = g.AddNonTerminal("STMT");
   const Symbol IFELSE = g.AddNonTerminal("IFELSE");
   const Symbol DECL   = g.AddNonTerminal("DECL");
+
 
   //Exprs
   const Symbol E      = g.AddNonTerminal("E");
@@ -61,6 +65,9 @@ void CreateGrammarDalang(G& g){
   const Symbol TP     = g.AddNonTerminal("T''");
   const Symbol F      = g.AddNonTerminal("F");
   const Symbol FP     = g.AddNonTerminal("F'");
+
+  //Extension of name
+  const Symbol ARGM   = g.AddNonTerminal("ARGM");
 
   //Others
   const Symbol TYPE       = g.AddNonTerminal("TYPE");
@@ -74,10 +81,22 @@ void CreateGrammarDalang(G& g){
   g.AddStartingRule(Rule(P,  {FDEFL}, true));
 
 
+  //Functions
   g.AddRule(Rule(FDEFL,  {FDEF, FDEFL}));
   g.AddRule(Rule(FDEFL,  {empty}));
 
-  g.AddRule(Rule(FDEF,  {name, lpar, rpar, lcbr, STMTS, rcbr}));
+  g.AddRule(Rule(FDEF,   {TYPE, name, lpar, PARL, rpar, lcbr, STMTS, rcbr}));
+
+  g.AddRule(Rule(PARL,    {PAR, PARLP}));
+  g.AddRule(Rule(PARL,    {empty}));
+  g.AddRule(Rule(PARLP,   {PAR, PARLP}));
+  g.AddRule(Rule(PARLP,   {empty}));
+  g.AddRule(Rule(PAR,     {TYPE, name}));
+
+  g.AddRule(Rule(ARGL,    {E, ARGLP}));
+  g.AddRule(Rule(ARGL,    {empty}));
+  g.AddRule(Rule(ARGLP,   {E, ARGLP}));
+  g.AddRule(Rule(ARGLP,   {empty}));
 
   //Statements
   g.AddRule(Rule(STMTS,  {STMT, STMTS}));
@@ -90,7 +109,6 @@ void CreateGrammarDalang(G& g){
 
   g.AddRule(Rule(IFELSE, {kwd_else, lcbr, STMTS, rcbr}));
   g.AddRule(Rule(IFELSE, {empty}));
-
 
   //Types
   g.AddRule(Rule(DECL,  {TYPE,NAME_LIST}));
@@ -133,6 +151,10 @@ void CreateGrammarDalang(G& g){
   g.AddRule(Rule(F,  {numr}));
   g.AddRule(Rule(F,  {name}));
   */
+
+  //Extension of name
+  g.AddRule(Rule(ARGM,  {empty}));
+  g.AddRule(Rule(ARGM,  {lpar, PARL, rpar}));
 
   //Anaylze
   g.Analyze();

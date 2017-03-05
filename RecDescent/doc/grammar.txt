@@ -1,19 +1,27 @@
 conditional flow
-Prog   := P_INIT FDEFL P_END
-P_INIT := empty
-P_END  := empty
+Prog    := P_INIT FDEFL P_END
+P_INIT  := empty
+P_END   := empty
 
-FDEFL  := FDEF FDEFL
-       |  empty
+FDEFL   := FDEF FDEFL
+        |  empty
 
-FDEF  :=  name (){ STMTS }
+FDEF    := TYPE name ( PARL ){ STMTS }
 
-STMTS := STMT STMTS
-      |  empty
-STMT  := if(E){STMTS} IFELSE
-      |  while(E){STMTS}
-      |  DECL;
-      |  E = E;
+PARL    := empty
+        |  PAR PARL'
+
+PARL'   := empty
+        |  PAR PARL'
+
+PAR     := TYPE name
+
+STMTS   := STMT STMTS
+        |  empty
+STMT    := if(E){STMTS} IFELSE
+        |  while(E){STMTS}
+        |  DECL;
+        |  E = E;
 
 IFELSE:= else{STMTS}
       |  empty
@@ -29,11 +37,23 @@ F'    := ( E )
       |  numerical
       |  true
       |  false
+      |  name ARGM
+
+ARGM  := empty
+      | ( ARGL )
+
+ARGL  := empty
+      | EXPR ARGL'
+
+ARGL' := empty
+      | , EXPR ARGL'
+
 
 DECL  := TYPE NAME_LIST
 
-TYPE  := int TYPE'
+TYPE  := int  TYPE'
       |  bool TYPE'
+      |  void TYPE'
 
 TYPE' := *
       |  empty
@@ -43,3 +63,4 @@ NAME_LIST := name NAME_LIST'
 
 NAME_LIST':= , name NAME_LIST'
           | empty
+
