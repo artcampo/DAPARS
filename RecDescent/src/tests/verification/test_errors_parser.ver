@@ -204,8 +204,8 @@ Declaration Table:
 
 ------------------------------------------------------------------
 Parsing: "void main(){int a b c; }"
-[err:19] Variables must be separated with comma. at: "(){int a b" -> " c; }"
-[err:19] Variables must be separated with comma. at: "{int a b c" -> "; }"
+[err:19] Variable declarations must be separated with comma. at: "(){int a b" -> " c; }"
+[err:19] Variable declarations must be separated with comma. at: "{int a b c" -> "; }"
 
 AST dump:
 -int a int b int c 

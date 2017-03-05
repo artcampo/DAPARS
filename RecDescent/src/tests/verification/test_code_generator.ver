@@ -169,12 +169,12 @@ IR dump:
 11: store %10 to [MainDS:a]
 
 ---------------------------------------------------
-Parsing: "void main(){int a; a= 2;} void f(){int a; a=3;}"
+Parsing: "void main(){int a; a= 2;} void f(int p1){int a; a=3;}"
 
 Scopes of module:
-Scope 0: {(1:main) (3:f) }
+Scope 0: {(1:main) (4:f) }
 Scope 1: {(0:a) }
-Scope 2: {(2:a) }
+Scope 2: {(2:p1) (3:a) }
 
 
 AST dump:
@@ -190,8 +190,9 @@ AST dump:
 Declaration Table:
 0: Symbol: [ in scope 1 a of type int]
 1: Symbol: [ in scope 0 main of type function: ()->void]
-2: Symbol: [ in scope 2 a of type int]
-3: Symbol: [ in scope 0 f of type function: ()->void]
+2: Symbol: [ in scope 2 p1 of type int]
+3: Symbol: [ in scope 2 a of type int]
+4: Symbol: [ in scope 0 f of type function: ()->void]
 Using label: MainDSUsing label: arp_f
 IR dump:
 0: %0 = LoadI(2)

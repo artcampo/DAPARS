@@ -31,10 +31,12 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
 
   if(Accept(kToken::name, kErr26)) name = prev_token_string_value_;
 
+  //Scope for
+  scope_owner_id_.push( unit_.NewScopeOwner() );
+  const ScopeId id = unit_.NewFunction(name, scope_owner_id_.top());
 
   Accept(kToken::lpar, kErr27);
 
-  scope_owner_id_.push( unit_.NewScopeOwner() );
   std::vector<PtrVarDecl> par_list_inht;
   ParList(par_list_inht, scope_inht);
 
@@ -51,7 +53,7 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
   }
 
   Accept(kToken::lcbr, kErr29);
-  const ScopeId id = unit_.NewFunction(name, scope_owner_id_.top());
+
 
   //STMTS
   std::vector<PtrStatement> stmts_inht;
