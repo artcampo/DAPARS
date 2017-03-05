@@ -35,6 +35,8 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
   Accept(kToken::lpar, kErr27);
 
   scope_owner_id_.push( unit_.NewScopeOwner() );
+  std::vector<PtrVarDecl> par_list_inht;
+  ParList(par_list_inht);
 
   Accept(kToken::rpar, kErr28);
 
@@ -71,6 +73,19 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
 }
 
 
+void ParserLL1RecDesc::ParList(std::vector<PtrVarDecl>& par_list_inht){
+  //PARL -> PAR PARLP  => bool int void
+  if(Check(set_types_)){
+//     par_list_inht.push_back( std::move( Par()) );
+    return;
+  }
+
+  //PARL -> {empty}  => {empty} )
+  if(Check({kToken::rpar})) return;
+}
+/*
+PtrVarDecl Par
+*/
 const AST::Type&  ParserLL1RecDesc::Type(){
 //   std::cout << "Type\n";
   if(TryAndAccept(kToken::kwd_void))  return unit_.GetTypeVoid();

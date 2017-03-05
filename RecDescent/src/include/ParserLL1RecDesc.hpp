@@ -54,14 +54,19 @@ private:
                        , const Locus& locus_inht);
   const Compiler::AST::Type&  Type();
 
+  //Function
+  void ParList(std::vector<PtrVarDecl>& par_list_inht);
 
+
+  //Helpers not associated to a rule
   PtrBlock ParseSubBlock(const ScopeId scope_inht, const std::string& error);
+  PtrVarDecl NameDecl(const Compiler::AST::Type& type_inht, const ScopeId scope_inht
+                         , const Locus& locus_inht);
 
+  //Variables
   std::string undeclared_name_;
-
   void BuildTokenVectors();
   std::vector<kToken> set_types_;
-
   //top() points to current owner
   std::stack<ScopeOwnerId> scope_owner_id_;
 

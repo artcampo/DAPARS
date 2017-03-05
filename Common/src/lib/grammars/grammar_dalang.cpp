@@ -33,6 +33,7 @@ void CreateGrammarDalang(G& g){
 
   const Symbol kwd_type_int  = g.AddTerminalKeyword("INT", "int", Tokenizer::kToken::kwd_int);
   const Symbol kwd_type_bool = g.AddTerminalKeyword("BOOL", "bool", Tokenizer::kToken::kwd_bool);
+  const Symbol kwd_type_void = g.AddTerminalKeyword("VOID", "void", Tokenizer::kToken::kwd_void);
 
   const Symbol kwd_true  = g.AddTerminalKeyword("TRUE", " true",  Tokenizer::kToken::kwd_true);
   const Symbol kwd_false = g.AddTerminalKeyword("FALSE", "false", Tokenizer::kToken::kwd_false);
@@ -114,6 +115,7 @@ void CreateGrammarDalang(G& g){
   g.AddRule(Rule(DECL,  {TYPE,NAME_LIST}));
   g.AddRule(Rule(TYPE,  {kwd_type_int,  TYPEP}));
   g.AddRule(Rule(TYPE,  {kwd_type_bool, TYPEP}));
+  g.AddRule(Rule(TYPE,  {kwd_type_void, TYPEP}));
   g.AddRule(Rule(TYPEP, {astk}));
   g.AddRule(Rule(TYPEP, {empty}));
 
