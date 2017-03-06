@@ -192,11 +192,42 @@ Declaration Table:
 1: Symbol: [ in scope 0 main of type function: ()->void]
 2: Symbol: [ in scope 2 p1 of type int]
 3: Symbol: [ in scope 2 a of type int]
-4: Symbol: [ in scope 0 f of type function: ()->void]
+4: Symbol: [ in scope 0 f of type function: (int)->void]
 
 IR dump:
 0: %0 = LoadI(2)
 1: store %0 to [MainDS:a 0]
 2: %2 = Load [arp_f:p1 -2]
 3: store %2 to [arp_f:a 0]
+
+---------------------------------------------------
+Parsing: "int f(int p1){int a; a=p1;} void main(){int a; a=f(2);}"
+
+Scopes of module:
+Scope 0: {(2:f) (4:main) }
+Scope 1: {(0:p1) (1:a) }
+Scope 2: {(3:a) }
+
+
+AST dump:
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--p1 [int Lvalue Read Value]
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--
+
+Declaration Table:
+0: Symbol: [ in scope 1 p1 of type int]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 0 f of type function: (int)->int]
+3: Symbol: [ in scope 2 a of type int]
+4: Symbol: [ in scope 0 main of type function: ()->void]
+
+IR dump:
+0: store %0 to [MainDS:a 0]
+1: %1 = Load [arp_f:p1 -2]
+2: store %1 to [arp_f:a 0]
 
