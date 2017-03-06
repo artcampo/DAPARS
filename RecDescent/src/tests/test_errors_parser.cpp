@@ -89,6 +89,7 @@ int main()
     "void main(){int a,b,c; a= 2+1; a = b+c; 2 = 2; }"), g);
 
 
+  //err39
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int f(int p1){int a; a=p1;} void main(){int a; a=f();}"), g);
 
@@ -96,6 +97,7 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int f(int p1){int a; a=p1;} void main(){int a; a=f(2,3);}"), g);
 
+  //err41
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int f(int p1, int p2){int a; a=p1;} void main(){int a; a=f(2,true);}"), g);
 
