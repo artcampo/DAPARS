@@ -234,9 +234,13 @@ Declaration Table:
 4: Symbol: [ in scope 0 main of type function: ()->void]
 
 IR dump:
-0: store %0 to [MainDS:a 0]
-1: ReturnMain
-2: %1 = Load [arp_f:p1 -2]
-3: store %1 to [arp_f:a 0]
-4: Return
+0: %0 = LoadI(2)
+1: SetPar( %0)
+2: call [entry_f: 0]
+3: %1 = GetRetVal()
+4: store %0 to [MainDS:a 0]
+5: ReturnMain
+6: %3 = Load [arp_f:p1 -2]
+7: store %3 to [arp_f:a 0]
+8: Return
 
