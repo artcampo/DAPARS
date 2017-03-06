@@ -8,6 +8,7 @@
 #include "CompilationUnit.hpp"
 #include "Locus.hpp"
 #include "Symbol.hpp"
+#include "ASTNodeCreation.hpp"
 
 
 namespace Common{
@@ -19,17 +20,15 @@ using Compiler::Locus;
 using namespace Compiler::AST::Ptrs;
 
 
-class BaseParser{
+class BaseParser : public ASTNodeCreation{
 
 public:
   BaseParser(std::string const &file_name, CompilationUnit& unit);
   BaseParser(const std::vector<char>& parse_data, CompilationUnit& unit);
 
 
-
 protected:
   const static int num_errors_to_halt_                     = 10;
-
 
   CompilationUnit&  unit_;
 
@@ -40,83 +39,26 @@ protected:
   std::string       prev_token_string_value_; //for when TryAndAccept has been called
 
 
-  void Skip() noexcept;
+  bool ContinueParsing() const noexcept{ return continue_parsing_;}
+  const Locus CurrentLocus() const noexcept { return Locus(current_position_);}
 
+  //Functions to consume tokens
   bool Accept(const kToken& token, const std::string& error) noexcept;
   bool Accept(const std::vector<kToken>& tokens, const std::string& error) noexcept;
   bool AcceptEmpty(const std::vector<kToken>& tokens
                  , const std::string& error) noexcept;
-  bool Check(const std::vector<kToken>& tokens) const noexcept;
-//   bool Check(const kToken token) const noexcept;
   bool TryAndAccept(const kToken& token) noexcept;
-
-  void NextToken() noexcept;
-  bool ContinueParsing(){ return continue_parsing_;}
-
   void ConsumeTokensUntil(const kToken& token) noexcept;
+  void NextToken() noexcept;  //avoid if possible
 
-  const Locus CurrentLocus() const noexcept { return Locus(current_position_);}
+  //Functions to check token
+  bool Check(const std::vector<kToken>& tokens) const noexcept;
+
 
 
   //Error handling
   void Error(const std::string& message);
   void ErrorCritical(const std::string& message);
-
-  //TODO: take these out(!)
-  //Creation of AST nodes with error checking
-  PtrBinaryOp
-  NewBinaryOp(PtrExpr& lhs, const int op, PtrExpr& rhs
-                        , const ScopeId id, const Locus& locus);
-
-  PtrVar
-  NewVar(const std::string& name, const Type& type
-                  , Compiler::AST::Symbols::SymbolId id, const ScopeId scope_id, const Locus& locus);
-
-  PtrLiteral
-  NewLiteral(const uint32_t &value, const Type& type
-                        , const ScopeId id, const Locus& locus);
-
-  PtrBlock
-  NewBlock(std::vector<PtrStatement>& stmts_inht
-                        , const ScopeId id, const Locus& locus);
-
-  PtrIfStmt
-  NewIfStmt(PtrExpr& condition, PtrBlock& block1
-                        , const ScopeId id, const Locus& locus);
-
-  PtrIfStmt
-  NewIfStmt(PtrExpr& condition, PtrBlock& block1, PtrBlock& block2
-                        , const ScopeId id, const Locus& locus);
-
-  PtrDeclStmt
-  NewDeclStmt(PtrVarDeclList& list, const ScopeId id
-                        , const Locus& locus);
-
-  PtrVarDeclList
-  NewVarDeclList(std::vector<PtrVarDecl>& list
-                        , const ScopeId id, const Locus& locus);
-
-  PtrVarDecl
-  NewVarDecl(const std::string& name, const Type& type
-                        , const ScopeId id, const Locus& locus);
-
-  PtrAssignStmt
-  NewAssignStmt(PtrExpr& lhs, PtrExpr& rhs
-                        , const ScopeId id, const Locus& locus);
-
-  PtrWhileStmt
-  NewWhileStmt(PtrExpr& condition, PtrBlock& body
-                        , const ScopeId id, const Locus& locus);
-
-  PtrRefOp
-  NewRefOp(PtrExpr& rhs, const ScopeId id, const Locus& locus);
-
-  PtrDerefOp
-  NewDerefOp(PtrExpr& rhs, const ScopeId id, const Locus& locus);
-
-  PtrFuncDef
-  NewFuncDef(const std::string& name, PtrBlock& block, const Type& ret_type
-            , std::vector<PtrVarDecl>& par_list, const ScopeId id, const Locus& locus);
 
 private:
   int               num_errors_;
@@ -128,6 +70,9 @@ private:
   std::vector<char>::const_iterator previous_position_;
 
   std::vector<char> skip_symbols_;
+
+  void Skip() noexcept;
+
 };
 
 } //end namespace Common
