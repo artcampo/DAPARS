@@ -217,7 +217,7 @@ AST dump:
 -int a 
 -Assign
 --a [int Lvalue Write Value]
---
+--Literal: 2 [int]
 
 Declaration Table:
 0: Symbol: [ in scope 1 p1 of type int]

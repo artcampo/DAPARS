@@ -163,7 +163,7 @@ NewFuncRet(const Type& ret_type
 
 PtrFuncCall
 NewFuncCall(const std::string& name
-    , const Type& function_type
+    , const FuncType& function_type
     , std::vector<PtrExpr>& arg_list
     , const ScopeId id
     , const Locus& locus){
