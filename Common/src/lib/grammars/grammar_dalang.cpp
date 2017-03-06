@@ -137,7 +137,7 @@ void CreateGrammarDalang(G& g){
 
   g.AddRule(Rule(FP,  {lpar, E, rpar}));
   g.AddRule(Rule(FP,  {numr}));
-  g.AddRule(Rule(FP,  {name}));
+  g.AddRule(Rule(FP,  {name, ARGM}));
   g.AddRule(Rule(FP,  {kwd_true}));
   g.AddRule(Rule(FP,  {kwd_false}));
   /*
@@ -156,7 +156,7 @@ void CreateGrammarDalang(G& g){
 
   //Extension of name
   g.AddRule(Rule(ARGM,  {empty}));
-  g.AddRule(Rule(ARGM,  {lpar, PARL, rpar}));
+  g.AddRule(Rule(ARGM,  {lpar, ARGL, rpar}));
 
   //Anaylze
   g.Analyze();

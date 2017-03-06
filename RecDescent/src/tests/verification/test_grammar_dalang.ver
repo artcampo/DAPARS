@@ -47,11 +47,11 @@ F -> * F'
 F -> F' 
 F' -> ( E ) 
 F' -> {num} 
-F' -> {nam} 
+F' -> {nam} ARGM 
 F' ->  true 
 F' -> false 
 ARGM -> {empty} 
-ARGM -> ( PARL ) 
+ARGM -> ( ARGL ) 
 
 -----------------------------
 First Table
@@ -79,9 +79,9 @@ TYPE => bool int void
 TYPE' => * {empty} 
 -----------------------------
 Follow Table
-ARGL => 
-ARGLP => 
-ARGM => 
+ARGL => ) 
+ARGLP => ) 
+ARGM => , = + ) ; 
 DECL => ; 
 E => , = ) ; 
 E' => , = ) ; 
@@ -104,11 +104,11 @@ TYPE' => {nam}
 -----------------------------
 First+ Table
 ARGL -> E ARGLP  => & * false ( {nam} {num}  true 
-ARGL -> {empty}  => {empty} 
+ARGL -> {empty}  => {empty} ) 
 ARGLP -> , E ARGLP  => , 
-ARGLP -> {empty}  => {empty} 
-ARGM -> {empty}  => {empty} 
-ARGM -> ( PARL )  => ( 
+ARGLP -> {empty}  => {empty} ) 
+ARGM -> {empty}  => , {empty} = + ) ; 
+ARGM -> ( ARGL )  => ( 
 DECL -> TYPE NAME_LIST  => bool int void 
 E -> T E'  => & * false ( {nam} {num}  true 
 E' -> {empty}  => , {empty} = ) ; 
@@ -118,7 +118,7 @@ F -> * F'  => *
 F -> F'  => false ( {nam} {num}  true 
 F' -> false  => false 
 F' -> ( E )  => ( 
-F' -> {nam}  => {nam} 
+F' -> {nam} ARGM  => {nam} 
 F' -> {num}  => {num} 
 F' ->  true  =>  true 
 FDEF -> TYPE {nam} ( PARL ) { STMTS }  => bool int void 

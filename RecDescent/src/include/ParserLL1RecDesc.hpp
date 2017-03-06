@@ -54,6 +54,10 @@ private:
                        , const Locus& locus_inht);
   const Compiler::AST::Type&  Type();
 
+  //Extension of name_list_inht
+  void Argm(const std::string& name_inht, const ScopeId scope_inht
+            , const Locus& locus_inht);
+
   //Function
   void ParList(std::vector<PtrVarDecl>& par_list_inht, const ScopeId scope_inht);
   void ParListPrime(std::vector<PtrVarDecl>& par_list_inht, const ScopeId scope_inht);

@@ -108,7 +108,8 @@ PtrExpr ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
     return std::move(fp_synt);
   }
 
-  //F' := name
+
+  //F' := name ARGM
   if(TryAndAccept(kToken::name)){
     if(not unit_.Scope().IsDecl(prev_token_string_value_)){
       Error(kErr16);
@@ -136,6 +137,7 @@ PtrExpr ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
     NextToken();
     return std::move(Factor(scope_inht));
   }
+
 
 //   std::cout << "<-Fact\n";
   return std::move(fp_synt);

@@ -10,6 +10,7 @@ set(files
     LL1RecDescControlFlow.cpp
     LL1RecDescExpressions.cpp
     LL1RecDescDeclarations.cpp
+    LL1RecDescName.cpp
 )
 
 add_definitions( -std=c++14 -g)
