@@ -63,9 +63,9 @@ private:
   void ParListPrime(std::vector<PtrVarDecl>& par_list_inht, const ScopeId scope_inht);
   PtrVarDecl Par(const ScopeId scope_inht);
 
-  PtrExpr ArgList(std::vector<PtrExpr>& args_inht, const ScopeId scope_inht
+  PtrExpr ArgList(const std::string& name_inht, std::vector<PtrExpr>& args_inht, const ScopeId scope_inht
     , const Locus& locus_inht);
-  PtrExpr ArgListPrime(std::vector<PtrExpr>& args_inht, const ScopeId scope_inht
+  PtrExpr ArgListPrime(const std::string& name_inht, std::vector<PtrExpr>& args_inht, const ScopeId scope_inht
     , const Locus& locus_inht);
 
   //Helpers not associated to a rule
@@ -73,10 +73,10 @@ private:
   PtrVarDecl NameDecl(const Compiler::AST::Type& type_inht, const ScopeId scope_inht
                          , const Locus& locus_inht);
 
-  PtrExpr BuildFunctionCall(std::vector<PtrExpr>& args_inht, const ScopeId scope_inht
+  PtrExpr BuildFunctionCall(const std::string& name_inht, std::vector<PtrExpr>& args_inht, const ScopeId scope_inht
     , const Locus& locus_inht);
 
-  PtrExpr RecoveryArgList(std::vector<PtrExpr>& args_inht, const ScopeId scope_inht
+  PtrExpr RecoveryArgList(const std::string& name_inht, std::vector<PtrExpr>& args_inht, const ScopeId scope_inht
     , const Locus& locus_inht);
 
 
