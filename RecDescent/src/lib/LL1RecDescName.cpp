@@ -71,9 +71,6 @@ PtrExpr ParserLL1RecDesc::ArgListPrime(const std::string& name_inht, std::vector
 
 PtrExpr ParserLL1RecDesc::BuildFunctionCall(const std::string& name_inht, std::vector<PtrExpr>& args_inht
   , const ScopeId scope_inht, const Locus& locus_inht){
-  PtrExpr argm_synt(nullptr);
-  if(args_inht.empty()) return std::move(argm_synt);
-
   //TODO: build missing arguments as default expresions
   // per type
 
@@ -97,7 +94,14 @@ PtrExpr ParserLL1RecDesc::BuildFunctionCall(const std::string& name_inht, std::v
     //continue to produce function call
   }
 
-  for(const auto& arg : type_func){}
+//   for(const auto& arg : type_func){}
+  const AST::Type& ret_type = unit_.GetType(type_func.RetTypeId());
+  PtrFuncCall call =
+    NewFuncCall(name_inht, type_func, args_inht, scope_inht, locus_inht);
+  PtrFuncRet ret =
+    NewFuncRet(ret_type, call, scope_inht, locus_inht);
+
+  return std::move(ret);
 }
 
 PtrExpr ParserLL1RecDesc::RecoveryArgList(const std::string& name_inht, std::vector<PtrExpr>& args_inht

@@ -152,6 +152,24 @@ NewFuncDef(const std::string& name, PtrBlock& block
   return std::make_unique<FuncDef>(name, block, ret_type, par_list, id, locus);
 }
 
+PtrFuncRet
+NewFuncRet(const Type& ret_type
+    , PtrFuncCall& call
+    , const ScopeId id
+    , const Locus& locus){
+  if(not call) return PtrFuncRet(nullptr);
+  return std::make_unique<FuncRet>(ret_type, call, id, locus);
+}
+
+PtrFuncCall
+NewFuncCall(const std::string& name
+    , const Type& function_type
+    , std::vector<PtrExpr>& arg_list
+    , const ScopeId id
+    , const Locus& locus){
+  return std::make_unique<FuncCall>(name, function_type, arg_list, id, locus);
+}
+
 };
 
 } //end namespace Common
