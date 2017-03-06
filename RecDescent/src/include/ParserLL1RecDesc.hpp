@@ -55,7 +55,7 @@ private:
   const Compiler::AST::Type&  Type();
 
   //Extension of name_list_inht
-  void Argm(const std::string& name_inht, const ScopeId scope_inht
+  PtrExpr Argm(const std::string& name_inht, const ScopeId scope_inht
             , const Locus& locus_inht);
 
   //Function
