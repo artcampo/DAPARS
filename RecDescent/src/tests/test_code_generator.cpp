@@ -83,7 +83,7 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "void main(){int a; a= 2;} void f(int p1){int a; a=p1;}"), g);
 
-parse<Grammar,ParserLL1RecDesc>( std::string(
+  parse<Grammar,ParserLL1RecDesc>( std::string(
     "int f(int p1){int a; a=p1;} void main(){int a; a=f(2);}"), g);
 
   /*

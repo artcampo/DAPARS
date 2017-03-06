@@ -89,6 +89,16 @@ int main()
     "void main(){int a,b,c; a= 2+1; a = b+c; 2 = 2; }"), g);
 
 
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "int f(int p1){int a; a=p1;} void main(){int a; a=f();}"), g);
+
+  //err40
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "int f(int p1){int a; a=p1;} void main(){int a; a=f(2,3);}"), g);
+
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "int f(int p1, int p2){int a; a=p1;} void main(){int a; a=f(2,true);}"), g);
+
   //tests that sigsev
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(
@@ -97,11 +107,13 @@ int main()
    */
 
   //Chaotic cluster fuck
+  /*
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "void main(){bool a; int b; a = true; b = 1; a = b; b = true; a = 2; }"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string("void main(){1+(2)); }"), g);
   parse<Grammar,ParserLL1RecDesc>( std::string("void main(){1++2; }"), g);
+*/
 
   return 0;
 }

@@ -49,8 +49,8 @@ PtrExpr ParserLL1RecDesc::ExprPrime(PtrExpr& eprime_inht, const ScopeId scope_in
 
   }
 
-  //E' -> {empty}  => {empty} = ) ;
-  if(AcceptEmpty({kToken::equality, kToken::rpar, kToken::semicolon},
+  //E' -> {empty}  => , {empty} = ) ;
+  if(AcceptEmpty({kToken::comma, kToken::equality, kToken::rpar, kToken::semicolon},
       "Expecting +")){
     eprime_synt = std::move(eprime_inht);
   }

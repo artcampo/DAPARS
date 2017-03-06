@@ -823,7 +823,7 @@ Scope 1: {(0:a) (1:b) (2:c) }
 
 ---------------------------------------------------
 Parsing: "void main(){int a; a= 2;} void f(){bool a; a=3;}"
-[err:18] Incompatible types in assignment at: "{bool a; a" -> "=3;}"
+[err:18] Incompatible types in assignment: bool to int at: "{bool a; a" -> "=3;}"
 
 AST pretty:
 int a 

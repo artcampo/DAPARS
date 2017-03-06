@@ -89,7 +89,7 @@ PtrExpr ParserLL1RecDesc::BuildFunctionCall(const std::string& name_inht, std::v
 
   if( num_args > type_func.NumPars()){
     Error(kErr40);
-    size_t elements_to_remove = type_func.NumPars() - num_args;
+    size_t elements_to_remove = num_args - type_func.NumPars();
     for(size_t i = 0; i < elements_to_remove; ++i) args_inht.pop_back();
     //continue to produce function call
   }

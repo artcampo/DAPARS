@@ -186,7 +186,7 @@ Declaration Table:
 
 ------------------------------------------------------------------
 Parsing: "void main(){int a; bool b; a=b+b; }"
-[err:18] Incompatible types in assignment at: " bool b; a" -> "=b+b; }"
+[err:18] Incompatible types in assignment: int to bool at: " bool b; a" -> "=b+b; }"
 
 AST dump:
 -int a 
@@ -243,49 +243,71 @@ Declaration Table:
 3: Symbol: [ in scope 0 main of type function: ()->void]
 
 ------------------------------------------------------------------
-Parsing: "void main(){bool a; int b; a = true; b = 1; a = b; b = true; a = 2; }"
-[err:18] Incompatible types in assignment at: "; b = 1; a" -> " = b; b = true; a = 2; }"
-[err:18] Incompatible types in assignment at: "; a = b; b" -> " = true; a = 2; }"
-[err:18] Incompatible types in assignment at: " = true; a" -> " = 2; }"
+Parsing: "int f(int p1){int a; a=p1;} void main(){int a; a=f();}"
+[err:39] Function call with less arguments than expected at: "t a; a=f()" -> ";}"
+[err:18] Incompatible types in assignment: int to function: (int)->int at: "){int a; a" -> "=f();}"
 
 AST dump:
--bool a 
--int b 
+-int a 
 -Assign
---a [bool Lvalue Write Value]
---Literal: 1 [bool Rvalue]
+--a [int Lvalue Write Value]
+--p1 [int Lvalue Read Value]
+-int a 
 -Assign
---b [int Lvalue Write Value]
---Literal: 1 [int Rvalue]
--Assign
---a [bool Lvalue Write Value]
---b [int Lvalue Read Value]
--Assign
---b [int Lvalue Write Value]
---Literal: 1 [bool Rvalue]
--Assign
---a [bool Lvalue Write Value]
---Literal: 2 [int Rvalue]
+--a [int Lvalue Write Value]
+--f [function: (int)->int Lvalue Read Value]
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type bool]
-1: Symbol: [ in scope 1 b of type int]
-2: Symbol: [ in scope 0 main of type function: ()->void]
+0: Symbol: [ in scope 1 p1 of type int]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 0 f of type function: (int)->int]
+3: Symbol: [ in scope 2 a of type int]
+4: Symbol: [ in scope 0 main of type function: ()->void]
 
 ------------------------------------------------------------------
-Parsing: "void main(){1+(2)); }"
-[err:] assignment missing '=' at: "n(){1+(2))" -> "; }"
-[err:3] Block not finishing in rcbr at: "n(){1+(2))" -> "; }"
-[err:31] function body empty at: "n(){1+(2))" -> "; }"
-[err:30] function declaration's body not closed with '}' at: "n(){1+(2))" -> "; }"
-AST not build at: "n(){1+(2))" -> "; }"
+Parsing: "int f(int p1){int a; a=p1;} void main(){int a; a=f(2,3);}"
+[err:40] Function call with more arguments than expected (extra arguments will be discarded) at: "; a=f(2,3)" -> ";}"
+
+AST dump:
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--p1 [int Lvalue Read Value]
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--FuncRet: int [int Rvalue]
+---FuncCall: f [function: (int)->int]
+----Literal: 2 [int]
+
+Declaration Table:
+0: Symbol: [ in scope 1 p1 of type int]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 0 f of type function: (int)->int]
+3: Symbol: [ in scope 2 a of type int]
+4: Symbol: [ in scope 0 main of type function: ()->void]
 
 ------------------------------------------------------------------
-Parsing: "void main(){1++2; }"
-Expecting numerical or lpar at: "main(){1++" -> "2; }"
-[err:] assignment missing '=' at: "in(){1++2;" -> " }"
-[err:3] Block not finishing in rcbr at: "in(){1++2;" -> " }"
-[err:31] function body empty at: "in(){1++2;" -> " }"
-[err:30] function declaration's body not closed with '}' at: "in(){1++2;" -> " }"
-AST not build at: "in(){1++2;" -> " }"
+Parsing: "int f(int p1, int p2){int a; a=p1;} void main(){int a; a=f(2,true);}"
+[err:41] Argument type conflict:  is "bool" but f expects "int" at: "a=f(2,true" -> ");}"
+
+AST dump:
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--p1 [int Lvalue Read Value]
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--FuncRet: int [int Rvalue]
+---FuncCall: f [function: (intint)->int]
+----Literal: 2 [int]----Literal: 1 [bool]
+
+Declaration Table:
+0: Symbol: [ in scope 1 p1 of type int]
+1: Symbol: [ in scope 1 p2 of type int]
+2: Symbol: [ in scope 1 a of type int]
+3: Symbol: [ in scope 0 f of type function: (intint)->int]
+4: Symbol: [ in scope 2 a of type int]
+5: Symbol: [ in scope 0 main of type function: ()->void]
 

@@ -104,12 +104,12 @@ PtrBlock ParserLL1RecDesc::IfElse(const ScopeId scope_inht){
     return std::move(ifelse_synt);
   }
 
-  //IFELSE -> {empty}  => & * bool {empty} false if int ( {nam} {num} }  true while
+  //IFELSE -> {empty}  => & * bool {empty} false if int ( {nam} {num} }  true void while
   AcceptEmpty( { kToken::astk, kToken::ampersand, kToken::kwd_bool
                 , kToken::kwd_false, kToken::kwd_if
                 , kToken::kwd_int, kToken::lpar, kToken::name
                 , kToken::numerical, kToken::rcbr, kToken::kwd_true
-                , kToken::kwd_while},
+                , kToken::kwd_void, kToken::kwd_while},
                 "Invalid token after if");
 
 //    std::cout << "<-IfElse\n";
