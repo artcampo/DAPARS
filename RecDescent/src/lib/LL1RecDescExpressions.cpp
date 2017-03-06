@@ -111,7 +111,7 @@ PtrExpr ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
 
   //F' := name ARGM
   if(TryAndAccept(kToken::name)){
-    if(not unit_.Scope().IsDecl(prev_token_string_value_)){
+    if(not unit_.Scope().HasDecl(prev_token_string_value_)){
       Error(kErr16);
       //Error recovery: insert it as int
       VarDecl* n = new VarDecl(undeclared_name_, unit_.GetTypeInt()
