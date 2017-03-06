@@ -63,17 +63,34 @@ private:
   void ParListPrime(std::vector<PtrVarDecl>& par_list_inht, const ScopeId scope_inht);
   PtrVarDecl Par(const ScopeId scope_inht);
 
+  PtrExpr ArgList(std::vector<PtrExpr>& args_inht, const ScopeId scope_inht
+    , const Locus& locus_inht);
+  PtrExpr ArgListPrime(std::vector<PtrExpr>& args_inht, const ScopeId scope_inht
+    , const Locus& locus_inht);
+
   //Helpers not associated to a rule
   PtrBlock ParseSubBlock(const ScopeId scope_inht, const std::string& error);
   PtrVarDecl NameDecl(const Compiler::AST::Type& type_inht, const ScopeId scope_inht
                          , const Locus& locus_inht);
 
+  PtrExpr BuildFunctionCall(std::vector<PtrExpr>& args_inht, const ScopeId scope_inht
+    , const Locus& locus_inht);
+
+  PtrExpr RecoveryArgList(std::vector<PtrExpr>& args_inht, const ScopeId scope_inht
+    , const Locus& locus_inht);
+
+
+
   //Variables
   std::string undeclared_name_;
-  void BuildTokenVectors();
-  std::vector<kToken> set_types_;
+
   //top() points to current owner
   std::stack<ScopeOwnerId> scope_owner_id_;
+
+  //const sets of accepting tokens
+  void BuildTokenVectors();
+  std::vector<kToken> set_types_;
+  std::vector<kToken> set_expr_;
 
 };
 

@@ -14,7 +14,7 @@ F -> {nam}
 
 ---------------------------------------------------
 Parsing: "void main(){int a; (a=1); }"
-[err:14] Expecting rpar. at: "int a; (a=" -> "1); }"
+[err:14] Expecting rpar after expression. at: "int a; (a=" -> "1); }"
 [err:4] Expecting semicolon after Expr. at: "t a; (a=1)" -> "; }"
 [err:3] Block not finishing in rcbr at: "t a; (a=1)" -> "; }"
 [err:31] function body empty at: "t a; (a=1)" -> "; }"

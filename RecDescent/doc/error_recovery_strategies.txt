@@ -1,0 +1,16 @@
+A parsing error is whenever we don't find the token we are expecting.
+Whenever a parsing error is found different strategies are used.
+The goal is to parse the rule as completely as possible, and
+hopefully complete parsing of the whole input. Because then we will have
+a valid AST which can then be context analyzed to try and find more errors.
+
+Strategy 1: Ignore missing token.
+This can be applied for purely syntactic tokens such as a comma that
+separates variables declarations.
+This is done only if the current token is the next we would expect.
+
+Strategy 2: Ignore current token until we get the one we expect.
+
+Strategy 3: Ignore all tokens until a synchronizing token.
+This is the fail-safe option, where we can produce an empty derivation for the
+current token.

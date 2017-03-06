@@ -30,6 +30,10 @@ void ParserLL1RecDesc::BuildTokenVectors(){
 
   set_types_ =  std::vector<kToken>({
     kToken::kwd_void, kToken::kwd_int, kToken::kwd_bool});
+
+  set_expr_  = std::vector<kToken>({
+    kToken::ampersand, kToken::astk, kToken::kwd_false, kToken::lpar
+  , kToken::name, kToken::numerical, kToken::kwd_true});
 }
 
 PtrBlock ParserLL1RecDesc::ParseSubBlock(const ScopeId scope, const std::string& error){

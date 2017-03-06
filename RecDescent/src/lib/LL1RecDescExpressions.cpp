@@ -132,7 +132,7 @@ PtrExpr ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
   //F := ( E )
   if(TryAndAccept(kToken::lpar)){
     fp_synt = Exprs(scope_inht);
-    Accept(kToken::rpar, "[err:14] Expecting rpar.");
+    Accept(kToken::rpar, kErr14);
   }else{
     //Error recover
     Error("Expecting numerical or lpar");

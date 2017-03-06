@@ -47,11 +47,13 @@ protected:
   bool AcceptEmpty(const std::vector<kToken>& tokens
                  , const std::string& error) noexcept;
   bool Check(const std::vector<kToken>& tokens) const noexcept;
+//   bool Check(const kToken token) const noexcept;
   bool TryAndAccept(const kToken& token) noexcept;
 
   void NextToken() noexcept;
   bool ContinueParsing(){ return continue_parsing_;}
 
+  void ConsumeTokensUntil(const kToken& token) noexcept;
 
   const Locus CurrentLocus() const noexcept { return Locus(current_position_);}
 
@@ -60,6 +62,7 @@ protected:
   void Error(const std::string& message);
   void ErrorCritical(const std::string& message);
 
+  //TODO: take these out(!)
   //Creation of AST nodes with error checking
   PtrBinaryOp
   NewBinaryOp(PtrExpr& lhs, const int op, PtrExpr& rhs

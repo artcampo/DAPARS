@@ -119,6 +119,12 @@ bool BaseParser::Check(const std::vector<kToken>& tokens) const noexcept{
   return false;
 }
 
+/*
+bool BaseParser::Check(const kToken token) const noexcept{
+  return Check({token});
+}
+*/
+
 void BaseParser::Skip() noexcept{
   bool symbol_is_no_skip = false;
   while(not symbol_is_no_skip
@@ -149,6 +155,15 @@ void BaseParser::Error(const std::string& message){
 void BaseParser::ErrorCritical(const std::string& message){
   Error(message);
 //   exit(1);
+}
+
+//Used for error recovery, whenever a symbol has not been matched, and we
+//want to discard all tokens until a recover point.
+//Recover points are tipically: ';', ')'
+void BaseParser::ConsumeTokensUntil(const kToken& token) noexcept{
+  while(token_ != token and continue_parsing_){
+    NextToken();
+  }
 }
 
 PtrBinaryOp

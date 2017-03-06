@@ -65,8 +65,7 @@ PtrStatement ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
   }
 
   //STMT -> E = E ;  => & * false ( {nam} {num}  true
-  if(Check({kToken::ampersand, kToken::astk, kToken::kwd_false, kToken::lpar
-          , kToken::name, kToken::numerical, kToken::kwd_true})){
+  if(Check(set_expr_)){
 //     std::cout << "stmt::assign stmt\n";
     PtrExpr expr_lhs  = Exprs(scope_inht);
     if(not Accept(kToken::equality, "[err:] assignment missing '='")){
