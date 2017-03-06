@@ -16,7 +16,7 @@ PtrVarDecl ParserLL1RecDesc::NameDecl(const AST::Type& type_inht
                          , const Locus& locus_inht){
   PtrVarDecl var_decl;
   if(TryAndAccept(kToken::name)){
-    if(not unit_.IsDeclValid(prev_token_string_value_, type_inht)){
+    if(not unit_.IsDeclValid(prev_token_string_value_)){
       Error(kErr15);
       return std::move(var_decl);
     }

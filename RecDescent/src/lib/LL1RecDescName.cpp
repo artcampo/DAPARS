@@ -7,25 +7,23 @@ namespace RecDescent{
 //  !nullptr <=> pointer to expression with function call
 PtrExpr ParserLL1RecDesc::Argm(const std::string& name_inht, const ScopeId scope_inht
             , const Locus& locus_inht){
-  PtrExpr argm_synt(nullptr);
+  //ARGM -> {empty}  => , {empty} = + ) ;
+  if(Check({kToken::comma, kToken::equality, kToken::plus, kToken::rpar
+              , kToken::semicolon}))
+    return std::move(nullptr);
 
   //ARGM -> ( ARGL )  => (
   if(TryAndAccept(kToken::lpar)){
     std::vector<PtrExpr> args;
-    argm_synt = ArgList(args, scope_inht, locus_inht);
+    PtrExpr argm_synt = ArgList(args, scope_inht, locus_inht);
     Accept(kToken::rpar, kErr35);
 
     return std::move(argm_synt);
   }
 
-  //ARGM -> {empty}  => , {empty} = + ) ;
-  if(Check({kToken::comma, kToken::equality, kToken::plus, kToken::rpar
-              , kToken::semicolon}))
-    return std::move(argm_synt);
-
   //Error detection
   Error(kErrUn1);
-  return std::move(argm_synt);
+  return std::move(nullptr);
 }
 
 
@@ -76,6 +74,10 @@ PtrExpr ParserLL1RecDesc::BuildFunctionCall(std::vector<PtrExpr>& args_inht
   PtrExpr argm_synt(nullptr);
   if(args_inht.empty()) return std::move(argm_synt);
 
+  //TODO: build missing arguments as default expresions
+  // per type
+
+//   unit_.IsDeclValid(prev_token_string_value_
 }
 
 PtrExpr ParserLL1RecDesc::RecoveryArgList(std::vector<PtrExpr>& args_inht
