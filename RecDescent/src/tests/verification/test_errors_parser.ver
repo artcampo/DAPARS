@@ -311,3 +311,14 @@ Declaration Table:
 4: Symbol: [ in scope 2 a of type int]
 5: Symbol: [ in scope 0 main of type function: ()->void]
 
+------------------------------------------------------------------
+Parsing: "int f(){ return 1} void main(){}"
+[error:16] Var used before declaration at: "{ return 1" -> "} void main(){}"
+[err:x1] name not followed by valid token at: "{ return 1" -> "} void main(){}"
+Expecting + at: "{ return 1" -> "} void main(){}"
+[err:] assignment missing '=' at: "{ return 1" -> "} void main(){}"
+Expecting + at: " return 1}" -> " void main(){}"
+[err:] assignment missing '=' at: " return 1}" -> " void main(){}"
+[err:31] function body empty at: " return 1}" -> " void main(){}"
+AST not build at: "rn 1} void" -> " main(){}"
+

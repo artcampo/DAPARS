@@ -72,21 +72,32 @@ PtrStatement ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
       return std::move(stmt_synt);
     }
     PtrExpr expr_rhs  = Exprs(scope_inht);
-    stmt_synt       = NewAssignStmt(expr_lhs, expr_rhs, scope_inht, l);
+    stmt_synt         = NewAssignStmt(expr_lhs, expr_rhs, scope_inht, l);
 
-    Accept(kToken::semicolon, "[err:4] Expecting semicolon after Expr.");
+    Accept(kToken::semicolon, kErr4);
     return std::move(stmt_synt);
   }
 
   //STMT -> return E ;  => return
-  if(Check({kToken::kwd_int})){
+  if(TryAndAccept({kToken::kwd_return})){
+    std::cout << "ReturnStmt\n";
+    PtrExpr exp = Exprs(scope_inht);
+    std::cout << "HasExprt\n";
+    Accept(kToken::semicolon, kErr43);
 
+    if(not unit_.InsideFunctionDefinition()){
+      Error(kErr44);
+      return std::move(nullptr);
+    }
+
+    stmt_synt   = NewReturnStmt(exp, unit_.CurrentFuncDef(), scope_inht, l);
+
+    return std::move(stmt_synt);
   }
 
-  Error("Expr wrong");
-
+  Error("Stmt wrong");
 //   std::cout << "<-stmt\n";
-  return std::move(stmt_synt);
+  return std::move(nullptr);
 }
 
 

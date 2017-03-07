@@ -73,12 +73,12 @@ void BaseParser::NextToken() noexcept{
       Error("[err:2] Token not recognized");
     }
   }
-/*
+
   std::cout << "NextToken: " <<  str(token_);
   if(token_ == Tokenizer::kToken::numerical) std::cout << ": " << token_int_value_;
   if(token_ == Tokenizer::kToken::name) std::cout << ": " << token_string_value_;
   std::cout << "\n";
-*/
+
 }
 
 bool BaseParser::Accept(const kToken& token, const std::string& error) noexcept{

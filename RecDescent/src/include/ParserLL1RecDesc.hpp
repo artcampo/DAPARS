@@ -95,6 +95,8 @@ private:
   std::vector<kToken> set_ifelse_;
   std::vector<kToken> set_argm_;
 
+  std::vector<kToken> set_eprime_;
+
 };
 
 } //end namespace RecDescent

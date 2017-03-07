@@ -54,6 +54,10 @@ void ParserLL1RecDesc::BuildTokenVectors(){
   //ARGM -> {empty}  => , {empty} = + ) ;
   set_argm_ = std::vector<kToken>({kToken::comma, kToken::equality
     , kToken::plus, kToken::rpar, kToken::semicolon});
+
+
+  //E' -> + T E'  => +
+  set_eprime_ = std::vector<kToken>({kToken::plus});
 }
 
 
@@ -97,10 +101,9 @@ PtrBlock ParserLL1RecDesc::Stmts(std::vector<PtrStatement>& stmts_inht, const Sc
   PtrBlock stmts_synt(nullptr);
   Locus l = CurrentLocus();
 
-  //STMTS -> STMT STMTS  => & * bool false if int ( {nam} {num}  true while
-  if( Check({ kToken::ampersand, kToken::astk, kToken::kwd_bool, kToken::kwd_if
-            , kToken::kwd_int,  kToken::lpar, kToken::name, kToken::numerical
-            , kToken::kwd_while})){
+  //STMTS -> STMT STMTS  => & * bool false if int ( {nam} {num} return  true void while
+
+  if( Check(set_stmts_)){
       PtrStatement stmt_synth = Stmt(scope_inht);
 
       stmts_inht.push_back(std::move(stmt_synth));

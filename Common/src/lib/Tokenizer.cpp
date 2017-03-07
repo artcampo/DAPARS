@@ -73,11 +73,9 @@ ParseKeyword(std::vector<char>::const_iterator& current_position
   if( chars_left >= 6
      and *(current_position + 0) == 'r' and *(current_position + 1) == 'e'
      and *(current_position + 2) == 't' and *(current_position + 3) == 'u'
-     and *(current_position + 4) == 'r' and *(current_position + 3) == 'n'){
+     and *(current_position + 4) == 'r' and *(current_position + 5) == 'n'){
     current_position += 6; t = kToken::kwd_return; return true;
   }
-
-
 
   //For dragon test grammar
   if(chars_left >= 2){

@@ -101,6 +101,10 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int f(int p1, int p2){int a; a=p1;} void main(){int a; a=f(2,true);}"), g);
 
+  //err43
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "int f(){ return 1} void main(){}"), g);
+
   //tests that sigsev
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(

@@ -9,15 +9,12 @@ PtrExpr ParserLL1RecDesc::Exprs(const ScopeId scope_inht){
   PtrExpr eprime_synt(nullptr);
   PtrExpr term_synth  = Term(scope_inht);
 
-  if(term_synth.get() != nullptr){
-    eprime_synt = ExprPrime(term_synth, scope_inht);
+  if(not term_synth) return std::move(nullptr);
 
-//     if(eprime_synt == nullptr)
-//       Error("E' missing");
-  }else {
-    Error("[err:13] Term missing.");
-  }
-//   std::cout << "<-Exp\n";
+  if(not Check(set_eprime_))
+    return std::move(term_synth);
+
+  eprime_synt = ExprPrime(term_synth, scope_inht);
   return std::move(eprime_synt);
 }
 
@@ -50,8 +47,11 @@ PtrExpr ParserLL1RecDesc::ExprPrime(PtrExpr& eprime_inht, const ScopeId scope_in
   }
 
   //E' -> {empty}  => , {empty} = ) ;
-  if(AcceptEmpty({kToken::comma, kToken::equality, kToken::rpar, kToken::semicolon},
-      "Expecting +")){
+  //E' -> {empty}  => , {empty} = ) ;
+  if(AcceptEmpty({kToken::comma, kToken::equality, kToken::rpar
+      , kToken::semicolon},
+//       , kToken::rcbr},  //not in original set but better error detection
+      "Expecting expression delimiter")){
     eprime_synt = std::move(eprime_inht);
   }
 

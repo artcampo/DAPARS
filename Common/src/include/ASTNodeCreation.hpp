@@ -170,6 +170,12 @@ NewFuncCall(const std::string& name
   return std::make_unique<FuncCall>(name, function_type, arg_list, id, locus);
 }
 
+PtrReturnStmt
+NewReturnStmt(PtrExpr& ret_expr, FuncDef& func, const ScopeId id, const Locus& locus){
+  if(not ret_expr)return PtrReturnStmt(nullptr);
+  return std::make_unique<ReturnStmt>(ret_expr, func, id, locus);
+}
+
 };
 
 } //end namespace Common
