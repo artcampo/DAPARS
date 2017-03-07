@@ -121,7 +121,6 @@ PtrBlock ParserLL1RecDesc::Stmts(std::vector<PtrStatement>& stmts_inht, const Sc
   if(AcceptEmpty({kToken::rcbr}, "[err:3] Block not finishing in rcbr")){
 //       unit.
     stmts_synt = NewBlock(stmts_inht, scope_inht, l);
-    std::cout << "Block created\n";
   }
 
 //   std::cout << "<-stmts\n";

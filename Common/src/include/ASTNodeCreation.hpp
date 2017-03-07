@@ -157,8 +157,7 @@ NewFuncDecl(const std::string& name
             , const Type& ret_type
             , std::vector<PtrVarDecl>& par_list
             , const ScopeId id, const Locus& locus){
-  if(not block) return PtrFuncDecl(nullptr);
-  return std::make_unique<FuncFuncDecl>(name, block, ret_type, par_list, id, locus);
+  return std::make_unique<FuncDecl>(name, ret_type, par_list, id, locus);
 }
 
 PtrFuncRet

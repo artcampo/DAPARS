@@ -89,8 +89,8 @@ PtrStatement ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
       return std::move(nullptr);
     }
 
-    stmt_synt   = NewReturnStmt(exp, unit_.CurrentFuncDef(), scope_inht, l);
-    std::cout << "RetStmt created\n";
+    stmt_synt   = NewReturnStmt(exp, unit_.CurrentFuncDecl(), scope_inht, l);
+//     std::cout << "RetStmt created\n";
 
     return std::move(stmt_synt);
   }

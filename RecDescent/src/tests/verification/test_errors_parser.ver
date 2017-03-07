@@ -16,7 +16,8 @@ F -> {nam}
 ------------------------------------------------------------------
 Parsing: "void main(){    }"
 [err:31] function body empty at: "in(){    }" -> ""
-AST not build at: "in(){    }" -> ""
+AST not build (no functions) at: "in(){    }" -> ""
+AST not build (fatal errors) at: "in(){    }" -> ""
 
 ------------------------------------------------------------------
 Parsing: "void main(){ @ }"
@@ -24,7 +25,8 @@ Parsing: "void main(){ @ }"
 [err:3] Block not finishing in rcbr at: "d main(){ " -> "@ }"
 [err:31] function body empty at: "d main(){ " -> "@ }"
 [err:30] function declaration's body not closed with '}' at: "d main(){ " -> "@ }"
-AST not build at: "d main(){ " -> "@ }"
+AST not build (no functions) at: "d main(){ " -> "@ }"
+AST not build (fatal errors) at: "d main(){ " -> "@ }"
 
 ------------------------------------------------------------------
 Parsing: "void main(){ 1; ) }"
@@ -32,7 +34,8 @@ Parsing: "void main(){ 1; ) }"
 [err:3] Block not finishing in rcbr at: "main(){ 1;" -> " ) }"
 [err:31] function body empty at: "main(){ 1;" -> " ) }"
 [err:30] function declaration's body not closed with '}' at: "main(){ 1;" -> " ) }"
-AST not build at: "main(){ 1;" -> " ) }"
+AST not build (no functions) at: "main(){ 1;" -> " ) }"
+AST not build (fatal errors) at: "main(){ 1;" -> " ) }"
 
 ------------------------------------------------------------------
 Parsing: "void main(){ 1 ) }"
@@ -40,7 +43,8 @@ Parsing: "void main(){ 1 ) }"
 [err:3] Block not finishing in rcbr at: "ain(){ 1 )" -> " }"
 [err:31] function body empty at: "ain(){ 1 )" -> " }"
 [err:30] function declaration's body not closed with '}' at: "ain(){ 1 )" -> " }"
-AST not build at: "ain(){ 1 )" -> " }"
+AST not build (no functions) at: "ain(){ 1 )" -> " }"
+AST not build (fatal errors) at: "ain(){ 1 )" -> " }"
 
 ------------------------------------------------------------------
 Parsing: "void main(){ int a }"
@@ -52,13 +56,15 @@ Name missing at: "){ int a }" -> ""
 [err:3] Block not finishing in rcbr at: "){ int a }" -> ""
 [err:31] function body empty at: "){ int a }" -> ""
 [err:30] function declaration's body not closed with '}' at: "){ int a }" -> ""
-AST not build at: "){ int a }" -> ""
+AST not build (no functions) at: "){ int a }" -> ""
+AST not build (fatal errors) at: "){ int a }" -> ""
 
 ------------------------------------------------------------------
 Parsing: "void main(){ if }"
 [err:6] if missing lpar. at: "in(){ if }" -> ""
 [err:31] function body empty at: "in(){ if }" -> ""
-AST not build at: "in(){ if }" -> ""
+AST not build (no functions) at: "in(){ if }" -> ""
+AST not build (fatal errors) at: "in(){ if }" -> ""
 
 ------------------------------------------------------------------
 Parsing: "void main(){ if( }"
@@ -66,13 +72,13 @@ Expecting numerical or lpar at: "n(){ if( }" -> ""
 Expecting numerical or lpar at: "n(){ if( }" -> ""
 [err:1] NextToken performed after reaching eof at: "n(){ if( }" -> ""
 Expecting numerical or lpar at: "n(){ if( }" -> ""
-[err:13] Term missing. at: "n(){ if( }" -> ""
 [err:7] if condition wrong. at: "n(){ if( }" -> ""
 [err:8] if missing rpar. at: "n(){ if( }" -> ""
 [err:3] Block not finishing in rcbr at: "n(){ if( }" -> ""
 [err:31] function body empty at: "n(){ if( }" -> ""
 [err:30] function declaration's body not closed with '}' at: "n(){ if( }" -> ""
-AST not build at: "n(){ if( }" -> ""
+AST not build (no functions) at: "n(){ if( }" -> ""
+AST not build (fatal errors) at: "n(){ if( }" -> ""
 
 ------------------------------------------------------------------
 Parsing: "void main(){ if(int }"
@@ -81,25 +87,27 @@ Expecting numerical or lpar at: "{ if(int }" -> ""
 Expecting numerical or lpar at: "{ if(int }" -> ""
 [err:1] NextToken performed after reaching eof at: "{ if(int }" -> ""
 Expecting numerical or lpar at: "{ if(int }" -> ""
-[err:13] Term missing. at: "{ if(int }" -> ""
 [err:7] if condition wrong. at: "{ if(int }" -> ""
 [err:8] if missing rpar. at: "{ if(int }" -> ""
 [err:3] Block not finishing in rcbr at: "{ if(int }" -> ""
 [err:31] function body empty at: "{ if(int }" -> ""
 [err:30] function declaration's body not closed with '}' at: "{ if(int }" -> ""
-AST not build at: "{ if(int }" -> ""
+AST not build (no functions) at: "{ if(int }" -> ""
+AST not build (fatal errors) at: "{ if(int }" -> ""
 
 ------------------------------------------------------------------
 Parsing: "void main(){ if(1) }"
 [err:9] if missing lcbr. at: "){ if(1) }" -> ""
 [err:31] function body empty at: "){ if(1) }" -> ""
-AST not build at: "){ if(1) }" -> ""
+AST not build (no functions) at: "){ if(1) }" -> ""
+AST not build (fatal errors) at: "){ if(1) }" -> ""
 
 ------------------------------------------------------------------
 Parsing: "void main(){ if(1){ }"
 [err:10] if missing then statement. at: "{ if(1){ }" -> ""
 [err:31] function body empty at: "{ if(1){ }" -> ""
-AST not build at: "{ if(1){ }" -> ""
+AST not build (no functions) at: "{ if(1){ }" -> ""
+AST not build (fatal errors) at: "{ if(1){ }" -> ""
 
 ------------------------------------------------------------------
 Parsing: "void main(){ if(1){2; }"
@@ -109,7 +117,8 @@ Parsing: "void main(){ if(1){2; }"
 [err:3] Block not finishing in rcbr at: "{ if(1){2;" -> " }"
 [err:31] function body empty at: "{ if(1){2;" -> " }"
 [err:30] function declaration's body not closed with '}' at: "{ if(1){2;" -> " }"
-AST not build at: "{ if(1){2;" -> " }"
+AST not build (no functions) at: "{ if(1){2;" -> " }"
+AST not build (fatal errors) at: "{ if(1){2;" -> " }"
 
 ------------------------------------------------------------------
 Parsing: "void main(){ 1+; }"
@@ -118,13 +127,14 @@ Expecting numerical or lpar at: "n(){ 1+; }" -> ""
 Expecting numerical or lpar at: "n(){ 1+; }" -> ""
 [err:1] NextToken performed after reaching eof at: "n(){ 1+; }" -> ""
 Expecting numerical or lpar at: "n(){ 1+; }" -> ""
-Expecting + at: "n(){ 1+; }" -> ""
+Expecting expression delimiter at: "n(){ 1+; }" -> ""
 [err:12] operand to + missing at: "n(){ 1+; }" -> ""
 [err:] assignment missing '=' at: "n(){ 1+; }" -> ""
 [err:3] Block not finishing in rcbr at: "n(){ 1+; }" -> ""
 [err:31] function body empty at: "n(){ 1+; }" -> ""
 [err:30] function declaration's body not closed with '}' at: "n(){ 1+; }" -> ""
-AST not build at: "n(){ 1+; }" -> ""
+AST not build (no functions) at: "n(){ 1+; }" -> ""
+AST not build (fatal errors) at: "n(){ 1+; }" -> ""
 
 ------------------------------------------------------------------
 Parsing: "void main(){ 1+(; }"
@@ -133,192 +143,62 @@ Expecting numerical or lpar at: "(){ 1+(; }" -> ""
 Expecting numerical or lpar at: "(){ 1+(; }" -> ""
 [err:1] NextToken performed after reaching eof at: "(){ 1+(; }" -> ""
 Expecting numerical or lpar at: "(){ 1+(; }" -> ""
-[err:13] Term missing. at: "(){ 1+(; }" -> ""
 [err:14] Expecting rpar after expression. at: "(){ 1+(; }" -> ""
-Expecting + at: "(){ 1+(; }" -> ""
+Expecting expression delimiter at: "(){ 1+(; }" -> ""
 [err:12] operand to + missing at: "(){ 1+(; }" -> ""
 [err:] assignment missing '=' at: "(){ 1+(; }" -> ""
 [err:3] Block not finishing in rcbr at: "(){ 1+(; }" -> ""
 [err:31] function body empty at: "(){ 1+(; }" -> ""
 [err:30] function declaration's body not closed with '}' at: "(){ 1+(; }" -> ""
-AST not build at: "(){ 1+(; }" -> ""
+AST not build (no functions) at: "(){ 1+(; }" -> ""
+AST not build (fatal errors) at: "(){ 1+(; }" -> ""
 
 ------------------------------------------------------------------
 Parsing: "void main(){ int a; int b; int a; }"
 [err:15] Symbol already declared. at: " b; int a;" -> " }"
 [err:31] function body empty at: "; int a; }" -> ""
-AST not build at: "; int a; }" -> ""
+AST not build (no functions) at: "; int a; }" -> ""
+AST not build (fatal errors) at: "; int a; }" -> ""
 
 ------------------------------------------------------------------
 Parsing: "void main(){int a; a=1+b; }"
 [error:16] Var used before declaration at: " a; a=1+b;" -> " }"
 
-AST dump:
--int a 
--Assign
---a [int Lvalue Write Value]
---Op: +  [int Rvalue]
----Literal: 1 [int Rvalue]
----b [int Lvalue Read Value]
-
-Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 1 b of type int]
-2: Symbol: [ in scope 0 main of type function: ()->void]
-
 ------------------------------------------------------------------
 Parsing: "void main(){int a; bool b; a=a+b; }"
 [err:17] Incompatible types in op at: "ol b; a=a+" -> "b; }"
 
-AST dump:
--int a 
--bool b 
--Assign
---a [int Lvalue Write Value]
---Op: +  [int Rvalue]
----a [int Lvalue Read Value]
----b [bool Lvalue Read Value]
-
-Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 1 b of type bool]
-2: Symbol: [ in scope 0 main of type function: ()->void]
-
 ------------------------------------------------------------------
 Parsing: "void main(){int a; bool b; a=b+b; }"
 [err:18] Incompatible types in assignment: int to bool at: " bool b; a" -> "=b+b; }"
-
-AST dump:
--int a 
--bool b 
--Assign
---a [int Lvalue Write Value]
---Op: +  [bool Rvalue]
----b [bool Lvalue Read Value]
----b [bool Lvalue Read Value]
-
-Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 1 b of type bool]
-2: Symbol: [ in scope 0 main of type function: ()->void]
 
 ------------------------------------------------------------------
 Parsing: "void main(){int a b c; }"
 [err:19] Variable declarations must be separated with comma. at: "(){int a b" -> " c; }"
 [err:19] Variable declarations must be separated with comma. at: "{int a b c" -> "; }"
 
-AST dump:
--int a int b int c 
-
-Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 1 b of type int]
-2: Symbol: [ in scope 1 c of type int]
-3: Symbol: [ in scope 0 main of type function: ()->void]
-
 ------------------------------------------------------------------
 Parsing: "void main(){int a,b,c; a= 2+1; a = b+c; 2 = 2; }"
 [err:22] left of assignment is not an Lval at: "a = b+c; 2" -> " = 2; }"
-
-AST dump:
--int a int b int c 
--Assign
---a [int Lvalue Write Value]
---Op: +  [int Rvalue]
----Literal: 2 [int Rvalue]
----Literal: 1 [int Rvalue]
--Assign
---a [int Lvalue Write Value]
---Op: +  [int Rvalue]
----b [int Lvalue Read Value]
----c [int Lvalue Read Value]
--Assign
---Literal: 2 [int Rvalue]
---Literal: 2 [int Rvalue]
-
-Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 1 b of type int]
-2: Symbol: [ in scope 1 c of type int]
-3: Symbol: [ in scope 0 main of type function: ()->void]
 
 ------------------------------------------------------------------
 Parsing: "int f(int p1){int a; a=p1;} void main(){int a; a=f();}"
 [err:39] Function call with less arguments than expected at: "t a; a=f()" -> ";}"
 [err:18] Incompatible types in assignment: int to function: (int)->int at: "){int a; a" -> "=f();}"
 
-AST dump:
--int a 
--Assign
---a [int Lvalue Write Value]
---p1 [int Lvalue Read Value]
--int a 
--Assign
---a [int Lvalue Write Value]
---f [function: (int)->int Lvalue Read Value]
-
-Declaration Table:
-0: Symbol: [ in scope 1 p1 of type int]
-1: Symbol: [ in scope 1 a of type int]
-2: Symbol: [ in scope 0 f of type function: (int)->int]
-3: Symbol: [ in scope 2 a of type int]
-4: Symbol: [ in scope 0 main of type function: ()->void]
-
 ------------------------------------------------------------------
 Parsing: "int f(int p1){int a; a=p1;} void main(){int a; a=f(2,3);}"
 [err:40] Function call with more arguments than expected (extra arguments will be discarded) at: "; a=f(2,3)" -> ";}"
-
-AST dump:
--int a 
--Assign
---a [int Lvalue Write Value]
---p1 [int Lvalue Read Value]
--int a 
--Assign
---a [int Lvalue Write Value]
---FuncRet: int [int Rvalue]
----FuncCall: f [function: (int)->int]
-----Literal: 2 [int]
-
-Declaration Table:
-0: Symbol: [ in scope 1 p1 of type int]
-1: Symbol: [ in scope 1 a of type int]
-2: Symbol: [ in scope 0 f of type function: (int)->int]
-3: Symbol: [ in scope 2 a of type int]
-4: Symbol: [ in scope 0 main of type function: ()->void]
 
 ------------------------------------------------------------------
 Parsing: "int f(int p1, int p2){int a; a=p1;} void main(){int a; a=f(2,true);}"
 [err:41] Argument type conflict:  is "bool" but f expects "int" at: "a=f(2,true" -> ");}"
 
-AST dump:
--int a 
--Assign
---a [int Lvalue Write Value]
---p1 [int Lvalue Read Value]
--int a 
--Assign
---a [int Lvalue Write Value]
---FuncRet: int [int Rvalue]
----FuncCall: f [function: (intint)->int]
-----Literal: 2 [int]----Literal: 1 [bool]
-
-Declaration Table:
-0: Symbol: [ in scope 1 p1 of type int]
-1: Symbol: [ in scope 1 p2 of type int]
-2: Symbol: [ in scope 1 a of type int]
-3: Symbol: [ in scope 0 f of type function: (intint)->int]
-4: Symbol: [ in scope 2 a of type int]
-5: Symbol: [ in scope 0 main of type function: ()->void]
+------------------------------------------------------------------
+Parsing: "int f(){ return 1} void main(){ int a;}"
+[err:43] Missing semicolon after return statement.  at: " return 1}" -> " void main(){ int a;}"
 
 ------------------------------------------------------------------
-Parsing: "int f(){ return 1} void main(){}"
-[error:16] Var used before declaration at: "{ return 1" -> "} void main(){}"
-[err:x1] name not followed by valid token at: "{ return 1" -> "} void main(){}"
-Expecting + at: "{ return 1" -> "} void main(){}"
-[err:] assignment missing '=' at: "{ return 1" -> "} void main(){}"
-Expecting + at: " return 1}" -> " void main(){}"
-[err:] assignment missing '=' at: " return 1}" -> " void main(){}"
-[err:31] function body empty at: " return 1}" -> " void main(){}"
-AST not build at: "rn 1} void" -> " main(){}"
+Parsing: "int f(){ return true;} void main(){ int a;}"
+[err:45] Return's expression doesn not match function return type: int vs bool
 

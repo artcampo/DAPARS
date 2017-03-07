@@ -19,7 +19,8 @@ Parsing: "void main(){int a; (a=1); }"
 [err:3] Block not finishing in rcbr at: "t a; (a=1)" -> "; }"
 [err:31] function body empty at: "t a; (a=1)" -> "; }"
 [err:30] function declaration's body not closed with '}' at: "t a; (a=1)" -> "; }"
-AST not build at: "t a; (a=1)" -> "; }"
+AST not build (no functions) at: "t a; (a=1)" -> "; }"
+AST not build (fatal errors) at: "t a; (a=1)" -> "; }"
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1;a=2;a=3; }"
@@ -450,7 +451,8 @@ else missing rcbr. at: "3;}else{4;" -> "} }"
 [err:3] Block not finishing in rcbr at: "3;}else{4;" -> "} }"
 [err:31] function body empty at: "3;}else{4;" -> "} }"
 [err:30] function declaration's body not closed with '}' at: "3;}else{4;" -> "} }"
-AST not build at: "3;}else{4;" -> "} }"
+AST not build (no functions) at: "3;}else{4;" -> "} }"
+AST not build (fatal errors) at: "3;}else{4;" -> "} }"
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3;}if(4){a=5;}else{a=6;} }"
@@ -639,7 +641,8 @@ Scope 1: {(0:a) (1:b) (2:c) }
 Parsing: "void main(){ int a; int b; int a; }"
 [err:15] Symbol already declared. at: " b; int a;" -> " }"
 [err:31] function body empty at: "; int a; }" -> ""
-AST not build at: "; int a; }" -> ""
+AST not build (no functions) at: "; int a; }" -> ""
+AST not build (fatal errors) at: "; int a; }" -> ""
 
 ---------------------------------------------------
 Parsing: "void main(){ int a; if(1){int b;} }"

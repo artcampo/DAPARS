@@ -36,12 +36,13 @@ void parse(const std::string& str, G& g)
     PassManager pm(unit);
     pm.Run();
   }
+  /*
   if(unit.GetAstProg() != nullptr){
     std::cout << "\nAST dump:\n";
     ASTVisitorDump visitor_dump(unit, true);
     visitor_dump.Visit(*unit.GetAstProg());
   }
-
+*/
   std::cout << "\n";
 }
 
@@ -103,7 +104,11 @@ int main()
 
   //err43
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int f(){ return 1;} void main(){ int a;}"), g);
+    "int f(){ return 1} void main(){ int a;}"), g);
+
+  //kErr45
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "int f(){ return true;} void main(){ int a;}"), g);
 
   //tests that sigsev
   /*
