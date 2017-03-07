@@ -57,11 +57,19 @@ protected:
 
 
   //Error handling
+  int  NumFatalErrors()const noexcept{ return num_fatal_errors_;}
   void Error(const std::string& message);
+
+  //TODO: get rid of this one?
   void ErrorCritical(const std::string& message);
+
+  //Analysis of AST cannot be done after those
+  void FatalError(const std::string& message);
+
 
 private:
   int               num_errors_;
+  int               num_fatal_errors_;
   bool              continue_parsing_;
 
   std::ifstream     file_;

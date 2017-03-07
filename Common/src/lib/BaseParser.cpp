@@ -25,6 +25,7 @@ BaseParser::BaseParser(const std::vector<char>& parse_data
   , skip_symbols_ {' ','\n'}
   , unit_(unit)
   , num_errors_(0)
+  , num_fatal_errors_(0)
   , continue_parsing_(true)
 {
   std::cout << "Parsing: \"";
@@ -41,6 +42,7 @@ BaseParser::BaseParser(std::string const &file_name, CompilationUnit& unit)
   , skip_symbols_ {' ','\n'}
   , unit_(unit)
   , num_errors_(0)
+  , num_fatal_errors_(0)
   , continue_parsing_(true)
 {
   unit_.SetFileData(&file_data_);
@@ -74,11 +76,13 @@ void BaseParser::NextToken() noexcept{
     }
   }
 
+/*
+  //Debug info for when things go south
   std::cout << "NextToken: " <<  str(token_);
   if(token_ == Tokenizer::kToken::numerical) std::cout << ": " << token_int_value_;
   if(token_ == Tokenizer::kToken::name) std::cout << ": " << token_string_value_;
   std::cout << "\n";
-
+*/
 }
 
 bool BaseParser::Accept(const kToken& token, const std::string& error) noexcept{
@@ -154,6 +158,12 @@ void BaseParser::Error(const std::string& message){
 
 void BaseParser::ErrorCritical(const std::string& message){
   Error(message);
+//   exit(1);
+}
+
+void BaseParser::FatalError(const std::string& message){
+  Error(message);
+  ++num_fatal_errors_;
 //   exit(1);
 }
 

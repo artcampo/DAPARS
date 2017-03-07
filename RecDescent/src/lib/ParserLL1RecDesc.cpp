@@ -58,6 +58,10 @@ void ParserLL1RecDesc::BuildTokenVectors(){
 
   //E' -> + T E'  => +
   set_eprime_ = std::vector<kToken>({kToken::plus});
+
+  //E' -> {empty}  => , {empty} = ) ;
+  empty_eprime_ = std::vector<kToken>({kToken::comma, kToken::equality
+    , kToken::rpar, kToken::semicolon});
 }
 
 
@@ -81,17 +85,18 @@ void ParserLL1RecDesc::Prog(){
   std::vector<PtrFuncDef> func_defs;
   FuncDefList(func_defs, id);
 
-  if(func_defs.size() > 0){
-    if(token_ != Tokenizer::kToken::eof) Error("More data after program.");
-
-    std::unique_ptr<AST::ProgBody> prog =
-      std::make_unique<AST::ProgBody>(id, CurrentLocus(), pinit, pend, func_defs);
-
-    unit_.InitAst(prog);
-  }else{
-    Error("AST not build");
+  if(func_defs.size() == 0 or NumFatalErrors() != 0){
+    if(func_defs.size() == 0) Error("AST not build (no functions)");
+    if(NumFatalErrors() != 0) Error("AST not build (fatal errors)");
+    return;
   }
 
+  if(token_ != Tokenizer::kToken::eof) Error("More data after program.");
+
+  std::unique_ptr<AST::ProgBody> prog =
+    std::make_unique<AST::ProgBody>(id, CurrentLocus(), pinit, pend, func_defs);
+
+  unit_.InitAst(prog);
 }
 
 
@@ -116,6 +121,7 @@ PtrBlock ParserLL1RecDesc::Stmts(std::vector<PtrStatement>& stmts_inht, const Sc
   if(AcceptEmpty({kToken::rcbr}, "[err:3] Block not finishing in rcbr")){
 //       unit.
     stmts_synt = NewBlock(stmts_inht, scope_inht, l);
+    std::cout << "Block created\n";
   }
 
 //   std::cout << "<-stmts\n";

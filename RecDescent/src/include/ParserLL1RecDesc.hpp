@@ -97,6 +97,8 @@ private:
 
   std::vector<kToken> set_eprime_;
 
+  std::vector<kToken> empty_eprime_;
+
 };
 
 } //end namespace RecDescent

@@ -80,9 +80,8 @@ PtrStatement ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
 
   //STMT -> return E ;  => return
   if(TryAndAccept({kToken::kwd_return})){
-    std::cout << "ReturnStmt\n";
+//     std::cout << "ReturnStmt\n";
     PtrExpr exp = Exprs(scope_inht);
-    std::cout << "HasExprt\n";
     Accept(kToken::semicolon, kErr43);
 
     if(not unit_.InsideFunctionDefinition()){
@@ -91,6 +90,7 @@ PtrStatement ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
     }
 
     stmt_synt   = NewReturnStmt(exp, unit_.CurrentFuncDef(), scope_inht, l);
+    std::cout << "RetStmt created\n";
 
     return std::move(stmt_synt);
   }

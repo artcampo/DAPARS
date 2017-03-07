@@ -103,7 +103,7 @@ int main()
 
   //err43
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int f(){ return 1} void main(){}"), g);
+    "int f(){ return 1;} void main(){ int a;}"), g);
 
   //tests that sigsev
   /*

@@ -21,7 +21,6 @@ void ParserLL1RecDesc::FuncDefList(std::vector<PtrFuncDef>& fdefl_inht,
 //FDECL :=  name (){ STMTS }
 PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
 //   std::cout << "fdef\n";
-  PtrFuncDef func_decl_synth(nullptr);
   std::string name("func_name");
 
   Locus       l = CurrentLocus();
@@ -53,29 +52,32 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
 
   if(not unit_.IsDeclValid(name)){
     Error(kErr32);
-    return std::move(func_decl_synth);
+    return std::move(nullptr);
   }
+  PtrFuncDecl decl = NewFuncDecl(name, ret_type, par_list, scope_inht, l);
+  unit_.EnterFunctionDefinition(decl.get());
 
+  //Process function definition
   Accept(kToken::lcbr, kErr29);
-
 
   //STMTS
   std::vector<PtrStatement> stmts_inht;
   PtrBlock stmts_synt = Stmts(stmts_inht, id);
-  if(not stmts_synt) Error(kErr31);
+  if(not stmts_synt) FatalError(kErr31);
 
   Accept(kToken::rcbr, kErr30);
   scope_owner_id_.pop();
 
-  func_decl_synth = NewFuncDef(name, stmts_synt, ret_type, par_list, scope_inht, l);
 
+  PtrFuncDef func_def_synth = NewFuncDef(decl, stmts_synt, scope_inht, l);
+//   std::cout << "funcdef with " << ret_type.str()<<"\n";
 
-  unit_.SetFuncOriginNode(*func_decl_synth);
+  unit_.SetFuncOriginNode(*func_def_synth);
   unit_.ExitFunctionDefinition();
-  unit_.RegisterDecl(name, type_func, *func_decl_synth);
+  unit_.RegisterDecl(name, type_func, *func_def_synth);
 
 
-  return std::move(func_decl_synth);
+  return std::move(func_def_synth);
 }
 
 

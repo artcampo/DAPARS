@@ -143,13 +143,22 @@ NewDerefOp(PtrExpr& rhs, const ScopeId id, const Locus& locus){
   return std::make_unique<DerefOp>(rhs, id, locus);
 }
 
+
+
 PtrFuncDef
-NewFuncDef(const std::string& name, PtrBlock& block
+NewFuncDef(PtrFuncDecl& decl, PtrBlock& block
+            , const ScopeId id, const Locus& locus){
+  if(not block or not decl) return PtrFuncDef(nullptr);
+  return std::make_unique<FuncDef>(decl, block, id, locus);
+}
+
+PtrFuncDecl
+NewFuncDecl(const std::string& name
             , const Type& ret_type
             , std::vector<PtrVarDecl>& par_list
             , const ScopeId id, const Locus& locus){
-  if(not block) return PtrFuncDef(nullptr);
-  return std::make_unique<FuncDef>(name, block, ret_type, par_list, id, locus);
+  if(not block) return PtrFuncDecl(nullptr);
+  return std::make_unique<FuncFuncDecl>(name, block, ret_type, par_list, id, locus);
 }
 
 PtrFuncRet
@@ -171,9 +180,9 @@ NewFuncCall(const std::string& name
 }
 
 PtrReturnStmt
-NewReturnStmt(PtrExpr& ret_expr, FuncDef& func, const ScopeId id, const Locus& locus){
+NewReturnStmt(PtrExpr& ret_expr, FuncDecl& func_decl, const ScopeId id, const Locus& locus){
   if(not ret_expr)return PtrReturnStmt(nullptr);
-  return std::make_unique<ReturnStmt>(ret_expr, func, id, locus);
+  return std::make_unique<ReturnStmt>(ret_expr, func_decl, id, locus);
 }
 
 };

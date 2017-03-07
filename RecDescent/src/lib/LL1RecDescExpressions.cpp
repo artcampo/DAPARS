@@ -5,8 +5,7 @@ namespace RecDescent{
 
 //TODO: should return PtrExpr
 PtrExpr ParserLL1RecDesc::Exprs(const ScopeId scope_inht){
-//   std::cout << "Exp\n";
-  PtrExpr eprime_synt(nullptr);
+
   PtrExpr term_synth  = Term(scope_inht);
 
   if(not term_synth) return std::move(nullptr);
@@ -14,7 +13,7 @@ PtrExpr ParserLL1RecDesc::Exprs(const ScopeId scope_inht){
   if(not Check(set_eprime_))
     return std::move(term_synth);
 
-  eprime_synt = ExprPrime(term_synth, scope_inht);
+  PtrExpr eprime_synt = ExprPrime(term_synth, scope_inht);
   return std::move(eprime_synt);
 }
 
@@ -47,9 +46,7 @@ PtrExpr ParserLL1RecDesc::ExprPrime(PtrExpr& eprime_inht, const ScopeId scope_in
   }
 
   //E' -> {empty}  => , {empty} = ) ;
-  //E' -> {empty}  => , {empty} = ) ;
-  if(AcceptEmpty({kToken::comma, kToken::equality, kToken::rpar
-      , kToken::semicolon},
+  if(AcceptEmpty(empty_eprime_,
 //       , kToken::rcbr},  //not in original set but better error detection
       "Expecting expression delimiter")){
     eprime_synt = std::move(eprime_inht);
@@ -79,6 +76,7 @@ PtrExpr ParserLL1RecDesc::Factor(const ScopeId scope_inht){
     return std::move(f_synt);
   }
 
+  //F := F'
   return std::move(FactorPrime(scope_inht));
 }
 
