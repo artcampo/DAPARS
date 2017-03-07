@@ -69,6 +69,14 @@ ParseKeyword(std::vector<char>::const_iterator& current_position
     current_position += 5; t = kToken::kwd_false; return true;
   }
 
+  //return
+  if( chars_left >= 6
+     and *(current_position + 0) == 'r' and *(current_position + 1) == 'e'
+     and *(current_position + 2) == 't' and *(current_position + 3) == 'u'
+     and *(current_position + 4) == 'r' and *(current_position + 3) == 'n'){
+    current_position += 6; t = kToken::kwd_return; return true;
+  }
+
 
 
   //For dragon test grammar
@@ -163,6 +171,9 @@ std::string str(const kToken& t){
     case kToken::kwd_if:    return std::string("if");  break;
     case kToken::kwd_else:  return std::string("else");  break;
     case kToken::kwd_while: return std::string("while");  break;
+    case kToken::kwd_return:return std::string("return");  break;
+
+
     case kToken::kwd_int:   return std::string("int");  break;
     case kToken::kwd_bool:  return std::string("bool");  break;
     case kToken::kwd_void:  return std::string("void");  break;

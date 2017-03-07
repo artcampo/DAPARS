@@ -12,7 +12,7 @@ enum class kToken{ eof, numerical, name
                  , lpar, rpar, lcbr, rcbr
                  , plus, minus, astk, div
                  , equality
-                 , kwd_if, kwd_else, kwd_while
+                 , kwd_if, kwd_else, kwd_while, kwd_return
                  , kwd_int, kwd_bool, kwd_void
                  , kwd_true, kwd_false
                  , semicolon, comma, ampersand

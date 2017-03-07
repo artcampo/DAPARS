@@ -29,7 +29,9 @@ void CreateGrammarDalang(G& g){
 
   const Symbol kwd_if     = g.AddTerminalKeyword("IF", "if", Tokenizer::kToken::kwd_if);
   const Symbol kwd_else   = g.AddTerminalKeyword("ELSE", "else", Tokenizer::kToken::kwd_else);
-  const Symbol kwd_while  = g.AddTerminalKeyword("While", "while", Tokenizer::kToken::kwd_while);
+  const Symbol kwd_while  = g.AddTerminalKeyword("WHILE", "while", Tokenizer::kToken::kwd_while);
+  const Symbol kwd_return = g.AddTerminalKeyword("RETURN", "return", Tokenizer::kToken::kwd_return);
+
 
   const Symbol kwd_type_int  = g.AddTerminalKeyword("INT", "int", Tokenizer::kToken::kwd_int);
   const Symbol kwd_type_bool = g.AddTerminalKeyword("BOOL", "bool", Tokenizer::kToken::kwd_bool);
@@ -37,6 +39,7 @@ void CreateGrammarDalang(G& g){
 
   const Symbol kwd_true  = g.AddTerminalKeyword("TRUE", " true",  Tokenizer::kToken::kwd_true);
   const Symbol kwd_false = g.AddTerminalKeyword("FALSE", "false", Tokenizer::kToken::kwd_false);
+
 
 
   //Prog
@@ -57,6 +60,7 @@ void CreateGrammarDalang(G& g){
   const Symbol STMT   = g.AddNonTerminal("STMT");
   const Symbol IFELSE = g.AddNonTerminal("IFELSE");
   const Symbol DECL   = g.AddNonTerminal("DECL");
+  const Symbol RETURN = g.AddNonTerminal("RETURN");
 
 
   //Exprs
@@ -107,6 +111,8 @@ void CreateGrammarDalang(G& g){
   g.AddRule(Rule(STMT,   {DECL, semi}));
   g.AddRule(Rule(STMT,   {kwd_if, lpar, E, rpar, lcbr, STMTS, rcbr, IFELSE}));
   g.AddRule(Rule(STMT,   {kwd_while, lpar, E, rpar, lcbr, STMTS, rcbr}));
+  g.AddRule(Rule(STMT,   {kwd_return, E, semi}));
+
 
   g.AddRule(Rule(IFELSE, {kwd_else, lcbr, STMTS, rcbr}));
   g.AddRule(Rule(IFELSE, {empty}));
