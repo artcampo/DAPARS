@@ -8,9 +8,7 @@ namespace RecDescent{
 PtrExpr ParserLL1RecDesc::Argm(const std::string& name_inht, const ScopeId scope_inht
             , const Locus& locus_inht){
   //ARGM -> {empty}  => , {empty} = + ) ;
-  if(Check({kToken::comma, kToken::equality, kToken::plus, kToken::rpar
-              , kToken::semicolon}))
-    return std::move(nullptr);
+  if(Check(set_argm_)) return std::move(nullptr);
 
   //ARGM -> ( ARGL )  => (
   if(TryAndAccept(kToken::lpar)){

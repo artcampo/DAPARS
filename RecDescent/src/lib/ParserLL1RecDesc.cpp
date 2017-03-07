@@ -26,15 +26,37 @@ void ParserLL1RecDesc::Parse(){
   Prog();
 }
 
+void Insert(std::vector<kToken>& vdst, const std::vector<kToken>& vsrc){
+  vdst.insert(vdst.end(), vsrc.begin(), vsrc.end());
+}
+
 void ParserLL1RecDesc::BuildTokenVectors(){
 
+  //DECL -> TYPE NAME_LIST  => bool int void
   set_types_ =  std::vector<kToken>({
     kToken::kwd_void, kToken::kwd_int, kToken::kwd_bool});
 
+  //E -> T E'  => & * false ( {nam} {num}  true
   set_expr_  = std::vector<kToken>({
     kToken::ampersand, kToken::astk, kToken::kwd_false, kToken::lpar
   , kToken::name, kToken::numerical, kToken::kwd_true});
+
+  //STMTS -> STMT STMTS  => & * bool false if int ( {nam} {num} return  true void while
+  set_stmts_ = std::vector<kToken>({kToken::kwd_if, kToken::kwd_return
+    , kToken::kwd_while});
+  Insert(set_stmts_, set_types_);
+  Insert(set_stmts_, set_expr_);
+
+  //IFELSE -> {empty}  => & * bool {empty} false if int ( {nam} {num} } return  true void while
+  set_ifelse_ = std::vector<kToken>({kToken::rcbr});
+  Insert(set_ifelse_, set_stmts_);
+
+  //ARGM -> {empty}  => , {empty} = + ) ;
+  set_argm_ = std::vector<kToken>({kToken::comma, kToken::equality
+    , kToken::plus, kToken::rpar, kToken::semicolon});
 }
+
+
 
 PtrBlock ParserLL1RecDesc::ParseSubBlock(const ScopeId scope, const std::string& error){
   std::vector<PtrStatement> stmts_inht;
@@ -67,6 +89,7 @@ void ParserLL1RecDesc::Prog(){
   }
 
 }
+
 
 PtrBlock ParserLL1RecDesc::Stmts(std::vector<PtrStatement>& stmts_inht, const ScopeId scope_inht){
 //   std::cout << "stmts\n";

@@ -91,6 +91,9 @@ private:
   void BuildTokenVectors();
   std::vector<kToken> set_types_;
   std::vector<kToken> set_expr_;
+  std::vector<kToken> set_stmts_;
+  std::vector<kToken> set_ifelse_;
+  std::vector<kToken> set_argm_;
 
 };
 

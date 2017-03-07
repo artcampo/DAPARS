@@ -55,8 +55,8 @@ PtrStatement ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
     return std::move(stmt_synt);
   }
 
-  //STMT -> DECL ;  => bool int
-  if(Check({kToken::kwd_int, kToken::kwd_bool})){
+  //STMT -> DECL ;  => bool int void
+  if(Check(set_types_)){
 //     std::cout << "stmt::decl stmt\n";
     PtrVarDeclList decl_synt = Decl(scope_inht);
     stmt_synt = NewDeclStmt(decl_synt, scope_inht, l);
@@ -75,9 +75,16 @@ PtrStatement ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
     stmt_synt       = NewAssignStmt(expr_lhs, expr_rhs, scope_inht, l);
 
     Accept(kToken::semicolon, "[err:4] Expecting semicolon after Expr.");
-  }else{
-    Error("Expr wrong");
+    return std::move(stmt_synt);
   }
+
+  //STMT -> return E ;  => return
+  if(Check({kToken::kwd_int})){
+
+  }
+
+  Error("Expr wrong");
+
 //   std::cout << "<-stmt\n";
   return std::move(stmt_synt);
 }
@@ -90,9 +97,7 @@ PtrBlock ParserLL1RecDesc::IfElse(const ScopeId scope_inht){
   if(not ContinueParsing())
     return std::move(ifelse_synt);
 
-
   if(TryAndAccept(kToken::kwd_else)){
-
     Accept(kToken::lcbr, "else missing lcbr.");
     std::vector<PtrStatement> stmts_inht;
     const ScopeId nested_id = unit_.NewNestedScope(scope_owner_id_.top());
@@ -105,12 +110,7 @@ PtrBlock ParserLL1RecDesc::IfElse(const ScopeId scope_inht){
   }
 
   //IFELSE -> {empty}  => & * bool {empty} false if int ( {nam} {num} }  true void while
-  AcceptEmpty( { kToken::astk, kToken::ampersand, kToken::kwd_bool
-                , kToken::kwd_false, kToken::kwd_if
-                , kToken::kwd_int, kToken::lpar, kToken::name
-                , kToken::numerical, kToken::rcbr, kToken::kwd_true
-                , kToken::kwd_void, kToken::kwd_while},
-                "Invalid token after if");
+  AcceptEmpty( set_ifelse_, "Invalid token after if");
 
 //    std::cout << "<-IfElse\n";
   return std::move(ifelse_synt);
