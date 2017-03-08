@@ -206,7 +206,7 @@ IR dump:
 5: Return
 
 ---------------------------------------------------
-Parsing: "int f(int p1){int a; a=p1;} void main(){int a; a=f(2);}"
+Parsing: "int f(int p1){int a; a=p1; return a;} void main(){int a; a=f(2);}"
 
 Scopes of module:
 Scope 0: {(2:f) (4:main) }
@@ -219,6 +219,8 @@ AST dump:
 -Assign
 --a [int Lvalue Write Value]
 --p1 [int Lvalue Read Value]
+-Return (a)
+--a [int Lvalue Read Value]
 -int a 
 -Assign
 --a [int Lvalue Write Value]
@@ -242,5 +244,6 @@ IR dump:
 5: ReturnMain
 6: %3 = Load [arp_f:p1 -2]
 7: store %3 to [arp_f:a 0]
-8: Return
+8: %5 = Load [arp_f:a 0]
+9: Return
 

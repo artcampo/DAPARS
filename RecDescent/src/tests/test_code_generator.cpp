@@ -84,7 +84,7 @@ int main()
     "void main(){int a; a= 2;} void f(int p1){int a; a=p1;}"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int f(int p1){int a; a=p1;} void main(){int a; a=f(2);}"), g);
+    "int f(int p1){int a; a=p1; return a;} void main(){int a; a=f(2);}"), g);
 
   /*
   //Causes sigsev (hahah)
