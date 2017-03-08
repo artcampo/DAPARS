@@ -20,7 +20,6 @@ Scope 0: {(3:main) }
 Scope 1: {(0:a) (1:b) (2:c) }
 Scope 2: {}
 
-[err:18] Incompatible types in assignment: function: ()->void to int at: "le(true){b" -> "=2+3;} c=3+4; }"
 
 AST dump:
 -int a int b int c 
@@ -28,7 +27,7 @@ AST dump:
 --Cond: Literal: 1 [bool Rvalue]
 --Body:
 ---Assign
-----b [function: ()->void Lvalue Write Value]
+----b [int Lvalue Write Value]
 ----Op: +  [int Rvalue]
 -----Literal: 2 [int Rvalue]
 -----Literal: 3 [int Rvalue]
@@ -69,9 +68,6 @@ Scope 1: {(0:a) (1:b) (6:g) }
 Scope 2: {(2:c) }
 Scope 3: {(3:d) (4:e) (5:f) }
 
-[err:18] Incompatible types in assignment: void to int at: "){int c; a" -> "=2+3;} else{ int d, e,f; d = 4; } int g; b=5+6; }"
-[err:18] Incompatible types in assignment: bool to int at: " d, e,f; d" -> " = 4; } int g; b=5+6; }"
-[err:18] Incompatible types in assignment: function: ()->void to int at: "} int g; b" -> "=5+6; }"
 
 AST dump:
 -int a int b 
@@ -80,19 +76,19 @@ AST dump:
 --Then:
 ---int c 
 ---Assign
-----a [void Lvalue Write Value]
+----a [int Lvalue Write Value]
 ----Op: +  [int Rvalue]
 -----Literal: 2 [int Rvalue]
 -----Literal: 3 [int Rvalue]
 --Else:
 ---int d int e int f 
 ---Assign
-----d [bool Lvalue Write Value]
+----d [int Lvalue Write Value]
 ----Literal: 4 [int Rvalue]
 
 -int g 
 -Assign
---b [function: ()->void Lvalue Write Value]
+--b [int Lvalue Write Value]
 --Op: +  [int Rvalue]
 ---Literal: 5 [int Rvalue]
 ---Literal: 6 [int Rvalue]
@@ -132,4 +128,123 @@ Scopes of module:
 Scope 0: {(3:main) }
 Scope 1: {(0:a) (1:b) (2:p) }
 
-[err:25] dereferencing not a pointer at: "nt* p; a=*" -> "p; b=2; p = &b; a = b + *p;}"
+
+AST dump:
+-int a int b 
+-int* p 
+-Assign
+--a [int Lvalue Write Value]
+--* [int Lvalue Read]
+---p [int* Lvalue Read Value]
+-Assign
+--b [int Lvalue Write Value]
+--Literal: 2 [int Rvalue]
+-Assign
+--p [int* Lvalue Write Value]
+--@ [int* Lvalue]
+---b [int Lvalue Read Address]
+-Assign
+--a [int Lvalue Write Value]
+--Op: +  [int Rvalue]
+---b [int Lvalue Read Value]
+---* [int Lvalue Read]
+----p [int* Lvalue Read Value]
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 1 b of type int]
+2: Symbol: [ in scope 1 p of type int*]
+3: Symbol: [ in scope 0 main of type function: ()->void]
+
+IR dump:
+0: %0 = Load [MainDS:p 2]
+1: %1 = Load [ %0]
+2: store %1 to [MainDS:a 0]
+3: %3 = LoadI(2)
+4: store %3 to [MainDS:b 1]
+5: %5 = PtrElem( MainDS:b 1)
+6: store %5 to [MainDS:p 2]
+7: %7 = Load [MainDS:b 1]
+8: %8 = Load [MainDS:p 2]
+9: %9 = Load [ %8]
+10: %10 = %7 + %9
+11: store %10 to [MainDS:a 0]
+12: ReturnMain
+
+---------------------------------------------------
+Parsing: "void main(){int a; a= 2;} void f(int p1){int a; a=p1;}"
+
+Scopes of module:
+Scope 0: {(1:main) (4:f) }
+Scope 1: {(0:a) }
+Scope 2: {(2:p1) (3:a) }
+
+
+AST dump:
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--Literal: 2 [int Rvalue]
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--p1 [int Lvalue Read Value]
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 0 main of type function: ()->void]
+2: Symbol: [ in scope 2 p1 of type int]
+3: Symbol: [ in scope 2 a of type int]
+4: Symbol: [ in scope 0 f of type function: (int)->void]
+
+IR dump:
+0: %0 = LoadI(2)
+1: store %0 to [MainDS:a 0]
+2: ReturnMain
+3: %2 = Load [arp_f:p1 -2]
+4: store %2 to [arp_f:a 0]
+5: Return
+
+---------------------------------------------------
+Parsing: "int f(int p1){int a; a=p1; return a;} void main(){int a; a=f(2);}"
+ask: f
+
+Scopes of module:
+Scope 0: {(2:f) (4:main) }
+Scope 1: {(0:p1) (1:a) }
+Scope 2: {(3:a) }
+
+
+AST dump:
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--p1 [int Lvalue Read Value]
+-Return (a)
+--a [int Lvalue Read Value]
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--FuncRet: int [int Rvalue]
+---FuncCall: f [function: (int)->int]
+----Literal: 2 [int]
+
+Declaration Table:
+0: Symbol: [ in scope 1 p1 of type int]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 0 f of type function: (int)->int]
+3: Symbol: [ in scope 2 a of type int]
+4: Symbol: [ in scope 0 main of type function: ()->void]
+
+IR dump:
+0: %0 = LoadI(2)
+1: SetPar( %0)
+2: call [entry_f: 0]
+3: %1 = GetRetVal()
+4: store %0 to [MainDS:a 0]
+5: ReturnMain
+6: %3 = Load [arp_f:p1 -2]
+7: store %3 to [arp_f:a 0]
+8: %5 = Load [arp_f:a 0]
+9: Return
+

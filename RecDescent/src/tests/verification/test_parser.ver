@@ -24,9 +24,6 @@ AST not build (fatal errors) at: "t a; (a=1)" -> "; }"
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1;a=2;a=3; }"
-[err:18] Incompatible types in assignment: void to int at: "(){int a;a" -> "=1;a=2;a=3; }"
-[err:18] Incompatible types in assignment: void to int at: "nt a;a=1;a" -> "=2;a=3; }"
-[err:18] Incompatible types in assignment: void to int at: ";a=1;a=2;a" -> "=3; }"
 
 AST pretty:
 int a 
@@ -37,13 +34,13 @@ a=3
 AST dump:
 -int a 
 -Assign
---a [void Lvalue Write Value]
+--a [int Lvalue Write Value]
 --Literal: 1 [int Rvalue]
 -Assign
---a [void Lvalue Write Value]
+--a [int Lvalue Write Value]
 --Literal: 2 [int Rvalue]
 -Assign
---a [void Lvalue Write Value]
+--a [int Lvalue Write Value]
 --Literal: 3 [int Rvalue]
 
 Declaration Table:
@@ -56,7 +53,6 @@ Scope 1: {(0:a) }
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=2+3+4; }"
-[err:18] Incompatible types in assignment: void to int at: "(){int a;a" -> "=2+3+4; }"
 
 AST pretty:
 int a 
@@ -65,7 +61,7 @@ a=( ( 2 + 3 ) + 4 )
 AST dump:
 -int a 
 -Assign
---a [void Lvalue Write Value]
+--a [int Lvalue Write Value]
 --Op: +  [int Rvalue]
 ---Op: +  [int Rvalue]
 ----Literal: 2 [int Rvalue]
@@ -84,7 +80,6 @@ Scope 1: {(0:a) }
 ---------------------------------------------------
 Parsing: "void main(){int a;a=2++3+4; }"
 Expecting numerical or lpar at: "nt a;a=2++" -> "3+4; }"
-[err:18] Incompatible types in assignment: void to int at: "(){int a;a" -> "=2++3+4; }"
 
 AST pretty:
 int a 
@@ -93,7 +88,7 @@ a=( ( 2 + 3 ) + 4 )
 AST dump:
 -int a 
 -Assign
---a [void Lvalue Write Value]
+--a [int Lvalue Write Value]
 --Op: +  [int Rvalue]
 ---Op: +  [int Rvalue]
 ----Literal: 2 [int Rvalue]
@@ -111,8 +106,6 @@ Scope 1: {(0:a) }
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1+2;a=3+4; }"
-[err:18] Incompatible types in assignment: void to int at: "(){int a;a" -> "=1+2;a=3+4; }"
-[err:18] Incompatible types in assignment: void to int at: " a;a=1+2;a" -> "=3+4; }"
 
 AST pretty:
 int a 
@@ -122,12 +115,12 @@ a=( 3 + 4 )
 AST dump:
 -int a 
 -Assign
---a [void Lvalue Write Value]
+--a [int Lvalue Write Value]
 --Op: +  [int Rvalue]
 ---Literal: 1 [int Rvalue]
 ---Literal: 2 [int Rvalue]
 -Assign
---a [void Lvalue Write Value]
+--a [int Lvalue Write Value]
 --Op: +  [int Rvalue]
 ---Literal: 3 [int Rvalue]
 ---Literal: 4 [int Rvalue]
@@ -143,9 +136,6 @@ Scope 1: {(0:a) }
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1+2;a=3+4;a=5+6; }"
-[err:18] Incompatible types in assignment: void to int at: "(){int a;a" -> "=1+2;a=3+4;a=5+6; }"
-[err:18] Incompatible types in assignment: void to int at: " a;a=1+2;a" -> "=3+4;a=5+6; }"
-[err:18] Incompatible types in assignment: void to int at: "+2;a=3+4;a" -> "=5+6; }"
 
 AST pretty:
 int a 
@@ -156,17 +146,17 @@ a=( 5 + 6 )
 AST dump:
 -int a 
 -Assign
---a [void Lvalue Write Value]
+--a [int Lvalue Write Value]
 --Op: +  [int Rvalue]
 ---Literal: 1 [int Rvalue]
 ---Literal: 2 [int Rvalue]
 -Assign
---a [void Lvalue Write Value]
+--a [int Lvalue Write Value]
 --Op: +  [int Rvalue]
 ---Literal: 3 [int Rvalue]
 ---Literal: 4 [int Rvalue]
 -Assign
---a [void Lvalue Write Value]
+--a [int Lvalue Write Value]
 --Op: +  [int Rvalue]
 ---Literal: 5 [int Rvalue]
 ---Literal: 6 [int Rvalue]
@@ -196,8 +186,6 @@ F -> {nam}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3;} }"
-[err:18] Incompatible types in assignment: void to int at: "(){int a;a" -> "=1; if(2){a=3;} }"
-[err:18] Incompatible types in assignment: void to int at: "1; if(2){a" -> "=3;} }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;} }"
 
 AST pretty:
@@ -210,13 +198,13 @@ if(2){
 AST dump:
 -int a 
 -Assign
---a [void Lvalue Write Value]
+--a [int Lvalue Write Value]
 --Literal: 1 [int Rvalue]
 -IfStmt:
 --Cond: Literal: 2 [int Rvalue]
 --Then:
 ---Assign
-----a [void Lvalue Write Value]
+----a [int Lvalue Write Value]
 ----Literal: 3 [int Rvalue]
 
 
@@ -231,10 +219,7 @@ Scope 2: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3;} a=4; }"
-[err:18] Incompatible types in assignment: void to int at: "(){int a;a" -> "=1; if(2){a=3;} a=4; }"
-[err:18] Incompatible types in assignment: void to int at: "1; if(2){a" -> "=3;} a=4; }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;} a=4; }"
-[err:18] Incompatible types in assignment: void to int at: "2){a=3;} a" -> "=4; }"
 
 AST pretty:
 int a 
@@ -247,17 +232,17 @@ a=4
 AST dump:
 -int a 
 -Assign
---a [void Lvalue Write Value]
+--a [int Lvalue Write Value]
 --Literal: 1 [int Rvalue]
 -IfStmt:
 --Cond: Literal: 2 [int Rvalue]
 --Then:
 ---Assign
-----a [void Lvalue Write Value]
+----a [int Lvalue Write Value]
 ----Literal: 3 [int Rvalue]
 
 -Assign
---a [void Lvalue Write Value]
+--a [int Lvalue Write Value]
 --Literal: 4 [int Rvalue]
 
 Declaration Table:
@@ -271,8 +256,6 @@ Scope 2: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3+4+5;} }"
-[err:18] Incompatible types in assignment: void to int at: "(){int a;a" -> "=1; if(2){a=3+4+5;} }"
-[err:18] Incompatible types in assignment: void to int at: "1; if(2){a" -> "=3+4+5;} }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;} }"
 
 AST pretty:
@@ -285,13 +268,13 @@ if(2){
 AST dump:
 -int a 
 -Assign
---a [void Lvalue Write Value]
+--a [int Lvalue Write Value]
 --Literal: 1 [int Rvalue]
 -IfStmt:
 --Cond: Literal: 2 [int Rvalue]
 --Then:
 ---Assign
-----a [void Lvalue Write Value]
+----a [int Lvalue Write Value]
 ----Op: +  [int Rvalue]
 -----Op: +  [int Rvalue]
 ------Literal: 3 [int Rvalue]
@@ -310,10 +293,7 @@ Scope 2: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3+4+5;} a=6; }"
-[err:18] Incompatible types in assignment: void to int at: "(){int a;a" -> "=1; if(2){a=3+4+5;} a=6; }"
-[err:18] Incompatible types in assignment: void to int at: "1; if(2){a" -> "=3+4+5;} a=6; }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;} a=6; }"
-[err:18] Incompatible types in assignment: void to int at: "=3+4+5;} a" -> "=6; }"
 
 AST pretty:
 int a 
@@ -326,13 +306,13 @@ a=6
 AST dump:
 -int a 
 -Assign
---a [void Lvalue Write Value]
+--a [int Lvalue Write Value]
 --Literal: 1 [int Rvalue]
 -IfStmt:
 --Cond: Literal: 2 [int Rvalue]
 --Then:
 ---Assign
-----a [void Lvalue Write Value]
+----a [int Lvalue Write Value]
 ----Op: +  [int Rvalue]
 -----Op: +  [int Rvalue]
 ------Literal: 3 [int Rvalue]
@@ -340,7 +320,7 @@ AST dump:
 -----Literal: 5 [int Rvalue]
 
 -Assign
---a [void Lvalue Write Value]
+--a [int Lvalue Write Value]
 --Literal: 6 [int Rvalue]
 
 Declaration Table:
@@ -354,9 +334,6 @@ Scope 2: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){if(3){a=4;if(5){a=6;}}} }"
-[err:18] Incompatible types in assignment: void to int at: "(){int a;a" -> "=1; if(2){if(3){a=4;if(5){a=6;}}} }"
-[err:18] Incompatible types in assignment: void to int at: "2){if(3){a" -> "=4;if(5){a=6;}}} }"
-[err:18] Incompatible types in assignment: void to int at: "=4;if(5){a" -> "=6;}}} }"
 [err:21] if's condition is not a bool at: "){a=4;if(5" -> "){a=6;}}} }"
 [err:21] if's condition is not a bool at: "if(2){if(3" -> "){a=4;if(5){a=6;}}} }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4;if(5){a=6;}}} }"
@@ -376,7 +353,7 @@ if(2){
 AST dump:
 -int a 
 -Assign
---a [void Lvalue Write Value]
+--a [int Lvalue Write Value]
 --Literal: 1 [int Rvalue]
 -IfStmt:
 --Cond: Literal: 2 [int Rvalue]
@@ -385,13 +362,13 @@ AST dump:
 ----Cond: Literal: 3 [int Rvalue]
 ----Then:
 -----Assign
-------a [void Lvalue Write Value]
+------a [int Lvalue Write Value]
 ------Literal: 4 [int Rvalue]
 -----IfStmt:
 ------Cond: Literal: 5 [int Rvalue]
 ------Then:
 -------Assign
---------a [void Lvalue Write Value]
+--------a [int Lvalue Write Value]
 --------Literal: 6 [int Rvalue]
 
 
@@ -410,9 +387,6 @@ Scope 4: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){if(3){a=4+5;if(6){a=7+8;}}} }"
-[err:18] Incompatible types in assignment: void to int at: "(){int a;a" -> "=1; if(2){if(3){a=4+5;if(6){a=7+8;}}} }"
-[err:18] Incompatible types in assignment: void to int at: "2){if(3){a" -> "=4+5;if(6){a=7+8;}}} }"
-[err:18] Incompatible types in assignment: void to int at: "+5;if(6){a" -> "=7+8;}}} }"
 [err:21] if's condition is not a bool at: "a=4+5;if(6" -> "){a=7+8;}}} }"
 [err:21] if's condition is not a bool at: "if(2){if(3" -> "){a=4+5;if(6){a=7+8;}}} }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4+5;if(6){a=7+8;}}} }"
@@ -432,7 +406,7 @@ if(2){
 AST dump:
 -int a 
 -Assign
---a [void Lvalue Write Value]
+--a [int Lvalue Write Value]
 --Literal: 1 [int Rvalue]
 -IfStmt:
 --Cond: Literal: 2 [int Rvalue]
@@ -441,7 +415,7 @@ AST dump:
 ----Cond: Literal: 3 [int Rvalue]
 ----Then:
 -----Assign
-------a [void Lvalue Write Value]
+------a [int Lvalue Write Value]
 ------Op: +  [int Rvalue]
 -------Literal: 4 [int Rvalue]
 -------Literal: 5 [int Rvalue]
@@ -449,7 +423,7 @@ AST dump:
 ------Cond: Literal: 6 [int Rvalue]
 ------Then:
 -------Assign
---------a [void Lvalue Write Value]
+--------a [int Lvalue Write Value]
 --------Op: +  [int Rvalue]
 ---------Literal: 7 [int Rvalue]
 ---------Literal: 8 [int Rvalue]
@@ -482,11 +456,7 @@ AST not build (fatal errors) at: "3;}else{4;" -> "} }"
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3;}if(4){a=5;}else{a=6;} }"
-[err:18] Incompatible types in assignment: void to int at: "(){int a;a" -> "=1; if(2){a=3;}if(4){a=5;}else{a=6;} }"
-[err:18] Incompatible types in assignment: void to int at: "1; if(2){a" -> "=3;}if(4){a=5;}else{a=6;} }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;}if(4){a=5;}else{a=6;} }"
-[err:18] Incompatible types in assignment: void to int at: "3;}if(4){a" -> "=5;}else{a=6;} }"
-[err:18] Incompatible types in assignment: void to int at: "=5;}else{a" -> "=6;} }"
 [err:21] if's condition is not a bool at: "{a=3;}if(4" -> "){a=5;}else{a=6;} }"
 
 AST pretty:
@@ -505,24 +475,24 @@ else{
 AST dump:
 -int a 
 -Assign
---a [void Lvalue Write Value]
+--a [int Lvalue Write Value]
 --Literal: 1 [int Rvalue]
 -IfStmt:
 --Cond: Literal: 2 [int Rvalue]
 --Then:
 ---Assign
-----a [void Lvalue Write Value]
+----a [int Lvalue Write Value]
 ----Literal: 3 [int Rvalue]
 
 -IfStmt:
 --Cond: Literal: 4 [int Rvalue]
 --Then:
 ---Assign
-----a [void Lvalue Write Value]
+----a [int Lvalue Write Value]
 ----Literal: 5 [int Rvalue]
 --Else:
 ---Assign
-----a [void Lvalue Write Value]
+----a [int Lvalue Write Value]
 ----Literal: 6 [int Rvalue]
 
 
@@ -586,7 +556,6 @@ Scope 1: {(0:b) (1:c) (2:d) (3:e) (4:f) }
 
 ---------------------------------------------------
 Parsing: "void main(){int a; a=1; }"
-[err:18] Incompatible types in assignment: void to int at: "){int a; a" -> "=1; }"
 
 AST pretty:
 int a 
@@ -595,7 +564,7 @@ a=1
 AST dump:
 -int a 
 -Assign
---a [void Lvalue Write Value]
+--a [int Lvalue Write Value]
 --Literal: 1 [int Rvalue]
 
 Declaration Table:
@@ -608,7 +577,6 @@ Scope 1: {(0:a) }
 
 ---------------------------------------------------
 Parsing: "void main(){int a; a=(1+2+3); }"
-[err:18] Incompatible types in assignment: void to int at: "){int a; a" -> "=(1+2+3); }"
 
 AST pretty:
 int a 
@@ -617,7 +585,7 @@ a=( ( 1 + 2 ) + 3 )
 AST dump:
 -int a 
 -Assign
---a [void Lvalue Write Value]
+--a [int Lvalue Write Value]
 --Op: +  [int Rvalue]
 ---Op: +  [int Rvalue]
 ----Literal: 1 [int Rvalue]
@@ -636,9 +604,6 @@ Scope 1: {(0:a) }
 Parsing: "void main(){int a b c; b=1; c=2; a=(1+b+c); }"
 [err:19] Variable declarations must be separated with comma. at: "(){int a b" -> " c; b=1; c=2; a=(1+b+c); }"
 [err:19] Variable declarations must be separated with comma. at: "{int a b c" -> "; b=1; c=2; a=(1+b+c); }"
-[err:18] Incompatible types in assignment: function: ()->void to int at: "t a b c; b" -> "=1; c=2; a=(1+b+c); }"
-[err:17] Incompatible types in op at: "c=2; a=(1+" -> "b+c); }"
-[err:18] Incompatible types in assignment: void to int at: "=1; c=2; a" -> "=(1+b+c); }"
 
 AST pretty:
 int a int b int c 
@@ -649,17 +614,17 @@ a=( ( 1 + b ) + c )
 AST dump:
 -int a int b int c 
 -Assign
---b [function: ()->void Lvalue Write Value]
+--b [int Lvalue Write Value]
 --Literal: 1 [int Rvalue]
 -Assign
 --c [int Lvalue Write Value]
 --Literal: 2 [int Rvalue]
 -Assign
---a [void Lvalue Write Value]
+--a [int Lvalue Write Value]
 --Op: +  [int Rvalue]
 ---Op: +  [int Rvalue]
 ----Literal: 1 [int Rvalue]
-----b [function: ()->void Lvalue Read Value]
+----b [int Lvalue Read Value]
 ---c [int Lvalue Read Value]
 
 Declaration Table:
@@ -744,7 +709,6 @@ Scope 3: {(2:c) }
 
 ---------------------------------------------------
 Parsing: "void main(){ int a; while(1 + 2){ int c; c = 1+2; } }"
-[err:18] Incompatible types in assignment: function: ()->void to int at: "{ int c; c" -> " = 1+2; } }"
 [err:20] while's condition is not a bool at: " while(1 +" -> " 2){ int c; c = 1+2; } }"
 
 AST pretty:
@@ -763,7 +727,7 @@ AST dump:
 --Body:
 ---int c 
 ---Assign
-----c [function: ()->void Lvalue Write Value]
+----c [int Lvalue Write Value]
 ----Op: +  [int Rvalue]
 -----Literal: 1 [int Rvalue]
 -----Literal: 2 [int Rvalue]
@@ -781,8 +745,6 @@ Scope 2: {(1:c) }
 
 ---------------------------------------------------
 Parsing: "void main(){ bool a, b; a = true; b = false; }"
-[err:18] Incompatible types in assignment: void to bool at: "ol a, b; a" -> " = true; b = false; }"
-[err:18] Incompatible types in assignment: function: ()->void to bool at: " = true; b" -> " = false; }"
 
 AST pretty:
 bool a bool b 
@@ -792,10 +754,10 @@ b=0
 AST dump:
 -bool a bool b 
 -Assign
---a [void Lvalue Write Value]
+--a [bool Lvalue Write Value]
 --Literal: 1 [bool Rvalue]
 -Assign
---b [function: ()->void Lvalue Write Value]
+--b [bool Lvalue Write Value]
 --Literal: 0 [bool Rvalue]
 
 Declaration Table:
@@ -829,6 +791,67 @@ Scope 1: {(0:a) (1:b) }
 
 ---------------------------------------------------
 Parsing: "void main(){ int* a; int b, c; b = 2; a = &b; c = *a; }"
-[err:18] Incompatible types in assignment: function: ()->void to int at: "nt b, c; b" -> " = 2; a = &b; c = *a; }"
-[err:18] Incompatible types in assignment: void to function: ()->void* at: "; b = 2; a" -> " = &b; c = *a; }"
-[err:25] dereferencing not a pointer at: " &b; c = *" -> "a; }"
+
+AST pretty:
+int* a 
+int b int c 
+b=2
+a=@b
+c=*a
+
+AST dump:
+-int* a 
+-int b int c 
+-Assign
+--b [int Lvalue Write Value]
+--Literal: 2 [int Rvalue]
+-Assign
+--a [int* Lvalue Write Value]
+--@ [int* Lvalue]
+---b [int Lvalue Read Address]
+-Assign
+--c [int Lvalue Write Value]
+--* [int Lvalue Read]
+---a [int* Lvalue Read Value]
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int*]
+1: Symbol: [ in scope 1 b of type int]
+2: Symbol: [ in scope 1 c of type int]
+3: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(3:main) }
+Scope 1: {(0:a) (1:b) (2:c) }
+
+---------------------------------------------------
+Parsing: "void main(){int a; a= 2;} void f(){bool a; a=3;}"
+[err:18] Incompatible types in assignment: bool to int at: "{bool a; a" -> "=3;}"
+
+AST pretty:
+int a 
+a=2
+bool a 
+a=3
+
+AST dump:
+-int a 
+-Assign
+--a [int Lvalue Write Value]
+--Literal: 2 [int Rvalue]
+-bool a 
+-Assign
+--a [bool Lvalue Write Value]
+--Literal: 3 [int Rvalue]
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 0 main of type function: ()->void]
+2: Symbol: [ in scope 2 a of type bool]
+3: Symbol: [ in scope 0 f of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(1:main) (3:f) }
+Scope 1: {(0:a) }
+Scope 2: {(2:a) }
+
