@@ -55,7 +55,7 @@ int main()
   std::cout << g;
 
   //Proper error identification
-
+/*
   parse<Grammar,ParserLL1RecDesc>( std::string("void main(){    }"), g);
   parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ @ }"), g);
   parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ 1; ) }"), g);
@@ -89,7 +89,7 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "void main(){int a,b,c; a= 2+1; a = b+c; 2 = 2; }"), g);
 
-
+*/
   //err39
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int f(int p1){int a; a=p1;} void main(){int a; a=f();}"), g);

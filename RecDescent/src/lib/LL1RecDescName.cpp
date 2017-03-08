@@ -75,6 +75,7 @@ PtrExpr ParserLL1RecDesc::BuildFunctionCall(const std::string& name_inht, std::v
   //Check that name's symbol does exists
   if(not unit_.HasDecl(name_inht)) { Error(kErr37); return std::move(nullptr); }
 
+  std::cout << "ask: " << name_inht << std::endl;
   const AST::FuncType& type_func =
     dynamic_cast<const AST::FuncType&>(unit_.GetType(name_inht));
 

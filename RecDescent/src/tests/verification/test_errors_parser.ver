@@ -163,6 +163,8 @@ AST not build (fatal errors) at: "; int a; }" -> ""
 ------------------------------------------------------------------
 Parsing: "void main(){int a; a=1+b; }"
 [error:16] Var used before declaration at: " a; a=1+b;" -> " }"
+[err:17] Incompatible types in op at: "nt a; a=1+" -> "b; }"
+[err:18] Incompatible types in assignment: void to int at: "){int a; a" -> "=1+b; }"
 
 ------------------------------------------------------------------
 Parsing: "void main(){int a; bool b; a=a+b; }"
@@ -170,7 +172,7 @@ Parsing: "void main(){int a; bool b; a=a+b; }"
 
 ------------------------------------------------------------------
 Parsing: "void main(){int a; bool b; a=b+b; }"
-[err:18] Incompatible types in assignment: int to bool at: " bool b; a" -> "=b+b; }"
+[err:18] Incompatible types in assignment: void to function: ()->void at: " bool b; a" -> "=b+b; }"
 
 ------------------------------------------------------------------
 Parsing: "void main(){int a b c; }"
@@ -180,25 +182,9 @@ Parsing: "void main(){int a b c; }"
 ------------------------------------------------------------------
 Parsing: "void main(){int a,b,c; a= 2+1; a = b+c; 2 = 2; }"
 [err:22] left of assignment is not an Lval at: "a = b+c; 2" -> " = 2; }"
+[err:18] Incompatible types in assignment: void to int at: "t a,b,c; a" -> "= 2+1; a = b+c; 2 = 2; }"
+[err:17] Incompatible types in op at: "+1; a = b+" -> "c; 2 = 2; }"
+[err:18] Incompatible types in assignment: void to function: ()->void at: " a= 2+1; a" -> " = b+c; 2 = 2; }"
 
 ------------------------------------------------------------------
 Parsing: "int f(int p1){int a; a=p1;} void main(){int a; a=f();}"
-[err:39] Function call with less arguments than expected at: "t a; a=f()" -> ";}"
-[err:18] Incompatible types in assignment: int to function: (int)->int at: "){int a; a" -> "=f();}"
-
-------------------------------------------------------------------
-Parsing: "int f(int p1){int a; a=p1;} void main(){int a; a=f(2,3);}"
-[err:40] Function call with more arguments than expected (extra arguments will be discarded) at: "; a=f(2,3)" -> ";}"
-
-------------------------------------------------------------------
-Parsing: "int f(int p1, int p2){int a; a=p1;} void main(){int a; a=f(2,true);}"
-[err:41] Argument type conflict:  is "bool" but f expects "int" at: "a=f(2,true" -> ");}"
-
-------------------------------------------------------------------
-Parsing: "int f(){ return 1} void main(){ int a;}"
-[err:43] Missing semicolon after return statement.  at: " return 1}" -> " void main(){ int a;}"
-
-------------------------------------------------------------------
-Parsing: "int f(){ return true;} void main(){ int a;}"
-[err:45] Return's expression doesn not match function return type: int vs bool
-

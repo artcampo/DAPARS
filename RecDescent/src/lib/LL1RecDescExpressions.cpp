@@ -121,7 +121,7 @@ PtrExpr ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
     fp_synt = Argm(name, scope_inht, l);
     if(not fp_synt)
       fp_synt = NewVar(prev_token_string_value_
-                    , unit_.Scope().GetType(prev_token_string_value_)
+                    , unit_.GetType(prev_token_string_value_)
                     , unit_.Scope().DeclId(prev_token_string_value_)
                     , scope_inht, l);
     return std::move(fp_synt);
