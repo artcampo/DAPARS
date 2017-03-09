@@ -46,6 +46,14 @@ ParseKeyword(std::vector<char>::const_iterator& current_position
     current_position += 4; t = kToken::kwd_void; return true;
   }
 
+  //kwd_class
+  if( chars_left >= 5
+     and *(current_position + 0) == 'c' and *(current_position + 1) == 'l'
+     and *(current_position + 2) == 'a' and *(current_position + 3) == 's'
+     and *(current_position + 4) == 's'){
+    current_position += 5; t = kToken::kwd_class; return true;
+  }
+
   //while
   if( chars_left >= 5
      and *(current_position + 0) == 'w' and *(current_position + 1) == 'h'
@@ -175,6 +183,7 @@ std::string str(const kToken& t){
     case kToken::kwd_int:   return std::string("int");  break;
     case kToken::kwd_bool:  return std::string("bool");  break;
     case kToken::kwd_void:  return std::string("void");  break;
+    case kToken::kwd_class: return std::string("class");  break;
 
     case kToken::kwd_true:  return std::string("true");  break;
     case kToken::kwd_false: return std::string("false");  break;

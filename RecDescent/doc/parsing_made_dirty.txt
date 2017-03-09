@@ -1,0 +1,18 @@
+The definition of the rules can be simplified by stretching their associated
+SDD. A clear example is DEFL versus the by-the-book NAME_LIST
+
+DEFL    := FDEF DEFL
+        |  CDEF DEFL
+        |  empty
+
+NAME_LIST := name NAME_LIST'
+
+NAME_LIST':= , name NAME_LIST'
+          | empty
+
+NAME_LIST accumulates the variables names in a inherited vector, and when
+empty is reached, it then computes the list.
+
+DEFL creates a node at each derivation and stores in the inherited vector the
+created node. Moreover DEFL can create two kind of different nodes (function
+definition and class definition).

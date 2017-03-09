@@ -33,6 +33,7 @@ void CreateGrammarDalang(G& g){
   const Symbol kwd_return = g.AddTerminalKeyword("RETURN", "return", Tokenizer::kToken::kwd_return);
 
 
+  const Symbol kwd_class     = g.AddTerminalKeyword("CLASS", "class", Tokenizer::kToken::kwd_class);
   const Symbol kwd_type_int  = g.AddTerminalKeyword("INT", "int", Tokenizer::kToken::kwd_int);
   const Symbol kwd_type_bool = g.AddTerminalKeyword("BOOL", "bool", Tokenizer::kToken::kwd_bool);
   const Symbol kwd_type_void = g.AddTerminalKeyword("VOID", "void", Tokenizer::kToken::kwd_void);
@@ -45,8 +46,10 @@ void CreateGrammarDalang(G& g){
   //Prog
   const Symbol P      = g.AddNonTerminal("PROG");
 
+  const Symbol DEFL   = g.AddNonTerminal("DEFL");
   const Symbol FDEF   = g.AddNonTerminal("FDEF");
-  const Symbol FDEFL  = g.AddNonTerminal("FDEFL");
+  const Symbol CDEF   = g.AddNonTerminal("CDEF");
+
 
   const Symbol ARGL   = g.AddNonTerminal("ARGL");
   const Symbol ARGLP  = g.AddNonTerminal("ARGLP");
@@ -82,14 +85,19 @@ void CreateGrammarDalang(G& g){
 
 
   //Non-terminals
+  g.AddStartingRule(Rule(P,  {DEFL}, true));
 
-  g.AddStartingRule(Rule(P,  {FDEFL}, true));
 
+
+  //Func and class definitions
+  g.AddRule(Rule(DEFL,  {FDEF, DEFL}));
+  g.AddRule(Rule(DEFL,  {CDEF, DEFL}));
+  g.AddRule(Rule(DEFL,  {empty}));
+
+  //Classes
+  g.AddRule(Rule(CDEF,  {kwd_class, name, lcbr, rcbr}));
 
   //Functions
-  g.AddRule(Rule(FDEFL,  {FDEF, FDEFL}));
-  g.AddRule(Rule(FDEFL,  {empty}));
-
   g.AddRule(Rule(FDEF,   {TYPE, name, lpar, PARL, rpar, lcbr, STMTS, rcbr}));
 
   g.AddRule(Rule(PARL,    {PAR, PARLP}));

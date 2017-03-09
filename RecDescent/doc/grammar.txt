@@ -1,12 +1,15 @@
 conditional flow
-Prog    := P_INIT FDEFL P_END
+Prog    := P_INIT DEFL P_END
 P_INIT  := empty
 P_END   := empty
 
-FDEFL   := FDEF FDEFL
+DEFL    := FDEF DEFL
+        |  CDEF DEFL
         |  empty
 
 FDEF    := TYPE name ( PARL ){ STMTS }
+
+CDEF    := Class name{}
 
 PARL    := empty
         |  PAR PARL'

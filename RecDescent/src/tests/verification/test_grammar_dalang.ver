@@ -7,11 +7,14 @@ KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
+KEYWORD EXTRA INFO NOT IMPLEMENTED
 Dalang grammar v0.3
 Grammar:
-PROG -> FDEFL  init 
-FDEFL -> FDEF FDEFL 
-FDEFL -> {empty} 
+PROG -> DEFL  init 
+DEFL -> FDEF DEFL 
+DEFL -> CDEF DEFL 
+DEFL -> {empty} 
+CDEF -> class {nam} { } 
 FDEF -> TYPE {nam} ( PARL ) { STMTS } 
 PARL -> PAR PARLP 
 PARL -> {empty} 
@@ -60,20 +63,21 @@ First Table
 ARGL => & * {empty} false ( {nam} {num}  true 
 ARGLP => , {empty} 
 ARGM => {empty} ( 
+CDEF => class 
 DECL => bool int void 
+DEFL => bool class {empty} int void 
 E => & * false ( {nam} {num}  true 
 E' => {empty} + 
 F => & * false ( {nam} {num}  true 
 F' => false ( {nam} {num}  true 
 FDEF => bool int void 
-FDEFL => bool {empty} int void 
 IFELSE => else {empty} 
 NAME_LIST => {nam} 
 NAME_LIST' => , {empty} 
 PAR => bool int void 
 PARL => bool {empty} int void 
 PARLP => , {empty} 
-PROG => bool {empty} int void 
+PROG => bool class {empty} int void 
 STMT => & * bool false if int ( {nam} {num} return  true void while 
 STMTS => & * bool {empty} false if int ( {nam} {num} return  true void while 
 T => & * false ( {nam} {num}  true 
@@ -84,13 +88,14 @@ Follow Table
 ARGL => ) 
 ARGLP => ) 
 ARGM => , = + ) ; 
+CDEF => bool class {eof} int void 
 DECL => ; 
+DEFL => {eof} 
 E => , = ) ; 
 E' => , = ) ; 
 F => , = + ) ; 
 F' => , = + ) ; 
-FDEF => bool {eof} int void 
-FDEFL => {eof} 
+FDEF => bool class {eof} int void 
 IFELSE => & * bool false if int ( {nam} {num} } return  true void while 
 NAME_LIST => ; 
 NAME_LIST' => ; 
@@ -111,7 +116,11 @@ ARGLP -> , E ARGLP  => ,
 ARGLP -> {empty}  => {empty} ) 
 ARGM -> {empty}  => , {empty} = + ) ; 
 ARGM -> ( ARGL )  => ( 
+CDEF -> class {nam} { }  => class 
 DECL -> TYPE NAME_LIST  => bool int void 
+DEFL -> CDEF DEFL  => class 
+DEFL -> {empty}  => {empty} {eof} 
+DEFL -> FDEF DEFL  => bool int void 
 E -> T E'  => & * false ( {nam} {num}  true 
 E' -> {empty}  => , {empty} = ) ; 
 E' -> + T E'  => + 
@@ -124,8 +133,6 @@ F' -> {nam} ARGM  => {nam}
 F' -> {num}  => {num} 
 F' ->  true  =>  true 
 FDEF -> TYPE {nam} ( PARL ) { STMTS }  => bool int void 
-FDEFL -> {empty}  => {empty} {eof} 
-FDEFL -> FDEF FDEFL  => bool int void 
 IFELSE -> else { STMTS }  => else 
 IFELSE -> {empty}  => & * bool {empty} false if int ( {nam} {num} } return  true void while 
 NAME_LIST -> {nam} NAME_LIST'  => {nam} 
@@ -136,7 +143,7 @@ PARL -> {empty}  => {empty} )
 PARL -> PAR PARLP  => bool int void 
 PARLP -> , PAR PARLP  => , 
 PARLP -> {empty}  => {empty} ) 
-PROG -> FDEFL  init  => bool {empty} int void 
+PROG -> DEFL  init  => bool class {empty} int void 
 STMT -> DECL ;  => bool int void 
 STMT -> E = E ;  => & * false ( {nam} {num}  true 
 STMT -> if ( E ) { STMTS } IFELSE  => if 
