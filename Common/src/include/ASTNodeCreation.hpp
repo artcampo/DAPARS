@@ -184,6 +184,13 @@ NewReturnStmt(PtrExpr& ret_expr, FuncDecl& func_decl, const ScopeId id, const Lo
   return std::make_unique<ReturnStmt>(ret_expr, func_decl, id, locus);
 }
 
+PtrClassDef
+NewClassDef(const std::string& name
+    , const ScopeId id
+    , const Locus& locus){
+  return std::make_unique<ClassDef>(name, id, locus);
+}
+
 };
 
 } //end namespace Common

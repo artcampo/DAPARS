@@ -16,7 +16,11 @@ PtrClassDef ParserLL1RecDesc::ClassDef_(const ScopeId scope_inht){
 
   Accept(kToken::lcbr, kErr81);
   Accept(kToken::rcbr, kErr82);
-  return std::move(nullptr);
+
+  PtrClassDef cdef = NewClassDef(name, scope_inht, l);
+  RegNameType(name);
+
+  return std::move(cdef);
   /*
   std::string name("func_name");
 

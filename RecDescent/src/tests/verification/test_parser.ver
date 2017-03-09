@@ -838,10 +838,10 @@ Parsing: "class O1{} void main(){ int a;}"
 
 AST pretty:
 int a 
-
+ClassDef: O1
 AST dump:
 -int a 
-
+ClassDef: O1
 Declaration Table:
 0: Symbol: [ in scope 1 a of type int]
 1: Symbol: [ in scope 0 main of type function: ()->void]
