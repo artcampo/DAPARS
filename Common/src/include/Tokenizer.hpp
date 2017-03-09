@@ -16,7 +16,8 @@ enum class kToken{ eof, numerical, name
                  , kwd_int, kwd_bool, kwd_void, kwd_class
                  , kwd_true, kwd_false
                  , semicolon, comma, ampersand
-                 , error
+                 , name_type  //only if pre-registered
+                 , error  //should not be issued
 
                  //not used by dalang
                  , token_c, token_d   //grammar: dragon

@@ -69,6 +69,8 @@ void BaseParser::NextToken() noexcept{
                                     , current_position_).c_str());
     }else if(token_ == Tokenizer::kToken::name){
       token_string_value_ = std::string( previous_position_, current_position_);
+      if(IsNameType(token_string_value_)) token_ = Tokenizer::kToken::name_type;
+
     }
 
     if(token_ == kToken::error){
@@ -174,6 +176,17 @@ void BaseParser::ConsumeTokensUntil(const kToken& token) noexcept{
   while(token_ != token and continue_parsing_){
     NextToken();
   }
+}
+
+
+void BaseParser::RegNameType(const std::string& name){
+  name_types_.push_back(std::string(name));
+}
+
+bool BaseParser::IsNameType(const std::string& name) const noexcept{
+  for(const auto& it : name_types_)
+    if(it == name) return true;
+  return false;
 }
 
 

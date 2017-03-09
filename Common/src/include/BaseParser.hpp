@@ -55,6 +55,8 @@ protected:
   bool Check(const std::vector<kToken>& tokens) const noexcept;
 
 
+  //Functions to modify the tokenizer
+  void RegNameType(const std::string& name);
 
   //Error handling
   int  NumFatalErrors()const noexcept{ return num_fatal_errors_;}
@@ -79,7 +81,10 @@ private:
 
   std::vector<char> skip_symbols_;
 
+  std::vector<std::string> name_types_;
+
   void Skip() noexcept;
+  bool IsNameType(const std::string& name) const noexcept;
 
 };
 
