@@ -21,29 +21,6 @@ Scope 1: {(0:a) (1:b) (2:c) }
 Scope 2: {}
 
 
-AST dump:
--int a int b int c 
--WhileStmt:
---Cond: Literal: 1 [bool Rvalue]
---Body:
----Assign
-----b [int Lvalue Write Value]
-----Op: +  [int Rvalue]
------Literal: 2 [int Rvalue]
------Literal: 3 [int Rvalue]
-
---Assign
----c [int Lvalue Write Value]
----Op: +  [int Rvalue]
-----Literal: 3 [int Rvalue]
-----Literal: 4 [int Rvalue]
-
-Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 1 b of type int]
-2: Symbol: [ in scope 1 c of type int]
-3: Symbol: [ in scope 0 main of type function: ()->void]
-
 IR dump:
 0: %0 = LoadI(1)
 1: JumpCondTrue %0 to:3
@@ -68,40 +45,6 @@ Scope 1: {(0:a) (1:b) (6:g) }
 Scope 2: {(2:c) }
 Scope 3: {(3:d) (4:e) (5:f) }
 
-
-AST dump:
--int a int b 
--IfStmt:
---Cond: Literal: 1 [bool Rvalue]
---Then:
----int c 
----Assign
-----a [int Lvalue Write Value]
-----Op: +  [int Rvalue]
------Literal: 2 [int Rvalue]
------Literal: 3 [int Rvalue]
---Else:
----int d int e int f 
----Assign
-----d [int Lvalue Write Value]
-----Literal: 4 [int Rvalue]
-
--int g 
--Assign
---b [int Lvalue Write Value]
---Op: +  [int Rvalue]
----Literal: 5 [int Rvalue]
----Literal: 6 [int Rvalue]
-
-Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 1 b of type int]
-2: Symbol: [ in scope 2 c of type int]
-3: Symbol: [ in scope 3 d of type int]
-4: Symbol: [ in scope 3 e of type int]
-5: Symbol: [ in scope 3 f of type int]
-6: Symbol: [ in scope 1 g of type int]
-7: Symbol: [ in scope 0 main of type function: ()->void]
 
 IR dump:
 0: %0 = LoadI(1)
@@ -129,33 +72,6 @@ Scope 0: {(3:main) }
 Scope 1: {(0:a) (1:b) (2:p) }
 
 
-AST dump:
--int a int b 
--int* p 
--Assign
---a [int Lvalue Write Value]
---* [int Lvalue Read]
----p [int* Lvalue Read Value]
--Assign
---b [int Lvalue Write Value]
---Literal: 2 [int Rvalue]
--Assign
---p [int* Lvalue Write Value]
---@ [int* Lvalue]
----b [int Lvalue Read Address]
--Assign
---a [int Lvalue Write Value]
---Op: +  [int Rvalue]
----b [int Lvalue Read Value]
----* [int Lvalue Read]
-----p [int* Lvalue Read Value]
-
-Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 1 b of type int]
-2: Symbol: [ in scope 1 p of type int*]
-3: Symbol: [ in scope 0 main of type function: ()->void]
-
 IR dump:
 0: %0 = Load [MainDS:p 2]
 1: %1 = Load [ %0]
@@ -180,23 +96,6 @@ Scope 1: {(0:a) }
 Scope 2: {(2:p1) (3:a) }
 
 
-AST dump:
--int a 
--Assign
---a [int Lvalue Write Value]
---Literal: 2 [int Rvalue]
--int a 
--Assign
---a [int Lvalue Write Value]
---p1 [int Lvalue Read Value]
-
-Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 0 main of type function: ()->void]
-2: Symbol: [ in scope 2 p1 of type int]
-3: Symbol: [ in scope 2 a of type int]
-4: Symbol: [ in scope 0 f of type function: (int)->void]
-
 IR dump:
 0: %0 = LoadI(2)
 1: store %0 to [MainDS:a 0]
@@ -214,27 +113,6 @@ Scope 0: {(2:f) (4:main) }
 Scope 1: {(0:p1) (1:a) }
 Scope 2: {(3:a) }
 
-
-AST dump:
--int a 
--Assign
---a [int Lvalue Write Value]
---p1 [int Lvalue Read Value]
--Return (a)
---a [int Lvalue Read Value]
--int a 
--Assign
---a [int Lvalue Write Value]
---FuncRet: int [int Rvalue]
----FuncCall: f [function: (int)->int]
-----Literal: 2 [int]
-
-Declaration Table:
-0: Symbol: [ in scope 1 p1 of type int]
-1: Symbol: [ in scope 1 a of type int]
-2: Symbol: [ in scope 0 f of type function: (int)->int]
-3: Symbol: [ in scope 2 a of type int]
-4: Symbol: [ in scope 0 main of type function: ()->void]
 
 IR dump:
 0: %0 = LoadI(2)
