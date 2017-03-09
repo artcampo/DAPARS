@@ -1,0 +1,6 @@
+[submodule "DAVM"]
+	path = DAVM
+	url = git@github.com:/artcampo/DAVM
+[submodule "DACOMPILER"]
+	path = DACOMPILER
+	url = git@github.com:/artcampo/DACOMPILER
