@@ -110,6 +110,10 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int f(){ return true;} void main(){ int a;}"), g);
 
+  //kErr84
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "int f(){ int a;} class f{} void main(){ int a;}"), g);
+
   //tests that sigsev
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(

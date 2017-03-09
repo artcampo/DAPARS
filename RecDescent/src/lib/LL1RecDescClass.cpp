@@ -14,6 +14,12 @@ PtrClassDef ParserLL1RecDesc::ClassDef_(const ScopeId scope_inht){
   std::string name("class_name_not_parsed");
   if(Accept(kToken::name, kErr80)) name = prev_token_string_value_;
 
+  if(not unit_.IsDeclValid(name)){
+    Error(kErr84);
+    return std::move(nullptr);
+  }
+  const AST::Type& type = unit_.GetClassType(name);
+
   Accept(kToken::lcbr, kErr81);
   Accept(kToken::rcbr, kErr82);
 

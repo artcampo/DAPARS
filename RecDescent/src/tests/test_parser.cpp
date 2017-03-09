@@ -136,7 +136,7 @@ int main()
     "void main(){int a; a= 2;} void f(){bool a; a=3;}"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "class O1{} void main(){ int a;}"), g);
+    "class O1{} void main(){ O1 a;}"), g);
 
   /*
   //these mess with the parser, big time

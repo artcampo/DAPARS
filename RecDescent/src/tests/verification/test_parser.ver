@@ -724,15 +724,15 @@ Scope 1: {(0:a) }
 Scope 2: {(2:a) }
 
 ---------------------------------------------------
-Parsing: "class O1{} void main(){ int a;}"
+Parsing: "class O1{} void main(){ O1 a;}"
 
 AST dump:
 -FuncDef: main
---int a 
+--O1 a 
 -ClassDef: O1
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
+0: Symbol: [ in scope 1 a of type O1]
 1: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:

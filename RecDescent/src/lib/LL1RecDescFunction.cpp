@@ -105,24 +105,6 @@ PtrVarDecl ParserLL1RecDesc::Par(const ScopeId scope_inht){
   return NameDecl(type, scope_inht, l);
 }
 
-const AST::Type&  ParserLL1RecDesc::Type(){
-//   std::cout << "Type\n";
-  if(TryAndAccept(kToken::kwd_void))  return unit_.GetTypeVoid();
-
-  if(TryAndAccept(kToken::kwd_int)){
-    if(TryAndAccept(kToken::astk)) return unit_.GetTypePtrToInt();
-    else                           return unit_.GetTypeInt();
-  }
-
-  if(TryAndAccept(kToken::kwd_bool)){
-    if(TryAndAccept(kToken::astk))  return unit_.GetTypePtrToBool();
-    else                            return unit_.GetTypeBool();
-  }
-
-  //Error recover
-  Error("Type missing");
-  return unit_.GetTypeInt();
-}
 
 
 } //end namespace RecDescent

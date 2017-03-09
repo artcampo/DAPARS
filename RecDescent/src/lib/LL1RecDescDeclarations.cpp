@@ -2,6 +2,34 @@
 
 namespace RecDescent{
 
+const AST::Type&  ParserLL1RecDesc::Type(){
+//   std::cout << "Type\n";
+  if(TryAndAccept(kToken::kwd_void))  return unit_.GetTypeVoid();
+
+  if(TryAndAccept(kToken::kwd_int)){
+    if(TryAndAccept(kToken::astk)) return unit_.GetTypePtrToInt();
+    else                           return unit_.GetTypeInt();
+  }
+
+  if(TryAndAccept(kToken::kwd_bool)){
+    if(TryAndAccept(kToken::astk))  return unit_.GetTypePtrToBool();
+    else                            return unit_.GetTypeBool();
+  }
+
+  if(TryAndAccept(kToken::name_type)){
+    std::string name = prev_token_string_value_;
+    if(TryAndAccept(kToken::astk))
+      return unit_.PtrToT( unit_.GetClassType(name) );
+    else
+      return unit_.GetClassType(name);
+  }
+
+  //Error recover
+  Error("Type missing");
+  return unit_.GetTypeInt();
+}
+
+
 PtrVarDeclList  ParserLL1RecDesc::Decl(const ScopeId scope_inht){
 //   std::cout << "Decl\n";
   const AST::Type& type = this->Type();
