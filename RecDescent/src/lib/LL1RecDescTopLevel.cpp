@@ -44,19 +44,15 @@ void ParserLL1RecDesc::DefList(std::vector<PtrFuncDef>& fdefl_inht
 
   if(Check(set_types_ )){
     PtrFuncDef fdef = FuncDef_(scope_inht);
-    if(fdef){
-      fdefl_inht.push_back( std::move(fdef));
-      DefList(fdefl_inht, cdefl_inht, scope_inht);
-    }
+    if(fdef) fdefl_inht.push_back( std::move(fdef) );
+    DefList(fdefl_inht, cdefl_inht, scope_inht);
     return;
   }
 
   if(Check({kToken::kwd_class})){
     PtrClassDef cdef = ClassDef_(scope_inht);
-    if(cdef){
-      cdefl_inht.push_back( std::move(cdef));
-      DefList(fdefl_inht, cdefl_inht, scope_inht);
-    }
+    if(cdef) cdefl_inht.push_back( std::move(cdef) );
+    DefList(fdefl_inht, cdefl_inht, scope_inht);
     return;
   }
 

@@ -855,3 +855,7 @@ Scope 0: {(1:main) (3:f) }
 Scope 1: {(0:a) }
 Scope 2: {(2:a) }
 
+---------------------------------------------------
+Parsing: "class O1{} void main(){}"
+AST not build (no functions) at: "class O1" -> "{} void main(){}"
+

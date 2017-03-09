@@ -7,16 +7,25 @@ namespace RecDescent{
 
 //CDEF    := Class name{}
 PtrClassDef ParserLL1RecDesc::ClassDef_(const ScopeId scope_inht){
-//   std::cout << "fdef\n";
+//   std::cout << "cdef\n";
+  if(not Accept(kToken::kwd_class, kErr83)) return std::move(nullptr);
+
+  Locus       l = CurrentLocus();
+  std::string name("class_name_not_parsed");
+  if(Accept(kToken::name, kErr80)) name = prev_token_string_value_;
+
+  Accept(kToken::lcbr, kErr81);
+  Accept(kToken::rcbr, kErr82);
+  return std::move(nullptr);
   /*
   std::string name("func_name");
 
-  Locus       l = CurrentLocus();
+
 
 
   const AST::Type& ret_type = this->Type();
 
-  if(Accept(kToken::name, kErr26)) name = prev_token_string_value_;
+
 
   //Scope for
   scope_owner_id_.push( unit_.NewScopeOwner() );

@@ -136,6 +136,9 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "void main(){int a; a= 2;} void f(){bool a; a=3;}"), g);
 
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "class O1{} void main(){ int a;}"), g);
+
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "bool b1,b2,b3; b1=true; b2=false; b3=b1 and b2;"), g);
