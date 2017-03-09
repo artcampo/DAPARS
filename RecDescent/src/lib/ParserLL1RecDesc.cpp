@@ -34,7 +34,7 @@ void ParserLL1RecDesc::BuildTokenVectors(){
 
   //DECL -> TYPE NAME_LIST  => bool int void
   set_types_ =  std::vector<kToken>({
-    kToken::kwd_void, kToken::kwd_int, kToken::kwd_bool});
+    kToken::kwd_void, kToken::kwd_int, kToken::kwd_bool, kToken::name_type});
 
   //E -> T E'  => & * false ( {nam} {num}  true
   set_expr_  = std::vector<kToken>({

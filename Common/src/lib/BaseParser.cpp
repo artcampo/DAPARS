@@ -69,7 +69,7 @@ void BaseParser::NextToken() noexcept{
                                     , current_position_).c_str());
     }else if(token_ == Tokenizer::kToken::name){
       token_string_value_ = std::string( previous_position_, current_position_);
-      if(IsNameType(token_string_value_)) token_ = Tokenizer::kToken::name_type;
+//       if(IsNameType(token_string_value_)) token_ = Tokenizer::kToken::name_type;
 
     }
 

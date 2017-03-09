@@ -13,16 +13,6 @@ F -> {num}
 F -> {nam} 
 
 ---------------------------------------------------
-Parsing: "void main(){int a; (a=1); }"
-[err:14] Expecting rpar after expression. at: "int a; (a=" -> "1); }"
-[err:4] Expecting semicolon after Expr. at: "t a; (a=1)" -> "; }"
-[err:3] Block not finishing in rcbr at: "t a; (a=1)" -> "; }"
-[err:31] function body empty at: "t a; (a=1)" -> "; }"
-[err:30] function declaration's body not closed with '}' at: "t a; (a=1)" -> "; }"
-AST not build (no functions) at: "t a; (a=1)" -> "; }"
-AST not build (fatal errors) at: "t a; (a=1)" -> "; }"
-
----------------------------------------------------
 Parsing: "void main(){int a;a=1;a=2;a=3; }"
 
 AST pretty:
@@ -443,18 +433,6 @@ Scope 3: {}
 Scope 4: {}
 
 ---------------------------------------------------
-Parsing: "void main(){int a;a=1; if(2){a=3;}else{4;} }"
-[err:] assignment missing '=' at: "3;}else{4;" -> "} }"
-[err:3] Block not finishing in rcbr at: "3;}else{4;" -> "} }"
-Statements within else wrong. at: "3;}else{4;" -> "} }"
-else missing rcbr. at: "3;}else{4;" -> "} }"
-[err:3] Block not finishing in rcbr at: "3;}else{4;" -> "} }"
-[err:31] function body empty at: "3;}else{4;" -> "} }"
-[err:30] function declaration's body not closed with '}' at: "3;}else{4;" -> "} }"
-AST not build (no functions) at: "3;}else{4;" -> "} }"
-AST not build (fatal errors) at: "3;}else{4;" -> "} }"
-
----------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3;}if(4){a=5;}else{a=6;} }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;}if(4){a=5;}else{a=6;} }"
 [err:21] if's condition is not a bool at: "{a=3;}if(4" -> "){a=5;}else{a=6;} }"
@@ -856,6 +834,19 @@ Scope 1: {(0:a) }
 Scope 2: {(2:a) }
 
 ---------------------------------------------------
-Parsing: "class O1{} void main(){}"
-AST not build (no functions) at: "class O1" -> "{} void main(){}"
+Parsing: "class O1{} void main(){ int a;}"
+
+AST pretty:
+int a 
+
+AST dump:
+-int a 
+
+Declaration Table:
+0: Symbol: [ in scope 1 a of type int]
+1: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(1:main) }
+Scope 1: {(0:a) }
 

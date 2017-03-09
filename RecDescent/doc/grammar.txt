@@ -54,9 +54,10 @@ ARGL' := empty
 
 DECL  := TYPE NAME_LIST
 
-TYPE  := int  TYPE'
-      |  bool TYPE'
-      |  void TYPE'
+TYPE  := int   TYPE'
+      |  bool  TYPE'
+      |  void  TYPE'
+      |  ntype TYPE'
 
 TYPE' := *
       |  empty

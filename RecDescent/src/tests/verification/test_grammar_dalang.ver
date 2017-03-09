@@ -8,6 +8,7 @@ KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
+KEYWORD EXTRA INFO NOT IMPLEMENTED
 Dalang grammar v0.3
 Grammar:
 PROG -> DEFL  init 
@@ -38,6 +39,7 @@ DECL -> TYPE NAME_LIST
 TYPE -> int TYPE' 
 TYPE -> bool TYPE' 
 TYPE -> void TYPE' 
+TYPE -> ntype TYPE' 
 TYPE' -> * 
 TYPE' -> {empty} 
 NAME_LIST -> {nam} NAME_LIST' 
@@ -64,46 +66,46 @@ ARGL => & * {empty} false ( {nam} {num}  true
 ARGLP => , {empty} 
 ARGM => {empty} ( 
 CDEF => class 
-DECL => bool int void 
-DEFL => bool class {empty} int void 
+DECL => bool int ntype void 
+DEFL => bool class {empty} int ntype void 
 E => & * false ( {nam} {num}  true 
 E' => {empty} + 
 F => & * false ( {nam} {num}  true 
 F' => false ( {nam} {num}  true 
-FDEF => bool int void 
+FDEF => bool int ntype void 
 IFELSE => else {empty} 
 NAME_LIST => {nam} 
 NAME_LIST' => , {empty} 
-PAR => bool int void 
-PARL => bool {empty} int void 
+PAR => bool int ntype void 
+PARL => bool {empty} int ntype void 
 PARLP => , {empty} 
-PROG => bool class {empty} int void 
-STMT => & * bool false if int ( {nam} {num} return  true void while 
-STMTS => & * bool {empty} false if int ( {nam} {num} return  true void while 
+PROG => bool class {empty} int ntype void 
+STMT => & * bool false if int ( {nam} ntype {num} return  true void while 
+STMTS => & * bool {empty} false if int ( {nam} ntype {num} return  true void while 
 T => & * false ( {nam} {num}  true 
-TYPE => bool int void 
+TYPE => bool int ntype void 
 TYPE' => * {empty} 
 -----------------------------
 Follow Table
 ARGL => ) 
 ARGLP => ) 
 ARGM => , = + ) ; 
-CDEF => bool class {eof} int void 
+CDEF => bool class {eof} int ntype void 
 DECL => ; 
 DEFL => {eof} 
 E => , = ) ; 
 E' => , = ) ; 
 F => , = + ) ; 
 F' => , = + ) ; 
-FDEF => bool class {eof} int void 
-IFELSE => & * bool false if int ( {nam} {num} } return  true void while 
+FDEF => bool class {eof} int ntype void 
+IFELSE => & * bool false if int ( {nam} ntype {num} } return  true void while 
 NAME_LIST => ; 
 NAME_LIST' => ; 
 PAR => , ) 
 PARL => ) 
 PARLP => ) 
 PROG => {eof} 
-STMT => & * bool false if int ( {nam} {num} } return  true void while 
+STMT => & * bool false if int ( {nam} ntype {num} } return  true void while 
 STMTS => } 
 T => , = + ) ; 
 TYPE => {nam} 
@@ -117,10 +119,10 @@ ARGLP -> {empty}  => {empty} )
 ARGM -> {empty}  => , {empty} = + ) ; 
 ARGM -> ( ARGL )  => ( 
 CDEF -> class {nam} { }  => class 
-DECL -> TYPE NAME_LIST  => bool int void 
+DECL -> TYPE NAME_LIST  => bool int ntype void 
 DEFL -> CDEF DEFL  => class 
 DEFL -> {empty}  => {empty} {eof} 
-DEFL -> FDEF DEFL  => bool int void 
+DEFL -> FDEF DEFL  => bool int ntype void 
 E -> T E'  => & * false ( {nam} {num}  true 
 E' -> {empty}  => , {empty} = ) ; 
 E' -> + T E'  => + 
@@ -132,28 +134,29 @@ F' -> ( E )  => (
 F' -> {nam} ARGM  => {nam} 
 F' -> {num}  => {num} 
 F' ->  true  =>  true 
-FDEF -> TYPE {nam} ( PARL ) { STMTS }  => bool int void 
+FDEF -> TYPE {nam} ( PARL ) { STMTS }  => bool int ntype void 
 IFELSE -> else { STMTS }  => else 
-IFELSE -> {empty}  => & * bool {empty} false if int ( {nam} {num} } return  true void while 
+IFELSE -> {empty}  => & * bool {empty} false if int ( {nam} ntype {num} } return  true void while 
 NAME_LIST -> {nam} NAME_LIST'  => {nam} 
 NAME_LIST' -> , {nam} NAME_LIST'  => , 
 NAME_LIST' -> {empty}  => {empty} ; 
-PAR -> TYPE {nam}  => bool int void 
+PAR -> TYPE {nam}  => bool int ntype void 
 PARL -> {empty}  => {empty} ) 
-PARL -> PAR PARLP  => bool int void 
+PARL -> PAR PARLP  => bool int ntype void 
 PARLP -> , PAR PARLP  => , 
 PARLP -> {empty}  => {empty} ) 
-PROG -> DEFL  init  => bool class {empty} int void 
-STMT -> DECL ;  => bool int void 
+PROG -> DEFL  init  => bool class {empty} int ntype void 
+STMT -> DECL ;  => bool int ntype void 
 STMT -> E = E ;  => & * false ( {nam} {num}  true 
 STMT -> if ( E ) { STMTS } IFELSE  => if 
 STMT -> return E ;  => return 
 STMT -> while ( E ) { STMTS }  => while 
 STMTS -> {empty}  => {empty} } 
-STMTS -> STMT STMTS  => & * bool false if int ( {nam} {num} return  true void while 
+STMTS -> STMT STMTS  => & * bool false if int ( {nam} ntype {num} return  true void while 
 T -> F  => & * false ( {nam} {num}  true 
 TYPE -> bool TYPE'  => bool 
 TYPE -> int TYPE'  => int 
+TYPE -> ntype TYPE'  => ntype 
 TYPE -> void TYPE'  => void 
 TYPE' -> *  => * 
 TYPE' -> {empty}  => {empty} {nam} 
