@@ -3,7 +3,7 @@ Suite of different parsers for DACOMPILER
 
 Uses DACOMPILER repository which has to be placed at /DAPARS/DACOMPILER.
 Uses DAVM repository which has to be placed at /DAPARS/DAVM.
-(both locations already ignored)
+Both are managed via git submodules.
 
 Parsers are on different stages of evolution:
 -RecDesc, this is the more active and up to date
