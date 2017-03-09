@@ -3,20 +3,7 @@
 namespace RecDescent{
 
 
-void ParserLL1RecDesc::FuncDefList(std::vector<PtrFuncDef>& fdefl_inht,
-    const ScopeId scope_inht){
-  PtrFuncDef fdef(nullptr);
-  if(Check(set_types_ )){
-    fdef = FuncDef_(scope_inht);
-    if(fdef){
-      fdefl_inht.push_back( std::move(fdef));
-      FuncDefList(fdefl_inht, scope_inht);
-    }
-    return;
-  }
 
-  if(not Check({kToken::eof})) Error(kErr33);
-}
 
 //FDECL :=  name (){ STMTS }
 PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){

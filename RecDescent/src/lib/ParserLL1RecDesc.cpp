@@ -62,9 +62,9 @@ void ParserLL1RecDesc::BuildTokenVectors(){
   //E' -> {empty}  => , {empty} = ) ;
   empty_eprime_ = std::vector<kToken>({kToken::comma, kToken::equality
     , kToken::rpar, kToken::semicolon});
+
+
 }
-
-
 
 PtrBlock ParserLL1RecDesc::ParseSubBlock(const ScopeId scope, const std::string& error){
   std::vector<PtrStatement> stmts_inht;
@@ -73,59 +73,6 @@ PtrBlock ParserLL1RecDesc::ParseSubBlock(const ScopeId scope, const std::string&
   return std::move(stmts_synt);
 }
 
-void ParserLL1RecDesc::Prog(){
-  NextToken();
-
-  scope_owner_id_.push(unit_.GlobalScopeOwnerId());
-  const ScopeId id = unit_.GlobalScopeId( scope_owner_id_.top() );
-  PtrProgInit pinit = std::make_unique<AST::ProgInit>(id, CurrentLocus());
-  PtrProgEnd  pend  = std::make_unique<AST::ProgEnd> (id, CurrentLocus());
-
-  //parse all functions
-  std::vector<PtrFuncDef> func_defs;
-  FuncDefList(func_defs, id);
-
-  if(func_defs.size() == 0 or NumFatalErrors() != 0){
-    if(func_defs.size() == 0) Error("AST not build (no functions)");
-    if(NumFatalErrors() != 0) Error("AST not build (fatal errors)");
-    return;
-  }
-
-  if(token_ != Tokenizer::kToken::eof) Error("More data after program.");
-
-  std::unique_ptr<AST::ProgBody> prog =
-    std::make_unique<AST::ProgBody>(id, CurrentLocus(), pinit, pend, func_defs);
-
-  unit_.InitAst(prog);
-}
-
-
-PtrBlock ParserLL1RecDesc::Stmts(std::vector<PtrStatement>& stmts_inht, const ScopeId scope_inht){
-//   std::cout << "stmts\n";
-//   if(not ContinueParsing()) return nullptr;
-  PtrBlock stmts_synt(nullptr);
-  Locus l = CurrentLocus();
-
-  //STMTS -> STMT STMTS  => & * bool false if int ( {nam} {num} return  true void while
-
-  if( Check(set_stmts_)){
-      PtrStatement stmt_synth = Stmt(scope_inht);
-
-      stmts_inht.push_back(std::move(stmt_synth));
-      stmts_synt = Stmts(stmts_inht, scope_inht);
-      return std::move(stmts_synt);
-
-    }
-
-  //STMTS => }
-  if(AcceptEmpty({kToken::rcbr}, "[err:3] Block not finishing in rcbr")){
-//       unit.
-    stmts_synt = NewBlock(stmts_inht, scope_inht, l);
-  }
-
-//   std::cout << "<-stmts\n";
-  return std::move(stmts_synt);
-}
 
 } //end namespace RecDescent
 

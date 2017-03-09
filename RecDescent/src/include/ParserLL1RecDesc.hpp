@@ -26,10 +26,13 @@ public:
 private:
 //   Grammar& grammar_;
 
+  //Top level
   void  Prog();
 
-  void FuncDefList(std::vector<PtrFuncDef>& fdefl_inht, const ScopeId scope_inht);
-  PtrFuncDef FuncDef_(const ScopeId scope_inht);
+  void DefList( std::vector<PtrFuncDef>& fdefl_inht
+              , std::vector<PtrClassDef>& cdefl_inht
+              , const ScopeId scope_inht);
+
 
   //Exprs
   PtrExpr Exprs(const ScopeId scope_inht);
@@ -59,6 +62,7 @@ private:
             , const Locus& locus_inht);
 
   //Function
+  PtrFuncDef FuncDef_(const ScopeId scope_inht);
   void ParList(std::vector<PtrVarDecl>& par_list_inht, const ScopeId scope_inht);
   void ParListPrime(std::vector<PtrVarDecl>& par_list_inht, const ScopeId scope_inht);
   PtrVarDecl Par(const ScopeId scope_inht);
@@ -79,9 +83,10 @@ private:
   PtrExpr RecoveryArgList(const std::string& name_inht, std::vector<PtrExpr>& args_inht, const ScopeId scope_inht
     , const Locus& locus_inht);
 
+  //Classes
+  PtrClassDef ClassDef_(const ScopeId scope_inht);
 
-
-  //Variables
+private:
   std::string undeclared_name_;
 
   //top() points to current owner
