@@ -41,11 +41,9 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
 
   Accept(kToken::rpar, kErr28);
 
-
   std::vector<const AST::Type*> par_types;
-  for(const auto& it : par_list){
-    par_types.push_back( &it->GetType() );
-  }
+  for(const auto& it : par_list) par_types.push_back( &it->GetType() );
+
 
   const AST::Type& type_func = unit_.GetFuncType(ret_type, par_types);
 //   std::cout << "Type: " << type_func.str() << "\n";
