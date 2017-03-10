@@ -4,7 +4,7 @@
 #include <string>
 #include <fstream>
 #include "Tokenizer.hpp"
-#include "AST.hpp"
+#include "AST/AST.hpp"
 #include "CompilationUnit.hpp"
 #include "Locus.hpp"
 #include "Symbol.hpp"

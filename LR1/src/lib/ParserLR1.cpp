@@ -1,5 +1,5 @@
 #include "ParserLR1.hpp"
-#include "Node.hpp"
+#include "AST/ASTNodes.hpp"
 #include "Action.hpp"
 #include <iterator>
 #include <fstream>

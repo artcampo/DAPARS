@@ -8,7 +8,7 @@
 #include "Grammar.hpp"
 #include "CompilationUnit.hpp"
 #include "Types.hpp"
-#include "Node.hpp"
+#include "AST/Node.hpp"
 
 namespace RecDescent{
 

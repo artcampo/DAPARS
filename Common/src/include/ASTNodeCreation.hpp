@@ -2,11 +2,11 @@
 #include <memory>
 #include <vector>
 #include <string>
-#include "AST.hpp"
+#include "AST/AST.hpp"
 #include "CompilationUnit.hpp"
 #include "Locus.hpp"
 #include "Symbol.hpp"
-#include "Node.hpp"
+#include "AST/ASTNodes.hpp"
 #include "Types.hpp"
 #include "Locus.hpp"
 

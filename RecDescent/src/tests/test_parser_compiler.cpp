@@ -1,7 +1,7 @@
 #include "ParserLL1RecDesc.hpp"
 #include "Grammar.hpp"
 #include "IRDefinition.hpp"
-#include "Node.hpp"
+#include "AST/Node.hpp"
 #include "Utils.hpp"
 #include "ASTVisitors/ASTVisitorPrettyPrinter.hpp"
 #include <iostream>
