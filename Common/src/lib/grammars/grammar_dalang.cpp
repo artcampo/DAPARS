@@ -11,20 +11,21 @@ void CreateGrammarDalang(G& g){
   using GrammarAnalyzer::Rule;
 
   //Terminals
-  const Symbol semi = g.AddTerminal("SEMC", ";", Tokenizer::kToken::semicolon);
+  const Symbol semi  = g.AddTerminal("SEMC", ";", Tokenizer::kToken::semicolon);
   const Symbol comma = g.AddTerminal("COMMA", ",", Tokenizer::kToken::comma);
-  const Symbol lpar = g.AddTerminal("LPAR", "(", Tokenizer::kToken::lpar);
-  const Symbol rpar = g.AddTerminal("RPAR", ")", Tokenizer::kToken::rpar);
-  const Symbol plus = g.AddTerminal("PLUS", "+", Tokenizer::kToken::plus);
-  const Symbol minu = g.AddTerminal("MINU", "-", Tokenizer::kToken::minus);
-  const Symbol astk = g.AddTerminal("ASTK", "*", Tokenizer::kToken::astk);
-  const Symbol div  = g.AddTerminal("DIVI", "/", Tokenizer::kToken::div);
-  const Symbol numr = g.AddTerminal("NUM", "{num}",  Tokenizer::kToken::numerical);
-  const Symbol name = g.AddTerminal("NAME", "{nam}", Tokenizer::kToken::name);
-  const Symbol lcbr = g.AddTerminal("LCBR", "{", Tokenizer::kToken::lcbr);
-  const Symbol rcbr = g.AddTerminal("RCBR", "}", Tokenizer::kToken::rcbr);
-  const Symbol equl = g.AddTerminal("EQUL", "=", Tokenizer::kToken::equality);
-  const Symbol amps = g.AddTerminal("AMPS", "&", Tokenizer::kToken::ampersand);
+  const Symbol lpar  = g.AddTerminal("LPAR", "(", Tokenizer::kToken::lpar);
+  const Symbol rpar  = g.AddTerminal("RPAR", ")", Tokenizer::kToken::rpar);
+  const Symbol plus  = g.AddTerminal("PLUS", "+", Tokenizer::kToken::plus);
+  const Symbol minu  = g.AddTerminal("MINU", "-", Tokenizer::kToken::minus);
+  const Symbol astk  = g.AddTerminal("ASTK", "*", Tokenizer::kToken::astk);
+  const Symbol div   = g.AddTerminal("DIVI", "/", Tokenizer::kToken::div);
+  const Symbol numr  = g.AddTerminal("NUM", "{num}",  Tokenizer::kToken::numerical);
+  const Symbol name  = g.AddTerminal("NAME", "{nam}", Tokenizer::kToken::name);
+  const Symbol lcbr  = g.AddTerminal("LCBR", "{", Tokenizer::kToken::lcbr);
+  const Symbol rcbr  = g.AddTerminal("RCBR", "}", Tokenizer::kToken::rcbr);
+  const Symbol equl  = g.AddTerminal("EQUL", "=", Tokenizer::kToken::equality);
+  const Symbol amps  = g.AddTerminal("AMPS", "&", Tokenizer::kToken::ampersand);
+  const Symbol dot   = g.AddTerminal("DOT", ".", Tokenizer::kToken::dot);
   const Symbol empty = Symbol::Empty();
 
   const Symbol kwd_if     = g.AddTerminalKeyword("IF", "if", Tokenizer::kToken::kwd_if);
@@ -174,6 +175,8 @@ void CreateGrammarDalang(G& g){
   //Extension of name
   g.AddRule(Rule(ARGM,  {empty}));
   g.AddRule(Rule(ARGM,  {lpar, ARGL, rpar}));
+  g.AddRule(Rule(ARGM,  {dot, name, ARGM}));
+
 
   //Anaylze
   g.Analyze();

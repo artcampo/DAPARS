@@ -59,12 +59,13 @@ F' ->  true
 F' -> false 
 ARGM -> {empty} 
 ARGM -> ( ARGL ) 
+ARGM -> . {nam} ARGM 
 
 -----------------------------
 First Table
 ARGL => & * {empty} false ( {nam} {num}  true 
 ARGLP => , {empty} 
-ARGM => {empty} ( 
+ARGM => . {empty} ( 
 CDEF => class 
 DECL => bool int ntype void 
 DEFL => bool class {empty} int ntype void 
@@ -116,6 +117,7 @@ ARGL -> E ARGLP  => & * false ( {nam} {num}  true
 ARGL -> {empty}  => {empty} ) 
 ARGLP -> , E ARGLP  => , 
 ARGLP -> {empty}  => {empty} ) 
+ARGM -> . {nam} ARGM  => . 
 ARGM -> {empty}  => , {empty} = + ) ; 
 ARGM -> ( ARGL )  => ( 
 CDEF -> class {nam} { }  => class 
