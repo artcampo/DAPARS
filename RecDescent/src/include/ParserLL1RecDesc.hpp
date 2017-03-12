@@ -58,8 +58,9 @@ private:
   const Compiler::AST::Type&  Type();
 
   //Extension of name_list_inht
-  PtrExpr Argm(PtrExprVar& var_inht, const Compiler::AST::Type& type_inht, const ScopeId scope_inht
-            , const Locus& locus_inht);
+  PtrExpr Argm(const std::string& name_inht, PtrExprVar& var_inht
+    , const Compiler::AST::Type& type_inht, const ScopeId scope_inht
+    , const Locus& locus_inht);
 
   //Function
   PtrFuncDef FuncDef_(const ScopeId scope_inht);
@@ -68,10 +69,12 @@ private:
   PtrVarDecl Par(const ScopeId scope_inht);
 
   PtrExpr
-  ArgList(PtrExprVar& var_inht, const Compiler::AST::Type& type_inht, std::vector<PtrExpr>& args_inht
+  ArgList(const std::string& name_inht, PtrExprVar& var_inht
+    , const Compiler::AST::Type& type_inht, std::vector<PtrExpr>& args_inht
     , const ScopeId scope_inht, const Locus& locus_inht);
   PtrExpr
-  ArgListPrime(PtrExprVar& var_inht, const Compiler::AST::Type& type_inht, std::vector<PtrExpr>& args_inht
+  ArgListPrime(const std::string& name_inht, PtrExprVar& var_inht
+    , const Compiler::AST::Type& type_inht, std::vector<PtrExpr>& args_inht
     , const ScopeId scope_inht, const Locus& locus_inht);
 
   //Helpers not associated to a rule
@@ -82,12 +85,14 @@ private:
                          , const Locus& locus_inht);
 
   PtrExpr
-  BuildFunctionCall(PtrExprVar& var_inht, const Compiler::AST::Type& type_inht, std::vector<PtrExpr>& args_inht
-    , const ScopeId scope_inht , const Locus& locus_inht);
+  BuildFunctionCall(const std::string& name_inht, PtrExprVar& var_inht
+    , const Compiler::AST::Type& type_inht, std::vector<PtrExpr>& args_inht
+    , const ScopeId scope_inht, const Locus& locus_inht);
 
   PtrExpr
-  RecoveryArgList(PtrExprVar& var_inht, const Compiler::AST::Type& type_inht, std::vector<PtrExpr>& args_inht, const ScopeId scope_inht
-    , const Locus& locus_inht);
+  RecoveryArgList(const std::string& name_inht, PtrExprVar& var_inht
+    , const Compiler::AST::Type& type_inht, std::vector<PtrExpr>& args_inht
+    , const ScopeId scope_inht, const Locus& locus_inht);
 
   //Classes
   PtrClassDef ClassDef_(const ScopeId scope_inht);
