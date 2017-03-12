@@ -58,7 +58,7 @@ private:
   const Compiler::AST::Type&  Type();
 
   //Extension of name_list_inht
-  PtrExpr Argm(PtrExprVar& var_inht, const ScopeId scope_inht
+  PtrExpr Argm(PtrExprVar& var_inht, const Compiler::AST::Type& type_inht, const ScopeId scope_inht
             , const Locus& locus_inht);
 
   //Function
@@ -68,10 +68,10 @@ private:
   PtrVarDecl Par(const ScopeId scope_inht);
 
   PtrExpr
-  ArgList(PtrExprVar& var_inht, std::vector<PtrExpr>& args_inht
+  ArgList(PtrExprVar& var_inht, const Compiler::AST::Type& type_inht, std::vector<PtrExpr>& args_inht
     , const ScopeId scope_inht, const Locus& locus_inht);
   PtrExpr
-  ArgListPrime(PtrExprVar& var_inht, std::vector<PtrExpr>& args_inht
+  ArgListPrime(PtrExprVar& var_inht, const Compiler::AST::Type& type_inht, std::vector<PtrExpr>& args_inht
     , const ScopeId scope_inht, const Locus& locus_inht);
 
   //Helpers not associated to a rule
@@ -82,11 +82,11 @@ private:
                          , const Locus& locus_inht);
 
   PtrExpr
-  BuildFunctionCall(PtrExprVar& var_inht, std::vector<PtrExpr>& args_inht
+  BuildFunctionCall(PtrExprVar& var_inht, const Compiler::AST::Type& type_inht, std::vector<PtrExpr>& args_inht
     , const ScopeId scope_inht , const Locus& locus_inht);
 
   PtrExpr
-  RecoveryArgList(PtrExprVar& var_inht, std::vector<PtrExpr>& args_inht, const ScopeId scope_inht
+  RecoveryArgList(PtrExprVar& var_inht, const Compiler::AST::Type& type_inht, std::vector<PtrExpr>& args_inht, const ScopeId scope_inht
     , const Locus& locus_inht);
 
   //Classes

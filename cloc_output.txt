@@ -1,19 +1,19 @@
-     100 files     200 files     295 text files.
-classified 293 filesDuplicate file check 293 files (256 known unique)Unique:      100 files                                          Unique:      200 files                                               275 unique files.                              
-Counting:  100Counting:  200     106 files ignored.
+     100 files     200 files     300 files     316 text files.
+classified 314 filesDuplicate file check 314 files (279 known unique)Unique:      100 files                                          Unique:      200 files                                               296 unique files.                              
+Counting:  100Counting:  200     109 files ignored.
 
-github.com/AlDanial/cloc v 1.68  T=0.53 s (375.9 files/s, 22164.7 lines/s)
+github.com/AlDanial/cloc v 1.68  T=0.92 s (232.7 files/s, 14853.0 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-C++                             61           1009            515           3443
-C/C++ Header                    82           1076            212           3291
-HTML                             2              0              0           1285
-CMake                           29            101             15            322
+C/C++ Header                    92           1277            300           4003
+C++                             64           1149            699           3674
+HTML                             3              0              0           1585
+CMake                           29            101             15            325
 Bourne Shell                    22             73             25            251
 yacc                             1             20              7             55
 lex                              1              3              0             20
 Markdown                         1              2              0              9
 -------------------------------------------------------------------------------
-SUM:                           199           2284            774           8676
+SUM:                           213           2625           1046           9922
 -------------------------------------------------------------------------------
