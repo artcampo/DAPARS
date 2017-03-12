@@ -106,7 +106,6 @@ IR dump:
 
 ---------------------------------------------------
 Parsing: "int f(int p1){int a; a=p1; return a;} void main(){int a; a=f(2);}"
-ask: f
 
 Scopes of module:
 Scope 0: {(2:f) (4:main) }

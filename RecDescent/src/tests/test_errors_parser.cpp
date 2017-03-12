@@ -92,7 +92,7 @@ int main()
 
   //err39
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int f(int p1){int a; a=p1;} void main(){int a; a=f();}"), g);
+    "int f(int p1){int a; a=p1;} void main(){int a; a=1;  a=f();}"), g);
 
   //err40
   parse<Grammar,ParserLL1RecDesc>( std::string(
