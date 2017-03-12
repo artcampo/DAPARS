@@ -170,12 +170,12 @@ NewFuncRet(const Type& ret_type
 }
 
 PtrFuncCall
-NewFuncCall(const std::string& name
+NewFuncCall(PtrExprVar& expr_var
     , const FuncType& function_type
     , std::vector<PtrExpr>& arg_list
     , const ScopeId id
     , const Locus& locus){
-  return std::make_unique<FuncCall>(name, function_type, arg_list, id, locus);
+  return std::make_unique<FuncCall>(expr_var, function_type, arg_list, id, locus);
 }
 
 PtrReturnStmt
