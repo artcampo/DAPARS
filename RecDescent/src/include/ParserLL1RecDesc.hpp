@@ -34,6 +34,7 @@ private:
               , const ScopeId scope_inht);
 
 
+  //////////////////////////////////////////////////////////////////////
   //Exprs
   PtrExpr Exprs(const ScopeId scope_inht);
   PtrExpr ExprPrime(PtrExpr& eprime_inht
@@ -62,6 +63,7 @@ private:
     , const Compiler::AST::Type& type_inht, const ScopeId scope_inht
     , const Locus& locus_inht);
 
+  //////////////////////////////////////////////////////////////////////
   //Function
   PtrFuncDef FuncDef_(const ScopeId scope_inht);
   void ParList(std::vector<PtrVarDecl>& par_list_inht, const ScopeId scope_inht);
@@ -77,6 +79,7 @@ private:
     , const Compiler::AST::Type& type_inht, std::vector<PtrExpr>& args_inht
     , const ScopeId scope_inht, const Locus& locus_inht);
 
+  //////////////////////////////////////////////////////////////////////
   //Helpers not associated to a rule
   PtrBlock
   ParseSubBlock(const ScopeId scope_inht, const std::string& error);
@@ -94,8 +97,12 @@ private:
     , const Compiler::AST::Type& type_inht, std::vector<PtrExpr>& args_inht
     , const ScopeId scope_inht, const Locus& locus_inht);
 
+  PtrStatement DeclStmt(const ScopeId scope_inht);
+
   //Classes
-  PtrClassDef ClassDef_(const ScopeId scope_inht);
+  PtrClassDef   ClassDef_(const ScopeId scope_inht);
+  PtrStatement  Decls(const ScopeId scope_inht);
+  PtrStatement  Fdefs(const ScopeId scope_inht);
 
 private:
   std::string undeclared_name_;

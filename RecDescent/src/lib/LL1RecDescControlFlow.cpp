@@ -57,10 +57,8 @@ PtrStatement ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
 
   //STMT -> DECL ;  => bool int void
   if(Check(set_types_)){
+    stmt_synt = DeclStmt(scope_inht);
 //     std::cout << "stmt::decl stmt\n";
-    PtrVarDeclList decl_synt = Decl(scope_inht);
-    stmt_synt = NewDeclStmt(decl_synt, scope_inht, l);
-    Accept(kToken::semicolon, "[err:5] Expecting semicolon after variable declaration.");
     return std::move(stmt_synt);
   }
 
@@ -125,6 +123,14 @@ PtrBlock ParserLL1RecDesc::IfElse(const ScopeId scope_inht){
 
 //    std::cout << "<-IfElse\n";
   return std::move(ifelse_synt);
+}
+
+PtrStatement ParserLL1RecDesc::DeclStmt(const ScopeId scope_inht){
+  Locus l = CurrentLocus();
+  PtrVarDeclList decl_synt = Decl(scope_inht);
+  PtrStatement stmt_synt = NewDeclStmt(decl_synt, scope_inht, l);
+  Accept(kToken::semicolon, "[err:5] Expecting semicolon after variable declaration.");
+  return std::move(stmt_synt);
 }
 
 } //end namespace RecDescent

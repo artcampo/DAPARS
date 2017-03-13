@@ -9,13 +9,22 @@ KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
+Backtrack free violation. Rules:
+DECLLIST -> DECLSTMT ; DECLLIST 
+DECLLIST -> {empty} 
+Offending symbol: bool
 Dalang grammar v0.3
 Grammar:
 PROG -> DEFL  init 
 DEFL -> FDEF DEFL 
 DEFL -> CDEF DEFL 
 DEFL -> {empty} 
-CDEF -> class {nam} { } 
+CDEF -> class {nam} { DECLLIST FDEFLIST } 
+DECLLIST -> DECLSTMT ; DECLLIST 
+DECLLIST -> {empty} 
+DECLSTMT -> TYPE NAME_LIST 
+FDEFLIST -> FDEF FDEFLIST 
+FDEFLIST -> {empty} 
 FDEF -> TYPE {nam} ( PARL ) { STMTS } 
 PARL -> PAR PARLP 
 PARL -> {empty} 
@@ -68,12 +77,15 @@ ARGLP => , {empty}
 ARGM => . {empty} ( 
 CDEF => class 
 DECL => bool int ntype void 
+DECLLIST => bool {empty} int ntype void 
+DECLSTMT => bool int ntype void 
 DEFL => bool class {empty} int ntype void 
 E => & * false ( {nam} {num}  true 
 E' => {empty} + 
 F => & * false ( {nam} {num}  true 
 F' => false ( {nam} {num}  true 
 FDEF => bool int ntype void 
+FDEFLIST => bool {empty} int ntype void 
 IFELSE => else {empty} 
 NAME_LIST => {nam} 
 NAME_LIST' => , {empty} 
@@ -93,12 +105,15 @@ ARGLP => )
 ARGM => , = + ) ; 
 CDEF => bool class {eof} int ntype void 
 DECL => ; 
+DECLLIST => bool int ntype } void 
+DECLSTMT => ; 
 DEFL => {eof} 
 E => , = ) ; 
 E' => , = ) ; 
 F => , = + ) ; 
 F' => , = + ) ; 
-FDEF => bool class {eof} int ntype void 
+FDEF => bool class {eof} int ntype } void 
+FDEFLIST => } 
 IFELSE => & * bool false if int ( {nam} ntype {num} } return  true void while 
 NAME_LIST => ; 
 NAME_LIST' => ; 
@@ -120,8 +135,11 @@ ARGLP -> {empty}  => {empty} )
 ARGM -> . {nam} ARGM  => . 
 ARGM -> {empty}  => , {empty} = + ) ; 
 ARGM -> ( ARGL )  => ( 
-CDEF -> class {nam} { }  => class 
+CDEF -> class {nam} { DECLLIST FDEFLIST }  => class 
 DECL -> TYPE NAME_LIST  => bool int ntype void 
+DECLLIST -> DECLSTMT ; DECLLIST  => bool int ntype void 
+DECLLIST -> {empty}  => bool {empty} int ntype } void 
+DECLSTMT -> TYPE NAME_LIST  => bool int ntype void 
 DEFL -> CDEF DEFL  => class 
 DEFL -> {empty}  => {empty} {eof} 
 DEFL -> FDEF DEFL  => bool int ntype void 
@@ -137,6 +155,8 @@ F' -> {nam} ARGM  => {nam}
 F' -> {num}  => {num} 
 F' ->  true  =>  true 
 FDEF -> TYPE {nam} ( PARL ) { STMTS }  => bool int ntype void 
+FDEFLIST -> {empty}  => {empty} } 
+FDEFLIST -> FDEF FDEFLIST  => bool int ntype void 
 IFELSE -> else { STMTS }  => else 
 IFELSE -> {empty}  => & * bool {empty} false if int ( {nam} ntype {num} } return  true void while 
 NAME_LIST -> {nam} NAME_LIST'  => {nam} 

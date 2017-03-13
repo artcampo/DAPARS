@@ -21,7 +21,7 @@ PtrClassDef ParserLL1RecDesc::ClassDef_(const ScopeId scope_inht){
   const AST::Type& type = unit_.GetClassType(name);
 
 
-  unit_.NewClass(name);
+  const ScopeId scope_id = unit_.NewClass(name);
   unit_.EnterClassDefinition(name);
 
 

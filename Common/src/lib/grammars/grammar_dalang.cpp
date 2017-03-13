@@ -51,9 +51,14 @@ void CreateGrammarDalang(G& g){
 
   const Symbol DEFL   = g.AddNonTerminal("DEFL");
   const Symbol FDEF   = g.AddNonTerminal("FDEF");
-  const Symbol CDEF   = g.AddNonTerminal("CDEF");
+
+  //Classes
+  const Symbol CDEF       = g.AddNonTerminal("CDEF");
+  const Symbol DECLLIST   = g.AddNonTerminal("DECLLIST");
+  const Symbol FDEFLIST   = g.AddNonTerminal("FDEFLIST");
 
 
+  //Functions
   const Symbol ARGL   = g.AddNonTerminal("ARGL");
   const Symbol ARGLP  = g.AddNonTerminal("ARGLP");
 
@@ -97,8 +102,15 @@ void CreateGrammarDalang(G& g){
   g.AddRule(Rule(DEFL,  {CDEF, DEFL}));
   g.AddRule(Rule(DEFL,  {empty}));
 
+  //TODO: use same style for two-word non-terminals
   //Classes
-  g.AddRule(Rule(CDEF,  {kwd_class, name, lcbr, rcbr}));
+  g.AddRule(Rule(CDEF,  {kwd_class, name, lcbr, DECLLIST, FDEFLIST, rcbr}));
+  g.AddRule(Rule(DECLLIST,    {DECL, semi, DECLLIST}));
+  g.AddRule(Rule(DECLLIST,    {empty}));
+  g.AddRule(Rule(FDEFLIST,    {FDEF, FDEFLIST}));
+  g.AddRule(Rule(FDEFLIST,    {empty}));
+
+
 
   //Functions
   g.AddRule(Rule(FDEF,   {TYPE, name, lpar, PARL, rpar, lcbr, STMTS, rcbr}));

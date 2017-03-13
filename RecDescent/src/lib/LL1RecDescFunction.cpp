@@ -3,8 +3,6 @@
 namespace RecDescent{
 
 
-
-
 //FDECL :=  name (){ STMTS }
 PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
 //   std::cout << "fdef\n";
