@@ -35,7 +35,7 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
   const AST::Type& type_func = unit_.GetFuncType(ret_type, par_types);
 //   std::cout << "Type: " << type_func.str() << "\n";
 
-  if(not unit_.IsDeclValid(name)){
+  if(not unit_.IsDeclValid(name, scope_inht)){
     Error(kErr32);
     return std::move(nullptr);
   }
@@ -60,7 +60,7 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
   unit_.SetFuncOriginNode(*func_def_synth);
   unit_.ExitFunctionDefinition();
   unit_.RestoreScope();
-  unit_.RegisterDecl(name, type_func, *decl);
+  unit_.RegisterDecl(name, type_func, *decl, scope_inht);
 
 
   return std::move(func_def_synth);

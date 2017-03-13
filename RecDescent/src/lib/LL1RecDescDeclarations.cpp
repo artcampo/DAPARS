@@ -44,14 +44,14 @@ PtrVarDecl ParserLL1RecDesc::NameDecl(const AST::Type& type_inht
                          , const Locus& locus_inht){
   PtrVarDecl var_decl;
   if(TryAndAccept(kToken::name)){
-    if(not unit_.IsDeclValid(prev_token_string_value_)){
+    if(not unit_.IsDeclValid(prev_token_string_value_, scope_inht)){
       Error(kErr15);
       return std::move(var_decl);
     }
 
     var_decl = std::move(NewVarDecl(
                   prev_token_string_value_, type_inht, scope_inht, locus_inht));
-    unit_.RegisterDecl(prev_token_string_value_, type_inht, *var_decl);
+    unit_.RegisterDecl(prev_token_string_value_, type_inht, *var_decl, scope_inht);
 
     return var_decl;
   }
