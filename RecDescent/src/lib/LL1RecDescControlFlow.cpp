@@ -127,11 +127,19 @@ PtrBlock ParserLL1RecDesc::IfElse(const ScopeId scope_inht){
 
 PtrStatement ParserLL1RecDesc::DeclStmt(const ScopeId scope_inht){
   Locus l = CurrentLocus();
-  PtrVarDeclList decl_synt = Decl(scope_inht);
+  PtrVarDeclList decl_synt = DeclList(scope_inht);
   PtrStatement stmt_synt = NewDeclStmt(decl_synt, scope_inht, l);
   Accept(kToken::semicolon, "[err:5] Expecting semicolon after variable declaration.");
   return std::move(stmt_synt);
 }
+
+//TODO: move to another file (?)
+PtrVarDeclList ParserLL1RecDesc::DeclList(const ScopeId scope_inht){
+  Locus l = CurrentLocus();
+  return std::move( Decl(scope_inht) );
+}
+
+
 
 } //end namespace RecDescent
 

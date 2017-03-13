@@ -36,8 +36,14 @@ PtrClassDef ParserLL1RecDesc::ClassDef_(const ScopeId scope_inht){
   return std::move(cdef);
 
 }
+/*
+PtrVarDeclList  DeclList(const ScopeId scope_inht, PtrVarDeclList& decl_list_inht){
+  if(not check(set_types_)) return std::move(decl_list_inht);
 
-
+  PtrVarDeclList decl_list = DeclList(scope_inht)
+}
+PtrStatement  FdefList(const ScopeId scope_inht);
+*/
 
 } //end namespace RecDescent
 

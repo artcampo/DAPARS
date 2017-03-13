@@ -92,18 +92,22 @@ private:
     , const Compiler::AST::Type& type_inht, std::vector<PtrExpr>& args_inht
     , const ScopeId scope_inht, const Locus& locus_inht);
 
-  PtrExpr
-  RecoveryArgList(const std::string& name_inht, PtrExprVar& var_inht
-    , const Compiler::AST::Type& type_inht, std::vector<PtrExpr>& args_inht
-    , const ScopeId scope_inht, const Locus& locus_inht);
+  PtrExpr         RecoveryArgList(const std::string& name_inht
+                                , PtrExprVar& var_inht
+                                , const Compiler::AST::Type& type_inht
+                                , std::vector<PtrExpr>& args_inht
+                                , const ScopeId scope_inht
+                                , const Locus& locus_inht);
 
-  PtrStatement DeclStmt(const ScopeId scope_inht);
+  PtrStatement    DeclStmt(const ScopeId scope_inht);
+  PtrVarDeclList  DeclList(const ScopeId scope_inht);
 
   //Classes
-  PtrClassDef   ClassDef_(const ScopeId scope_inht);
-  PtrStatement  Decls(const ScopeId scope_inht);
-  PtrStatement  Fdefs(const ScopeId scope_inht);
-
+  PtrClassDef     ClassDef_(const ScopeId scope_inht);
+/*
+  PtrStatement    DeclList(const ScopeId scope_inht);
+  PtrStatement    FdefList(const ScopeId scope_inht);
+*/
 private:
   std::string undeclared_name_;
 
