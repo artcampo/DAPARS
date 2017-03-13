@@ -20,8 +20,15 @@ PtrClassDef ParserLL1RecDesc::ClassDef_(const ScopeId scope_inht){
   }
   const AST::Type& type = unit_.GetClassType(name);
 
+
+  unit_.NewClass(name);
+  unit_.EnterClassDefinition(name);
+
+
   Accept(kToken::lcbr, kErr81);
   Accept(kToken::rcbr, kErr82);
+
+  unit_.ExitClassDefinition();
 
   PtrClassDef cdef = NewClassDef(name, scope_inht, l);
   RegNameType(name);

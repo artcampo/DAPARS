@@ -732,10 +732,11 @@ AST dump:
 -ClassDef: O1
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type O1]
+0: Symbol: [ in scope 2 a of type O1]
 1: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
 Scope 0: {(1:main) }
-Scope 1: {(0:a) }
+Scope 2: {(0:a) }
+HierScope for:O1
 
