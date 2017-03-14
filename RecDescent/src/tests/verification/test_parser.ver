@@ -741,19 +741,27 @@ Scope 2: {(0:a) }
 HScope of O1 1: {}
 
 ---------------------------------------------------
-Parsing: "class O1{int a;} void main(){ O1 a;}"
+Parsing: "class O1{int a;} void main(){ O1 inst; int b; b = inst.a;}"
 
 AST dump:
 -FuncDef: main
---O1 a 
+--O1 inst 
+--int b 
+--Assign
+---b [int Lvalue Write Value]
+---inst.a [int]
+----inst [O1]
+----a
+
 -ClassDef: O1
 
 Declaration Table:
-1: Symbol: [ in scope 2 a of type O1]
-2: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 2 inst of type O1]
+2: Symbol: [ in scope 2 b of type int]
+3: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(2:main) }
-Scope 2: {(1:a) }
+Scope 0: {(3:main) }
+Scope 2: {(1:inst) (2:b) }
 HScope of O1 1: {(0:a) }
 
