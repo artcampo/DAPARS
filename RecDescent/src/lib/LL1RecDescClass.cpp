@@ -49,7 +49,7 @@ void ParserLL1RecDesc::MemberList(std::vector<PtrVarDecl>& var_decl_inht
   //MEMBER_LIST := empty
   if(Check({kToken::rcbr})) return;
 
-  if(Check(set_types_)) { Error(kErr88); return; }
+  if(not Check(set_types_)) { Error(kErr88); return; }
 
   //MEMBER_LIST := TYPE NAME MEMBER MEMBER_LIST
   Locus l = CurrentLocus();
