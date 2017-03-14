@@ -9,7 +9,17 @@ DEFL    := FDEF DEFL
 
 FDEF    := TYPE name ( PARL ){ STMTS }
 
-CDEF    := Class name{}
+---------------------------------------------
+
+CDEF    := class name { MEMBER_LIST }
+
+MEMBER_LIST := TYPE NAME MEMBER MEMBER_LIST
+            |  empty
+
+MEMBER  := ;
+        |  ( ARGL ) { STMTS }
+
+---------------------------------------------
 
 PARL    := empty
         |  PAR PARL'
@@ -18,6 +28,8 @@ PARL'   := empty
         |  PAR PARL'
 
 PAR     := TYPE name
+
+---------------------------------------------
 
 STMTS   := STMT STMTS
         |  empty
@@ -28,6 +40,8 @@ STMT    := if(E){STMTS} IFELSE
 
 IFELSE:= else{STMTS}
       |  empty
+
+---------------------------------------------
 
 E     := T E'
 E'    := + T E'
@@ -42,6 +56,8 @@ F'    := ( E )
       |  false
       |  name ARGM
 
+---------------------------------------------
+
 ARGM  := empty
       | ( ARGL )
       | . name ARGM
@@ -52,6 +68,7 @@ ARGL  := empty
 ARGL' := empty
       | , EXPR ARGL'
 
+---------------------------------------------
 
 DECL  := TYPE NAME_LIST
 
