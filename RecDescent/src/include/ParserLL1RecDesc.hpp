@@ -81,11 +81,14 @@ private:
 
   //////////////////////////////////////////////////////////////////////
   //Helpers not associated to a rule
-  PtrBlock
-  ParseSubBlock(const ScopeId scope_inht, const std::string& error);
-  PtrVarDecl
-  NameDecl(const Compiler::AST::Type& type_inht, const ScopeId scope_inht
-                         , const Locus& locus_inht);
+  PtrBlock    ParseSubBlock(const ScopeId scope_inht, const std::string& error);
+  PtrVarDecl  NameDecl(const Compiler::AST::Type& type_inht
+                      , const ScopeId scope_inht
+                      , const Locus& locus_inht);
+  PtrFuncDef ParseFuncDef(const Compiler::AST::Type& ret_type_inht
+                      , const std::string& name_inht
+                      , const Locus& locus_inht
+                      , const ScopeId scope_inht);
 
   PtrExpr
   BuildFunctionCall(const std::string& name_inht, PtrExprVar& var_inht
@@ -104,12 +107,24 @@ private:
 
   //Classes
   PtrClassDef     ClassDef_(const ScopeId scope_inht);
+
+  void MemberList(std::vector<PtrVarDecl>& var_decl_inht
+    , std::vector<PtrFuncDef>& func_def_inht
+    , const ScopeId scope_inht);
+
+  void Member(const Compiler::AST::Type& type_inht
+    , const std::string& name_inht
+    , std::vector<PtrVarDecl>& var_decl_inht
+    , std::vector<PtrFuncDef>& func_def_inht
+    , const Locus& locus_inht
+    , const ScopeId scope_inht );
 /*
-  PtrStatement    DeclList(const ScopeId scope_inht);
+
   PtrStatement    FdefList(const ScopeId scope_inht);
 */
 private:
   std::string undeclared_name_;
+  bool  inside_member_function_;
 
   //top() points to current owner
   std::stack<ScopeOwnerId> scope_owner_id_;

@@ -13,12 +13,14 @@ namespace RecDescent{
 ParserLL1RecDesc::ParserLL1RecDesc(std::string const &file_name, CompilationUnit& unit)
 //   , Grammar& grammar)
   : BaseParser(file_name, unit)
+  , inside_member_function_(false)
   , undeclared_name_(std::string("undeclared_name")){ BuildTokenVectors();}
 //   , grammar_(grammar){}
 
 ParserLL1RecDesc::ParserLL1RecDesc(const std::vector<char>& parse_data, CompilationUnit& unit)
 //   , Grammar& grammar)
   : BaseParser(parse_data, unit)
+  , inside_member_function_(false)
   , undeclared_name_(std::string("undeclared_name")){ BuildTokenVectors(); }
 //   , grammar_(grammar){}
 

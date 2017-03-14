@@ -7,19 +7,22 @@ namespace RecDescent{
 PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
 //   std::cout << "fdef\n";
   std::string name("func_name");
-
   Locus       l = CurrentLocus();
-
-
   const AST::Type& ret_type = this->Type();
-
   if(Accept(kToken::name, kErr26)) name = prev_token_string_value_;
+  const std::string& n =  name;
 
-  //Scope for
-  scope_owner_id_.push( unit_.NewScopeOwner() );
-  const ScopeId id = unit_.NewFunction(name, scope_owner_id_.top());
+  return std::move( ParseFuncDef(ret_type, n, l, scope_inht) );
+
+}
+
+PtrFuncDef ParserLL1RecDesc::ParseFuncDef(const Compiler::AST::Type& ret_type_inht
+    , const std::string& name_inht, const Locus& locus_inht, const ScopeId scope_inht){
 
   Accept(kToken::lpar, kErr27);
+  //Scope for
+  scope_owner_id_.push( unit_.NewScopeOwner() );
+  const ScopeId id = unit_.NewFunction(name_inht, scope_owner_id_.top());
 
   std::vector<PtrVarDecl> par_list;
   ParList(par_list, id);
@@ -30,14 +33,14 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
   for(const auto& it : par_list) par_types.push_back( &it->GetType() );
 
 
-  const AST::Type& type_func = unit_.GetFuncType(ret_type, par_types);
+  const AST::Type& type_func = unit_.GetFuncType(ret_type_inht, par_types);
 //   std::cout << "Type: " << type_func.str() << "\n";
 
-  if(not unit_.IsDeclValid(name, scope_inht)){
+  if(not unit_.IsDeclValid(name_inht, scope_inht)){
     Error(kErr32);
     return std::move(nullptr);
   }
-  PtrFuncDecl decl = NewFuncDecl(name, ret_type, par_list, scope_inht, l);
+  PtrFuncDecl decl = NewFuncDecl(name_inht, ret_type_inht, par_list, scope_inht, locus_inht);
   unit_.EnterFunctionDefinition(decl.get());
 
   //Process function definition
@@ -52,14 +55,13 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
   scope_owner_id_.pop();
 
 
-  PtrFuncDef func_def_synth = NewFuncDef(decl, stmts_synt, scope_inht, l);
-//   std::cout << "funcdef with " << ret_type.str()<<"\n";
+  PtrFuncDef func_def_synth = NewFuncDef(decl, stmts_synt, scope_inht, locus_inht);
+//   std::cout << "funcdef with " << ret_type_inht.str()<<"\n";
 
   unit_.SetFuncOriginNode(*func_def_synth);
   unit_.ExitFunctionDefinition();
   unit_.RestoreScope();
-  unit_.RegisterDecl(name, type_func, *decl, scope_inht);
-
+  unit_.RegisterDecl(name_inht, type_func, *decl, scope_inht);
 
   return std::move(func_def_synth);
 }
