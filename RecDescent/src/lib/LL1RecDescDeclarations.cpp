@@ -42,19 +42,28 @@ PtrVarDeclList  ParserLL1RecDesc::Decl(const ScopeId scope_inht){
 PtrVarDecl ParserLL1RecDesc::NameDecl(const AST::Type& type_inht
                          , const ScopeId scope_inht
                          , const Locus& locus_inht){
-  PtrVarDecl var_decl;
+
   if(TryAndAccept(kToken::name)){
-    if(not unit_.IsDeclValid(prev_token_string_value_, scope_inht)){
-      Error(kErr15);
-      return std::move(var_decl);
-    }
-
-    var_decl = std::move(NewVarDecl(
-                  prev_token_string_value_, type_inht, scope_inht, locus_inht));
-    unit_.RegisterDecl(prev_token_string_value_, type_inht, *var_decl, scope_inht);
-
+    PtrVarDecl var_decl = BuildNameDecl(prev_token_string_value_
+      , type_inht, scope_inht, locus_inht);
     return var_decl;
   }
+}
+
+PtrVarDecl ParserLL1RecDesc::BuildNameDecl( const std::string& name_inht
+                        , const AST::Type& type_inht
+                        , const ScopeId scope_inht
+                        , const Locus& locus_inht){
+  if(not unit_.IsDeclValid(name_inht, scope_inht)){
+    Error(kErr15);
+    return std::move(nullptr);
+  }
+
+  PtrVarDecl var_decl = std::move(NewVarDecl(
+                name_inht, type_inht, scope_inht, locus_inht));
+  unit_.RegisterDecl(name_inht, type_inht, *var_decl, scope_inht);
+
+  return std::move(var_decl);
 }
 
 PtrVarDeclList

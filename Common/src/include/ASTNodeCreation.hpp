@@ -187,9 +187,11 @@ NewReturnStmt(PtrExpr& ret_expr, FuncDecl& func_decl, const ScopeId id, const Lo
 
 PtrClassDef
 NewClassDef(const std::string& name
+    , std::vector<PtrVarDecl>& var_decl
+    , std::vector<PtrFuncDef>& func_def
     , const ScopeId id
     , const Locus& locus){
-  return std::make_unique<ClassDef>(name, id, locus);
+  return std::make_unique<ClassDef>(name, var_decl, func_def, id, locus);
 }
 
 };

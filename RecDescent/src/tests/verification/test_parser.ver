@@ -738,5 +738,22 @@ Declaration Table:
 Scopes of module:
 Scope 0: {(1:main) }
 Scope 2: {(0:a) }
-HierScope for:O1
+HScope of O1 1: {}
+
+---------------------------------------------------
+Parsing: "class O1{int a;} void main(){ O1 a;}"
+
+AST dump:
+-FuncDef: main
+--O1 a 
+-ClassDef: O1
+
+Declaration Table:
+1: Symbol: [ in scope 2 a of type O1]
+2: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(2:main) }
+Scope 2: {(1:a) }
+HScope of O1 1: {(0:a) }
 

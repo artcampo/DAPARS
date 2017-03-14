@@ -138,7 +138,7 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "class O1{} void main(){ O1 a;}"), g);
 
-parse<Grammar,ParserLL1RecDesc>( std::string(
+  parse<Grammar,ParserLL1RecDesc>( std::string(
     "class O1{int a;} void main(){ O1 a;}"), g);
 
   /*

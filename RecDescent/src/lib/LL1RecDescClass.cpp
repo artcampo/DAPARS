@@ -27,15 +27,15 @@ PtrClassDef ParserLL1RecDesc::ClassDef_(const ScopeId scope_inht){
 
   Accept(kToken::lcbr, kErr81);
 
-  std::vector<PtrVarDecl> var_decl_inht;
-  std::vector<PtrFuncDef> func_def_inht;
-  MemberList(var_decl_inht, func_def_inht, scope_id);
+  std::vector<PtrVarDecl> var_decl;
+  std::vector<PtrFuncDef> func_def;
+  MemberList(var_decl, func_def, scope_id);
 
   Accept(kToken::rcbr, kErr82);
 
   unit_.ExitClassDefinition();
 
-  PtrClassDef cdef = NewClassDef(name, scope_inht, l);
+  PtrClassDef cdef = NewClassDef(name, var_decl, func_def, scope_inht, l);
   RegNameType(name);
 
   return std::move(cdef);
@@ -74,7 +74,7 @@ void ParserLL1RecDesc::Member(const Compiler::AST::Type& type_inht
   //MEMBER -> ;
   if(Accept(kToken::semicolon, kErr87)){
     var_decl_inht.push_back( std::move(
-      NewVarDecl(name_inht, type_inht, scope_inht, locus_inht) ));
+      BuildNameDecl(name_inht, type_inht, scope_inht, locus_inht) ));
     return;
   }
 
