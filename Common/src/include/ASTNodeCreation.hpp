@@ -194,6 +194,13 @@ NewClassDef(const std::string& name
   return std::make_unique<ClassDef>(name, var_decl, func_def, id, locus);
 }
 
+PtrVarName
+NewVarName(const std::string& name
+    , const ScopeId id
+    , const Locus& locus){
+  return std::make_unique<VarName>(name, id, locus);
+}
+
 };
 
 } //end namespace Common

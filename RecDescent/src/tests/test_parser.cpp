@@ -139,7 +139,7 @@ int main()
     "class O1{} void main(){ O1 a;}"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "class O1{int a;} void main(){ O1 a;}"), g);
+    "class O1{int a;} void main(){ O1 a; int b; b = a.a;}"), g);
 
   /*
   //these mess with the parser, big time

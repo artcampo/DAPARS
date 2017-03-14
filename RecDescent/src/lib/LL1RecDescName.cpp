@@ -6,8 +6,7 @@ namespace RecDescent{
 // name_inht will be used for function calls.
 // in case of member function it should look like "Class::memberfunction"
 // Returns: pointer to expr_var
-PtrExpr ParserLL1RecDesc::Argm(const std::string& name_inht, PtrExprVar& var_inht, const Compiler::AST::Type& type_inht, const ScopeId scope_inht
-            , const Locus& locus_inht){
+PtrExpr ParserLL1RecDesc::Argm(const std::string& name_inht, PtrExprVar& var_inht, const Compiler::AST::Type& type_inht, const ScopeId scope_inht, const Locus& locus_inht){
   //ARGM -> {empty}  => , {empty} = + ) ;
   if(Check(set_argm_)) return std::move(var_inht);
 
@@ -22,6 +21,23 @@ PtrExpr ParserLL1RecDesc::Argm(const std::string& name_inht, PtrExprVar& var_inh
 
   //ARGM -> . {nam} ARGM  => .
   if(TryAndAccept(kToken::dot)){
+    //if( not unit_.ClassHasHScope(name_inht))
+    if( not var_inht->GetType().IsClass() )
+      { Error(kErr89); return std::move(nullptr); }
+
+    Locus l_varname = CurrentLocus();
+    if( not Accept(kToken::name))
+      { Error(kErr90); return std::move(nullptr); }
+
+    const std::string name = prev_token_string_value_;
+
+    HierarchicalScope& s = unit_.GetHScope(name_inht);
+    if(not s.HasDecl(name))
+      { Error(kErr91 + name + " in class " + name_inht); return std::move(nullptr); }
+
+    PtrVarName  rhs = NewVarName(name, scope_inht, l_varname);
+//     var_inht
+
   }
 
   //Error detection
