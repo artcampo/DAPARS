@@ -141,6 +141,8 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "class O1{int a;} void main(){ O1 inst; int b; b = inst.a;}"), g);
 
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "class O1{int a;} class O2{ O1 o1;} void main(){ O2 inst; int b; b = inst.o1.a;}"), g);
 
   /*
   //these mess with the parser, big time

@@ -26,7 +26,9 @@ PtrExpr ParserLL1RecDesc::Argm(const std::string& name_inht, PtrExprVar& var_inh
     const std::string name = prev_token_string_value_;
 
     PtrVarName  rhs = NewVarName(name, scope_inht, l_varname);
-    return std::move( NewDotOp(var_inht, rhs, scope_inht, locus_inht));
+    PtrExprVar  dot = NewDotOp(var_inht, rhs, scope_inht, locus_inht);
+
+    return std::move( Argm(name, dot, type_inht, scope_inht, locus_inht ));
   }
 
   //Error detection
