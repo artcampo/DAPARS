@@ -201,6 +201,14 @@ NewVarName(const std::string& name
   return std::make_unique<VarName>(name, id, locus);
 }
 
+PtrDotOp
+NewDotOp(PtrExprVar& lhs, PtrVarName& rhs, const ScopeId id
+  , const Locus& locus){
+  if(not lhs or not rhs) return PtrDotOp(nullptr);
+  return std::make_unique<DotOp>(lhs, rhs, id, locus);
+}
+
+
 };
 
 } //end namespace Common

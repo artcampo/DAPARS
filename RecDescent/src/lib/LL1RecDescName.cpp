@@ -22,20 +22,20 @@ PtrExpr ParserLL1RecDesc::Argm(const std::string& name_inht, PtrExprVar& var_inh
   //ARGM -> . {nam} ARGM  => .
   if(TryAndAccept(kToken::dot)){
     //if( not unit_.ClassHasHScope(name_inht))
-    if( not var_inht->GetType().IsClass() )
-      { Error(kErr89); return std::move(nullptr); }
+//     if( not var_inht->GetType().IsClass() )
+//       { Error(kErr89); return std::move(nullptr); }
 
     Locus l_varname = CurrentLocus();
-    if( not Accept(kToken::name))
-      { Error(kErr90); return std::move(nullptr); }
+    if( not Accept(kToken::name, kErr90)) return std::move(nullptr);
 
     const std::string name = prev_token_string_value_;
 
-    HierarchicalScope& s = unit_.GetHScope(name_inht);
-    if(not s.HasDecl(name))
-      { Error(kErr91 + name + " in class " + name_inht); return std::move(nullptr); }
+//     HierarchicalScope& s = unit_.GetHScope(name_inht);
+//     if(not s.HasDecl(name))
+//       { Error(kErr91 + name + " in class " + name_inht); return std::move(nullptr); }
 
     PtrVarName  rhs = NewVarName(name, scope_inht, l_varname);
+    return std::move( NewDotOp(var_inht, rhs, scope_inht, locus_inht));
 //     var_inht
 
   }
