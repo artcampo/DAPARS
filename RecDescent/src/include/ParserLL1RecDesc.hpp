@@ -124,7 +124,10 @@ private:
 */
 private:
   std::string undeclared_name_;
-  bool  inside_member_function_;
+
+  //special vars to manage class' member functions
+  bool  inside_member_function_definition_;
+  ScopeId member_scope_id_; //only valid if previous is true
 
   //top() points to current owner
   std::stack<ScopeOwnerId> scope_owner_id_;

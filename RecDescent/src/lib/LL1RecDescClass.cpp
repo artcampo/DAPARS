@@ -80,11 +80,12 @@ void ParserLL1RecDesc::Member(const Compiler::AST::Type& type_inht
 
   //MEMBER -> ( PARL ) { STMTS }
   if(Accept(kToken::lpar, kErr87)){
-    inside_member_function_ = true;
+    inside_member_function_definition_ = true;
+    member_scope_id_ = scope_inht;
     var_decl_inht.push_back( std::move(
       NewVarDecl(name_inht, type_inht, scope_inht, locus_inht) ));
 
-    inside_member_function_ = false;
+    inside_member_function_definition_ = false;
     return;
   }
 }
