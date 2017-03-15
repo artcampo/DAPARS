@@ -114,6 +114,13 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int f(){ int a;} class f{} void main(){ int a;}"), g);
 
+  //Test that should be applied
+  /*
+  //should say that main is being defined inside a class
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "class O1{int f(int a, int b){int c; c = a+b; return c;} void main(){ O1 inst; int b; b = inst.f(1,2);}"), g);
+   */
+
   //tests that sigsev
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(

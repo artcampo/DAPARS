@@ -12,6 +12,7 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
   if(Accept(kToken::name, kErr26)) name = prev_token_string_value_;
   const std::string& n =  name;
 
+  Accept(kToken::lpar, kErr27);
   return std::move( ParseFuncDef(ret_type, n, l, scope_inht) );
 
 }
@@ -19,7 +20,7 @@ PtrFuncDef ParserLL1RecDesc::FuncDef_(const ScopeId scope_inht){
 PtrFuncDef ParserLL1RecDesc::ParseFuncDef(const Compiler::AST::Type& ret_type_inht
     , const std::string& name_inht, const Locus& locus_inht, const ScopeId scope_inht){
 
-  Accept(kToken::lpar, kErr27);
+
   //Scope for
   scope_owner_id_.push( unit_.NewScopeOwner() );
   const ScopeId id = unit_.NewFunction(name_inht, scope_owner_id_.top());

@@ -72,22 +72,25 @@ void ParserLL1RecDesc::Member(const Compiler::AST::Type& type_inht
     , const ScopeId scope_inht ){
 
   //MEMBER -> ;
-  if(Accept(kToken::semicolon, kErr87)){
+  if(TryAndAccept(kToken::semicolon)){
     var_decl_inht.push_back( std::move(
       BuildNameDecl(name_inht, type_inht, scope_inht, locus_inht) ));
     return;
   }
 
   //MEMBER -> ( PARL ) { STMTS }
-  if(Accept(kToken::lpar, kErr87)){
+  if(TryAndAccept(kToken::lpar)){
     inside_member_function_definition_ = true;
     member_scope_id_ = scope_inht;
-    var_decl_inht.push_back( std::move(
-      NewVarDecl(name_inht, type_inht, scope_inht, locus_inht) ));
+
+    PtrFuncDef f = ParseFuncDef(type_inht, name_inht, locus_inht, scope_inht);
 
     inside_member_function_definition_ = false;
+    func_def_inht.push_back(std::move(f));
     return;
   }
+
+  Error(kErr87);
 }
 
 /*
