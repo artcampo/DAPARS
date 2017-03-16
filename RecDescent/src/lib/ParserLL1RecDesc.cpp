@@ -14,14 +14,16 @@ ParserLL1RecDesc::ParserLL1RecDesc(std::string const &file_name, CompilationUnit
 //   , Grammar& grammar)
   : BaseParser(file_name, unit)
   , inside_member_function_definition_(false)
-  , undeclared_name_(std::string("undeclared_name")){ BuildTokenVectors();}
+  , undeclared_name_(std::string("undeclared_name"))
+  , defer_build_call_(false){ BuildTokenVectors();}
 //   , grammar_(grammar){}
 
 ParserLL1RecDesc::ParserLL1RecDesc(const std::vector<char>& parse_data, CompilationUnit& unit)
 //   , Grammar& grammar)
   : BaseParser(parse_data, unit)
   , inside_member_function_definition_(false)
-  , undeclared_name_(std::string("undeclared_name")){ BuildTokenVectors(); }
+  , undeclared_name_(std::string("undeclared_name"))
+  , defer_build_call_(false){ BuildTokenVectors(); }
 //   , grammar_(grammar){}
 
 void ParserLL1RecDesc::Parse(){

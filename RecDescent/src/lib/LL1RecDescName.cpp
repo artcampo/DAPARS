@@ -12,10 +12,11 @@ PtrExpr ParserLL1RecDesc::Argm(const std::string& name_inht, PtrExprVar& var_inh
 
   //ARGM -> ( ARGL )  => (
   if(TryAndAccept(kToken::lpar)){
+    defer_build_call_ = true;
     std::vector<PtrExpr> args;
     PtrExpr argm_synt = ArgList(name_inht, var_inht, type_inht, args, scope_inht, locus_inht);
     Accept(kToken::rpar, kErr35);
-
+    defer_build_call_ = false;
     return std::move(argm_synt);
   }
 
@@ -84,6 +85,10 @@ PtrExpr ParserLL1RecDesc::ArgListPrime(const std::string& name_inht, PtrExprVar&
 PtrExpr ParserLL1RecDesc::BuildFunctionCall(const std::string& name_inht, PtrExprVar& var_inht
   , const Compiler::AST::Type& type_inht, std::vector<PtrExpr>& args_inht
   , const ScopeId scope_inht, const Locus& locus_inht){
+  if(defer_build_call_)
+    return BuildIncompleteFunctionCall(name_inht, var_inht, type_inht
+      , args_inht, scope_inht, locus_inht);
+
   //TODO: build missing arguments as default expresions
   // per type
 
@@ -123,6 +128,21 @@ PtrExpr ParserLL1RecDesc::RecoveryArgList(const std::string& name_inht, PtrExprV
   Error(kErr36);
   ConsumeTokensUntil(kToken::rpar);
   return BuildFunctionCall(name_inht, var_inht, type_inht, args_inht, scope_inht, locus_inht);
+}
+
+PtrExpr ParserLL1RecDesc::BuildIncompleteFunctionCall(const std::string& name_inht, PtrExprVar& var_inht
+  , const Compiler::AST::Type& type_inht, std::vector<PtrExpr>& args_inht
+  , const ScopeId scope_inht, const Locus& locus_inht){
+  const AST::Type&      ret_type  = unit_.GetTypeUnknown();
+  const AST::FuncType&  type_func = dynamic_cast<const AST::FuncType&>(
+      unit_.GetTypeUnknown());
+
+  PtrFuncCall call =
+    NewFuncCall(name_inht, var_inht, type_func, args_inht, scope_inht, locus_inht);
+  PtrFuncRet ret =
+    NewFuncRet(ret_type, call, scope_inht, locus_inht);
+
+  return std::move(ret);
 }
 
 } //end namespace RecDescent

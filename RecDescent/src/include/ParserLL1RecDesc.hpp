@@ -110,6 +110,11 @@ private:
     , const Compiler::AST::Type& type_inht, std::vector<PtrExpr>& args_inht
     , const ScopeId scope_inht, const Locus& locus_inht);
 
+  PtrExpr
+  BuildIncompleteFunctionCall(const std::string& name_inht, PtrExprVar& var_inht
+    , const Compiler::AST::Type& type_inht, std::vector<PtrExpr>& args_inht
+    , const ScopeId scope_inht, const Locus& locus_inht);
+
   PtrExpr         RecoveryArgList(const std::string& name_inht
                                 , PtrExprVar& var_inht
                                 , const Compiler::AST::Type& type_inht
@@ -131,6 +136,7 @@ private:
   //special vars to manage class' member functions
   bool  inside_member_function_definition_;
   ScopeId member_scope_id_; //only valid if previous is true
+  bool defer_build_call_;
 
   //top() points to current owner
   std::stack<ScopeOwnerId> scope_owner_id_;
