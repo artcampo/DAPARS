@@ -187,13 +187,11 @@ Parsing: "void main(){int a,b,c; a= 2+1; a = b+c; 2 = 2; }"
 
 ------------------------------------------------------------------
 Parsing: "int f(int p1){int a; a=p1;} void main(){int a; a=1;  a=f();}"
-[err:39] Function call with less arguments than expected at: "=1;  a=f()" -> ";}"
-[err:31] function body empty at: ";  a=f();}" -> ""
-AST not build (fatal errors) at: ";  a=f();}" -> ""
+[err:39] Function call with less arguments than expected at: " a=1;  a=f" -> "();}"
 
 ------------------------------------------------------------------
 Parsing: "int f(int p1){int a; a=p1;} void main(){int a; a=f(2,3);}"
-[err:40] Function call with more arguments than expected (extra arguments will be discarded) at: "; a=f(2,3)" -> ";}"
+[err:40] Function call with more arguments than expected (extra arguments will be discarded) at: "int a; a=f" -> "(2,3);}"
 
 ------------------------------------------------------------------
 Parsing: "int f(int p1, int p2){int a; a=p1;} void main(){int a; a=f(2,true);}"

@@ -69,12 +69,12 @@ AST dump:
 -FuncDef: main
 --int a 
 --Assign
----a [int Lvalue Write Value]
----Op: +  [int Rvalue]
-----Op: +  [int Rvalue]
------Literal: 2 [int Rvalue]
------Literal: 3 [int Rvalue]
-----Literal: 4 [int Rvalue]
+---a
+---Op: + 
+----Op: + 
+-----Literal: 2
+-----Literal: 3
+----Literal: 4
 
 
 Declaration Table:
@@ -510,18 +510,18 @@ AST dump:
 -FuncDef: main
 --int a int b int c 
 --Assign
----b [int Lvalue Write Value]
----Literal: 1 [int Rvalue]
+---b
+---Literal: 1
 --Assign
----c [int Lvalue Write Value]
----Literal: 2 [int Rvalue]
+---c
+---Literal: 2
 --Assign
----a [int Lvalue Write Value]
----Op: +  [int Rvalue]
-----Op: +  [int Rvalue]
------Literal: 1 [int Rvalue]
------b [int Lvalue Read Value]
-----c [int Lvalue Read Value]
+---a
+---Op: + 
+----Op: + 
+-----Literal: 1
+-----b
+----c
 
 
 Declaration Table:
@@ -794,4 +794,36 @@ Scope 0: {(4:main) }
 Scope 3: {(2:inst) (3:b) }
 HScope of O1 1: {(0:a) }
 HScope of O2 2: {(1:o1) }
+
+---------------------------------------------------
+Parsing: "class O1{int f(int a, int b){int c; c = a+b; return c;}} void main(){ O1 inst; int b; b = inst.f(1,2);}"
+
+AST dump:
+-FuncDef: main
+--O1 inst 
+--int b 
+--Assign
+---b [int Lvalue Write Value]
+---FuncRet: int [int Rvalue]
+----FuncCall: inst.f [function: (int, int)->int]
+-----inst.f [function: (int, int)->int]
+------inst [O1]
+------f
+-----Literal: 1 [int]
+-----Literal: 2 [int]
+-ClassDef: O1
+
+
+Declaration Table:
+0: Symbol: [ in scope 2 a of type int]
+1: Symbol: [ in scope 2 b of type int]
+2: Symbol: [ in scope 2 c of type int]
+4: Symbol: [ in scope 3 inst of type O1]
+5: Symbol: [ in scope 3 b of type int]
+6: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(6:main) }
+Scope 3: {(4:inst) (5:b) }
+HScope of O1 1: {(3:f) }
 

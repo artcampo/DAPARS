@@ -135,7 +135,7 @@ PtrExpr ParserLL1RecDesc::BuildIncompleteFunctionCall(const std::string& name_in
   , const ScopeId scope_inht, const Locus& locus_inht){
   const AST::Type&      ret_type  = unit_.GetTypeUnknown();
   const AST::FuncType&  type_func = dynamic_cast<const AST::FuncType&>(
-      unit_.GetTypeUnknown());
+      unit_.GetFuncType(unit_.GetTypeUnknown(), {}) );
 
   PtrFuncCall call =
     NewFuncCall(name_inht, var_inht, type_func, args_inht, scope_inht, locus_inht);
