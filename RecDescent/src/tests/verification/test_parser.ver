@@ -812,6 +812,15 @@ AST dump:
 -----Literal: 1 [int]
 -----Literal: 2 [int]
 -ClassDef: O1
+--FuncDef: f
+---int c 
+---Assign
+----c [int Lvalue Write Value]
+----Op: +  [int Rvalue]
+-----a [int Lvalue Read Value]
+-----b [int Lvalue Read Value]
+---Return (c)
+----c [int Lvalue Read Value]
 
 
 Declaration Table:
@@ -826,4 +835,42 @@ Scopes of module:
 Scope 0: {(6:main) }
 Scope 3: {(4:inst) (5:b) }
 HScope of O1 1: {(3:f) }
+Scope 2: {(0:a) (1:b) (2:c) }
+
+---------------------------------------------------
+Parsing: "class O1{int f(int a){return a + a_;} int a_;} void main(){ O1 inst; int b; b = inst.f(1);}"
+[error:16] Var used before declaration at: "rn a + a_;" -> "} int a_;} void main(){ O1 inst; int b; b = inst.f(1);}"
+
+AST dump:
+-FuncDef: main
+--O1 inst 
+--int b 
+--Assign
+---b
+---FuncRet: typeUnknown
+----FuncCall: inst.f [function: (int)->int]
+-----inst.f [function: (int)->int]
+------inst [O1]
+------f
+-----Literal: 1
+-ClassDef: O1
+--FuncDef: f
+---Return ( + )
+----Op: + 
+-----a
+-----a_
+
+
+Declaration Table:
+0: Symbol: [ in scope 2 a of type int]
+1: Symbol: [ in scope 2 a_ of type int]
+4: Symbol: [ in scope 3 inst of type O1]
+5: Symbol: [ in scope 3 b of type int]
+6: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(6:main) }
+Scope 3: {(4:inst) (5:b) }
+HScope of O1 1: {(2:f) (3:a_) }
+Scope 2: {(0:a) (1:a_) }
 

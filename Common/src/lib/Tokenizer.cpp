@@ -97,7 +97,7 @@ ParseKeyword(std::vector<char>::const_iterator& current_position
 }
 
 bool IsLetter(const char& c){
- return((c >= 'a' and c <= 'z') or (c >= 'A' and c <= 'Z') );
+ return((c >= 'a' and c <= 'z') or (c >= 'A' and c <= 'Z') or (c == '_'));
 }
 
 bool IsNumber(const char& c){
