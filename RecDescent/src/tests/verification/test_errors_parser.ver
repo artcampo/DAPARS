@@ -203,7 +203,7 @@ Parsing: "int f(){ return 1} void main(){ int a;}"
 
 ------------------------------------------------------------------
 Parsing: "int f(){ return true;} void main(){ int a;}"
-[err:45] Return's expression doesn not match function return type: int vs bool
+[err:45] Return's expression doesn not match function return type: int vs bool at: "(){ return" -> " true;} void main(){ int a;}"
 
 ------------------------------------------------------------------
 Parsing: "int f(){ int a;} class f{} void main(){ int a;}"
