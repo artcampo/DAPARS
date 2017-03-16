@@ -3,7 +3,7 @@
 #include "IRDefinition.hpp"
 #include "AST/Node.hpp"
 #include "Utils.hpp"
-#include "ASTVisitors/ASTVisitorPrettyPrinter.hpp"
+#include "ASTVisitors/PrettyPrinter.hpp"
 #include <iostream>
 #include <memory>
 #include <string>

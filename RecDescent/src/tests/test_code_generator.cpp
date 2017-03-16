@@ -4,9 +4,9 @@
 
 #include "ParserLL1RecDesc.hpp"
 #include "Grammar.hpp"
-#include "ASTVisitors/ASTVisitorDump.hpp"
-#include "ASTVisitors/ASTVisitorPrettyPrinter.hpp"
-#include "ASTVisitors/ASTVisitorScopes.hpp"
+#include "ASTVisitors/Dump.hpp"
+#include "ASTVisitors/PrettyPrinter.hpp"
+#include "ASTVisitors/Scopes.hpp"
 #include "IR/IRGenerator.hpp"
 #include "CompilationUnit.hpp"
 #include "Passes/PassManager.hpp"
@@ -39,7 +39,7 @@ void parse(const std::string& str, G& g)
   parser->Parse();
   if(unit.ValidAst()){
     if(unit.NumScopes()>1){
-      ASTVisitorScopes v(unit);
+      Scopes v(unit);
       v.Visit(*unit.GetAstProg());
       std::cout << std::endl;
     }
@@ -50,7 +50,7 @@ void parse(const std::string& str, G& g)
   if(unit.GetAstProg() != nullptr){
     /*
     std::cout << "\nAST dump:\n";
-    ASTVisitorDump visitor_dump(unit, true);
+    Dump visitor_dump(unit, true);
     visitor_dump.Visit(*unit.GetAstProg());
 */
 

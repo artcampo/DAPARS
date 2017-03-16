@@ -4,9 +4,9 @@
 
 #include "ParserLL1RecDesc.hpp"
 #include "Grammar.hpp"
-#include "ASTVisitors/ASTVisitorDump.hpp"
-#include "ASTVisitors/ASTVisitorPrettyPrinter.hpp"
-#include "ASTVisitors/ASTVisitorScopes.hpp"
+#include "ASTVisitors/Dump.hpp"
+#include "ASTVisitors/PrettyPrinter.hpp"
+#include "ASTVisitors/Scopes.hpp"
 #include "CompilationUnit.hpp"
 #include "Passes/PassManager.hpp"
 #include <iostream>
@@ -40,7 +40,7 @@ void parse(const std::string& str, G& g)
   //Pre passes ASTdump, for when attributes lead to sigsev
   if(unit.GetAstProg() != nullptr){
     std::cout << "\nAST dump (without extra info):\n";
-    ASTVisitorDump visitor_dump(unit);
+    Dump visitor_dump(unit);
     visitor_dump.Visit(*unit.GetAstProg());
   }
   */
@@ -52,14 +52,14 @@ void parse(const std::string& str, G& g)
   if(unit.GetAstProg() != nullptr){
     /*
     std::cout << "\nAST pretty:\n";
-    ASTVisitorPrettyPrinter visitor;
+    PrettyPrinter visitor;
     visitor.Visit(*unit.GetAstProg());
     */
     std::cout << "\nAST dump:\n";
-    ASTVisitorDump visitor_dump(unit, true);
+    Dump visitor_dump(unit, true);
     visitor_dump.Visit(*unit.GetAstProg());
     if(unit.NumScopes()>1){
-      ASTVisitorScopes v(unit);
+      Scopes v(unit);
       v.Visit(*unit.GetAstProg());
     }
 

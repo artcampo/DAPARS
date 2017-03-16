@@ -3,7 +3,7 @@
 #include "IRDefinition.hpp"
 #include "AST/Node.hpp"
 #include "Utils.hpp"
-#include "ASTVisitors/ASTVisitorPrettyPrinter.hpp"
+#include "ASTVisitors/PrettyPrinter.hpp"
 #include <iostream>
 #include <memory>
 #include <string>
@@ -40,7 +40,7 @@ int main(int argc, char **argv)
     std::cout << "Program block is empty!" << std::endl;
 
   std::cout << "\nPrint AST\n";
-  ASTVisitorPrettyPrinter visitor;
+  PrettyPrinter visitor;
   visitor.Visit(*programBlock);
 */
 

@@ -3,7 +3,7 @@
 #include "IRDefinition.hpp"
 #include "AST/Node.hpp"
 #include "Utils.hpp"
-#include "ASTVisitors/ASTVisitorPrettyPrinter.hpp"
+#include "ASTVisitors/PrettyPrinter.hpp"
 #include <iostream>
 #include <fstream>
 #include <iostream>
@@ -35,7 +35,7 @@ int main(int argc, char **argv)
   }
 
   std::cout << "Print AST\n";
-  ASTVisitorPrettyPrinter visitor;
+  PrettyPrinter visitor;
   visitor.Visit(*unit.GetAstProg());
 
   return 0;

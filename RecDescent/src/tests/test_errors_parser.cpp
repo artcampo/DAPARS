@@ -4,8 +4,8 @@
 
 #include "ParserLL1RecDesc.hpp"
 #include "Grammar.hpp"
-#include "ASTVisitors/ASTVisitorDump.hpp"
-#include "ASTVisitors/ASTVisitorPrettyPrinter.hpp"
+#include "ASTVisitors/Dump.hpp"
+#include "ASTVisitors/PrettyPrinter.hpp"
 #include "Passes/PassManager.hpp"
 #include <iostream>
 #include <memory>
@@ -39,7 +39,7 @@ void parse(const std::string& str, G& g)
   /*
   if(unit.GetAstProg() != nullptr){
     std::cout << "\nAST dump:\n";
-    ASTVisitorDump visitor_dump(unit, true);
+    Dump visitor_dump(unit, true);
     visitor_dump.Visit(*unit.GetAstProg());
   }
 */
