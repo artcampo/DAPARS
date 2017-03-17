@@ -872,3 +872,51 @@ HScope of O1 1: {(2:f) (3:a_) }
 Scope 2: {(1:a) }
 Scope 3: {(4:inst) (5:b) }
 
+---------------------------------------------------
+Parsing: "class O1{int f(int a){return 1;} } class O2{int g(){return inst_.f() + 1;} O1 inst_; } void main(){ O2 inst; int b; b = inst.g();}"
+[err:89] symbol is not a class (of dot op)
+[err:38] Function call with a non-function name at: "turn inst_" -> ".f() + 1;} O1 inst_; } void main(){ O2 inst; int b; b = inst.g();}"
+
+AST dump:
+-ClassDef: O1
+--FuncDef: f
+---Return (1)
+----Literal: 1
+-ClassDef: O2
+--FuncDef: g
+---Return ( + )
+----Op: + 
+-----FuncRet: typeUnknown
+------FuncCall: inst_.f
+-------inst_.f [typeError]
+--------inst_ [typeUnknown]
+--------f
+
+-----Literal: 1
+-FuncDef: main
+--O2 inst 
+--int b 
+--Assign
+---b
+---FuncRet: typeUnknown
+----FuncCall: inst.g [function: ()->int]
+-----inst.g [function: ()->int]
+------inst [O2]
+------g
+
+
+
+Declaration Table:
+1: Symbol: [ in scope 2 a of type int]
+5: Symbol: [ in scope 5 inst of type O2]
+6: Symbol: [ in scope 5 b of type int]
+7: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(7:main) }
+HScope of O1 1: {(2:f) }
+Scope 2: {(1:a) }
+HScope of O2 3: {(3:g) (4:inst_) }
+Scope 4: {}
+Scope 5: {(5:inst) (6:b) }
+
