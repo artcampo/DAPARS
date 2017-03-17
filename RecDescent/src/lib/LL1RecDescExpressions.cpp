@@ -134,12 +134,19 @@ PtrExpr ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
 }
 
 
-//inside_member_function_definition_
+//This function has to consider when are we inside a class definition,
+//as in that case access to yet not declared members is valid
 //var_type is an output of the function, which could be type_unknown
 PtrExprVar ParserLL1RecDesc::BuildVar(const std::string& var_name
   , const AST::Type*& var_type, const ScopeId scope_inht){
   Locus l = CurrentLocus();
-  if(not unit_.HasDecl(var_name, scope_inht)){
+  bool found_in_lexical_scope = false;
+  bool found_in_hierarchical_scope = false;
+  Symbols::SymbolId dec_sid;
+
+  if(unit_.HasDecl(var_name, scope_inht)){
+    found_in_lexical_scope = true;
+  } else if(not inside_member_function_definition_){
     //Error depends on what we think the name refers to
     if(Check({kToken::lpar}))      Error(kErr46);
     else if(Check({kToken::dot}))  Error(kErr85);
@@ -147,16 +154,34 @@ PtrExprVar ParserLL1RecDesc::BuildVar(const std::string& var_name
 
     //Todo: this recovery will be insufficiente for calls/objects
     //Error recovery: insert it as int
-    VarDecl* n = new VarDecl(undeclared_name_, unit_.GetTypeInt()
-                         , scope_inht, l);
-    unit_.RegisterDecl(var_name, unit_.GetTypeInt(), *n, scope_inht);
+    //TODO: this ptr will leak
+    BuildNameDecl(var_name, unit_.GetTypeInt(), scope_inht, l);
+    found_in_lexical_scope = true;
+  }else{
+    //inside_member_function_definition_ = true
+    if(unit_.HasDecl(var_name, member_scope_id_))
+      found_in_hierarchical_scope = true;
+    else{
+      //Var could be member still not declared
+      var_type  = &unit_.GetTypeUnknown();
+      dec_sid   = Symbols::Symbol::UnknownSymbol();
+    }
+  }
+
+  if(found_in_lexical_scope){
+    var_type = &unit_.GetType(var_name, scope_inht);
+    dec_sid  = unit_.DeclId(var_name, scope_inht);
+  }
+  if(found_in_hierarchical_scope){
+    var_type = &unit_.GetType(var_name, member_scope_id_);
+    dec_sid  = unit_.DeclId(var_name, member_scope_id_);
   }
 
   //const std::string name = prev_token_string_value_;
-  var_type = &unit_.GetType(var_name, scope_inht);
+
   return std::move( NewVar(var_name
                   , *var_type
-                  , unit_.DeclId(var_name, scope_inht)
+                  , dec_sid
                   , scope_inht, l) );
 }
 

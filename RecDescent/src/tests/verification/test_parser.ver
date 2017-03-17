@@ -30,12 +30,12 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(1:main) }
-Scope 1: {(0:a) }
+Scope 0: {(2:main) }
+Scope 1: {(1:a) }
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=2+3+4; }"
@@ -53,12 +53,12 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(1:main) }
-Scope 1: {(0:a) }
+Scope 0: {(2:main) }
+Scope 1: {(1:a) }
 
 
 ---------------------------------------------------
@@ -78,12 +78,12 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(1:main) }
-Scope 1: {(0:a) }
+Scope 0: {(2:main) }
+Scope 1: {(1:a) }
 
 
 ---------------------------------------------------
@@ -105,12 +105,12 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(1:main) }
-Scope 1: {(0:a) }
+Scope 0: {(2:main) }
+Scope 1: {(1:a) }
 
 
 ---------------------------------------------------
@@ -137,12 +137,12 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(1:main) }
-Scope 1: {(0:a) }
+Scope 0: {(2:main) }
+Scope 1: {(1:a) }
 
 
 Grammar:
@@ -179,12 +179,12 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(1:main) }
-Scope 1: {(0:a) }
+Scope 0: {(2:main) }
+Scope 1: {(1:a) }
 Scope 2: {}
 
 ---------------------------------------------------
@@ -210,12 +210,12 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(1:main) }
-Scope 1: {(0:a) }
+Scope 0: {(2:main) }
+Scope 1: {(1:a) }
 Scope 2: {}
 
 ---------------------------------------------------
@@ -242,12 +242,12 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(1:main) }
-Scope 1: {(0:a) }
+Scope 0: {(2:main) }
+Scope 1: {(1:a) }
 Scope 2: {}
 
 ---------------------------------------------------
@@ -277,12 +277,12 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(1:main) }
-Scope 1: {(0:a) }
+Scope 0: {(2:main) }
+Scope 1: {(1:a) }
 Scope 2: {}
 
 ---------------------------------------------------
@@ -318,12 +318,12 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(1:main) }
-Scope 1: {(0:a) }
+Scope 0: {(2:main) }
+Scope 1: {(1:a) }
 Scope 2: {}
 Scope 3: {}
 Scope 4: {}
@@ -365,12 +365,12 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(1:main) }
-Scope 1: {(0:a) }
+Scope 0: {(2:main) }
+Scope 1: {(1:a) }
 Scope 2: {}
 Scope 3: {}
 Scope 4: {}
@@ -407,12 +407,12 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(1:main) }
-Scope 1: {(0:a) }
+Scope 0: {(2:main) }
+Scope 1: {(1:a) }
 Scope 2: {}
 Scope 3: {}
 Scope 4: {}
@@ -428,14 +428,14 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 1 b of type int]
-2: Symbol: [ in scope 1 c of type bool]
-3: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 1 b of type int]
+3: Symbol: [ in scope 1 c of type bool]
+4: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(3:main) }
-Scope 1: {(0:a) (1:b) (2:c) }
+Scope 0: {(4:main) }
+Scope 1: {(1:a) (2:b) (3:c) }
 
 ---------------------------------------------------
 Parsing: "void main(){int b, c, d; bool e f; }"
@@ -448,16 +448,16 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 b of type int]
-1: Symbol: [ in scope 1 c of type int]
-2: Symbol: [ in scope 1 d of type int]
-3: Symbol: [ in scope 1 e of type bool]
-4: Symbol: [ in scope 1 f of type bool]
-5: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 1 b of type int]
+2: Symbol: [ in scope 1 c of type int]
+3: Symbol: [ in scope 1 d of type int]
+4: Symbol: [ in scope 1 e of type bool]
+5: Symbol: [ in scope 1 f of type bool]
+6: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(5:main) }
-Scope 1: {(0:b) (1:c) (2:d) (3:e) (4:f) }
+Scope 0: {(6:main) }
+Scope 1: {(1:b) (2:c) (3:d) (4:e) (5:f) }
 
 ---------------------------------------------------
 Parsing: "void main(){int a; a=1; }"
@@ -471,12 +471,12 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(1:main) }
-Scope 1: {(0:a) }
+Scope 0: {(2:main) }
+Scope 1: {(1:a) }
 
 ---------------------------------------------------
 Parsing: "void main(){int a; a=(1+2+3); }"
@@ -494,12 +494,12 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(1:main) }
-Scope 1: {(0:a) }
+Scope 0: {(2:main) }
+Scope 1: {(1:a) }
 
 ---------------------------------------------------
 Parsing: "void main(){int a b c; b=1; c=2; a=(1+b+c); }"
@@ -525,14 +525,14 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 1 b of type int]
-2: Symbol: [ in scope 1 c of type int]
-3: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 1 b of type int]
+3: Symbol: [ in scope 1 c of type int]
+4: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(3:main) }
-Scope 1: {(0:a) (1:b) (2:c) }
+Scope 0: {(4:main) }
+Scope 1: {(1:a) (2:b) (3:c) }
 
 ---------------------------------------------------
 Parsing: "void main(){ int a; int b; int a; }"
@@ -556,14 +556,14 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 2 b of type int]
-2: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 2 b of type int]
+3: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(2:main) }
-Scope 1: {(0:a) }
-Scope 2: {(1:b) }
+Scope 0: {(3:main) }
+Scope 1: {(1:a) }
+Scope 2: {(2:b) }
 
 ---------------------------------------------------
 Parsing: "void main(){ int a; if(1){int b;}else{int c;} }"
@@ -582,16 +582,16 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 2 b of type int]
-2: Symbol: [ in scope 3 c of type int]
-3: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 2 b of type int]
+3: Symbol: [ in scope 3 c of type int]
+4: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(3:main) }
-Scope 1: {(0:a) }
-Scope 2: {(1:b) }
-Scope 3: {(2:c) }
+Scope 0: {(4:main) }
+Scope 1: {(1:a) }
+Scope 2: {(2:b) }
+Scope 3: {(3:c) }
 
 ---------------------------------------------------
 Parsing: "void main(){ int a; while(1 + 2){ int c; c = 1+2; } }"
@@ -615,14 +615,14 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 2 c of type int]
-2: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 2 c of type int]
+3: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(2:main) }
-Scope 1: {(0:a) }
-Scope 2: {(1:c) }
+Scope 0: {(3:main) }
+Scope 1: {(1:a) }
+Scope 2: {(2:c) }
 
 ---------------------------------------------------
 Parsing: "void main(){ bool a, b; a = true; b = false; }"
@@ -639,13 +639,13 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type bool]
-1: Symbol: [ in scope 1 b of type bool]
-2: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 1 a of type bool]
+2: Symbol: [ in scope 1 b of type bool]
+3: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(2:main) }
-Scope 1: {(0:a) (1:b) }
+Scope 0: {(3:main) }
+Scope 1: {(1:a) (2:b) }
 
 ---------------------------------------------------
 Parsing: "void main(){ int* a; int* b; }"
@@ -657,13 +657,13 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type int*]
-1: Symbol: [ in scope 1 b of type int*]
-2: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 1 a of type int*]
+2: Symbol: [ in scope 1 b of type int*]
+3: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(2:main) }
-Scope 1: {(0:a) (1:b) }
+Scope 0: {(3:main) }
+Scope 1: {(1:a) (2:b) }
 
 ---------------------------------------------------
 Parsing: "void main(){ int* a; int b, c; b = 2; a = &b; c = *a; }"
@@ -686,14 +686,14 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type int*]
-1: Symbol: [ in scope 1 b of type int]
-2: Symbol: [ in scope 1 c of type int]
-3: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 1 a of type int*]
+2: Symbol: [ in scope 1 b of type int]
+3: Symbol: [ in scope 1 c of type int]
+4: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(3:main) }
-Scope 1: {(0:a) (1:b) (2:c) }
+Scope 0: {(4:main) }
+Scope 1: {(1:a) (2:b) (3:c) }
 
 ---------------------------------------------------
 Parsing: "void main(){int a; a= 2;} void f(){bool a; a=3;}"
@@ -713,38 +713,39 @@ AST dump:
 
 
 Declaration Table:
-0: Symbol: [ in scope 1 a of type int]
-1: Symbol: [ in scope 0 main of type function: ()->void]
-2: Symbol: [ in scope 2 a of type bool]
-3: Symbol: [ in scope 0 f of type function: ()->void]
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 0 main of type function: ()->void]
+3: Symbol: [ in scope 2 a of type bool]
+4: Symbol: [ in scope 0 f of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(1:main) (3:f) }
-Scope 1: {(0:a) }
-Scope 2: {(2:a) }
+Scope 0: {(2:main) (4:f) }
+Scope 1: {(1:a) }
+Scope 2: {(3:a) }
 
 ---------------------------------------------------
 Parsing: "class O1{} void main(){ O1 a;}"
 
 AST dump:
+-ClassDef: O1
 -FuncDef: main
 --O1 a 
--ClassDef: O1
 
 
 Declaration Table:
-0: Symbol: [ in scope 2 a of type O1]
-1: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 2 a of type O1]
+2: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(1:main) }
-Scope 2: {(0:a) }
+Scope 0: {(2:main) }
 HScope of O1 1: {}
+Scope 2: {(1:a) }
 
 ---------------------------------------------------
 Parsing: "class O1{int a;} void main(){ O1 inst; int b; b = inst.a;}"
 
 AST dump:
+-ClassDef: O1
 -FuncDef: main
 --O1 inst 
 --int b 
@@ -753,23 +754,24 @@ AST dump:
 ---inst.a [int]
 ----inst [O1]
 ----a
--ClassDef: O1
 
 
 Declaration Table:
-1: Symbol: [ in scope 2 inst of type O1]
-2: Symbol: [ in scope 2 b of type int]
-3: Symbol: [ in scope 0 main of type function: ()->void]
+2: Symbol: [ in scope 2 inst of type O1]
+3: Symbol: [ in scope 2 b of type int]
+4: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(3:main) }
-Scope 2: {(1:inst) (2:b) }
-HScope of O1 1: {(0:a) }
+Scope 0: {(4:main) }
+HScope of O1 1: {(1:a) }
+Scope 2: {(2:inst) (3:b) }
 
 ---------------------------------------------------
 Parsing: "class O1{int a;} class O2{ O1 o1;} void main(){ O2 inst; int b; b = inst.o1.a;}"
 
 AST dump:
+-ClassDef: O1
+-ClassDef: O2
 -FuncDef: main
 --O2 inst 
 --int b 
@@ -780,25 +782,33 @@ AST dump:
 -----inst [O2]
 -----o1
 ----a
--ClassDef: O1
--ClassDef: O2
 
 
 Declaration Table:
-2: Symbol: [ in scope 3 inst of type O2]
-3: Symbol: [ in scope 3 b of type int]
-4: Symbol: [ in scope 0 main of type function: ()->void]
+3: Symbol: [ in scope 3 inst of type O2]
+4: Symbol: [ in scope 3 b of type int]
+5: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(4:main) }
-Scope 3: {(2:inst) (3:b) }
-HScope of O1 1: {(0:a) }
-HScope of O2 2: {(1:o1) }
+Scope 0: {(5:main) }
+HScope of O1 1: {(1:a) }
+HScope of O2 2: {(2:o1) }
+Scope 3: {(3:inst) (4:b) }
 
 ---------------------------------------------------
 Parsing: "class O1{int f(int a, int b){int c; c = a+b; return c;}} void main(){ O1 inst; int b; b = inst.f(1,2);}"
 
 AST dump:
+-ClassDef: O1
+--FuncDef: f
+---int c 
+---Assign
+----c [int Lvalue Write Value]
+----Op: +  [int Rvalue]
+-----a [int Lvalue Read Value]
+-----b [int Lvalue Read Value]
+---Return (c)
+----c [int Lvalue Read Value]
 -FuncDef: main
 --O1 inst 
 --int b 
@@ -811,66 +821,54 @@ AST dump:
 ------f
 -----Literal: 1 [int]
 -----Literal: 2 [int]
--ClassDef: O1
---FuncDef: f
----int c 
----Assign
-----c [int Lvalue Write Value]
-----Op: +  [int Rvalue]
------a [int Lvalue Read Value]
------b [int Lvalue Read Value]
----Return (c)
-----c [int Lvalue Read Value]
 
 
 Declaration Table:
-0: Symbol: [ in scope 2 a of type int]
-1: Symbol: [ in scope 2 b of type int]
-2: Symbol: [ in scope 2 c of type int]
-4: Symbol: [ in scope 3 inst of type O1]
-5: Symbol: [ in scope 3 b of type int]
-6: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 2 a of type int]
+2: Symbol: [ in scope 2 b of type int]
+3: Symbol: [ in scope 2 c of type int]
+5: Symbol: [ in scope 3 inst of type O1]
+6: Symbol: [ in scope 3 b of type int]
+7: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(6:main) }
-Scope 3: {(4:inst) (5:b) }
-HScope of O1 1: {(3:f) }
-Scope 2: {(0:a) (1:b) (2:c) }
+Scope 0: {(7:main) }
+HScope of O1 1: {(4:f) }
+Scope 2: {(1:a) (2:b) (3:c) }
+Scope 3: {(5:inst) (6:b) }
 
 ---------------------------------------------------
 Parsing: "class O1{int f(int a){return a + a_;} int a_;} void main(){ O1 inst; int b; b = inst.f(1);}"
-[error:16] Var used before declaration at: "rn a + a_;" -> "} int a_;} void main(){ O1 inst; int b; b = inst.f(1);}"
 
 AST dump:
+-ClassDef: O1
+--FuncDef: f
+---Return ( + )
+----Op: +  [int Rvalue]
+-----a [int Lvalue Read Value]
+-----a_ [int Lvalue Read Value]
 -FuncDef: main
 --O1 inst 
 --int b 
 --Assign
----b
----FuncRet: typeUnknown
+---b [int Lvalue Write Value]
+---FuncRet: int [int Rvalue]
 ----FuncCall: inst.f [function: (int)->int]
 -----inst.f [function: (int)->int]
 ------inst [O1]
 ------f
------Literal: 1
--ClassDef: O1
---FuncDef: f
----Return ( + )
-----Op: + 
------a
------a_
+-----Literal: 1 [int]
 
 
 Declaration Table:
-0: Symbol: [ in scope 2 a of type int]
-1: Symbol: [ in scope 2 a_ of type int]
+1: Symbol: [ in scope 2 a of type int]
 4: Symbol: [ in scope 3 inst of type O1]
 5: Symbol: [ in scope 3 b of type int]
 6: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
 Scope 0: {(6:main) }
-Scope 3: {(4:inst) (5:b) }
 HScope of O1 1: {(2:f) (3:a_) }
-Scope 2: {(0:a) (1:a_) }
+Scope 2: {(1:a) }
+Scope 3: {(4:inst) (5:b) }
 

@@ -31,6 +31,7 @@ void ParserLL1RecDesc::Prog(){
 
   if(token_ != Tokenizer::kToken::eof) Error("More data after program.");
 
+//   std::cout << "Creating AST, with " << class_defs.size() << " classes\n";
   std::unique_ptr<AST::ProgBody> prog =
     std::make_unique<AST::ProgBody>(id, CurrentLocus(), pinit, pend, func_defs
                                   , class_defs);
