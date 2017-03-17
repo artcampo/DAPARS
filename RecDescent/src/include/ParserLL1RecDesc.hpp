@@ -130,6 +130,10 @@ private:
                         , const ScopeId scope_inht
                         , const Locus& locus_inht);
 
+  PtrExprVar
+  BuildVar(const std::string& var_name, const Compiler::AST::Type*& var_type
+    , const ScopeId scope_inht);
+
 private:
   std::string undeclared_name_;
 

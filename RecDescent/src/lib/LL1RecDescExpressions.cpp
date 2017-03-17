@@ -109,37 +109,10 @@ PtrExpr ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
 
   //F' := name ARGM
   if(TryAndAccept(kToken::name)){
-    if(not unit_.HasDecl(prev_token_string_value_, scope_inht)){
-      //Error depends on what we think the name refers to
-      if(Check({kToken::lpar}))      Error(kErr46);
-      else if(Check({kToken::dot}))  Error(kErr85);
-      else Error(kErr16);
-
-      //Todo: this recovery will be insufficiente for calls/objects
-      //Error recovery: insert it as int
-      VarDecl* n = new VarDecl(undeclared_name_, unit_.GetTypeInt()
-                           , scope_inht, l);
-      unit_.RegisterDecl(prev_token_string_value_, unit_.GetTypeInt(), *n, scope_inht);
-    }
-
-//     const std::string name = prev_token_string_value_;
-    const Compiler::AST::Type& type_inht
-      = unit_.GetType(prev_token_string_value_, scope_inht);
-    const std::string name(prev_token_string_value_);
-    PtrExprVar var_inht = NewVar(name
-                    , type_inht
-                    , unit_.DeclId(name, scope_inht)
-                    , scope_inht, l);
-    fp_synt = Argm(name, var_inht, type_inht, scope_inht, l);
-    /*
-    //
-    if(not fp_synt)
-      fp_synt = NewVar(prev_token_string_value_
-                    , unit_.GetType(prev_token_string_value_)
-                    , unit_.Scope().DeclId(prev_token_string_value_)
-                    , scope_inht, l);
-      */
-    return std::move(fp_synt);
+    std::string var_name(prev_token_string_value_);
+    const AST::Type* var_type;
+    PtrExprVar var = BuildVar(var_name, var_type, scope_inht);
+    return std::move(Argm(var_name, var, *var_type, scope_inht, l));
   }
 
   //F := ( E )
@@ -160,6 +133,32 @@ PtrExpr ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
   return std::move(fp_synt);
 }
 
+
+//inside_member_function_definition_
+//var_type is an output of the function, which could be type_unknown
+PtrExprVar ParserLL1RecDesc::BuildVar(const std::string& var_name
+  , const AST::Type*& var_type, const ScopeId scope_inht){
+  Locus l = CurrentLocus();
+  if(not unit_.HasDecl(var_name, scope_inht)){
+    //Error depends on what we think the name refers to
+    if(Check({kToken::lpar}))      Error(kErr46);
+    else if(Check({kToken::dot}))  Error(kErr85);
+    else Error(kErr16);
+
+    //Todo: this recovery will be insufficiente for calls/objects
+    //Error recovery: insert it as int
+    VarDecl* n = new VarDecl(undeclared_name_, unit_.GetTypeInt()
+                         , scope_inht, l);
+    unit_.RegisterDecl(var_name, unit_.GetTypeInt(), *n, scope_inht);
+  }
+
+  //const std::string name = prev_token_string_value_;
+  var_type = &unit_.GetType(var_name, scope_inht);
+  return std::move( NewVar(var_name
+                  , *var_type
+                  , unit_.DeclId(var_name, scope_inht)
+                  , scope_inht, l) );
+}
 
 } //end namespace RecDescent
 
