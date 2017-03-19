@@ -16,17 +16,17 @@ F -> {nam}
 Parsing: "void main(){int a;a=1;a=2;a=3; }"
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] int a 
---[Asgst] 
----[Var] a [int Lvalue Write Value]
----[Lit] 1 [int Rvalue]
---[Asgst] 
----[Var] a [int Lvalue Write Value]
----[Lit] 2 [int Rvalue]
---[Asgst] 
----[Var] a [int Lvalue Write Value]
----[Lit] 3 [int Rvalue]
+[FDef] FuncDef: main
+-[VDec] int a 
+-[Asgst] 
+--[Var] a [int Lvalue Write Value]
+--[Lit] 1 [int Rvalue]
+-[Asgst] 
+--[Var] a [int Lvalue Write Value]
+--[Lit] 2 [int Rvalue]
+-[Asgst] 
+--[Var] a [int Lvalue Write Value]
+--[Lit] 3 [int Rvalue]
 
 
 Declaration Table:
@@ -41,15 +41,15 @@ Scope 1: {(1:a) }
 Parsing: "void main(){int a;a=2+3+4; }"
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] int a 
---[Asgst] 
----[Var] a [int Lvalue Write Value]
+[FDef] FuncDef: main
+-[VDec] int a 
+-[Asgst] 
+--[Var] a [int Lvalue Write Value]
+--Op: +  [int Rvalue]
 ---Op: +  [int Rvalue]
-----Op: +  [int Rvalue]
------[Lit] 2 [int Rvalue]
------[Lit] 3 [int Rvalue]
-----[Lit] 4 [int Rvalue]
+----[Lit] 2 [int Rvalue]
+----[Lit] 3 [int Rvalue]
+---[Lit] 4 [int Rvalue]
 
 
 Declaration Table:
@@ -67,15 +67,15 @@ Expecting numerical or lpar at: "nt a;a=2++" -> "3+4; }"
 ResolveMemberTypes failed. 
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] int a 
---[Asgst] 
----[Var] a
+[FDef] FuncDef: main
+-[VDec] int a 
+-[Asgst] 
+--[Var] a
+--Op: + 
 ---Op: + 
-----Op: + 
------[Lit] 2
------[Lit] 3
-----[Lit] 4
+----[Lit] 2
+----[Lit] 3
+---[Lit] 4
 
 
 Declaration Table:
@@ -91,18 +91,18 @@ Scope 1: {(1:a) }
 Parsing: "void main(){int a;a=1+2;a=3+4; }"
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] int a 
---[Asgst] 
----[Var] a [int Lvalue Write Value]
----Op: +  [int Rvalue]
-----[Lit] 1 [int Rvalue]
-----[Lit] 2 [int Rvalue]
---[Asgst] 
----[Var] a [int Lvalue Write Value]
----Op: +  [int Rvalue]
-----[Lit] 3 [int Rvalue]
-----[Lit] 4 [int Rvalue]
+[FDef] FuncDef: main
+-[VDec] int a 
+-[Asgst] 
+--[Var] a [int Lvalue Write Value]
+--Op: +  [int Rvalue]
+---[Lit] 1 [int Rvalue]
+---[Lit] 2 [int Rvalue]
+-[Asgst] 
+--[Var] a [int Lvalue Write Value]
+--Op: +  [int Rvalue]
+---[Lit] 3 [int Rvalue]
+---[Lit] 4 [int Rvalue]
 
 
 Declaration Table:
@@ -118,23 +118,23 @@ Scope 1: {(1:a) }
 Parsing: "void main(){int a;a=1+2;a=3+4;a=5+6; }"
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] int a 
---[Asgst] 
----[Var] a [int Lvalue Write Value]
----Op: +  [int Rvalue]
-----[Lit] 1 [int Rvalue]
-----[Lit] 2 [int Rvalue]
---[Asgst] 
----[Var] a [int Lvalue Write Value]
----Op: +  [int Rvalue]
-----[Lit] 3 [int Rvalue]
-----[Lit] 4 [int Rvalue]
---[Asgst] 
----[Var] a [int Lvalue Write Value]
----Op: +  [int Rvalue]
-----[Lit] 5 [int Rvalue]
-----[Lit] 6 [int Rvalue]
+[FDef] FuncDef: main
+-[VDec] int a 
+-[Asgst] 
+--[Var] a [int Lvalue Write Value]
+--Op: +  [int Rvalue]
+---[Lit] 1 [int Rvalue]
+---[Lit] 2 [int Rvalue]
+-[Asgst] 
+--[Var] a [int Lvalue Write Value]
+--Op: +  [int Rvalue]
+---[Lit] 3 [int Rvalue]
+---[Lit] 4 [int Rvalue]
+-[Asgst] 
+--[Var] a [int Lvalue Write Value]
+--Op: +  [int Rvalue]
+---[Lit] 5 [int Rvalue]
+---[Lit] 6 [int Rvalue]
 
 
 Declaration Table:
@@ -166,17 +166,17 @@ Parsing: "void main(){int a;a=1; if(2){a=3;} }"
 TypeCheck failed. 
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] int a 
---[Asgst] 
----[Var] a [int Lvalue Write Value]
----[Lit] 1 [int Rvalue]
---IfStmt:
----Cond: [Lit] 2 [int Rvalue]
----Then:
-----[Asgst] 
------[Var] a [int Lvalue Write Value]
------[Lit] 3 [int Rvalue]
+[FDef] FuncDef: main
+-[VDec] int a 
+-[Asgst] 
+--[Var] a [int Lvalue Write Value]
+--[Lit] 1 [int Rvalue]
+-IfStmt:
+--Cond: [Lit] 2 [int Rvalue]
+--Then:
+---[Asgst] 
+----[Var] a [int Lvalue Write Value]
+----[Lit] 3 [int Rvalue]
 
 
 
@@ -195,21 +195,21 @@ Parsing: "void main(){int a;a=1; if(2){a=3;} a=4; }"
 TypeCheck failed. 
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] int a 
---[Asgst] 
----[Var] a [int Lvalue Write Value]
----[Lit] 1 [int Rvalue]
---IfStmt:
----Cond: [Lit] 2 [int Rvalue]
----Then:
-----[Asgst] 
------[Var] a [int Lvalue Write Value]
------[Lit] 3 [int Rvalue]
+[FDef] FuncDef: main
+-[VDec] int a 
+-[Asgst] 
+--[Var] a [int Lvalue Write Value]
+--[Lit] 1 [int Rvalue]
+-IfStmt:
+--Cond: [Lit] 2 [int Rvalue]
+--Then:
+---[Asgst] 
+----[Var] a [int Lvalue Write Value]
+----[Lit] 3 [int Rvalue]
 
---[Asgst] 
----[Var] a [int Lvalue Write Value]
----[Lit] 4 [int Rvalue]
+-[Asgst] 
+--[Var] a [int Lvalue Write Value]
+--[Lit] 4 [int Rvalue]
 
 
 Declaration Table:
@@ -227,21 +227,21 @@ Parsing: "void main(){int a;a=1; if(2){a=3+4+5;} }"
 TypeCheck failed. 
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] int a 
---[Asgst] 
----[Var] a [int Lvalue Write Value]
----[Lit] 1 [int Rvalue]
---IfStmt:
----Cond: [Lit] 2 [int Rvalue]
----Then:
-----[Asgst] 
------[Var] a [int Lvalue Write Value]
+[FDef] FuncDef: main
+-[VDec] int a 
+-[Asgst] 
+--[Var] a [int Lvalue Write Value]
+--[Lit] 1 [int Rvalue]
+-IfStmt:
+--Cond: [Lit] 2 [int Rvalue]
+--Then:
+---[Asgst] 
+----[Var] a [int Lvalue Write Value]
+----Op: +  [int Rvalue]
 -----Op: +  [int Rvalue]
-------Op: +  [int Rvalue]
--------[Lit] 3 [int Rvalue]
--------[Lit] 4 [int Rvalue]
-------[Lit] 5 [int Rvalue]
+------[Lit] 3 [int Rvalue]
+------[Lit] 4 [int Rvalue]
+-----[Lit] 5 [int Rvalue]
 
 
 
@@ -260,25 +260,25 @@ Parsing: "void main(){int a;a=1; if(2){a=3+4+5;} a=6; }"
 TypeCheck failed. 
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] int a 
---[Asgst] 
----[Var] a [int Lvalue Write Value]
----[Lit] 1 [int Rvalue]
---IfStmt:
----Cond: [Lit] 2 [int Rvalue]
----Then:
-----[Asgst] 
------[Var] a [int Lvalue Write Value]
+[FDef] FuncDef: main
+-[VDec] int a 
+-[Asgst] 
+--[Var] a [int Lvalue Write Value]
+--[Lit] 1 [int Rvalue]
+-IfStmt:
+--Cond: [Lit] 2 [int Rvalue]
+--Then:
+---[Asgst] 
+----[Var] a [int Lvalue Write Value]
+----Op: +  [int Rvalue]
 -----Op: +  [int Rvalue]
-------Op: +  [int Rvalue]
--------[Lit] 3 [int Rvalue]
--------[Lit] 4 [int Rvalue]
-------[Lit] 5 [int Rvalue]
+------[Lit] 3 [int Rvalue]
+------[Lit] 4 [int Rvalue]
+-----[Lit] 5 [int Rvalue]
 
---[Asgst] 
----[Var] a [int Lvalue Write Value]
----[Lit] 6 [int Rvalue]
+-[Asgst] 
+--[Var] a [int Lvalue Write Value]
+--[Lit] 6 [int Rvalue]
 
 
 Declaration Table:
@@ -298,26 +298,26 @@ Parsing: "void main(){int a;a=1; if(2){if(3){a=4;if(5){a=6;}}} }"
 TypeCheck failed. 
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] int a 
---[Asgst] 
----[Var] a [int Lvalue Write Value]
----[Lit] 1 [int Rvalue]
---IfStmt:
----Cond: [Lit] 2 [int Rvalue]
----Then:
-----IfStmt:
------Cond: [Lit] 3 [int Rvalue]
------Then:
-------[Asgst] 
--------[Var] a [int Lvalue Write Value]
--------[Lit] 4 [int Rvalue]
-------IfStmt:
--------Cond: [Lit] 5 [int Rvalue]
--------Then:
---------[Asgst] 
----------[Var] a [int Lvalue Write Value]
----------[Lit] 6 [int Rvalue]
+[FDef] FuncDef: main
+-[VDec] int a 
+-[Asgst] 
+--[Var] a [int Lvalue Write Value]
+--[Lit] 1 [int Rvalue]
+-IfStmt:
+--Cond: [Lit] 2 [int Rvalue]
+--Then:
+---IfStmt:
+----Cond: [Lit] 3 [int Rvalue]
+----Then:
+-----[Asgst] 
+------[Var] a [int Lvalue Write Value]
+------[Lit] 4 [int Rvalue]
+-----IfStmt:
+------Cond: [Lit] 5 [int Rvalue]
+------Then:
+-------[Asgst] 
+--------[Var] a [int Lvalue Write Value]
+--------[Lit] 6 [int Rvalue]
 
 
 
@@ -342,30 +342,30 @@ Parsing: "void main(){int a;a=1; if(2){if(3){a=4+5;if(6){a=7+8;}}} }"
 TypeCheck failed. 
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] int a 
---[Asgst] 
----[Var] a [int Lvalue Write Value]
----[Lit] 1 [int Rvalue]
---IfStmt:
----Cond: [Lit] 2 [int Rvalue]
----Then:
-----IfStmt:
------Cond: [Lit] 3 [int Rvalue]
------Then:
-------[Asgst] 
--------[Var] a [int Lvalue Write Value]
--------Op: +  [int Rvalue]
---------[Lit] 4 [int Rvalue]
---------[Lit] 5 [int Rvalue]
-------IfStmt:
--------Cond: [Lit] 6 [int Rvalue]
--------Then:
---------[Asgst] 
----------[Var] a [int Lvalue Write Value]
----------Op: +  [int Rvalue]
-----------[Lit] 7 [int Rvalue]
-----------[Lit] 8 [int Rvalue]
+[FDef] FuncDef: main
+-[VDec] int a 
+-[Asgst] 
+--[Var] a [int Lvalue Write Value]
+--[Lit] 1 [int Rvalue]
+-IfStmt:
+--Cond: [Lit] 2 [int Rvalue]
+--Then:
+---IfStmt:
+----Cond: [Lit] 3 [int Rvalue]
+----Then:
+-----[Asgst] 
+------[Var] a [int Lvalue Write Value]
+------Op: +  [int Rvalue]
+-------[Lit] 4 [int Rvalue]
+-------[Lit] 5 [int Rvalue]
+-----IfStmt:
+------Cond: [Lit] 6 [int Rvalue]
+------Then:
+-------[Asgst] 
+--------[Var] a [int Lvalue Write Value]
+--------Op: +  [int Rvalue]
+---------[Lit] 7 [int Rvalue]
+---------[Lit] 8 [int Rvalue]
 
 
 
@@ -389,28 +389,28 @@ Parsing: "void main(){int a;a=1; if(2){a=3;}if(4){a=5;}else{a=6;} }"
 TypeCheck failed. 
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] int a 
---[Asgst] 
----[Var] a [int Lvalue Write Value]
----[Lit] 1 [int Rvalue]
---IfStmt:
----Cond: [Lit] 2 [int Rvalue]
----Then:
-----[Asgst] 
------[Var] a [int Lvalue Write Value]
------[Lit] 3 [int Rvalue]
+[FDef] FuncDef: main
+-[VDec] int a 
+-[Asgst] 
+--[Var] a [int Lvalue Write Value]
+--[Lit] 1 [int Rvalue]
+-IfStmt:
+--Cond: [Lit] 2 [int Rvalue]
+--Then:
+---[Asgst] 
+----[Var] a [int Lvalue Write Value]
+----[Lit] 3 [int Rvalue]
 
---IfStmt:
----Cond: [Lit] 4 [int Rvalue]
----Then:
-----[Asgst] 
------[Var] a [int Lvalue Write Value]
------[Lit] 5 [int Rvalue]
----Else:
-----[Asgst] 
------[Var] a [int Lvalue Write Value]
------[Lit] 6 [int Rvalue]
+-IfStmt:
+--Cond: [Lit] 4 [int Rvalue]
+--Then:
+---[Asgst] 
+----[Var] a [int Lvalue Write Value]
+----[Lit] 5 [int Rvalue]
+--Else:
+---[Asgst] 
+----[Var] a [int Lvalue Write Value]
+----[Lit] 6 [int Rvalue]
 
 
 
@@ -429,10 +429,10 @@ Scope 4: {}
 Parsing: "void main(){int a; int b; bool c; }"
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] int a 
---[VDec] int b 
---[VDec] bool c 
+[FDef] FuncDef: main
+-[VDec] int a 
+-[VDec] int b 
+-[VDec] bool c 
 
 
 Declaration Table:
@@ -451,11 +451,11 @@ Parsing: "void main(){int b, c, d; bool e f; }"
 ResolveMemberTypes failed. 
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] int b 
+[FDef] FuncDef: main
+-[VDec] int b 
 [VDec] int c 
 [VDec] int d 
---[VDec] bool e 
+-[VDec] bool e 
 [VDec] bool f 
 
 
@@ -475,11 +475,11 @@ Scope 1: {(1:b) (2:c) (3:d) (4:e) (5:f) }
 Parsing: "void main(){int a; a=1; }"
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] int a 
---[Asgst] 
----[Var] a [int Lvalue Write Value]
----[Lit] 1 [int Rvalue]
+[FDef] FuncDef: main
+-[VDec] int a 
+-[Asgst] 
+--[Var] a [int Lvalue Write Value]
+--[Lit] 1 [int Rvalue]
 
 
 Declaration Table:
@@ -494,15 +494,15 @@ Scope 1: {(1:a) }
 Parsing: "void main(){int a; a=(1+2+3); }"
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] int a 
---[Asgst] 
----[Var] a [int Lvalue Write Value]
+[FDef] FuncDef: main
+-[VDec] int a 
+-[Asgst] 
+--[Var] a [int Lvalue Write Value]
+--Op: +  [int Rvalue]
 ---Op: +  [int Rvalue]
-----Op: +  [int Rvalue]
------[Lit] 1 [int Rvalue]
------[Lit] 2 [int Rvalue]
-----[Lit] 3 [int Rvalue]
+----[Lit] 1 [int Rvalue]
+----[Lit] 2 [int Rvalue]
+---[Lit] 3 [int Rvalue]
 
 
 Declaration Table:
@@ -520,23 +520,23 @@ Parsing: "void main(){int a b c; b=1; c=2; a=(1+b+c); }"
 ResolveMemberTypes failed. 
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] int a 
+[FDef] FuncDef: main
+-[VDec] int a 
 [VDec] int b 
 [VDec] int c 
---[Asgst] 
----[Var] b
----[Lit] 1
---[Asgst] 
----[Var] c
----[Lit] 2
---[Asgst] 
----[Var] a
+-[Asgst] 
+--[Var] b
+--[Lit] 1
+-[Asgst] 
+--[Var] c
+--[Lit] 2
+-[Asgst] 
+--[Var] a
+--Op: + 
 ---Op: + 
-----Op: + 
------[Lit] 1
------[Var] b
-----[Var] c
+----[Lit] 1
+----[Var] b
+---[Var] c
 
 
 Declaration Table:
@@ -562,12 +562,12 @@ Parsing: "void main(){ int a; if(1){int b;} }"
 TypeCheck failed. 
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] int a 
---IfStmt:
----Cond: [Lit] 1 [int Rvalue]
----Then:
-----[VDec] int b 
+[FDef] FuncDef: main
+-[VDec] int a 
+-IfStmt:
+--Cond: [Lit] 1 [int Rvalue]
+--Then:
+---[VDec] int b 
 
 
 
@@ -587,14 +587,14 @@ Parsing: "void main(){ int a; if(1){int b;}else{int c;} }"
 TypeCheck failed. 
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] int a 
---IfStmt:
----Cond: [Lit] 1 [int Rvalue]
----Then:
-----[VDec] int b 
----Else:
-----[VDec] int c 
+[FDef] FuncDef: main
+-[VDec] int a 
+-IfStmt:
+--Cond: [Lit] 1 [int Rvalue]
+--Then:
+---[VDec] int b 
+--Else:
+---[VDec] int c 
 
 
 
@@ -616,19 +616,19 @@ Parsing: "void main(){ int a; while(1 + 2){ int c; c = 1+2; } }"
 TypeCheck failed. 
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] int a 
---WhileStmt:
----Cond: Op: +  [int Rvalue]
-----[Lit] 1 [int Rvalue]
-----[Lit] 2 [int Rvalue]
----Body:
-----[VDec] int c 
-----[Asgst] 
------[Var] c [int Lvalue Write Value]
------Op: +  [int Rvalue]
-------[Lit] 1 [int Rvalue]
-------[Lit] 2 [int Rvalue]
+[FDef] FuncDef: main
+-[VDec] int a 
+-WhileStmt:
+--Cond: Op: +  [int Rvalue]
+---[Lit] 1 [int Rvalue]
+---[Lit] 2 [int Rvalue]
+--Body:
+---[VDec] int c 
+---[Asgst] 
+----[Var] c [int Lvalue Write Value]
+----Op: +  [int Rvalue]
+-----[Lit] 1 [int Rvalue]
+-----[Lit] 2 [int Rvalue]
 
 
 
@@ -646,15 +646,15 @@ Scope 2: {(2:c) }
 Parsing: "void main(){ bool a, b; a = true; b = false; }"
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] bool a 
+[FDef] FuncDef: main
+-[VDec] bool a 
 [VDec] bool b 
---[Asgst] 
----[Var] a [bool Lvalue Write Value]
----[Lit] 1 [bool Rvalue]
---[Asgst] 
----[Var] b [bool Lvalue Write Value]
----[Lit] 0 [bool Rvalue]
+-[Asgst] 
+--[Var] a [bool Lvalue Write Value]
+--[Lit] 1 [bool Rvalue]
+-[Asgst] 
+--[Var] b [bool Lvalue Write Value]
+--[Lit] 0 [bool Rvalue]
 
 
 Declaration Table:
@@ -670,9 +670,9 @@ Scope 1: {(1:a) (2:b) }
 Parsing: "void main(){ int* a; int* b; }"
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] int* a 
---[VDec] int* b 
+[FDef] FuncDef: main
+-[VDec] int* a 
+-[VDec] int* b 
 
 
 Declaration Table:
@@ -688,21 +688,21 @@ Scope 1: {(1:a) (2:b) }
 Parsing: "void main(){ int* a; int b, c; b = 2; a = &b; c = *a; }"
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] int* a 
---[VDec] int b 
+[FDef] FuncDef: main
+-[VDec] int* a 
+-[VDec] int b 
 [VDec] int c 
---[Asgst] 
----[Var] b [int Lvalue Write Value]
----[Lit] 2 [int Rvalue]
---[Asgst] 
----[Var] a [int* Lvalue Write Value]
----[Refop] @ [int* Lvalue]
-----[Var] b [int Lvalue Read Address]
---[Asgst] 
----[Var] c [int Lvalue Write Value]
----[Derop] * [int Lvalue Read]
-----[Var] a [int* Lvalue Read Value]
+-[Asgst] 
+--[Var] b [int Lvalue Write Value]
+--[Lit] 2 [int Rvalue]
+-[Asgst] 
+--[Var] a [int* Lvalue Write Value]
+--[Refop] @ [int* Lvalue]
+---[Var] b [int Lvalue Read Address]
+-[Asgst] 
+--[Var] c [int Lvalue Write Value]
+--[Derop] * [int Lvalue Read]
+---[Var] a [int* Lvalue Read Value]
 
 
 Declaration Table:
@@ -721,16 +721,16 @@ Parsing: "void main(){int a; a= 2;} void f(){bool a; a=3;}"
 TypeCheck failed. 
 
 AST dump:
--[FDef] FuncDef: main
---[VDec] int a 
---[Asgst] 
----[Var] a [int Lvalue Write Value]
----[Lit] 2 [int Rvalue]
--[FDef] FuncDef: f
---[VDec] bool a 
---[Asgst] 
----[Var] a [bool Lvalue Write Value]
----[Lit] 3 [int Rvalue]
+[FDef] FuncDef: main
+-[VDec] int a 
+-[Asgst] 
+--[Var] a [int Lvalue Write Value]
+--[Lit] 2 [int Rvalue]
+[FDef] FuncDef: f
+-[VDec] bool a 
+-[Asgst] 
+--[Var] a [bool Lvalue Write Value]
+--[Lit] 3 [int Rvalue]
 
 
 Declaration Table:
@@ -748,9 +748,9 @@ Scope 2: {(3:a) }
 Parsing: "class O1{} void main(){ O1 a;}"
 
 AST dump:
--[CDef] ClassDef: O1
--[FDef] FuncDef: main
---[VDec] O1 a 
+[CDef] ClassDef: O1
+[FDef] FuncDef: main
+-[VDec] O1 a 
 
 
 Declaration Table:
@@ -767,15 +767,15 @@ Scope 2: {(2:a) }
 Parsing: "class O1{int a;} void main(){ O1 inst; int b; b = inst.a;}"
 
 AST dump:
--[CDef] ClassDef: O1
--[FDef] FuncDef: main
---[VDec] O1 inst 
---[VDec] int b 
---[Asgst] 
----[Var] b [int Lvalue Write Value]
----[Dotop] inst.a [int]
-----[Var] inst [O1]
-----[Vnam] a
+[CDef] ClassDef: O1
+[FDef] FuncDef: main
+-[VDec] O1 inst 
+-[VDec] int b 
+-[Asgst] 
+--[Var] b [int Lvalue Write Value]
+--[Dotop] inst.a [int]
+---[Var] inst [O1]
+---[Vnam] a
 
 
 Declaration Table:
@@ -793,18 +793,18 @@ Scope 2: {(3:inst) (4:b) }
 Parsing: "class O1{int a;} class O2{ O1 o1;} void main(){ O2 inst; int b; b = inst.o1.a;}"
 
 AST dump:
--[CDef] ClassDef: O1
--[CDef] ClassDef: O2
--[FDef] FuncDef: main
---[VDec] O2 inst 
---[VDec] int b 
---[Asgst] 
----[Var] b [int Lvalue Write Value]
----[Dotop] inst.o1.a [int]
-----[Dotop] inst.o1 [O1]
------[Var] inst [O2]
------[Vnam] o1
-----[Vnam] a
+[CDef] ClassDef: O1
+[CDef] ClassDef: O2
+[FDef] FuncDef: main
+-[VDec] O2 inst 
+-[VDec] int b 
+-[Asgst] 
+--[Var] b [int Lvalue Write Value]
+--[Dotop] inst.o1.a [int]
+---[Dotop] inst.o1 [O1]
+----[Var] inst [O2]
+----[Vnam] o1
+---[Vnam] a
 
 
 Declaration Table:
@@ -824,27 +824,28 @@ Scope 3: {(5:inst) (6:b) }
 Parsing: "class O1{int f(int a, int b){int c; c = a+b; return c;}} void main(){ O1 inst; int b; b = inst.f(1,2);}"
 
 AST dump:
--[CDef] ClassDef: O1
---[FDef] FuncDef: f
----[VDec] int c 
----[Asgst] 
-----[Var] c [int Lvalue Write Value]
-----Op: +  [int Rvalue]
------[Var] a [int Lvalue Read Value]
------[Var] b [int Lvalue Read Value]
----[Retst] Return (c)
-----[Var] c [int Lvalue Read Value]
--[FDef] FuncDef: main
---[VDec] O1 inst 
---[VDec] int b 
+[CDef] ClassDef: O1
+-[FDef] FuncDef: f
+--[VDec] int c 
 --[Asgst] 
----[Var] b [int Lvalue Write Value]
----[Fret] FuncRet: int [int Rvalue]
-----[Fcal] FuncCall: inst.f [function: (int, int)->int]
------[Dotop] inst.f [function: (int, int)->int]
-------[Var] inst [O1]
-------[Vnam] f-----[Lit] 1 [int]
------[Lit] 2 [int]
+---[Var] c [int Lvalue Write Value]
+---Op: +  [int Rvalue]
+----[Var] a [int Lvalue Read Value]
+----[Var] b [int Lvalue Read Value]
+--[Retst] Return (c)
+---[Var] c [int Lvalue Read Value]
+[FDef] FuncDef: main
+-[VDec] O1 inst 
+-[VDec] int b 
+-[Asgst] 
+--[Var] b [int Lvalue Write Value]
+--[Fret] FuncRet: int [int Rvalue]
+---[Fcal] FuncCall: inst.f [function: (int, int)->int]
+----[Dotop] inst.f [function: (int, int)->int]
+-----[Var] inst [O1]
+-----[Vnam] f
+----[Lit] 1 [int]
+----[Lit] 2 [int]
 
 
 Declaration Table:
@@ -866,22 +867,23 @@ Scope 3: {(6:inst) (7:b) }
 Parsing: "class O1{int f(int a){return a + a_;} int a_;} void main(){ O1 inst; int b; b = inst.f(1);}"
 
 AST dump:
--[CDef] ClassDef: O1
---[FDef] FuncDef: f
----[Retst] Return ( + )
-----Op: +  [int Rvalue]
------[Var] a [int Lvalue Read Value]
------[Var] a_ [int Lvalue Read Value]
--[FDef] FuncDef: main
---[VDec] O1 inst 
---[VDec] int b 
---[Asgst] 
----[Var] b [int Lvalue Write Value]
----[Fret] FuncRet: int [int Rvalue]
-----[Fcal] FuncCall: inst.f [function: (int)->int]
------[Dotop] inst.f [function: (int)->int]
-------[Var] inst [O1]
-------[Vnam] f-----[Lit] 1 [int]
+[CDef] ClassDef: O1
+-[FDef] FuncDef: f
+--[Retst] Return ( + )
+---Op: +  [int Rvalue]
+----[Var] a [int Lvalue Read Value]
+----[Var] a_ [int Lvalue Read Value]
+[FDef] FuncDef: main
+-[VDec] O1 inst 
+-[VDec] int b 
+-[Asgst] 
+--[Var] b [int Lvalue Write Value]
+--[Fret] FuncRet: int [int Rvalue]
+---[Fcal] FuncCall: inst.f [function: (int)->int]
+----[Dotop] inst.f [function: (int)->int]
+-----[Var] inst [O1]
+-----[Vnam] f
+----[Lit] 1 [int]
 
 
 Declaration Table:
@@ -901,30 +903,30 @@ Scope 3: {(5:inst) (6:b) }
 Parsing: "class O1{int f(){return 1;} } class O2{int g(){return inst_.f() + 1;} O1 inst_; } void main(){ O2 inst; int b; b = inst.g();}"
 
 AST dump:
--[CDef] ClassDef: O1
---[FDef] FuncDef: f
----[Retst] Return (1)
+[CDef] ClassDef: O1
+-[FDef] FuncDef: f
+--[Retst] Return (1)
+---[Lit] 1 [int Rvalue]
+[CDef] ClassDef: O2
+-[FDef] FuncDef: g
+--[Retst] Return ( + )
+---Op: +  [int Rvalue]
+----[Fret] FuncRet: int [int Rvalue]
+-----[Fcal] FuncCall: inst_.f [function: ()->int]
+------[Dotop] inst_.f [function: ()->int]
+-------[Var] inst_ [O1]
+-------[Vnam] f
 ----[Lit] 1 [int Rvalue]
--[CDef] ClassDef: O2
---[FDef] FuncDef: g
----[Retst] Return ( + )
-----Op: +  [int Rvalue]
------[Fret] FuncRet: int [int Rvalue]
-------[Fcal] FuncCall: inst_.f [function: ()->int]
--------[Dotop] inst_.f [function: ()->int]
---------[Var] inst_ [O1]
---------[Vnam] f
------[Lit] 1 [int Rvalue]
--[FDef] FuncDef: main
---[VDec] O2 inst 
---[VDec] int b 
---[Asgst] 
----[Var] b [int Lvalue Write Value]
----[Fret] FuncRet: int [int Rvalue]
-----[Fcal] FuncCall: inst.g [function: ()->int]
------[Dotop] inst.g [function: ()->int]
-------[Var] inst [O2]
-------[Vnam] g
+[FDef] FuncDef: main
+-[VDec] O2 inst 
+-[VDec] int b 
+-[Asgst] 
+--[Var] b [int Lvalue Write Value]
+--[Fret] FuncRet: int [int Rvalue]
+---[Fcal] FuncCall: inst.g [function: ()->int]
+----[Dotop] inst.g [function: ()->int]
+-----[Var] inst [O2]
+-----[Vnam] g
 
 
 Declaration Table:
