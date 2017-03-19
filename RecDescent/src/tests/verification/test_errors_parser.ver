@@ -172,12 +172,12 @@ ResolveMemberTypes failed.
 ------------------------------------------------------------------
 Parsing: "void main(){int a; bool b; a=a+b; }"
 [err:17] Incompatible types in op at: "ol b; a=a+" -> "b; }"
-Type inference failed. 
+TypeCheck failed. 
 
 ------------------------------------------------------------------
 Parsing: "void main(){int a; bool b; a=b+b; }"
 [err:18] Incompatible types in assignment: int to bool at: " bool b; a" -> "=b+b; }"
-Type inference failed. 
+TypeCheck failed. 
 
 ------------------------------------------------------------------
 Parsing: "void main(){int a b c; }"
@@ -203,7 +203,7 @@ DeferredNodesCreation failed.
 ------------------------------------------------------------------
 Parsing: "int f(int p1, int p2){int a; a=p1;} void main(){int a; a=f(2,true);}"
 [err:41] Argument type conflict:  is "bool" but f expects "int" at: "a=f(2,true" -> ");}"
-Type inference failed. 
+TypeCheck failed. 
 
 ------------------------------------------------------------------
 Parsing: "int f(){ return 1} void main(){ int a;}"
@@ -213,7 +213,7 @@ ResolveMemberTypes failed.
 ------------------------------------------------------------------
 Parsing: "int f(){ return true;} void main(){ int a;}"
 [err:45] Return's expression doesn not match function return type: int vs bool at: "(){ return" -> " true;} void main(){ int a;}"
-Type inference failed. 
+TypeCheck failed. 
 
 ------------------------------------------------------------------
 Parsing: "int f(){ int a;} class f{} void main(){ int a;}"

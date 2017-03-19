@@ -163,7 +163,7 @@ F -> {nam}
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3;} }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;} }"
-Type inference failed. 
+TypeCheck failed. 
 
 AST dump:
 -[FDef] FuncDef: main
@@ -192,7 +192,7 @@ Scope 2: {}
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3;} a=4; }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;} a=4; }"
-Type inference failed. 
+TypeCheck failed. 
 
 AST dump:
 -[FDef] FuncDef: main
@@ -224,7 +224,7 @@ Scope 2: {}
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3+4+5;} }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;} }"
-Type inference failed. 
+TypeCheck failed. 
 
 AST dump:
 -[FDef] FuncDef: main
@@ -257,7 +257,7 @@ Scope 2: {}
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3+4+5;} a=6; }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;} a=6; }"
-Type inference failed. 
+TypeCheck failed. 
 
 AST dump:
 -[FDef] FuncDef: main
@@ -295,7 +295,7 @@ Parsing: "void main(){int a;a=1; if(2){if(3){a=4;if(5){a=6;}}} }"
 [err:21] if's condition is not a bool at: "){a=4;if(5" -> "){a=6;}}} }"
 [err:21] if's condition is not a bool at: "if(2){if(3" -> "){a=4;if(5){a=6;}}} }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4;if(5){a=6;}}} }"
-Type inference failed. 
+TypeCheck failed. 
 
 AST dump:
 -[FDef] FuncDef: main
@@ -339,7 +339,7 @@ Parsing: "void main(){int a;a=1; if(2){if(3){a=4+5;if(6){a=7+8;}}} }"
 [err:21] if's condition is not a bool at: "a=4+5;if(6" -> "){a=7+8;}}} }"
 [err:21] if's condition is not a bool at: "if(2){if(3" -> "){a=4+5;if(6){a=7+8;}}} }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4+5;if(6){a=7+8;}}} }"
-Type inference failed. 
+TypeCheck failed. 
 
 AST dump:
 -[FDef] FuncDef: main
@@ -386,7 +386,7 @@ Scope 4: {}
 Parsing: "void main(){int a;a=1; if(2){a=3;}if(4){a=5;}else{a=6;} }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;}if(4){a=5;}else{a=6;} }"
 [err:21] if's condition is not a bool at: "{a=3;}if(4" -> "){a=5;}else{a=6;} }"
-Type inference failed. 
+TypeCheck failed. 
 
 AST dump:
 -[FDef] FuncDef: main
@@ -559,7 +559,7 @@ AST not build (fatal errors) at: "; int a; }" -> ""
 ---------------------------------------------------
 Parsing: "void main(){ int a; if(1){int b;} }"
 [err:21] if's condition is not a bool at: "nt a; if(1" -> "){int b;} }"
-Type inference failed. 
+TypeCheck failed. 
 
 AST dump:
 -[FDef] FuncDef: main
@@ -584,7 +584,7 @@ Scope 2: {(2:b) }
 ---------------------------------------------------
 Parsing: "void main(){ int a; if(1){int b;}else{int c;} }"
 [err:21] if's condition is not a bool at: "nt a; if(1" -> "){int b;}else{int c;} }"
-Type inference failed. 
+TypeCheck failed. 
 
 AST dump:
 -[FDef] FuncDef: main
@@ -613,7 +613,7 @@ Scope 3: {(3:c) }
 ---------------------------------------------------
 Parsing: "void main(){ int a; while(1 + 2){ int c; c = 1+2; } }"
 [err:20] while's condition is not a bool at: " while(1 +" -> " 2){ int c; c = 1+2; } }"
-Type inference failed. 
+TypeCheck failed. 
 
 AST dump:
 -[FDef] FuncDef: main
@@ -718,7 +718,7 @@ Scope 1: {(1:a) (2:b) (3:c) }
 ---------------------------------------------------
 Parsing: "void main(){int a; a= 2;} void f(){bool a; a=3;}"
 [err:18] Incompatible types in assignment: bool to int at: "{bool a; a" -> "=3;}"
-Type inference failed. 
+TypeCheck failed. 
 
 AST dump:
 -[FDef] FuncDef: main
