@@ -148,10 +148,13 @@ int main()
     "class O1{int f(int a, int b){int c; c = a+b; return c;}} void main(){ O1 inst; int b; b = inst.f(1,2);}"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "class O1{int f(int a){return a + a_;} int a_;} void main(){ O1 inst; int b; b = inst.f(1);}"), g);
+    "class O1{int f(int a){return a + a_;} int a_;} void main(){ O1 inst; }"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "class O1{int f(){return 1;} } class O2{int g(){return inst_.f() + 1;} O1 inst_; } void main(){ O2 inst; int b; b = inst.g();}"), g);
+    "class O1{int f(){return 1;} } class O2{int g(){return inst_.f() + 1;} O1 inst_; } void main(){ O2 inst; }"), g);
+
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "class O1{int f(){return g();} int g(){return 1;} } void main(){ O1 inst;}"), g);
   /*
   //these mess with the parser, big time
   parse<Grammar,ParserLL1RecDesc>( std::string("void main(){int a; (a=1); }"), g);
