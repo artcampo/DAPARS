@@ -16,17 +16,17 @@ F -> {nam}
 Parsing: "void main(){int a;a=1;a=2;a=3; }"
 
 AST dump:
--FuncDef: main
---int a 
---Assign
----a [int Lvalue Write Value]
----Literal: 1 [int Rvalue]
---Assign
----a [int Lvalue Write Value]
----Literal: 2 [int Rvalue]
---Assign
----a [int Lvalue Write Value]
----Literal: 3 [int Rvalue]
+-[FDef] FuncDef: main
+--[VDec] int a 
+--[Asgst] 
+---[Var] a [int Lvalue Write Value]
+---[Lit] 1 [int Rvalue]
+--[Asgst] 
+---[Var] a [int Lvalue Write Value]
+---[Lit] 2 [int Rvalue]
+--[Asgst] 
+---[Var] a [int Lvalue Write Value]
+---[Lit] 3 [int Rvalue]
 
 
 Declaration Table:
@@ -41,15 +41,15 @@ Scope 1: {(1:a) }
 Parsing: "void main(){int a;a=2+3+4; }"
 
 AST dump:
--FuncDef: main
---int a 
---Assign
----a [int Lvalue Write Value]
+-[FDef] FuncDef: main
+--[VDec] int a 
+--[Asgst] 
+---[Var] a [int Lvalue Write Value]
 ---Op: +  [int Rvalue]
 ----Op: +  [int Rvalue]
------Literal: 2 [int Rvalue]
------Literal: 3 [int Rvalue]
-----Literal: 4 [int Rvalue]
+-----[Lit] 2 [int Rvalue]
+-----[Lit] 3 [int Rvalue]
+----[Lit] 4 [int Rvalue]
 
 
 Declaration Table:
@@ -64,17 +64,18 @@ Scope 1: {(1:a) }
 ---------------------------------------------------
 Parsing: "void main(){int a;a=2++3+4; }"
 Expecting numerical or lpar at: "nt a;a=2++" -> "3+4; }"
+ResolveMemberTypes failed. 
 
 AST dump:
--FuncDef: main
---int a 
---Assign
----a
+-[FDef] FuncDef: main
+--[VDec] int a 
+--[Asgst] 
+---[Var] a
 ---Op: + 
 ----Op: + 
------Literal: 2
------Literal: 3
-----Literal: 4
+-----[Lit] 2
+-----[Lit] 3
+----[Lit] 4
 
 
 Declaration Table:
@@ -90,18 +91,18 @@ Scope 1: {(1:a) }
 Parsing: "void main(){int a;a=1+2;a=3+4; }"
 
 AST dump:
--FuncDef: main
---int a 
---Assign
----a [int Lvalue Write Value]
+-[FDef] FuncDef: main
+--[VDec] int a 
+--[Asgst] 
+---[Var] a [int Lvalue Write Value]
 ---Op: +  [int Rvalue]
-----Literal: 1 [int Rvalue]
-----Literal: 2 [int Rvalue]
---Assign
----a [int Lvalue Write Value]
+----[Lit] 1 [int Rvalue]
+----[Lit] 2 [int Rvalue]
+--[Asgst] 
+---[Var] a [int Lvalue Write Value]
 ---Op: +  [int Rvalue]
-----Literal: 3 [int Rvalue]
-----Literal: 4 [int Rvalue]
+----[Lit] 3 [int Rvalue]
+----[Lit] 4 [int Rvalue]
 
 
 Declaration Table:
@@ -117,23 +118,23 @@ Scope 1: {(1:a) }
 Parsing: "void main(){int a;a=1+2;a=3+4;a=5+6; }"
 
 AST dump:
--FuncDef: main
---int a 
---Assign
----a [int Lvalue Write Value]
+-[FDef] FuncDef: main
+--[VDec] int a 
+--[Asgst] 
+---[Var] a [int Lvalue Write Value]
 ---Op: +  [int Rvalue]
-----Literal: 1 [int Rvalue]
-----Literal: 2 [int Rvalue]
---Assign
----a [int Lvalue Write Value]
+----[Lit] 1 [int Rvalue]
+----[Lit] 2 [int Rvalue]
+--[Asgst] 
+---[Var] a [int Lvalue Write Value]
 ---Op: +  [int Rvalue]
-----Literal: 3 [int Rvalue]
-----Literal: 4 [int Rvalue]
---Assign
----a [int Lvalue Write Value]
+----[Lit] 3 [int Rvalue]
+----[Lit] 4 [int Rvalue]
+--[Asgst] 
+---[Var] a [int Lvalue Write Value]
 ---Op: +  [int Rvalue]
-----Literal: 5 [int Rvalue]
-----Literal: 6 [int Rvalue]
+----[Lit] 5 [int Rvalue]
+----[Lit] 6 [int Rvalue]
 
 
 Declaration Table:
@@ -162,19 +163,20 @@ F -> {nam}
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3;} }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;} }"
+Type inference failed. 
 
 AST dump:
--FuncDef: main
---int a 
---Assign
----a [int Lvalue Write Value]
----Literal: 1 [int Rvalue]
+-[FDef] FuncDef: main
+--[VDec] int a 
+--[Asgst] 
+---[Var] a [int Lvalue Write Value]
+---[Lit] 1 [int Rvalue]
 --IfStmt:
----Cond: Literal: 2 [int Rvalue]
+---Cond: [Lit] 2 [int Rvalue]
 ---Then:
-----Assign
------a [int Lvalue Write Value]
------Literal: 3 [int Rvalue]
+----[Asgst] 
+-----[Var] a [int Lvalue Write Value]
+-----[Lit] 3 [int Rvalue]
 
 
 
@@ -190,23 +192,24 @@ Scope 2: {}
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3;} a=4; }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;} a=4; }"
+Type inference failed. 
 
 AST dump:
--FuncDef: main
---int a 
---Assign
----a [int Lvalue Write Value]
----Literal: 1 [int Rvalue]
+-[FDef] FuncDef: main
+--[VDec] int a 
+--[Asgst] 
+---[Var] a [int Lvalue Write Value]
+---[Lit] 1 [int Rvalue]
 --IfStmt:
----Cond: Literal: 2 [int Rvalue]
+---Cond: [Lit] 2 [int Rvalue]
 ---Then:
-----Assign
------a [int Lvalue Write Value]
------Literal: 3 [int Rvalue]
+----[Asgst] 
+-----[Var] a [int Lvalue Write Value]
+-----[Lit] 3 [int Rvalue]
 
---Assign
----a [int Lvalue Write Value]
----Literal: 4 [int Rvalue]
+--[Asgst] 
+---[Var] a [int Lvalue Write Value]
+---[Lit] 4 [int Rvalue]
 
 
 Declaration Table:
@@ -221,23 +224,24 @@ Scope 2: {}
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3+4+5;} }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;} }"
+Type inference failed. 
 
 AST dump:
--FuncDef: main
---int a 
---Assign
----a [int Lvalue Write Value]
----Literal: 1 [int Rvalue]
+-[FDef] FuncDef: main
+--[VDec] int a 
+--[Asgst] 
+---[Var] a [int Lvalue Write Value]
+---[Lit] 1 [int Rvalue]
 --IfStmt:
----Cond: Literal: 2 [int Rvalue]
+---Cond: [Lit] 2 [int Rvalue]
 ---Then:
-----Assign
------a [int Lvalue Write Value]
+----[Asgst] 
+-----[Var] a [int Lvalue Write Value]
 -----Op: +  [int Rvalue]
 ------Op: +  [int Rvalue]
--------Literal: 3 [int Rvalue]
--------Literal: 4 [int Rvalue]
-------Literal: 5 [int Rvalue]
+-------[Lit] 3 [int Rvalue]
+-------[Lit] 4 [int Rvalue]
+------[Lit] 5 [int Rvalue]
 
 
 
@@ -253,27 +257,28 @@ Scope 2: {}
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3+4+5;} a=6; }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3+4+5;} a=6; }"
+Type inference failed. 
 
 AST dump:
--FuncDef: main
---int a 
---Assign
----a [int Lvalue Write Value]
----Literal: 1 [int Rvalue]
+-[FDef] FuncDef: main
+--[VDec] int a 
+--[Asgst] 
+---[Var] a [int Lvalue Write Value]
+---[Lit] 1 [int Rvalue]
 --IfStmt:
----Cond: Literal: 2 [int Rvalue]
+---Cond: [Lit] 2 [int Rvalue]
 ---Then:
-----Assign
------a [int Lvalue Write Value]
+----[Asgst] 
+-----[Var] a [int Lvalue Write Value]
 -----Op: +  [int Rvalue]
 ------Op: +  [int Rvalue]
--------Literal: 3 [int Rvalue]
--------Literal: 4 [int Rvalue]
-------Literal: 5 [int Rvalue]
+-------[Lit] 3 [int Rvalue]
+-------[Lit] 4 [int Rvalue]
+------[Lit] 5 [int Rvalue]
 
---Assign
----a [int Lvalue Write Value]
----Literal: 6 [int Rvalue]
+--[Asgst] 
+---[Var] a [int Lvalue Write Value]
+---[Lit] 6 [int Rvalue]
 
 
 Declaration Table:
@@ -290,28 +295,29 @@ Parsing: "void main(){int a;a=1; if(2){if(3){a=4;if(5){a=6;}}} }"
 [err:21] if's condition is not a bool at: "){a=4;if(5" -> "){a=6;}}} }"
 [err:21] if's condition is not a bool at: "if(2){if(3" -> "){a=4;if(5){a=6;}}} }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4;if(5){a=6;}}} }"
+Type inference failed. 
 
 AST dump:
--FuncDef: main
---int a 
---Assign
----a [int Lvalue Write Value]
----Literal: 1 [int Rvalue]
+-[FDef] FuncDef: main
+--[VDec] int a 
+--[Asgst] 
+---[Var] a [int Lvalue Write Value]
+---[Lit] 1 [int Rvalue]
 --IfStmt:
----Cond: Literal: 2 [int Rvalue]
+---Cond: [Lit] 2 [int Rvalue]
 ---Then:
 ----IfStmt:
------Cond: Literal: 3 [int Rvalue]
+-----Cond: [Lit] 3 [int Rvalue]
 -----Then:
-------Assign
--------a [int Lvalue Write Value]
--------Literal: 4 [int Rvalue]
+------[Asgst] 
+-------[Var] a [int Lvalue Write Value]
+-------[Lit] 4 [int Rvalue]
 ------IfStmt:
--------Cond: Literal: 5 [int Rvalue]
+-------Cond: [Lit] 5 [int Rvalue]
 -------Then:
---------Assign
----------a [int Lvalue Write Value]
----------Literal: 6 [int Rvalue]
+--------[Asgst] 
+---------[Var] a [int Lvalue Write Value]
+---------[Lit] 6 [int Rvalue]
 
 
 
@@ -333,32 +339,33 @@ Parsing: "void main(){int a;a=1; if(2){if(3){a=4+5;if(6){a=7+8;}}} }"
 [err:21] if's condition is not a bool at: "a=4+5;if(6" -> "){a=7+8;}}} }"
 [err:21] if's condition is not a bool at: "if(2){if(3" -> "){a=4+5;if(6){a=7+8;}}} }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){if(3){a=4+5;if(6){a=7+8;}}} }"
+Type inference failed. 
 
 AST dump:
--FuncDef: main
---int a 
---Assign
----a [int Lvalue Write Value]
----Literal: 1 [int Rvalue]
+-[FDef] FuncDef: main
+--[VDec] int a 
+--[Asgst] 
+---[Var] a [int Lvalue Write Value]
+---[Lit] 1 [int Rvalue]
 --IfStmt:
----Cond: Literal: 2 [int Rvalue]
+---Cond: [Lit] 2 [int Rvalue]
 ---Then:
 ----IfStmt:
------Cond: Literal: 3 [int Rvalue]
+-----Cond: [Lit] 3 [int Rvalue]
 -----Then:
-------Assign
--------a [int Lvalue Write Value]
+------[Asgst] 
+-------[Var] a [int Lvalue Write Value]
 -------Op: +  [int Rvalue]
---------Literal: 4 [int Rvalue]
---------Literal: 5 [int Rvalue]
+--------[Lit] 4 [int Rvalue]
+--------[Lit] 5 [int Rvalue]
 ------IfStmt:
--------Cond: Literal: 6 [int Rvalue]
+-------Cond: [Lit] 6 [int Rvalue]
 -------Then:
---------Assign
----------a [int Lvalue Write Value]
+--------[Asgst] 
+---------[Var] a [int Lvalue Write Value]
 ---------Op: +  [int Rvalue]
-----------Literal: 7 [int Rvalue]
-----------Literal: 8 [int Rvalue]
+----------[Lit] 7 [int Rvalue]
+----------[Lit] 8 [int Rvalue]
 
 
 
@@ -379,30 +386,31 @@ Scope 4: {}
 Parsing: "void main(){int a;a=1; if(2){a=3;}if(4){a=5;}else{a=6;} }"
 [err:21] if's condition is not a bool at: ";a=1; if(2" -> "){a=3;}if(4){a=5;}else{a=6;} }"
 [err:21] if's condition is not a bool at: "{a=3;}if(4" -> "){a=5;}else{a=6;} }"
+Type inference failed. 
 
 AST dump:
--FuncDef: main
---int a 
---Assign
----a [int Lvalue Write Value]
----Literal: 1 [int Rvalue]
+-[FDef] FuncDef: main
+--[VDec] int a 
+--[Asgst] 
+---[Var] a [int Lvalue Write Value]
+---[Lit] 1 [int Rvalue]
 --IfStmt:
----Cond: Literal: 2 [int Rvalue]
+---Cond: [Lit] 2 [int Rvalue]
 ---Then:
-----Assign
------a [int Lvalue Write Value]
------Literal: 3 [int Rvalue]
+----[Asgst] 
+-----[Var] a [int Lvalue Write Value]
+-----[Lit] 3 [int Rvalue]
 
 --IfStmt:
----Cond: Literal: 4 [int Rvalue]
+---Cond: [Lit] 4 [int Rvalue]
 ---Then:
-----Assign
------a [int Lvalue Write Value]
------Literal: 5 [int Rvalue]
+----[Asgst] 
+-----[Var] a [int Lvalue Write Value]
+-----[Lit] 5 [int Rvalue]
 ---Else:
-----Assign
------a [int Lvalue Write Value]
------Literal: 6 [int Rvalue]
+----[Asgst] 
+-----[Var] a [int Lvalue Write Value]
+-----[Lit] 6 [int Rvalue]
 
 
 
@@ -421,10 +429,10 @@ Scope 4: {}
 Parsing: "void main(){int a; int b; bool c; }"
 
 AST dump:
--FuncDef: main
---int a 
---int b 
---bool c 
+-[FDef] FuncDef: main
+--[VDec] int a 
+--[VDec] int b 
+--[VDec] bool c 
 
 
 Declaration Table:
@@ -440,11 +448,15 @@ Scope 1: {(1:a) (2:b) (3:c) }
 ---------------------------------------------------
 Parsing: "void main(){int b, c, d; bool e f; }"
 [err:19] Variable declarations must be separated with comma. at: "; bool e f" -> "; }"
+ResolveMemberTypes failed. 
 
 AST dump:
--FuncDef: main
---int b int c int d 
---bool e bool f 
+-[FDef] FuncDef: main
+--[VDec] int b 
+[VDec] int c 
+[VDec] int d 
+--[VDec] bool e 
+[VDec] bool f 
 
 
 Declaration Table:
@@ -463,11 +475,11 @@ Scope 1: {(1:b) (2:c) (3:d) (4:e) (5:f) }
 Parsing: "void main(){int a; a=1; }"
 
 AST dump:
--FuncDef: main
---int a 
---Assign
----a [int Lvalue Write Value]
----Literal: 1 [int Rvalue]
+-[FDef] FuncDef: main
+--[VDec] int a 
+--[Asgst] 
+---[Var] a [int Lvalue Write Value]
+---[Lit] 1 [int Rvalue]
 
 
 Declaration Table:
@@ -482,15 +494,15 @@ Scope 1: {(1:a) }
 Parsing: "void main(){int a; a=(1+2+3); }"
 
 AST dump:
--FuncDef: main
---int a 
---Assign
----a [int Lvalue Write Value]
+-[FDef] FuncDef: main
+--[VDec] int a 
+--[Asgst] 
+---[Var] a [int Lvalue Write Value]
 ---Op: +  [int Rvalue]
 ----Op: +  [int Rvalue]
------Literal: 1 [int Rvalue]
------Literal: 2 [int Rvalue]
-----Literal: 3 [int Rvalue]
+-----[Lit] 1 [int Rvalue]
+-----[Lit] 2 [int Rvalue]
+----[Lit] 3 [int Rvalue]
 
 
 Declaration Table:
@@ -505,23 +517,26 @@ Scope 1: {(1:a) }
 Parsing: "void main(){int a b c; b=1; c=2; a=(1+b+c); }"
 [err:19] Variable declarations must be separated with comma. at: "(){int a b" -> " c; b=1; c=2; a=(1+b+c); }"
 [err:19] Variable declarations must be separated with comma. at: "{int a b c" -> "; b=1; c=2; a=(1+b+c); }"
+ResolveMemberTypes failed. 
 
 AST dump:
--FuncDef: main
---int a int b int c 
---Assign
----b
----Literal: 1
---Assign
----c
----Literal: 2
---Assign
----a
+-[FDef] FuncDef: main
+--[VDec] int a 
+[VDec] int b 
+[VDec] int c 
+--[Asgst] 
+---[Var] b
+---[Lit] 1
+--[Asgst] 
+---[Var] c
+---[Lit] 2
+--[Asgst] 
+---[Var] a
 ---Op: + 
 ----Op: + 
------Literal: 1
------b
-----c
+-----[Lit] 1
+-----[Var] b
+----[Var] c
 
 
 Declaration Table:
@@ -544,14 +559,15 @@ AST not build (fatal errors) at: "; int a; }" -> ""
 ---------------------------------------------------
 Parsing: "void main(){ int a; if(1){int b;} }"
 [err:21] if's condition is not a bool at: "nt a; if(1" -> "){int b;} }"
+Type inference failed. 
 
 AST dump:
--FuncDef: main
---int a 
+-[FDef] FuncDef: main
+--[VDec] int a 
 --IfStmt:
----Cond: Literal: 1 [int Rvalue]
+---Cond: [Lit] 1 [int Rvalue]
 ---Then:
-----int b 
+----[VDec] int b 
 
 
 
@@ -568,16 +584,17 @@ Scope 2: {(2:b) }
 ---------------------------------------------------
 Parsing: "void main(){ int a; if(1){int b;}else{int c;} }"
 [err:21] if's condition is not a bool at: "nt a; if(1" -> "){int b;}else{int c;} }"
+Type inference failed. 
 
 AST dump:
--FuncDef: main
---int a 
+-[FDef] FuncDef: main
+--[VDec] int a 
 --IfStmt:
----Cond: Literal: 1 [int Rvalue]
+---Cond: [Lit] 1 [int Rvalue]
 ---Then:
-----int b 
+----[VDec] int b 
 ---Else:
-----int c 
+----[VDec] int c 
 
 
 
@@ -596,21 +613,22 @@ Scope 3: {(3:c) }
 ---------------------------------------------------
 Parsing: "void main(){ int a; while(1 + 2){ int c; c = 1+2; } }"
 [err:20] while's condition is not a bool at: " while(1 +" -> " 2){ int c; c = 1+2; } }"
+Type inference failed. 
 
 AST dump:
--FuncDef: main
---int a 
+-[FDef] FuncDef: main
+--[VDec] int a 
 --WhileStmt:
 ---Cond: Op: +  [int Rvalue]
-----Literal: 1 [int Rvalue]
-----Literal: 2 [int Rvalue]
+----[Lit] 1 [int Rvalue]
+----[Lit] 2 [int Rvalue]
 ---Body:
-----int c 
-----Assign
------c [int Lvalue Write Value]
+----[VDec] int c 
+----[Asgst] 
+-----[Var] c [int Lvalue Write Value]
 -----Op: +  [int Rvalue]
-------Literal: 1 [int Rvalue]
-------Literal: 2 [int Rvalue]
+------[Lit] 1 [int Rvalue]
+------[Lit] 2 [int Rvalue]
 
 
 
@@ -628,14 +646,15 @@ Scope 2: {(2:c) }
 Parsing: "void main(){ bool a, b; a = true; b = false; }"
 
 AST dump:
--FuncDef: main
---bool a bool b 
---Assign
----a [bool Lvalue Write Value]
----Literal: 1 [bool Rvalue]
---Assign
----b [bool Lvalue Write Value]
----Literal: 0 [bool Rvalue]
+-[FDef] FuncDef: main
+--[VDec] bool a 
+[VDec] bool b 
+--[Asgst] 
+---[Var] a [bool Lvalue Write Value]
+---[Lit] 1 [bool Rvalue]
+--[Asgst] 
+---[Var] b [bool Lvalue Write Value]
+---[Lit] 0 [bool Rvalue]
 
 
 Declaration Table:
@@ -651,9 +670,9 @@ Scope 1: {(1:a) (2:b) }
 Parsing: "void main(){ int* a; int* b; }"
 
 AST dump:
--FuncDef: main
---int* a 
---int* b 
+-[FDef] FuncDef: main
+--[VDec] int* a 
+--[VDec] int* b 
 
 
 Declaration Table:
@@ -669,20 +688,21 @@ Scope 1: {(1:a) (2:b) }
 Parsing: "void main(){ int* a; int b, c; b = 2; a = &b; c = *a; }"
 
 AST dump:
--FuncDef: main
---int* a 
---int b int c 
---Assign
----b [int Lvalue Write Value]
----Literal: 2 [int Rvalue]
---Assign
----a [int* Lvalue Write Value]
----@ [int* Lvalue]
-----b [int Lvalue Read Address]
---Assign
----c [int Lvalue Write Value]
----* [int Lvalue Read]
-----a [int* Lvalue Read Value]
+-[FDef] FuncDef: main
+--[VDec] int* a 
+--[VDec] int b 
+[VDec] int c 
+--[Asgst] 
+---[Var] b [int Lvalue Write Value]
+---[Lit] 2 [int Rvalue]
+--[Asgst] 
+---[Var] a [int* Lvalue Write Value]
+---[Refop] @ [int* Lvalue]
+----[Var] b [int Lvalue Read Address]
+--[Asgst] 
+---[Var] c [int Lvalue Write Value]
+---[Derop] * [int Lvalue Read]
+----[Var] a [int* Lvalue Read Value]
 
 
 Declaration Table:
@@ -698,18 +718,19 @@ Scope 1: {(1:a) (2:b) (3:c) }
 ---------------------------------------------------
 Parsing: "void main(){int a; a= 2;} void f(){bool a; a=3;}"
 [err:18] Incompatible types in assignment: bool to int at: "{bool a; a" -> "=3;}"
+Type inference failed. 
 
 AST dump:
--FuncDef: main
---int a 
---Assign
----a [int Lvalue Write Value]
----Literal: 2 [int Rvalue]
--FuncDef: f
---bool a 
---Assign
----a [bool Lvalue Write Value]
----Literal: 3 [int Rvalue]
+-[FDef] FuncDef: main
+--[VDec] int a 
+--[Asgst] 
+---[Var] a [int Lvalue Write Value]
+---[Lit] 2 [int Rvalue]
+-[FDef] FuncDef: f
+--[VDec] bool a 
+--[Asgst] 
+---[Var] a [bool Lvalue Write Value]
+---[Lit] 3 [int Rvalue]
 
 
 Declaration Table:
@@ -727,196 +748,197 @@ Scope 2: {(3:a) }
 Parsing: "class O1{} void main(){ O1 a;}"
 
 AST dump:
--ClassDef: O1
--FuncDef: main
---O1 a 
+-[CDef] ClassDef: O1
+-[FDef] FuncDef: main
+--[VDec] O1 a 
 
 
 Declaration Table:
-1: Symbol: [ in scope 2 a of type O1]
-2: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 0 O1 of type O1]
+2: Symbol: [ in scope 2 a of type O1]
+3: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(2:main) }
+Scope 0: {(1:O1) (3:main) }
 HScope of O1 1: {}
-Scope 2: {(1:a) }
+Scope 2: {(2:a) }
 
 ---------------------------------------------------
 Parsing: "class O1{int a;} void main(){ O1 inst; int b; b = inst.a;}"
 
 AST dump:
--ClassDef: O1
--FuncDef: main
---O1 inst 
---int b 
---Assign
----b [int Lvalue Write Value]
----inst.a [int]
-----inst [O1]
-----a
+-[CDef] ClassDef: O1
+-[FDef] FuncDef: main
+--[VDec] O1 inst 
+--[VDec] int b 
+--[Asgst] 
+---[Var] b [int Lvalue Write Value]
+---[Dotop] inst.a [int]
+----[Var] inst [O1]
+----[Vnam] a
 
 
 Declaration Table:
-2: Symbol: [ in scope 2 inst of type O1]
-3: Symbol: [ in scope 2 b of type int]
-4: Symbol: [ in scope 0 main of type function: ()->void]
+2: Symbol: [ in scope 0 O1 of type O1]
+3: Symbol: [ in scope 2 inst of type O1]
+4: Symbol: [ in scope 2 b of type int]
+5: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(4:main) }
+Scope 0: {(2:O1) (5:main) }
 HScope of O1 1: {(1:a) }
-Scope 2: {(2:inst) (3:b) }
+Scope 2: {(3:inst) (4:b) }
 
 ---------------------------------------------------
 Parsing: "class O1{int a;} class O2{ O1 o1;} void main(){ O2 inst; int b; b = inst.o1.a;}"
 
 AST dump:
--ClassDef: O1
--ClassDef: O2
--FuncDef: main
---O2 inst 
---int b 
---Assign
----b [int Lvalue Write Value]
----inst.o1.a [int]
-----inst.o1 [O1]
------inst [O2]
------o1
-----a
+-[CDef] ClassDef: O1
+-[CDef] ClassDef: O2
+-[FDef] FuncDef: main
+--[VDec] O2 inst 
+--[VDec] int b 
+--[Asgst] 
+---[Var] b [int Lvalue Write Value]
+---[Dotop] inst.o1.a [int]
+----[Dotop] inst.o1 [O1]
+-----[Var] inst [O2]
+-----[Vnam] o1
+----[Vnam] a
 
 
 Declaration Table:
-3: Symbol: [ in scope 3 inst of type O2]
-4: Symbol: [ in scope 3 b of type int]
-5: Symbol: [ in scope 0 main of type function: ()->void]
+2: Symbol: [ in scope 0 O1 of type O1]
+4: Symbol: [ in scope 0 O2 of type O2]
+5: Symbol: [ in scope 3 inst of type O2]
+6: Symbol: [ in scope 3 b of type int]
+7: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(5:main) }
+Scope 0: {(2:O1) (4:O2) (7:main) }
 HScope of O1 1: {(1:a) }
-HScope of O2 2: {(2:o1) }
-Scope 3: {(3:inst) (4:b) }
+HScope of O2 2: {(3:o1) }
+Scope 3: {(5:inst) (6:b) }
 
 ---------------------------------------------------
 Parsing: "class O1{int f(int a, int b){int c; c = a+b; return c;}} void main(){ O1 inst; int b; b = inst.f(1,2);}"
 
 AST dump:
--ClassDef: O1
---FuncDef: f
----int c 
----Assign
-----c [int Lvalue Write Value]
+-[CDef] ClassDef: O1
+--[FDef] FuncDef: f
+---[VDec] int c 
+---[Asgst] 
+----[Var] c [int Lvalue Write Value]
 ----Op: +  [int Rvalue]
------a [int Lvalue Read Value]
------b [int Lvalue Read Value]
----Return (c)
-----c [int Lvalue Read Value]
--FuncDef: main
---O1 inst 
---int b 
---Assign
----b [int Lvalue Write Value]
----FuncRet: int [int Rvalue]
-----FuncCall: inst.f [function: (int, int)->int]
------inst.f [function: (int, int)->int]
-------inst [O1]
-------f
------Literal: 1 [int]
------Literal: 2 [int]
+-----[Var] a [int Lvalue Read Value]
+-----[Var] b [int Lvalue Read Value]
+---[Retst] Return (c)
+----[Var] c [int Lvalue Read Value]
+-[FDef] FuncDef: main
+--[VDec] O1 inst 
+--[VDec] int b 
+--[Asgst] 
+---[Var] b [int Lvalue Write Value]
+---[Fret] FuncRet: int [int Rvalue]
+----[Fcal] FuncCall: inst.f [function: (int, int)->int]
+-----[Dotop] inst.f [function: (int, int)->int]
+------[Var] inst [O1]
+------[Vnam] f-----[Lit] 1 [int]
+-----[Lit] 2 [int]
 
 
 Declaration Table:
 1: Symbol: [ in scope 2 a of type int]
 2: Symbol: [ in scope 2 b of type int]
 3: Symbol: [ in scope 2 c of type int]
-5: Symbol: [ in scope 3 inst of type O1]
-6: Symbol: [ in scope 3 b of type int]
-7: Symbol: [ in scope 0 main of type function: ()->void]
+5: Symbol: [ in scope 0 O1 of type O1]
+6: Symbol: [ in scope 3 inst of type O1]
+7: Symbol: [ in scope 3 b of type int]
+8: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(7:main) }
+Scope 0: {(5:O1) (8:main) }
 HScope of O1 1: {(4:f) }
 Scope 2: {(1:a) (2:b) (3:c) }
-Scope 3: {(5:inst) (6:b) }
+Scope 3: {(6:inst) (7:b) }
 
 ---------------------------------------------------
 Parsing: "class O1{int f(int a){return a + a_;} int a_;} void main(){ O1 inst; int b; b = inst.f(1);}"
 
 AST dump:
--ClassDef: O1
---FuncDef: f
----Return ( + )
+-[CDef] ClassDef: O1
+--[FDef] FuncDef: f
+---[Retst] Return ( + )
 ----Op: +  [int Rvalue]
------a [int Lvalue Read Value]
------a_ [int Lvalue Read Value]
--FuncDef: main
---O1 inst 
---int b 
---Assign
----b [int Lvalue Write Value]
----FuncRet: int [int Rvalue]
-----FuncCall: inst.f [function: (int)->int]
------inst.f [function: (int)->int]
-------inst [O1]
-------f
------Literal: 1 [int]
+-----[Var] a [int Lvalue Read Value]
+-----[Var] a_ [int Lvalue Read Value]
+-[FDef] FuncDef: main
+--[VDec] O1 inst 
+--[VDec] int b 
+--[Asgst] 
+---[Var] b [int Lvalue Write Value]
+---[Fret] FuncRet: int [int Rvalue]
+----[Fcal] FuncCall: inst.f [function: (int)->int]
+-----[Dotop] inst.f [function: (int)->int]
+------[Var] inst [O1]
+------[Vnam] f-----[Lit] 1 [int]
 
 
 Declaration Table:
 1: Symbol: [ in scope 2 a of type int]
-4: Symbol: [ in scope 3 inst of type O1]
-5: Symbol: [ in scope 3 b of type int]
-6: Symbol: [ in scope 0 main of type function: ()->void]
-
-Scopes of module:
-Scope 0: {(6:main) }
-HScope of O1 1: {(2:f) (3:a_) }
-Scope 2: {(1:a) }
-Scope 3: {(4:inst) (5:b) }
-
----------------------------------------------------
-Parsing: "class O1{int f(int a){return 1;} } class O2{int g(){return inst_.f() + 1;} O1 inst_; } void main(){ O2 inst; int b; b = inst.g();}"
-[err:89] symbol is not a class (of dot op)
-[err:38] Function call with a non-function name at: "turn inst_" -> ".f() + 1;} O1 inst_; } void main(){ O2 inst; int b; b = inst.g();}"
-
-AST dump:
--ClassDef: O1
---FuncDef: f
----Return (1)
-----Literal: 1
--ClassDef: O2
---FuncDef: g
----Return ( + )
-----Op: + 
------FuncRet: typeUnknown
-------FuncCall: inst_.f
--------inst_.f [typeError]
---------inst_ [typeUnknown]
---------f
-
------Literal: 1
--FuncDef: main
---O2 inst 
---int b 
---Assign
----b
----FuncRet: typeUnknown
-----FuncCall: inst.g [function: ()->int]
------inst.g [function: ()->int]
-------inst [O2]
-------g
-
-
-
-Declaration Table:
-1: Symbol: [ in scope 2 a of type int]
-5: Symbol: [ in scope 5 inst of type O2]
-6: Symbol: [ in scope 5 b of type int]
+4: Symbol: [ in scope 0 O1 of type O1]
+5: Symbol: [ in scope 3 inst of type O1]
+6: Symbol: [ in scope 3 b of type int]
 7: Symbol: [ in scope 0 main of type function: ()->void]
 
 Scopes of module:
-Scope 0: {(7:main) }
-HScope of O1 1: {(2:f) }
+Scope 0: {(4:O1) (7:main) }
+HScope of O1 1: {(2:f) (3:a_) }
 Scope 2: {(1:a) }
+Scope 3: {(5:inst) (6:b) }
+
+---------------------------------------------------
+Parsing: "class O1{int f(){return 1;} } class O2{int g(){return inst_.f() + 1;} O1 inst_; } void main(){ O2 inst; int b; b = inst.g();}"
+
+AST dump:
+-[CDef] ClassDef: O1
+--[FDef] FuncDef: f
+---[Retst] Return (1)
+----[Lit] 1 [int Rvalue]
+-[CDef] ClassDef: O2
+--[FDef] FuncDef: g
+---[Retst] Return ( + )
+----Op: +  [int Rvalue]
+-----[Fret] FuncRet: int [int Rvalue]
+------[Fcal] FuncCall: inst_.f [function: ()->int]
+-------[Dotop] inst_.f [function: ()->int]
+--------[Var] inst_ [O1]
+--------[Vnam] f
+-----[Lit] 1 [int Rvalue]
+-[FDef] FuncDef: main
+--[VDec] O2 inst 
+--[VDec] int b 
+--[Asgst] 
+---[Var] b [int Lvalue Write Value]
+---[Fret] FuncRet: int [int Rvalue]
+----[Fcal] FuncCall: inst.g [function: ()->int]
+-----[Dotop] inst.g [function: ()->int]
+------[Var] inst [O2]
+------[Vnam] g
+
+
+Declaration Table:
+2: Symbol: [ in scope 0 O1 of type O1]
+5: Symbol: [ in scope 0 O2 of type O2]
+6: Symbol: [ in scope 5 inst of type O2]
+7: Symbol: [ in scope 5 b of type int]
+8: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(2:O1) (5:O2) (8:main) }
+HScope of O1 1: {(1:f) }
+Scope 2: {}
 HScope of O2 3: {(3:g) (4:inst_) }
 Scope 4: {}
-Scope 5: {(5:inst) (6:b) }
+Scope 5: {(6:inst) (7:b) }
 
