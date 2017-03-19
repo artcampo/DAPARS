@@ -19,9 +19,7 @@ using namespace GrammarAnalyzer;
     StateId   state_;
 
     std::string str() const{
-      return std::string("<") + std::to_string(state_)
-           + std::string(",") + std::to_string(symbol_)
-           + std::string(">");
+      return "<" + std::to_string(state_) + "," + std::to_string(symbol_) + ">";
     }
   };
 

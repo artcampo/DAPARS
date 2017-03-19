@@ -7,7 +7,7 @@
 namespace GrammarAnalyzer{
 
 
-  
+
 Grammar::Grammar()
   : analized_(false),free_term_id_(0), free_non_term_id_(0), free_rule_id_(0)
   , num_terminals_(0), num_nonterminals_(0)
@@ -27,7 +27,7 @@ SymbolId Grammar::GetSymbolId(const kToken& token) const{
 
 std::string Grammar::str() const noexcept{
   std::string s("Grammar:\n");
-  for(const auto it : rules_) {s += it.str(); s+= std::string("\n");}
+  for(const auto it : rules_) {s += it.str(); s+= "\n";}
   return s;
 }
 
@@ -51,7 +51,7 @@ void Grammar::AddSymbol(const Symbol& symbol){
 //   std::cout << "Adding symbol: " << symbol ;
   symbols_.insert(symbol);
   if(symbol != Symbol::Empty() and symbol != Symbol::StackTop()){
-    //assign id 
+    //assign id
     CreateSymbolId(symbol);
   }
 //   std::cout << "\n";
@@ -93,7 +93,7 @@ std::set<Symbol> Grammar::First(const std::vector<Symbol>& derived){
   std::set<Symbol> first_set;
   bool all_have_empty = true;
 //   std::cout << "Computing first(" << derived << "): ";
-  
+
   for(const auto &symbol : derived){
     bool symbol_has_empty_symbol = HasEmptySymbol(first_[symbol]);
     all_have_empty = all_have_empty and symbol_has_empty_symbol;
@@ -104,9 +104,9 @@ std::set<Symbol> Grammar::First(const std::vector<Symbol>& derived){
       break;
     }
   }
-  
+
   if(all_have_empty)
-    first_set.insert(Symbol::Empty());  
+    first_set.insert(Symbol::Empty());
 //   std::cout << first_set << "\n";
   return first_set;
 }
@@ -126,14 +126,14 @@ void Grammar::ComputeFirstSets() noexcept{
   for(const auto &s : symbols_)
     if(s.IsTerminal())
       first_[s] = {s};
-  
+
   bool hasChanged = true;
   while(hasChanged){
     hasChanged = false;
 //     std::cout << "Already on first:" << first_ <<"\n";
-    for(const auto &r : rules_){  
+    for(const auto &r : rules_){
       std::set<Symbol> new_set = First(r.derived_);
-      
+
       //check if set stays the same, and if not, update it
       for(const auto &symbol : new_set)
         if(first_[r.head_].find(symbol) == first_[r.head_].end()){
@@ -141,7 +141,7 @@ void Grammar::ComputeFirstSets() noexcept{
 //           std::cout << "first(" << r.head_ << ") += " << symbol << "\n";
           hasChanged = true;
         }
-      
+
     }
   }
 }
@@ -151,15 +151,15 @@ void Grammar::ComputeFollowSets() noexcept{
 //   start_set.insert(Symbol::Eof());
 //   follow_[start_symbol_] = start_set;
   follow_[start_symbol_].insert(Symbol::Eof());
-  
+
   bool hasChanged = true;
   while(hasChanged){
     hasChanged = false;
-    for(const auto &r : rules_){  
+    for(const auto &r : rules_){
       bool all_have_empty = true;
       const Symbol& a = r.head_;
       std::set<Symbol> trailer = follow_[a];
-      
+
       for (auto it = r.derived_.rbegin(); it != r.derived_.rend(); ++it){
         const Symbol& b = *it;
         if(not b.IsTerminal()){
@@ -177,7 +177,7 @@ void Grammar::ComputeFollowSets() noexcept{
             for(const auto &symbol : b_first_set)
               if(symbol != Symbol::Empty())
                 trailer.insert(symbol);
-                
+
           }else{
             trailer = first_[b];
           }
@@ -185,8 +185,8 @@ void Grammar::ComputeFollowSets() noexcept{
           trailer = first_[b];
         }
       }// for(const auto &symbol : r.derived_)
-    } // end for(const auto &r : rules_){  
-  }// end while   
+    } // end for(const auto &r : rules_){
+  }// end while
 }
 
 
@@ -195,11 +195,11 @@ bool Grammar::IsBackTrackFree() noexcept{
 }
 
 void Grammar::DumpFirst() const noexcept{
-  std::cout << "First Table\n";  
+  std::cout << "First Table\n";
   for(const auto &entry : first_){
     if(not entry.first.IsTerminal()){
       std::cout << entry.first.str() << " => ";
-      
+
       for(const auto &s : entry.second){
         std::cout << s.str() << " ";
       }
@@ -213,7 +213,7 @@ void Grammar::DumpFollow() const noexcept{
   for(const auto &entry : follow_){
     if(not entry.first.IsTerminal()){
       std::cout << entry.first.str() << " => ";
-      
+
       for(const auto &s : entry.second){
         std::cout << s.str() << " ";
       }
@@ -239,7 +239,7 @@ void Grammar::CreateSymbolId(const Symbol& symbol){
       id_to_terminal_[free_term_id_] = symbol;
       free_term_id_++;
 //       std::cout << " new terminal";
-    } 
+    }
   }else{
     auto it = symbol_id_.find(symbol);
     if(it == symbol_id_.end()){
@@ -247,8 +247,8 @@ void Grammar::CreateSymbolId(const Symbol& symbol){
       id_to_nonterminal_[free_non_term_id_] = symbol;
       free_non_term_id_++;
 //       std::cout << " new non terminal";
-    } 
-  }  
+    }
+  }
 }
 
 SymbolId Grammar::GetSymbolId(const Symbol& symbol){
@@ -256,7 +256,7 @@ SymbolId Grammar::GetSymbolId(const Symbol& symbol){
     std::cout << "GetSymbolId of empty or stacktop\n";
     exit(1);
   }
-    
+
   if(symbol.IsTerminal()){
     auto it = symbol_id_.find(symbol);
     if(it == symbol_id_.end()){
@@ -272,8 +272,8 @@ SymbolId Grammar::GetSymbolId(const Symbol& symbol){
   }
 }
 
-const Symbol 
-Grammar::AddTerminalKeyword(const std::string& name, 
+const Symbol
+Grammar::AddTerminalKeyword(const std::string& name,
                      const std::string& display_name, const kToken& tokenId){
   const Symbol s(name, display_name, true);
   AddTerminal(s, tokenId);
@@ -282,8 +282,8 @@ Grammar::AddTerminalKeyword(const std::string& name,
   return s;
 }
 
-const Symbol 
-Grammar::AddTerminal(const std::string& name, 
+const Symbol
+Grammar::AddTerminal(const std::string& name,
                      const std::string& display_name, const kToken& tokenId){
   const Symbol s(name, display_name, true);
   AddTerminal(s, tokenId);
@@ -306,7 +306,7 @@ void Grammar::DumpPropierties() noexcept{
 void Grammar::ComputeFirstPlusSets() noexcept{
   for(const auto &r : rules_){
     const Symbol& b = r.derived_[0];
-    const Symbol& a = r.head_;    
+    const Symbol& a = r.head_;
     first_plus_[r] = first_[b];
 
     if(r.FirstDerivedCanBeEmpty()){
@@ -320,7 +320,7 @@ void Grammar::Initialize(){
   //std::map<Symbol, Rule*> rule_of_head_;
   for(const auto &r : rules_){
     rules_of_head_[r.head_].push_back(&r);
-  }  
+  }
 }
 
 bool Grammar::ComputeBackTrackFree(){
@@ -330,12 +330,12 @@ bool Grammar::ComputeBackTrackFree(){
 
     for(std::vector<Rule const*>::const_iterator it_ri = rules.cbegin()
       , it_ri_end = rules.cend(); it_ri != it_ri_end; ++it_ri){
-      
+
       const std::set<Symbol>& ri_set = first_plus_.at(**it_ri);
       for(std::vector<Rule const*>::const_iterator it_rj = it_ri + 1
         ; it_rj != it_ri_end; ++it_rj){
           const std::set<Symbol>& rj_set = first_plus_.at(**it_rj);
-          
+
           //check if sets are disjoint
           for(const auto &symbol : ri_set){
             if(rj_set.find(symbol) != rj_set.end()){
@@ -350,7 +350,7 @@ bool Grammar::ComputeBackTrackFree(){
         }
       }
   }
-  return is_back_track_free_;  
+  return is_back_track_free_;
 }
 
 } //end namespace GrammarAnalyzer

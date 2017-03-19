@@ -56,63 +56,63 @@ int main()
 
   //Proper error identification
 
-  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){    }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ @ }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ 1; ) }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ 1 ) }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ int a }"), g);
+  parse<Grammar,ParserLL1RecDesc>( "void main(){    }", g);
+  parse<Grammar,ParserLL1RecDesc>( "void main(){ @ }", g);
+  parse<Grammar,ParserLL1RecDesc>( "void main(){ 1; ) }", g);
+  parse<Grammar,ParserLL1RecDesc>( "void main(){ 1 ) }", g);
+  parse<Grammar,ParserLL1RecDesc>( "void main(){ int a }", g);
 
-  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ if }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ if( }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ if(int }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ if(1) }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ if(1){ }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ if(1){2; }"), g);
+  parse<Grammar,ParserLL1RecDesc>( "void main(){ if }", g);
+  parse<Grammar,ParserLL1RecDesc>( "void main(){ if( }", g);
+  parse<Grammar,ParserLL1RecDesc>( "void main(){ if(int }", g);
+  parse<Grammar,ParserLL1RecDesc>( "void main(){ if(1) }", g);
+  parse<Grammar,ParserLL1RecDesc>( "void main(){ if(1){ }", g);
+  parse<Grammar,ParserLL1RecDesc>( "void main(){ if(1){2; }", g);
 
-  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ 1+; }"), g);
+  parse<Grammar,ParserLL1RecDesc>( "void main(){ 1+; }", g);
 
-  parse<Grammar,ParserLL1RecDesc>( std::string("void main(){ 1+(; }"), g);
+  parse<Grammar,ParserLL1RecDesc>( "void main(){ 1+(; }", g);
 
   //error:15
-  parse<Grammar,ParserLL1RecDesc>( std::string(
-    "void main(){ int a; int b; int a; }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string(
-    "void main(){int a; a=1+b; }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string(
-    "void main(){int a; bool b; a=a+b; }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string(
-    "void main(){int a; bool b; a=b+b; }"), g);
-  parse<Grammar,ParserLL1RecDesc>( std::string(
-    "void main(){int a b c; }"), g);
+  parse<Grammar,ParserLL1RecDesc>(
+    "void main(){ int a; int b; int a; }", g);
+  parse<Grammar,ParserLL1RecDesc>(
+    "void main(){int a; a=1+b; }", g);
+  parse<Grammar,ParserLL1RecDesc>(
+    "void main(){int a; bool b; a=a+b; }", g);
+  parse<Grammar,ParserLL1RecDesc>(
+    "void main(){int a; bool b; a=b+b; }", g);
+  parse<Grammar,ParserLL1RecDesc>(
+    "void main(){int a b c; }", g);
 
   //22
-  parse<Grammar,ParserLL1RecDesc>( std::string(
-    "void main(){int a,b,c; a= 2+1; a = b+c; 2 = 2; }"), g);
+  parse<Grammar,ParserLL1RecDesc>(
+    "void main(){int a,b,c; a= 2+1; a = b+c; 2 = 2; }", g);
 
 
   //err39
-  parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int f(int p1){int a; a=p1;} void main(){int a; a=1;  a=f();}"), g);
+  parse<Grammar,ParserLL1RecDesc>(
+    "int f(int p1){int a; a=p1;} void main(){int a; a=1;  a=f();}", g);
 
   //err40
-  parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int f(int p1){int a; a=p1;} void main(){int a; a=f(2,3);}"), g);
+  parse<Grammar,ParserLL1RecDesc>(
+    "int f(int p1){int a; a=p1;} void main(){int a; a=f(2,3);}", g);
 
   //err41
-  parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int f(int p1, int p2){int a; a=p1;} void main(){int a; a=f(2,true);}"), g);
+  parse<Grammar,ParserLL1RecDesc>(
+    "int f(int p1, int p2){int a; a=p1;} void main(){int a; a=f(2,true);}", g);
 
   //err43
-  parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int f(){ return 1} void main(){ int a;}"), g);
+  parse<Grammar,ParserLL1RecDesc>(
+    "int f(){ return 1} void main(){ int a;}", g);
 
   //kErr45
-  parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int f(){ return true;} void main(){ int a;}"), g);
+  parse<Grammar,ParserLL1RecDesc>(
+    "int f(){ return true;} void main(){ int a;}", g);
 
   //kErr84
-  parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int f(){ int a;} class f{} void main(){ int a;}"), g);
+  parse<Grammar,ParserLL1RecDesc>(
+    "int f(){ int a;} class f{} void main(){ int a;}", g);
 
   //Test that should be applied
   /*
