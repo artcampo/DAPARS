@@ -22,6 +22,7 @@ Scope 2: {}
 
 
 IR dump:
+entry_main
 0: %0 = LoadI(1)
 1: JumpCondTrue %0 to:3
 2: JumpCondFalse %0 to:8
@@ -47,6 +48,7 @@ Scope 3: {(4:d) (5:e) (6:f) }
 
 
 IR dump:
+entry_main
 0: %0 = LoadI(1)
 1: JumpCondTrue %0 to:3
 2: JumpCondFalse %0 to:8
@@ -73,6 +75,7 @@ Scope 1: {(1:a) (2:b) (3:p) }
 
 
 IR dump:
+entry_main
 0: %0 = Load [MainDS:p 2]
 1: %1 = Load [ %0]
 2: store %1 to [MainDS:a 0]
@@ -97,12 +100,14 @@ Scope 2: {(3:p1) (4:a) }
 
 
 IR dump:
+entry_main
 0: %0 = LoadI(2)
 1: store %0 to [MainDS:a 0]
 2: ReturnMain
-3: %2 = Load [arp_f:p1 -2]
-4: store %2 to [arp_f:a 0]
-5: Return
+entry_f
+0: %0 = Load [arp_f:p1 -2]
+1: store %0 to [arp_f:a 0]
+2: Return
 
 ---------------------------------------------------
 Parsing: "int f(int p1){int a; a=p1; return a;} void main(){int a; a=f(2);}"
@@ -114,16 +119,18 @@ Scope 2: {(4:a) }
 
 
 IR dump:
+entry_main
 0: %0 = LoadI(2)
 1: SetPar( %0)
 2: call [entry_f: 0]
 3: %1 = GetRetVal()
 4: store %1 to [MainDS:a 0]
 5: ReturnMain
-6: %3 = Load [arp_f:p1 -2]
-7: store %3 to [arp_f:a 0]
-8: %5 = Load [arp_f:a 0]
-9: Return
+entry_f
+0: %0 = Load [arp_f:p1 -2]
+1: store %0 to [arp_f:a 0]
+2: %2 = Load [arp_f:a 0]
+3: Return
 
 ---------------------------------------------------
 Parsing: "class O1{int a_; int b_; int f(){return a_;} int g(){return b_;} } void main(){O1 inst; int a; a = inst.f() + inst.g();}"
@@ -137,6 +144,7 @@ Scope 4: {(6:inst) (7:a) }
 
 
 IR dump:
+entry_main
 0: call [: 0]
 1: %0 = GetRetVal()
 2: call [: 0]
