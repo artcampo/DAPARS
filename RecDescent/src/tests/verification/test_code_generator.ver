@@ -118,10 +118,30 @@ IR dump:
 1: SetPar( %0)
 2: call [entry_f: 0]
 3: %1 = GetRetVal()
-4: store %0 to [MainDS:a 0]
+4: store %1 to [MainDS:a 0]
 5: ReturnMain
 6: %3 = Load [arp_f:p1 -2]
 7: store %3 to [arp_f:a 0]
 8: %5 = Load [arp_f:a 0]
 9: Return
+
+---------------------------------------------------
+Parsing: "class O1{int a_; int b_; int f(){return a_;} int g(){return b_;} } void main(){O1 inst; int a; a = inst.f() + inst.g();}"
+
+Scopes of module:
+Scope 0: {(5:O1) (8:main) }
+HScope of O1 1: {(1:a_) (2:b_) (3:f) (4:g) }
+Scope 2: {}
+Scope 3: {}
+Scope 4: {(6:inst) (7:a) }
+
+
+IR dump:
+0: call [: 0]
+1: %0 = GetRetVal()
+2: call [: 0]
+3: %1 = GetRetVal()
+4: %2 = %0 + %1
+5: store %2 to [MainDS:a 1]
+6: ReturnMain
 
