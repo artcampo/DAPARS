@@ -144,6 +144,12 @@ Scope 4: {(6:inst) (7:a) }
 
 
 IR dump:
+entry_O1::f
+0: %0 = Load [this_O1:test 0]
+1: Return
+entry_O1::g
+0: %0 = Load [this_O1:test 0]
+1: Return
 entry_main
 0: call [: 0]
 1: %0 = GetRetVal()

@@ -768,7 +768,7 @@ Parsing: "class O1{int a;} void main(){ O1 inst; int b; b = inst.a;}"
 
 AST dump:
 [CDef] ClassDef: O1
-[FDef] FuncDef: main
+-[VDec] int a[FDef] FuncDef: main
 -[VDec] O1 inst 
 -[VDec] int b 
 -[Asgst] 
@@ -794,8 +794,8 @@ Parsing: "class O1{int a;} class O2{ O1 o1;} void main(){ O2 inst; int b; b = in
 
 AST dump:
 [CDef] ClassDef: O1
-[CDef] ClassDef: O2
-[FDef] FuncDef: main
+-[VDec] int a[CDef] ClassDef: O2
+-[VDec] O1 o1[FDef] FuncDef: main
 -[VDec] O2 inst 
 -[VDec] int b 
 -[Asgst] 
@@ -873,7 +873,7 @@ AST dump:
 ---Op: +  [int Rvalue]
 ----[Var] a [int Lvalue Read Value]
 ----[Var] a_ [int Lvalue Read Value]
-[FDef] FuncDef: main
+-[VDec] int a_[FDef] FuncDef: main
 -[VDec] O1 inst 
 
 
@@ -907,7 +907,7 @@ AST dump:
 -------[Var] inst_ [O1]
 -------[Vnam] f
 ----[Lit] 1 [int Rvalue]
-[FDef] FuncDef: main
+-[VDec] O1 inst_[FDef] FuncDef: main
 -[VDec] O2 inst 
 
 
