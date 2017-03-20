@@ -23,7 +23,7 @@ PtrClassDef ParserLL1RecDesc::ClassDef_(const ScopeId scope_inht){
 
   const ScopeId scope_id = unit_.NewClass(name);
   unit_.EnterClassDefinition(name);
-
+  class_name_inht_ = name;
 
   Accept(kToken::lcbr, kErr81);
 

@@ -23,7 +23,12 @@ PtrFuncDef ParserLL1RecDesc::ParseFuncDef(const Compiler::AST::Type& ret_type_in
 
   //Scope for
   scope_owner_id_.push( unit_.NewScopeOwner() );
-  const ScopeId id = unit_.NewFunction(name_inht, scope_owner_id_.top());
+  ScopeId func_scope_id;
+  if(not inside_member_function_definition_)
+    func_scope_id = unit_.NewFunction(name_inht, scope_owner_id_.top());
+  else
+    func_scope_id = unit_.NewFunction(name_inht, class_name_inht_, scope_owner_id_.top());
+  const ScopeId id = func_scope_id;
 
   std::vector<PtrVarDecl> par_list;
   ParList(par_list, id);
