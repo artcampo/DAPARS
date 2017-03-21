@@ -36,7 +36,7 @@ void parse(const std::string& str, G& g)
   std::unique_ptr<P> parser(new
                 P(std::vector<char> (str.begin(), str.end()), unit));
 
-  bool dump_decorated_ast_before_IRGen = false;
+  bool dump_decorated_ast_before_IRGen = true;
 
   parser->Parse();
   if(unit.ValidAst()){

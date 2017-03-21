@@ -21,6 +21,33 @@ Scope 1: {(1:a) (2:b) (3:c) }
 Scope 2: {}
 
 
+AST fully decorated dump:
+[FDef] FuncDef: main
+-[VDec] int a 
+[VDec] int b 
+[VDec] int c 
+-WhileStmt:
+--Cond: [Lit] 1 [bool Rvalue]
+--Body:
+---[Asgst] 
+----[Var] b [int Lvalue Write Value Nmemb]
+----Op: +  [int Rvalue]
+-----[Lit] 2 [int Rvalue]
+-----[Lit] 3 [int Rvalue]
+
+--[Asgst] 
+---[Var] c [int Lvalue Write Value Nmemb]
+---Op: +  [int Rvalue]
+----[Lit] 3 [int Rvalue]
+----[Lit] 4 [int Rvalue]
+
+
+Declaration Table:
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 1 b of type int]
+3: Symbol: [ in scope 1 c of type int]
+4: Symbol: [ in scope 0 main of type function: ()->void]
+
 IR dump:
 LT entry_main
 0: %0 = LoadI(1)
@@ -46,6 +73,45 @@ Scope 1: {(1:a) (2:b) (7:g) }
 Scope 2: {(3:c) }
 Scope 3: {(4:d) (5:e) (6:f) }
 
+
+AST fully decorated dump:
+[FDef] FuncDef: main
+-[VDec] int a 
+[VDec] int b 
+-IfStmt:
+--Cond: [Lit] 1 [bool Rvalue]
+--Then:
+---[VDec] int c 
+---[Asgst] 
+----[Var] a [int Lvalue Write Value Nmemb]
+----Op: +  [int Rvalue]
+-----[Lit] 2 [int Rvalue]
+-----[Lit] 3 [int Rvalue]
+--Else:
+---[VDec] int d 
+[VDec] int e 
+[VDec] int f 
+---[Asgst] 
+----[Var] d [int Lvalue Write Value Nmemb]
+----[Lit] 4 [int Rvalue]
+
+-[VDec] int g 
+-[Asgst] 
+--[Var] b [int Lvalue Write Value Nmemb]
+--Op: +  [int Rvalue]
+---[Lit] 5 [int Rvalue]
+---[Lit] 6 [int Rvalue]
+
+
+Declaration Table:
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 1 b of type int]
+3: Symbol: [ in scope 2 c of type int]
+4: Symbol: [ in scope 3 d of type int]
+5: Symbol: [ in scope 3 e of type int]
+6: Symbol: [ in scope 3 f of type int]
+7: Symbol: [ in scope 1 g of type int]
+8: Symbol: [ in scope 0 main of type function: ()->void]
 
 IR dump:
 LT entry_main
@@ -74,6 +140,36 @@ Scope 0: {(4:main) }
 Scope 1: {(1:a) (2:b) (3:p) }
 
 
+AST fully decorated dump:
+[FDef] FuncDef: main
+-[VDec] int a 
+[VDec] int b 
+-[VDec] int* p 
+-[Asgst] 
+--[Var] a [int Lvalue Write Value Nmemb]
+--[Derop] * [int Lvalue Read]
+---[Var] p [int* Lvalue Read Value Nmemb]
+-[Asgst] 
+--[Var] b [int Lvalue Write Value Nmemb]
+--[Lit] 2 [int Rvalue]
+-[Asgst] 
+--[Var] p [int* Lvalue Write Value Nmemb]
+--[Refop] @ [int* Lvalue]
+---[Var] b [int Lvalue Read Address Nmemb]
+-[Asgst] 
+--[Var] a [int Lvalue Write Value Nmemb]
+--Op: +  [int Rvalue]
+---[Var] b [int Lvalue Read Value Nmemb]
+---[Derop] * [int Lvalue Read]
+----[Var] p [int* Lvalue Read Value Nmemb]
+
+
+Declaration Table:
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 1 b of type int]
+3: Symbol: [ in scope 1 p of type int*]
+4: Symbol: [ in scope 0 main of type function: ()->void]
+
 IR dump:
 LT entry_main
 0: %0 = Load [LT MainDS:p 2]
@@ -99,6 +195,26 @@ Scope 1: {(1:a) }
 Scope 2: {(3:p1) (4:a) }
 
 
+AST fully decorated dump:
+[FDef] FuncDef: main
+-[VDec] int a 
+-[Asgst] 
+--[Var] a [int Lvalue Write Value Nmemb]
+--[Lit] 2 [int Rvalue]
+[FDef] FuncDef: f
+-[VDec] int a 
+-[Asgst] 
+--[Var] a [int Lvalue Write Value Nmemb]
+--[Var] p1 [int Lvalue Read Value Nmemb]
+
+
+Declaration Table:
+1: Symbol: [ in scope 1 a of type int]
+2: Symbol: [ in scope 0 main of type function: ()->void]
+3: Symbol: [ in scope 2 p1 of type int]
+4: Symbol: [ in scope 2 a of type int]
+5: Symbol: [ in scope 0 f of type function: (int)->void]
+
 IR dump:
 LT entry_main
 0: %0 = LoadI(2)
@@ -117,6 +233,31 @@ Scope 0: {(3:f) (5:main) }
 Scope 1: {(1:p1) (2:a) }
 Scope 2: {(4:a) }
 
+
+AST fully decorated dump:
+[FDef] FuncDef: f
+-[VDec] int a 
+-[Asgst] 
+--[Var] a [int Lvalue Write Value Nmemb]
+--[Var] p1 [int Lvalue Read Value Nmemb]
+-[Retst] Return (a)
+--[Var] a [int Lvalue Read Value Nmemb]
+[FDef] FuncDef: main
+-[VDec] int a 
+-[Asgst] 
+--[Var] a [int Lvalue Write Value Nmemb]
+--[Fret] FuncRet: int [int Rvalue]
+---[Fcal] FuncCall: f [function: (int)->int]
+----[Var] f [function: (int)->int Read Value Nmemb]
+----[Lit] 2 [int]
+
+
+Declaration Table:
+1: Symbol: [ in scope 1 p1 of type int]
+2: Symbol: [ in scope 1 a of type int]
+3: Symbol: [ in scope 0 f of type function: (int)->int]
+4: Symbol: [ in scope 2 a of type int]
+5: Symbol: [ in scope 0 main of type function: ()->void]
 
 IR dump:
 LT entry_main
@@ -143,6 +284,39 @@ Scope 3: {}
 Scope 4: {(6:inst) (7:a) }
 
 
+AST fully decorated dump:
+[CDef] ClassDef: O1
+-[VDec] int a_
+-[VDec] int b_
+-[FDef] FuncDef: f
+--[Retst] Return (a_)
+---[Var] a_ [int Lvalue Read Value Memb]
+
+-[FDef] FuncDef: g
+--[Retst] Return (b_)
+---[Var] b_ [int Lvalue Read Value Memb]
+[FDef] FuncDef: main
+-[VDec] O1 inst 
+-[VDec] int a 
+-[Asgst] 
+--[Var] a [int Lvalue Write Value Nmemb]
+--Op: +  [int Rvalue]
+---[Fret] FuncRet: int [int Rvalue]
+----[Fcal] FuncCall: inst.f [function: ()->int]
+-----[Dotop] inst.f [function: ()->int Memb]
+------[Var] inst [O1 Read Address Nmemb]
+------[Vnam] f
+---[Dotop] inst.a_ [int Memb]
+----[Var] inst [O1 Lvalue Read Address Nmemb]
+----[Vnam] a_
+
+
+Declaration Table:
+5: Symbol: [ in scope 0 O1 of type O1]
+6: Symbol: [ in scope 4 inst of type O1]
+7: Symbol: [ in scope 4 a of type int]
+8: Symbol: [ in scope 0 main of type function: ()->void]
+
 IR dump:
 LT entry_O1::f
 0: %0 = Load [RT this_O1:a_ 0]
@@ -151,10 +325,12 @@ LT entry_O1::g
 0: %0 = Load [RT this_O1:b_ 1]
 1: Return
 LT entry_main
-0: call [LT : 0]
-1: %0 = GetRetVal()
-2: %1 = Load [ %0 + a_ 0]
-3: %2 = %0 + %1
-4: store %2 to [LT MainDS:a 2]
-5: ReturnMain
+0: %0 = PtrElem( LT MainDS:inst 0)
+1: call [LT entry_O1::f: 0]
+2: %1 = GetRetVal()
+3: %2 = PtrElem( LT MainDS:inst 0)
+4: %3 = Load [ %2 + a_ 0]
+5: %4 = %1 + %3
+6: store %4 to [LT MainDS:a 2]
+7: ReturnMain
 
