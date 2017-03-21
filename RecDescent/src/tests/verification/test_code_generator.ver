@@ -326,11 +326,12 @@ LT entry_O1::g
 1: Return
 LT entry_main
 0: %0 = PtrElem( LT MainDS:inst 0)
-1: call [LT entry_O1::f: 0]
-2: %1 = GetRetVal()
-3: %2 = PtrElem( LT MainDS:inst 0)
-4: %3 = Load [ %2 + a_ 0]
-5: %4 = %1 + %3
-6: store %4 to [LT MainDS:a 2]
-7: ReturnMain
+1: SetPar( %0)
+2: call [LT entry_O1::f: 0]
+3: %1 = GetRetVal()
+4: %2 = PtrElem( LT MainDS:inst 0)
+5: %3 = Load [ %2 + a_ 0]
+6: %4 = %1 + %3
+7: store %4 to [LT MainDS:a 2]
+8: ReturnMain
 
