@@ -153,7 +153,8 @@ LT entry_O1::g
 LT entry_main
 0: call [LT : 0]
 1: %0 = GetRetVal()
-2: %1 = %0 + %0
-3: store %1 to [LT MainDS:a 2]
-4: ReturnMain
+2: %1 = Load [ %0 + a_ 0]
+3: %2 = %0 + %1
+4: store %2 to [LT MainDS:a 2]
+5: ReturnMain
 

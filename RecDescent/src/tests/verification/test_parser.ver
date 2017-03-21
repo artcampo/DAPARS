@@ -774,7 +774,7 @@ AST dump:
 -[Asgst] 
 --[Var] b [int Lvalue Write Value Nmemb]
 --[Dotop] inst.a [int Memb]
----[Var] inst [O1 Nmemb]
+---[Var] inst [O1 Lvalue Read Address Nmemb]
 ---[Vnam] a
 
 
@@ -802,7 +802,7 @@ AST dump:
 --[Var] b [int Lvalue Write Value Nmemb]
 --[Dotop] inst.o1.a [int Memb]
 ---[Dotop] inst.o1 [O1 Memb]
-----[Var] inst [O2 Nmemb]
+----[Var] inst [O2 Lvalue Read Address Nmemb]
 ----[Vnam] o1
 ---[Vnam] a
 
@@ -842,7 +842,7 @@ AST dump:
 --[Fret] FuncRet: int [int Rvalue]
 ---[Fcal] FuncCall: inst.f [function: (int, int)->int]
 ----[Dotop] inst.f [function: (int, int)->int Memb]
------[Var] inst [O1 Nmemb]
+-----[Var] inst [O1 Read Address Nmemb]
 -----[Vnam] f
 ----[Lit] 1 [int]
 ----[Lit] 2 [int]
@@ -906,7 +906,7 @@ AST dump:
 ----[Fret] FuncRet: int [int Rvalue]
 -----[Fcal] FuncCall: inst_.f [function: ()->int]
 ------[Dotop] inst_.f [function: ()->int Memb]
--------[Var] inst_ [O1 Memb]
+-------[Var] inst_ [O1 Read Address Memb]
 -------[Vnam] f
 ----[Lit] 1 [int Rvalue]
 [FDef] FuncDef: main
@@ -936,7 +936,7 @@ AST dump:
 --[Retst] Return (FuncRet: int)
 ---[Fret] FuncRet: int [int Rvalue]
 ----[Fcal] FuncCall: g [function: ()->int]
------[Var] g [function: ()->int Memb]
+-----[Var] g [function: ()->int Read Value Memb]
 
 -[FDef] FuncDef: g
 --[Retst] Return (1)
