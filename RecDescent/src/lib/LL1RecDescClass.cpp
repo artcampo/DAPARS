@@ -21,7 +21,7 @@ PtrClassDef ParserLL1RecDesc::ClassDef_(const ScopeId scope_inht){
   const AST::Type& type = unit_.GetClassType(name);
 
 
-  const ScopeId scope_id = unit_.NewClass(name);
+  const ScopeId scope_id = unit_.NewClassDecl(name);
   unit_.EnterClassDefinition(name);
   class_name_inht_ = name;
 
@@ -38,6 +38,7 @@ PtrClassDef ParserLL1RecDesc::ClassDef_(const ScopeId scope_inht){
   PtrClassDef cdef = NewClassDef(name, var_decl, func_def, scope_inht, l);
   RegNameType(name);
   unit_.RegisterDecl(name, unit_.GetClassType(name), *cdef, scope_inht);
+  unit_.NewClass(name, scope_id, *cdef);
 
   return std::move(cdef);
 
