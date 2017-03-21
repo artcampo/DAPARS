@@ -22,19 +22,19 @@ Scope 2: {}
 
 
 IR dump:
-entry_main
+LT entry_main
 0: %0 = LoadI(1)
 1: JumpCondTrue %0 to:3
 2: JumpCondFalse %0 to:8
 3: %1 = LoadI(2)
 4: %2 = LoadI(3)
 5: %3 = %1 + %2
-6: store %3 to [MainDS:b 1]
+6: store %3 to [LT MainDS:b 1]
 7: JumpCondFalse %0 to:0
 8: %5 = LoadI(3)
 9: %6 = LoadI(4)
 10: %7 = %5 + %6
-11: store %7 to [MainDS:c 2]
+11: store %7 to [LT MainDS:c 2]
 12: ReturnMain
 
 ---------------------------------------------------
@@ -48,22 +48,22 @@ Scope 3: {(4:d) (5:e) (6:f) }
 
 
 IR dump:
-entry_main
+LT entry_main
 0: %0 = LoadI(1)
 1: JumpCondTrue %0 to:3
 2: JumpCondFalse %0 to:8
 3: %1 = LoadI(2)
 4: %2 = LoadI(3)
 5: %3 = %1 + %2
-6: store %3 to [MainDS:a 0]
+6: store %3 to [LT MainDS:a 0]
 7: JumpIncond11
 8: %5 = LoadI(4)
-9: store %5 to [MainDS:d 2]
+9: store %5 to [LT MainDS:d 2]
 10: JumpIncond11
 11: %7 = LoadI(5)
 12: %8 = LoadI(6)
 13: %9 = %7 + %8
-14: store %9 to [MainDS:b 1]
+14: store %9 to [LT MainDS:b 1]
 15: ReturnMain
 
 ---------------------------------------------------
@@ -75,19 +75,19 @@ Scope 1: {(1:a) (2:b) (3:p) }
 
 
 IR dump:
-entry_main
-0: %0 = Load [MainDS:p 2]
+LT entry_main
+0: %0 = Load [LT MainDS:p 2]
 1: %1 = Load [ %0]
-2: store %1 to [MainDS:a 0]
+2: store %1 to [LT MainDS:a 0]
 3: %3 = LoadI(2)
-4: store %3 to [MainDS:b 1]
-5: %5 = PtrElem( MainDS:b 1)
-6: store %5 to [MainDS:p 2]
-7: %7 = Load [MainDS:b 1]
-8: %8 = Load [MainDS:p 2]
+4: store %3 to [LT MainDS:b 1]
+5: %5 = PtrElem( LT MainDS:b 1)
+6: store %5 to [LT MainDS:p 2]
+7: %7 = Load [LT MainDS:b 1]
+8: %8 = Load [LT MainDS:p 2]
 9: %9 = Load [ %8]
 10: %10 = %7 + %9
-11: store %10 to [MainDS:a 0]
+11: store %10 to [LT MainDS:a 0]
 12: ReturnMain
 
 ---------------------------------------------------
@@ -100,13 +100,13 @@ Scope 2: {(3:p1) (4:a) }
 
 
 IR dump:
-entry_main
+LT entry_main
 0: %0 = LoadI(2)
-1: store %0 to [MainDS:a 0]
+1: store %0 to [LT MainDS:a 0]
 2: ReturnMain
-entry_f
-0: %0 = Load [arp_f:p1 -2]
-1: store %0 to [arp_f:a 0]
+LT entry_f
+0: %0 = Load [RT arp_f:p1 -2]
+1: store %0 to [RT arp_f:a 0]
 2: Return
 
 ---------------------------------------------------
@@ -119,21 +119,21 @@ Scope 2: {(4:a) }
 
 
 IR dump:
-entry_main
+LT entry_main
 0: %0 = LoadI(2)
 1: SetPar( %0)
-2: call [entry_f: 0]
+2: call [LT entry_f: 0]
 3: %1 = GetRetVal()
-4: store %1 to [MainDS:a 0]
+4: store %1 to [LT MainDS:a 0]
 5: ReturnMain
-entry_f
-0: %0 = Load [arp_f:p1 -2]
-1: store %0 to [arp_f:a 0]
-2: %2 = Load [arp_f:a 0]
+LT entry_f
+0: %0 = Load [RT arp_f:p1 -2]
+1: store %0 to [RT arp_f:a 0]
+2: %2 = Load [RT arp_f:a 0]
 3: Return
 
 ---------------------------------------------------
-Parsing: "class O1{int a_; int b_; int f(){return a_;} int g(){return b_;} } void main(){O1 inst; int a; a = inst.f() + inst.g();}"
+Parsing: "class O1{int a_; int b_; int f(){return a_;} int g(){return b_;} } void main(){O1 inst; int a; a = inst.f() + inst.a_;}"
 
 Scopes of module:
 Scope 0: {(5:O1) (8:main) }
@@ -144,18 +144,16 @@ Scope 4: {(6:inst) (7:a) }
 
 
 IR dump:
-entry_O1::f
-0: %0 = Load [this_O1:a_ 0]
+LT entry_O1::f
+0: %0 = Load [RT this_O1:a_ 0]
 1: Return
-entry_O1::g
-0: %0 = Load [this_O1:b_ 1]
+LT entry_O1::g
+0: %0 = Load [RT this_O1:b_ 1]
 1: Return
-entry_main
-0: call [: 0]
+LT entry_main
+0: call [LT : 0]
 1: %0 = GetRetVal()
-2: call [: 0]
-3: %1 = GetRetVal()
-4: %2 = %0 + %1
-5: store %2 to [MainDS:a 2]
-6: ReturnMain
+2: %1 = %0 + %0
+3: store %1 to [LT MainDS:a 2]
+4: ReturnMain
 
