@@ -36,6 +36,8 @@ void parse(const std::string& str, G& g)
   std::unique_ptr<P> parser(new
                 P(std::vector<char> (str.begin(), str.end()), unit));
 
+  bool dump_decorated_ast_before_IRGen = true;
+
   parser->Parse();
   if(unit.ValidAst()){
     if(unit.NumScopes()>1){
@@ -48,11 +50,11 @@ void parse(const std::string& str, G& g)
     pm.Run();
   }
   if(unit.GetAstProg() != nullptr){
-    /*
-    std::cout << "\nAST dump:\n";
-    Dump visitor_dump(unit, true);
-    visitor_dump.Visit(*unit.GetAstProg());
-*/
+    if(dump_decorated_ast_before_IRGen){
+      std::cout << "\nAST fully decorated dump:\n";
+      Dump visitor_dump(unit, true);
+      visitor_dump.Visit(*unit.GetAstProg());
+    }
 
     IRGenerator visitor_irgen(unit);
     visitor_irgen.Visit(*unit.GetAstProg(), nullptr);
