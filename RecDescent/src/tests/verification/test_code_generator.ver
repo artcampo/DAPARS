@@ -274,7 +274,7 @@ LT entry_f
 3: Return
 
 ---------------------------------------------------
-Parsing: "class O1{int a_; int b_; int f(){return a_;} int g(){return b_;} } void main(){O1 inst; int a; a = inst.f() + inst.a_;}"
+Parsing: "class O1{int a_; int b_; int f(){return a_ + g();} int g(){return b_;} } void main(){O1 inst; int a; a = inst.f() + inst.a_;}"
 
 Scopes of module:
 Scope 0: {(5:O1) (8:main) }
@@ -289,8 +289,12 @@ AST fully decorated dump:
 -[VDec] int a_
 -[VDec] int b_
 -[FDef] FuncDef: f
---[Retst] Return (a_)
----[Var] a_ [int Lvalue Read Value Memb]
+--[Retst] Return ( + )
+---Op: +  [int Rvalue]
+----[Var] a_ [int Lvalue Read Value Memb]
+----[Fret] FuncRet: int [int Rvalue]
+-----[Fcal] FuncCall: g [function: ()->int]
+------[Var] g [function: ()->int Read Value Memb]
 
 -[FDef] FuncDef: g
 --[Retst] Return (b_)
@@ -320,7 +324,10 @@ Declaration Table:
 IR dump:
 LT entry_O1::f
 0: %0 = Load [RT this_O1:a_ 0]
-1: Return
+1: call [LT entry_O1::g: 0]
+2: %1 = GetRetVal()
+3: %2 = %0 + %1
+4: Return
 LT entry_O1::g
 0: %0 = Load [RT this_O1:b_ 1]
 1: Return
