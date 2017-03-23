@@ -246,7 +246,7 @@ AST fully decorated dump:
 -[VDec] int a 
 -[Asgst] 
 --[Var] a [int Lvalue Write Value Nmemb]
---[Fret] FuncRet: int [int Rvalue]
+--[Fret] FuncRet: int [int Rvalue Nmemb]
 ---[Fcal] FuncCall: f [function: (int)->int]
 ----[Var] f [function: (int)->int Read Value Nmemb]
 ----[Lit] 2 [int]
@@ -292,7 +292,7 @@ AST fully decorated dump:
 --[Retst] Return ( + )
 ---Op: +  [int Rvalue]
 ----[Var] a_ [int Lvalue Read Value Memb]
-----[Fret] FuncRet: int [int Rvalue]
+----[Fret] FuncRet: int [int Rvalue Memb]
 -----[Fcal] FuncCall: g [function: ()->int]
 ------[Var] g [function: ()->int Read Value Memb]
 
@@ -305,7 +305,7 @@ AST fully decorated dump:
 -[Asgst] 
 --[Var] a [int Lvalue Write Value Nmemb]
 --Op: +  [int Rvalue]
----[Fret] FuncRet: int [int Rvalue]
+---[Fret] FuncRet: int [int Rvalue Nmemb]
 ----[Fcal] FuncCall: inst.f [function: ()->int]
 -----[Dotop] inst.f [function: ()->int Memb]
 ------[Var] inst [O1 Read Address Nmemb]
@@ -324,10 +324,12 @@ Declaration Table:
 IR dump:
 LT entry_O1::f
 0: %0 = Load [RT this_O1:a_ 0]
-1: call [LT entry_O1::g: 0]
-2: %1 = GetRetVal()
-3: %2 = %0 + %1
-4: Return
+1: %1 = Load [RT this_O1: 0]
+2: SetPar( %1)
+3: call [LT entry_O1::g: 0]
+4: %2 = GetRetVal()
+5: %3 = %0 + %2
+6: Return
 LT entry_O1::g
 0: %0 = Load [RT this_O1:b_ 1]
 1: Return
