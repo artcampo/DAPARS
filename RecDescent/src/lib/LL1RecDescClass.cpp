@@ -96,6 +96,25 @@ void ParserLL1RecDesc::Member(const Compiler::AST::Type& type_inht
 }
 
 /*
+
+
+INHT_LIST' -> , ntype INHT_LIST'  => , 
+INHT_LIST' -> {empty}  => {empty} 
+ 
+ */
+
+void ParserLL1RecDesc::InhtList()
+{
+  //INHT_LIST -> {empty}  => {empty} 
+  
+  //INHT_LIST -> : ntype INHT_LIST'  => : 
+  if(not Accept(kToken::colon, kErr93)) return;
+  const AST::Type& type = this->Type();
+  if(not type.IsClass()) {Error(kErr92 + type.str()); return; }
+  
+}
+
+/*
 PtrVarDeclList  DeclList(const ScopeId scope_inht, PtrVarDeclList& decl_list_inht){
   if(not check(set_types_)) return std::move(decl_list_inht);
 

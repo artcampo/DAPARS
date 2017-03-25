@@ -15,11 +15,15 @@ PROG -> DEFL  init
 DEFL -> FDEF DEFL 
 DEFL -> CDEF DEFL 
 DEFL -> {empty} 
-CDEF -> class {nam} { MEMBER } 
+CDEF -> class {nam} INHT_LIST { MEMBER } 
 MEMBER_LIST -> TYPE {nam} MEMBER MEMBER_LIST 
 MEMBER_LIST -> {empty} 
 MEMBER -> ; 
 MEMBER -> ( PARL ) { STMTS } 
+INHT_LIST -> : ntype INHT_LIST' 
+INHT_LIST -> {empty} 
+INHT_LIST' -> , ntype INHT_LIST' 
+INHT_LIST' -> {empty} 
 FDEF -> TYPE {nam} ( PARL ) { STMTS } 
 PARL -> PAR PARLP 
 PARL -> {empty} 
@@ -79,6 +83,8 @@ F => & * false ( {nam} {num}  true
 F' => false ( {nam} {num}  true 
 FDEF => bool int ntype void 
 IFELSE => else {empty} 
+INHT_LIST => : {empty} 
+INHT_LIST' => , {empty} 
 MEMBER => ( ; 
 MEMBER_LIST => bool {empty} int ntype void 
 NAME_LIST => {nam} 
@@ -106,6 +112,8 @@ F => , = + ) ;
 F' => , = + ) ; 
 FDEF => bool class {eof} int ntype void 
 IFELSE => & * bool false if int ( {nam} ntype {num} } return  true void while 
+INHT_LIST => { 
+INHT_LIST' => { 
 MEMBER => bool int ntype } void 
 MEMBER_LIST => 
 NAME_LIST => ; 
@@ -128,7 +136,7 @@ ARGLP -> {empty}  => {empty} )
 ARGM -> . {nam} ARGM  => . 
 ARGM -> {empty}  => , {empty} = + ) ; 
 ARGM -> ( ARGL )  => ( 
-CDEF -> class {nam} { MEMBER }  => class 
+CDEF -> class {nam} INHT_LIST { MEMBER }  => class 
 DECL -> TYPE NAME_LIST  => bool int ntype void 
 DEFL -> CDEF DEFL  => class 
 DEFL -> {empty}  => {empty} {eof} 
@@ -147,6 +155,10 @@ F' ->  true  =>  true
 FDEF -> TYPE {nam} ( PARL ) { STMTS }  => bool int ntype void 
 IFELSE -> else { STMTS }  => else 
 IFELSE -> {empty}  => & * bool {empty} false if int ( {nam} ntype {num} } return  true void while 
+INHT_LIST -> : ntype INHT_LIST'  => : 
+INHT_LIST -> {empty}  => {empty} { 
+INHT_LIST' -> , ntype INHT_LIST'  => , 
+INHT_LIST' -> {empty}  => {empty} { 
 MEMBER -> ( PARL ) { STMTS }  => ( 
 MEMBER -> ;  => ; 
 MEMBER_LIST -> {empty}  => {empty} 

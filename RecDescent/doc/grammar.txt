@@ -1,3 +1,6 @@
+Terminals are written in lowercase and non-terminals in uppercase.
+
+---------------------------------------------
 conditional flow
 Prog    := P_INIT DEFL P_END
 P_INIT  := empty
@@ -11,7 +14,7 @@ FDEF    := TYPE name ( PARL ){ STMTS }
 
 ---------------------------------------------
 
-CDEF    := class name { MEMBER_LIST }
+CDEF    := class name INHT_LIST { MEMBER_LIST }
 
 MEMBER_LIST := TYPE NAME MEMBER MEMBER_LIST
             |  empty
@@ -19,6 +22,11 @@ MEMBER_LIST := TYPE NAME MEMBER MEMBER_LIST
 MEMBER  := ;
         |  ( ARGL ) { STMTS }
 
+INHT_LIST := : ntype INHT_LIST'
+          |  empty
+INHT_LIST':= , ntype INHT_LIST'
+          |  empty
+        
 ---------------------------------------------
 
 PARL    := empty

@@ -1,5 +1,7 @@
 /*
  * Grammar for DAlang
+ * 
+ * Terminals are written in lowercase and non-terminals in uppercase.
  */
 
 using namespace Tokenizer;
@@ -26,6 +28,7 @@ void CreateGrammarDalang(G& g){
   const Symbol equl  = g.AddTerminal("EQUL", "=", Tokenizer::kToken::equality);
   const Symbol amps  = g.AddTerminal("AMPS", "&", Tokenizer::kToken::ampersand);
   const Symbol dot   = g.AddTerminal("DOT", ".", Tokenizer::kToken::dot);
+  const Symbol colon = g.AddTerminal("COLON", ":", Tokenizer::kToken::colon);
   const Symbol empty = Symbol::Empty();
 
   const Symbol kwd_if     = g.AddTerminalKeyword("IF", "if", Tokenizer::kToken::kwd_if);
@@ -56,6 +59,8 @@ void CreateGrammarDalang(G& g){
   const Symbol CDEF         = g.AddNonTerminal("CDEF");
   const Symbol MEMBER_LIST  = g.AddNonTerminal("MEMBER_LIST");
   const Symbol MEMBER       = g.AddNonTerminal("MEMBER");
+  const Symbol INHT_LIST    = g.AddNonTerminal("INHT_LIST");
+  const Symbol INHT_LISTP   = g.AddNonTerminal("INHT_LIST'");
 
 
   //Functions
@@ -103,13 +108,19 @@ void CreateGrammarDalang(G& g){
   g.AddRule(Rule(DEFL,  {empty}));
 
   //TODO: use same style for two-word non-terminals
+  
   //Classes
-  g.AddRule(Rule(CDEF,  {kwd_class, name, lcbr, MEMBER, rcbr}));
+  g.AddRule(Rule(CDEF,  {kwd_class, name, INHT_LIST, lcbr, MEMBER, rcbr}));
   g.AddRule(Rule(MEMBER_LIST, {TYPE, name, MEMBER, MEMBER_LIST}));
   g.AddRule(Rule(MEMBER_LIST, {empty}));
   g.AddRule(Rule(MEMBER,    {semi}));
   g.AddRule(Rule(MEMBER,    {lpar, PARL, rpar, lcbr, STMTS, rcbr}));
 
+  g.AddRule(Rule(INHT_LIST,  {colon, name_type, INHT_LISTP}));
+  g.AddRule(Rule(INHT_LIST,  {empty}));
+  g.AddRule(Rule(INHT_LISTP, {comma, name_type, INHT_LISTP}));
+  g.AddRule(Rule(INHT_LISTP, {empty}));  
+  
 
   //Functions
   g.AddRule(Rule(FDEF,   {TYPE, name, lpar, PARL, rpar, lcbr, STMTS, rcbr}));

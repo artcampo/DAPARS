@@ -93,6 +93,8 @@ private:
     , std::vector<PtrFuncDef>& func_def_inht
     , const Locus& locus_inht
     , const ScopeId scope_inht );
+  
+  void InhtList();
 
   //////////////////////////////////////////////////////////////////////
   //Helpers not associated to a rule

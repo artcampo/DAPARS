@@ -10,6 +10,7 @@ Parsers are on different stages of evolution:
 -LLR, on an early stage but stable
 -LALR, temporaly on hold (looks like will soon be dead)
 
+------------------------------------------------------------------------------
 CLONING
 After cloning it, init the submodules with:
 /DAPARS$ git submodule init
@@ -24,10 +25,34 @@ sudo apt-get install cmake
 sudo apt-get install bison
 sudo apt-get install flex
 
+------------------------------------------------------------------------------
 INSTALLATION
 After executing "./clean_install.sh" you will find the main tests in the folder
 "DAPARS/install/tests/ll1"
 
+After that build is done in "/build" with "make install" (better yet followed
+by number of processors, ex: "-j8").
+
+------------------------------------------------------------------------------
+WHERE TO START
+The grammar is defined at "DACOMPILER/doc/grammar.txt" as well as in the file
+"Common/src/lib/grammars/grammar_dalang.cpp" which is used to check the ll1 
+validity.
+
+The nodes that form the AST are defined in:
+"DACOMPILER/src/include/AST/Node.hpp"
+
+A good overview of all the passes being used: 
+"DACOMPILER/src/include/Passes/PassManager.hpp"
+
+The main file for AST creation and semantic analysis is:
+"DACOMPILER/src/include/CompilationUnit.hpp"
+
+The last step (so far) is IR generation which is entirely within:
+"DACOMPILER/src/include/IR"
+
+------------------------------------------------------------------------------
+CURRENT STATE
 For instance, this is the output of one subtest of code generation:
 
 Parsing: "int f(int p1){int a; a=p1; return a;} void main(){int a; a=f(2);}"
