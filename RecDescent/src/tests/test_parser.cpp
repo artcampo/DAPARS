@@ -155,6 +155,15 @@ int main()
 
   parse<Grammar,ParserLL1RecDesc>(
     "class O1{int f(){return g();} int g(){return 1;} } void main(){ O1 inst;}", g);
+  
+  parse<Grammar,ParserLL1RecDesc>(
+    "class A{int a;} class B : A{int b;} void main(){ B inst;}", g);
+  
+  /*
+  //hangs at lvalrval
+  parse<Grammar,ParserLL1RecDesc>(
+    "class A{int a;} class B : A{int b;} void main(){ B inst; inst.a = 2;}", g);
+    */
   /*
   //these mess with the parser, big time
   parse<Grammar,ParserLL1RecDesc>( "void main(){int a; (a=1); }", g);

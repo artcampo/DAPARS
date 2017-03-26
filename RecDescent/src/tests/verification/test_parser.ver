@@ -768,7 +768,8 @@ Parsing: "class O1{int a;} void main(){ O1 inst; int b; b = inst.a;}"
 
 AST dump:
 [CDef] ClassDef: O1
--[VDec] int a[FDef] FuncDef: main
+-[VDec] int a
+[FDef] FuncDef: main
 -[VDec] O1 inst 
 -[VDec] int b 
 -[Asgst] 
@@ -794,8 +795,10 @@ Parsing: "class O1{int a;} class O2{ O1 o1;} void main(){ O2 inst; int b; b = in
 
 AST dump:
 [CDef] ClassDef: O1
--[VDec] int a[CDef] ClassDef: O2
--[VDec] O1 o1[FDef] FuncDef: main
+-[VDec] int a
+[CDef] ClassDef: O2
+-[VDec] O1 o1
+[FDef] FuncDef: main
 -[VDec] O2 inst 
 -[VDec] int b 
 -[Asgst] 
@@ -834,6 +837,7 @@ AST dump:
 ----[Var] b [int Lvalue Read Value Nmemb]
 --[Retst] Return (c)
 ---[Var] c [int Lvalue Read Value Nmemb]
+
 [FDef] FuncDef: main
 -[VDec] O1 inst 
 -[VDec] int b 
@@ -874,6 +878,7 @@ AST dump:
 ---Op: +  [int Rvalue]
 ----[Var] a [int Lvalue Read Value Nmemb]
 ----[Var] a_ [int Lvalue Read Value Memb]
+
 [FDef] FuncDef: main
 -[VDec] O1 inst 
 
@@ -898,6 +903,7 @@ AST dump:
 -[FDef] FuncDef: f
 --[Retst] Return (1)
 ---[Lit] 1 [int Rvalue]
+
 [CDef] ClassDef: O2
 -[VDec] O1 inst_
 -[FDef] FuncDef: g
@@ -909,6 +915,7 @@ AST dump:
 -------[Var] inst_ [O1 Read Address Memb]
 -------[Vnam] f
 ----[Lit] 1 [int Rvalue]
+
 [FDef] FuncDef: main
 -[VDec] O2 inst 
 
@@ -941,6 +948,7 @@ AST dump:
 -[FDef] FuncDef: g
 --[Retst] Return (1)
 ---[Lit] 1 [int Rvalue]
+
 [FDef] FuncDef: main
 -[VDec] O1 inst 
 
@@ -956,4 +964,28 @@ HScope of O1 1: {(1:f) (2:g) }
 Scope 2: {}
 Scope 3: {}
 Scope 4: {(4:inst) }
+
+---------------------------------------------------
+Parsing: "class A{int a;} class B : A{int b;} void main(){ B inst;}"
+
+AST dump:
+[CDef] ClassDef: A
+-[VDec] int a
+[CDef] ClassDef: B
+-[VDec] int b
+[FDef] FuncDef: main
+-[VDec] B inst 
+
+
+Declaration Table:
+2: Symbol: [ in scope 0 A of type A]
+4: Symbol: [ in scope 0 B of type B]
+5: Symbol: [ in scope 3 inst of type B]
+6: Symbol: [ in scope 0 main of type function: ()->void]
+
+Scopes of module:
+Scope 0: {(2:A) (4:B) (6:main) }
+HScope of A 1: {(1:a) }
+HScope of B 2: {(3:b) }
+Scope 3: {(5:inst) }
 
