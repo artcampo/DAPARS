@@ -94,7 +94,8 @@ private:
     , const Locus& locus_inht
     , const ScopeId scope_inht );
   
-  void InhtList();
+  void InhtList(std::vector<ClassType*>& parents_inht);
+  void InhtListPrime(std::vector<ClassType*>& parents_inht);
 
   //////////////////////////////////////////////////////////////////////
   //Helpers not associated to a rule
@@ -136,6 +137,8 @@ private:
   BuildVar(const std::string& var_name, const Compiler::AST::Type*& var_type
     , const ScopeId scope_inht);
 
+  void BuildParent(std::vector<ClassType*>& parents_inht);
+  
 private:
   std::string undeclared_name_;
 
