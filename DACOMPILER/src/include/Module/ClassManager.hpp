@@ -52,11 +52,12 @@ public:
     return id;
   }  
   
-  void NewClass(std::string& class_name, const ScopeId hscope_id
-    , ClassDef& class_def){
+  void NewClass(std::string& class_name, const AST::Symbols::SymbolId symbol_id
+    , const ScopeId hscope_id, ClassDef& class_def){
 //     std::cout << "Creating class with " << class_parents_[class_name].size()<< " parents\n";
     classes_.push_back( std::move(
       std::make_unique<Class>(class_name
+                      , symbol_id
                       , class_decl_owner_id_[class_name]
                       , hscope_id
                       , dynamic_cast<HierarchicalScope&>(*scope_manager_.GetScope(hscope_id))

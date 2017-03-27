@@ -61,7 +61,8 @@ PtrVarDecl ParserLL1RecDesc::BuildNameDecl( const std::string& name_inht
 
   PtrVarDecl var_decl = std::move(NewVarDecl(
                 name_inht, type_inht, scope_inht, locus_inht));
-  unit_.RegisterDecl(name_inht, type_inht, *var_decl, scope_inht);
+  const AST::Symbols::SymbolId sid = unit_.FreeSymbolId();
+  unit_.RegisterDecl(name_inht, type_inht, *var_decl, scope_inht, sid);
 
   return std::move(var_decl);
 }

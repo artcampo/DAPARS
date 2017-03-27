@@ -93,9 +93,10 @@ public:
   }
   const Type& GetType(const TypeId id) const{ return TypeTable::GetType(id);}
 
+  const AST::Symbols::SymbolId FreeSymbolId() noexcept{return free_symbol_id_++;}
+  
   bool RegisterDecl(const std::string& name, const Type& type, const Node& n
-    , const ScopeId scope_id){
-    AST::Symbols::SymbolId symbol_id = free_symbol_id_;
+    , const ScopeId scope_id, const AST::Symbols::SymbolId symbol_id){
     bool registered = GetScope(scope_id)->RegisterDecl(name, type, n, free_symbol_id_);
 //     std::cout << "Register: " << name << " in " << GetScope(scope_id)->str()<<"\n";
     if(registered){

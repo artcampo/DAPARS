@@ -38,6 +38,7 @@ class Class{
 public:
 
   Class(const std::string& name
+    , const AST::Symbols::SymbolId symbol_id
     , const ScopeOwnerId scope_owner_id
     , const ScopeId scope_id
     , HierarchicalScope& scope
@@ -46,6 +47,7 @@ public:
     , ClassDef& class_def
     , FunctionManager* func_manager)
   : name_(name)
+    , symbol_id_(symbol_id)
     , scope_owner_id_(scope_owner_id)
     , scope_(scope)
     , this_label_(this_label)
@@ -61,8 +63,8 @@ public:
   const IR::Label ThisLabel() const noexcept{ return this_label_; }
   const IR::Offset MemberVarOffset(AST::Symbols::SymbolId& sid) const noexcept{
 //     std::cout << "Asking: " << sid << "\n" << "in ";
-//     for(const auto& it : object_record_) std::cout << it.first << ": " << it.second.str() << "\n";
-    return object_record_.at(sid);
+//     for(const auto& it : offset_of_var_) std::cout << it.first << ": " << it.second.str() << "\n";
+    return offset_of_var_.at(sid);
   }
 
 
@@ -84,26 +86,50 @@ public:
   }
   const size_t Size() const noexcept{ return class_size_;}
 private:
-  ScopeOwnerId          scope_owner_id_;
-  std::string           name_;
-  HierarchicalScope&    scope_;
-  IR::Label             this_label_;
-  std::vector<Class*>   parents_;
-  ClassDef&             class_def_;
+  ScopeOwnerId            scope_owner_id_;
+  std::string             name_;
+  AST::Symbols::SymbolId  symbol_id_;
+  HierarchicalScope&      scope_;
+  IR::Label               this_label_;
+  std::vector<Class*>     parents_;
+  ClassDef&               class_def_;
+  
   //Data computed
   size_t  class_size_;
-  std::map<AST::Symbols::SymbolId, IR::Offset> object_record_;
+  std::map<AST::Symbols::SymbolId, IR::Offset> offset_of_var_;
+  //Each entry is a triplet (sid,offset,size)
+  std::vector<std::pair<AST::Symbols::SymbolId, std::pair<IR::Offset, size_t>>> object_record_;
   //TODO: should use function sid instead
   std::map<std::string, Function*> function_by_name_;
 
+
+  void InsertObjectRecord(const AST::Symbols::SymbolId sid, const Offset offset
+    , const size_t size){
+    offset_of_var_[sid] = offset;
+    object_record_.push_back( {sid, {offset, size} });    
+  }
   void BuildObjectRecord(const ClassDef& class_def){
-    size_t offset = 0;
+    size_t offset       = RtiSize();
+    size_t next_offset  = offset; //offset after processing current parent
+    
+    //Insert parent's variables
+    for(const auto& p : parents_){
+      for(const auto& sid_offset_size : p->object_record_){
+        const size_t size = sid_offset_size.second.second;
+        const Offset orig = sid_offset_size.second.first;
+        const Offset o    = Offset(orig.GetAddr() + offset, orig.Name());
+        InsertObjectRecord( sid_offset_size.first, o, size);
+        next_offset += size;
+      }
+      offset = next_offset;
+    }
+    //Insert own variables
     for( const auto& it : class_def.GetVarDecl()){
       const std::string name  = it->Name();
       const Type& type        = it->GetType();
       const size_t size       = type.Size();
-      AST::Symbols::SymbolId sid = scope_.DeclId(name);
-      object_record_[sid] = Offset(offset, name);
+      
+      InsertObjectRecord(scope_.DeclId(name), Offset(offset, name), size);
       offset += size;
     }
     class_size_ = offset;
@@ -118,6 +144,8 @@ private:
   void AddFunction(Function& f){
     function_by_name_[std::string(f.Name())] = &f;
   }
+  
+  const size_t RtiSize() const noexcept{ return 0;}
 
   FunctionManager* func_manager_;
   /*

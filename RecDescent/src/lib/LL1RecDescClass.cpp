@@ -38,10 +38,11 @@ PtrClassDef ParserLL1RecDesc::ClassDef_(const ScopeId scope_inht){
 
   unit_.ExitClassDefinition();
 
+  const AST::Symbols::SymbolId sid = unit_.FreeSymbolId();
   PtrClassDef cdef = NewClassDef(name, var_decl, func_def, scope_inht, l);
   RegNameType(name);
-  unit_.RegisterDecl(name, unit_.GetClassType(name), *cdef, scope_inht);
-  unit_.NewClass(name, scope_id, *cdef);
+  unit_.RegisterDecl(name, unit_.GetClassType(name), *cdef, scope_inht, sid);
+  unit_.NewClass(name, sid, scope_id, *cdef);
 
   return std::move(cdef);
 
