@@ -1,0 +1,17 @@
+program := block
+block   := stmts
+stmts   := stmt;
+        |  stmts stmt;
+stmt    := expr    
+
+num     := TINTEGER
+expr    := term
+        |  expr + expr
+        |  expr - expr
+term    := term * factor
+        |  term / factor
+        |  factor
+factor  := ( expr )
+        |  num
+        
+Without left-recursion:        

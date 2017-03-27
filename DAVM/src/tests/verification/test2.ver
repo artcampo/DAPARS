@@ -1,0 +1,21 @@
+RAW bytecode:
+10837
+16899
+16907
+16915
+16923
+16903
+16911
+16919
+16927
+4
+Load, r:5 val: 42
+ADD, rs1:0 rs2: 1 rd:2
+SUB, rs1:0 rs2: 1 rd:2
+MUL, rs1:0 rs2: 1 rd:2
+DIV, rs1:0 rs2: 1 rd:2
+NOT, rs1:0 rs2: 1 rd:2
+EQL, rs1:0 rs2: 1 rd:2
+LST, rs1:0 rs2: 1 rd:2
+LTE, rs1:0 rs2: 1 rd:2
+Stop

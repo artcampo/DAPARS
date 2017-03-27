@@ -1,0 +1,10 @@
+EXEC
+OP: LOAD R0=4
+OP: LOAD R1=1
+OP: SUB R2=R0 op R1
+OP: LOAD R3=2
+OP: MUL R4=R2 op R3
+OP: LOAD R5=3
+OP: DIV R6=R4 op R5
+STOP
+Registers: 4, 1, 3, 2, 6, 3, 2, 0, 0, 0

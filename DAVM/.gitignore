@@ -1,0 +1,5 @@
+# Windows image file caches
+.CMakeLists.txt.kate-swp
+CMakeFiles/
+build/
+install/

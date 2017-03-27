@@ -1,0 +1,7 @@
+-v0.1 VM: add, registers COMP: multiple statements
+-v0.11 mul
+-v0.12 sub, div, parenthesis
+-v0.13 jcc, comparisons: if/else
+-v0.14 load, mem, variables
+-v0.15 functions, stack
+

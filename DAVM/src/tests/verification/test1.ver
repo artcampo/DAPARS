@@ -1,0 +1,6 @@
+EXEC
+OP: LOAD R0=12
+OP: LOAD R1=15
+OP: ADD R2=R0 op R1
+STOP
+Registers: 12, 15, 27, 0, 0, 0, 0, 0, 0, 0

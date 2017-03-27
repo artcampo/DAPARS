@@ -1,0 +1,11 @@
+EXEC
+OP: LOAD R0=2
+OP: LOAD R1=1
+OP: ADD R2=R0 op R1
+OP: LOAD R3=2
+OP: LOAD R4=3
+OP: ADD R5=R3 op R4
+OP: LOAD R6=5
+OP: ADD R7=R5 op R6
+STOP
+Registers: 2, 1, 3, 2, 3, 5, 5, 10, 0, 0

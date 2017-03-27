@@ -1,0 +1,25 @@
+class 0: Lit, InstType, ClassId
+class 1: Lit,  RegId, InstType, ClassId
+class 2: Lit,  RegId, InstSubType, InstType, ClassId
+class 3: RegId, RegId, RegId, InstSubType, InstType, ClassId
+
+
+class 0:
+IR_NOP
+IR_STOP
+IR_NOT_IMPLEMENTED
+** IR_JMP ip = lit
+IR_NEW_VAR **
+
+class 1:
+
+**IR_LOAD reg_dest = mem[lit]
+**IR_CALL
+
+class 2:
+IR_JMPC
+IR_ARII
+
+class 3:
+**IR_ARI reg_dest = reg_src1 OP reg_src2
+IR_CMP

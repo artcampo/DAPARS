@@ -1,0 +1,24 @@
+Classes of instructions:
+
+- 3 regs, subtype. Bit layout: regs1,regs2,regd, subtype, type, class
+arithmetic
+comparison
+
+
+- 1 reg, literal. Bit layout: regs1, literal, type, class
+load
+jmp
+call
+
+- 1 reg, literal, subtype. Bit layout: regs1, literal, subtype, type, class
+jmpc
+arithmeticInmediate
+
+- 0 reg. Bit layout: type, class
+stop
+ret
+
+subtypes 
+comparison: ==, !=, <, !
+arith: +,-,/,*
+

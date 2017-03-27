@@ -1,0 +1,5 @@
+- version 0.2
+Support for: MUL, SUB, DIV
+
+- version 0.1
+Support for: ADD, LOAD, STOP

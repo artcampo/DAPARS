@@ -1,0 +1,15 @@
+- log of register usage by instruct into policy
+- use git modules
+- what to do with div0? exceptions?
+- error log as policy
+- implement memory
+- implement stack
+
+Low priority:
+- split standalone/compiler tests
+- runtime type checking as policy
+- Set release/debug versions
+
+-----------------------------------------------------
+DONE (newest at top):
+- reduce comparisons to minimum set that allows all comp in one VM-inst

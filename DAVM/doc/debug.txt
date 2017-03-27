@@ -1,0 +1,3 @@
+I'm currently using Eclipse's debug plugin for c/c++ through GDB.
+Installation: https://wiki.eclipse.org/CDT/StandaloneDebugger
+Usage: $HOME/cdtdebugger/cdtdebug.sh -e binaryFile

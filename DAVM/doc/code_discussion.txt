@@ -1,0 +1,4 @@
+- Should VM.cpp have " #include "VM_instructions_implementation.cpp" with all
+the functions implementations within?
+
+- Should VM rather not have ownership over the bytecode? (probably!)
