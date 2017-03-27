@@ -29,13 +29,13 @@ AST fully decorated dump:
 -WhileStmt:
 --Cond: [Lit] 1 [bool Rvalue]
 --Body:
----[Asgst] 
+---[Assgn] 
 ----[Var] b [int Lvalue Write Value Nmemb]
 ----Op: +  [int Rvalue]
 -----[Lit] 2 [int Rvalue]
 -----[Lit] 3 [int Rvalue]
 
---[Asgst] 
+--[Assgn] 
 ---[Var] c [int Lvalue Write Value Nmemb]
 ---Op: +  [int Rvalue]
 ----[Lit] 3 [int Rvalue]
@@ -82,7 +82,7 @@ AST fully decorated dump:
 --Cond: [Lit] 1 [bool Rvalue]
 --Then:
 ---[VDec] int c 
----[Asgst] 
+---[Assgn] 
 ----[Var] a [int Lvalue Write Value Nmemb]
 ----Op: +  [int Rvalue]
 -----[Lit] 2 [int Rvalue]
@@ -91,12 +91,12 @@ AST fully decorated dump:
 ---[VDec] int d 
 [VDec] int e 
 [VDec] int f 
----[Asgst] 
+---[Assgn] 
 ----[Var] d [int Lvalue Write Value Nmemb]
 ----[Lit] 4 [int Rvalue]
 
 -[VDec] int g 
--[Asgst] 
+-[Assgn] 
 --[Var] b [int Lvalue Write Value Nmemb]
 --Op: +  [int Rvalue]
 ---[Lit] 5 [int Rvalue]
@@ -145,18 +145,18 @@ AST fully decorated dump:
 -[VDec] int a 
 [VDec] int b 
 -[VDec] int* p 
--[Asgst] 
+-[Assgn] 
 --[Var] a [int Lvalue Write Value Nmemb]
 --[Derop] * [int Lvalue Read]
 ---[Var] p [int* Lvalue Read Value Nmemb]
--[Asgst] 
+-[Assgn] 
 --[Var] b [int Lvalue Write Value Nmemb]
 --[Lit] 2 [int Rvalue]
--[Asgst] 
+-[Assgn] 
 --[Var] p [int* Lvalue Write Value Nmemb]
 --[Refop] @ [int* Lvalue]
 ---[Var] b [int Lvalue Read Address Nmemb]
--[Asgst] 
+-[Assgn] 
 --[Var] a [int Lvalue Write Value Nmemb]
 --Op: +  [int Rvalue]
 ---[Var] b [int Lvalue Read Value Nmemb]
@@ -198,12 +198,12 @@ Scope 2: {(3:p1) (4:a) }
 AST fully decorated dump:
 [FDef] FuncDef: main
 -[VDec] int a 
--[Asgst] 
+-[Assgn] 
 --[Var] a [int Lvalue Write Value Nmemb]
 --[Lit] 2 [int Rvalue]
 [FDef] FuncDef: f
 -[VDec] int a 
--[Asgst] 
+-[Assgn] 
 --[Var] a [int Lvalue Write Value Nmemb]
 --[Var] p1 [int Lvalue Read Value Nmemb]
 
@@ -237,14 +237,14 @@ Scope 2: {(4:a) }
 AST fully decorated dump:
 [FDef] FuncDef: f
 -[VDec] int a 
--[Asgst] 
+-[Assgn] 
 --[Var] a [int Lvalue Write Value Nmemb]
 --[Var] p1 [int Lvalue Read Value Nmemb]
 -[Retst] Return (a)
 --[Var] a [int Lvalue Read Value Nmemb]
 [FDef] FuncDef: main
 -[VDec] int a 
--[Asgst] 
+-[Assgn] 
 --[Var] a [int Lvalue Write Value Nmemb]
 --[Fret] FuncRet: int [int Rvalue Nmemb]
 ---[Fcal] FuncCall: f [function: (int)->int]
@@ -285,7 +285,7 @@ Scope 4: {(6:inst) (7:a) }
 
 
 AST fully decorated dump:
-[CDef] ClassDef: O1
+[CDef] O1 [O1]
 -[VDec] int a_
 -[VDec] int b_
 -[FDef] FuncDef: f
@@ -303,7 +303,7 @@ AST fully decorated dump:
 [FDef] FuncDef: main
 -[VDec] O1 inst 
 -[VDec] int a 
--[Asgst] 
+-[Assgn] 
 --[Var] a [int Lvalue Write Value Nmemb]
 --Op: +  [int Rvalue]
 ---[Fret] FuncRet: int [int Rvalue Nmemb]
@@ -311,7 +311,7 @@ AST fully decorated dump:
 -----[Dotop] inst.f [function: ()->int Memb]
 ------[Var] inst [O1 Read Address Nmemb]
 ------[Vnam] f
----[Dotop] inst.a_ [int Memb]
+---[Dotop] inst.a_ [int Lvalue Memb]
 ----[Var] inst [O1 Lvalue Read Address Nmemb]
 ----[Vnam] a_
 
