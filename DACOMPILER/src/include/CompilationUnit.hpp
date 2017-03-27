@@ -97,11 +97,10 @@ public:
   
   bool RegisterDecl(const std::string& name, const Type& type, const Node& n
     , const ScopeId scope_id, const AST::Symbols::SymbolId symbol_id){
-    bool registered = GetScope(scope_id)->RegisterDecl(name, type, n, free_symbol_id_);
+    bool registered = GetScope(scope_id)->RegisterDecl(name, type, n, symbol_id);
 //     std::cout << "Register: " << name << " in " << GetScope(scope_id)->str()<<"\n";
     if(registered){
       symbolid_of_node_[&n] = symbol_id;
-      ++free_symbol_id_;
       if(CurrentFunction() != nullptr){
         CurrentFunction()->StoreDecl( *module_declaration_table_[symbol_id], n);
 //         std::cout << "Reg: n:"<< &n << " s: " <<module_declaration_table_[symbol_id].get()
