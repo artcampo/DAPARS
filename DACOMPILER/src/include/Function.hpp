@@ -29,21 +29,23 @@ using OffsetTable = std::map<Symbols::SymbolId, IR::Offset>;
 
 class Function{
 public:
-  static PtrFunction NewFunction(const std::string& name, OffsetTable& module_offset_table
+  static PtrFunction NewFunction(const std::string& name
+    , const AST::Symbols::SymbolId symbol_id , OffsetTable& module_offset_table
     , const ScopeOwnerId scope_owner_id, const Label entry_label
     , const Label locals_label){
     return std::move( std::make_unique<Function>
-      (name, "", name, module_offset_table, scope_owner_id, entry_label
+      (name, symbol_id, "", name, module_offset_table, scope_owner_id, entry_label
       , locals_label, false));
   }
 
   static PtrFunction NewMemberFunction(const std::string& name
+    , const AST::Symbols::SymbolId symbol_id
     , const std::string& class_name
     , OffsetTable& module_offset_table
     , const ScopeOwnerId scope_owner_id, const Label entry_label
     , const Label locals_label){
     return std::move( std::make_unique<Function>
-      (name, class_name, MangledName(name, class_name), module_offset_table
+      (name, symbol_id, class_name, MangledName(name, class_name), module_offset_table
       , scope_owner_id, entry_label, locals_label, true));
   }
 
@@ -90,8 +92,10 @@ public:
 private:
   ScopeOwnerId      scope_owner_id_;
   std::string       name_;
-  std::string       mangled_name_;
   std::string       class_name_;
+  std::string       mangled_name_;
+  AST::Symbols::SymbolId symbol_id_;
+  
   FuncDef*          origin_node_;
   const Label       entry_label_;
   const Label       locals_label_;
@@ -104,6 +108,7 @@ private:
 
 public:
   Function(const std::string& name
+    , const AST::Symbols::SymbolId symbol_id
     , const std::string& class_name
     , const std::string& mangled_name
     , OffsetTable& module_offset_table
@@ -111,6 +116,7 @@ public:
     , const Label locals_label, const bool is_member)
   : name_(name)
     , class_name_(class_name)
+    , symbol_id_(symbol_id)
     , origin_node_(nullptr)
     , module_offset_table_(module_offset_table)
     , scope_owner_id_(scope_owner_id)

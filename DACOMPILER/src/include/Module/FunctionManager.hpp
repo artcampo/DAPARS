@@ -39,11 +39,13 @@ public:
 
   //Create regular function
   void NewFunction(const std::string& name
+    , const AST::Symbols::SymbolId symbol_id
     , OffsetTable& module_offset_table
     , const ScopeOwnerId scope_owner_id
     , const Label entry, const Label local){
     functions_.push_back( std::move(
       Function::NewFunction(name
+        , symbol_id
         , module_offset_table
         , scope_owner_id
         , entry
@@ -54,12 +56,14 @@ public:
 
   //Create member function
   Function& NewFunction(const std::string& name
+    , const AST::Symbols::SymbolId symbol_id
     , const std::string& class_name
     , OffsetTable& module_offset_table
     , const ScopeOwnerId scope_owner_id
     , const Label entry, const Label local){
     functions_.push_back( std::move(
       Function::NewMemberFunction(name
+        , symbol_id
         , class_name
         , module_offset_table
         , scope_owner_id

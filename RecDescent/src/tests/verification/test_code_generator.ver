@@ -16,8 +16,8 @@ F -> {nam}
 Parsing: "void main(){int a,b,c; while(true){b=2+3;} c=3+4; }"
 
 Scopes of module:
-Scope 0: {(4:main) }
-Scope 1: {(1:a) (2:b) (3:c) }
+Scope 0: {(1:main) }
+Scope 1: {(2:a) (3:b) (4:c) }
 Scope 2: {}
 
 
@@ -43,10 +43,10 @@ AST fully decorated dump:
 
 
 Declaration Table:
-1: Symbol: [ in scope 1 a of type int]
-2: Symbol: [ in scope 1 b of type int]
-3: Symbol: [ in scope 1 c of type int]
-4: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 0 main of type function: ()->void]
+2: Symbol: [ in scope 1 a of type int]
+3: Symbol: [ in scope 1 b of type int]
+4: Symbol: [ in scope 1 c of type int]
 
 IR dump:
 LT entry_main
@@ -68,10 +68,10 @@ LT entry_main
 Parsing: "void main(){ int a, b; if(true){int c; a=2+3;} else{ int d, e,f; d = 4; } int g; b=5+6; }"
 
 Scopes of module:
-Scope 0: {(8:main) }
-Scope 1: {(1:a) (2:b) (7:g) }
-Scope 2: {(3:c) }
-Scope 3: {(4:d) (5:e) (6:f) }
+Scope 0: {(1:main) }
+Scope 1: {(2:a) (3:b) (8:g) }
+Scope 2: {(4:c) }
+Scope 3: {(5:d) (6:e) (7:f) }
 
 
 AST fully decorated dump:
@@ -104,14 +104,14 @@ AST fully decorated dump:
 
 
 Declaration Table:
-1: Symbol: [ in scope 1 a of type int]
-2: Symbol: [ in scope 1 b of type int]
-3: Symbol: [ in scope 2 c of type int]
-4: Symbol: [ in scope 3 d of type int]
-5: Symbol: [ in scope 3 e of type int]
-6: Symbol: [ in scope 3 f of type int]
-7: Symbol: [ in scope 1 g of type int]
-8: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 0 main of type function: ()->void]
+2: Symbol: [ in scope 1 a of type int]
+3: Symbol: [ in scope 1 b of type int]
+4: Symbol: [ in scope 2 c of type int]
+5: Symbol: [ in scope 3 d of type int]
+6: Symbol: [ in scope 3 e of type int]
+7: Symbol: [ in scope 3 f of type int]
+8: Symbol: [ in scope 1 g of type int]
 
 IR dump:
 LT entry_main
@@ -136,8 +136,8 @@ LT entry_main
 Parsing: "void main(){int a,b; int* p; a=*p; b=2; p = &b; a = b + *p;}"
 
 Scopes of module:
-Scope 0: {(4:main) }
-Scope 1: {(1:a) (2:b) (3:p) }
+Scope 0: {(1:main) }
+Scope 1: {(2:a) (3:b) (4:p) }
 
 
 AST fully decorated dump:
@@ -165,10 +165,10 @@ AST fully decorated dump:
 
 
 Declaration Table:
-1: Symbol: [ in scope 1 a of type int]
-2: Symbol: [ in scope 1 b of type int]
-3: Symbol: [ in scope 1 p of type int*]
-4: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 0 main of type function: ()->void]
+2: Symbol: [ in scope 1 a of type int]
+3: Symbol: [ in scope 1 b of type int]
+4: Symbol: [ in scope 1 p of type int*]
 
 IR dump:
 LT entry_main
@@ -190,9 +190,9 @@ LT entry_main
 Parsing: "void main(){int a; a= 2;} void f(int p1){int a; a=p1;}"
 
 Scopes of module:
-Scope 0: {(2:main) (5:f) }
-Scope 1: {(1:a) }
-Scope 2: {(3:p1) (4:a) }
+Scope 0: {(1:main) (3:f) }
+Scope 1: {(2:a) }
+Scope 2: {(4:p1) (5:a) }
 
 
 AST fully decorated dump:
@@ -209,11 +209,11 @@ AST fully decorated dump:
 
 
 Declaration Table:
-1: Symbol: [ in scope 1 a of type int]
-2: Symbol: [ in scope 0 main of type function: ()->void]
-3: Symbol: [ in scope 2 p1 of type int]
-4: Symbol: [ in scope 2 a of type int]
-5: Symbol: [ in scope 0 f of type function: (int)->void]
+1: Symbol: [ in scope 0 main of type function: ()->void]
+2: Symbol: [ in scope 1 a of type int]
+3: Symbol: [ in scope 0 f of type function: (int)->void]
+4: Symbol: [ in scope 2 p1 of type int]
+5: Symbol: [ in scope 2 a of type int]
 
 IR dump:
 LT entry_main
@@ -229,9 +229,9 @@ LT entry_f
 Parsing: "int f(int p1){int a; a=p1; return a;} void main(){int a; a=f(2);}"
 
 Scopes of module:
-Scope 0: {(3:f) (5:main) }
-Scope 1: {(1:p1) (2:a) }
-Scope 2: {(4:a) }
+Scope 0: {(1:f) (4:main) }
+Scope 1: {(2:p1) (3:a) }
+Scope 2: {(5:a) }
 
 
 AST fully decorated dump:
@@ -253,11 +253,11 @@ AST fully decorated dump:
 
 
 Declaration Table:
-1: Symbol: [ in scope 1 p1 of type int]
-2: Symbol: [ in scope 1 a of type int]
-3: Symbol: [ in scope 0 f of type function: (int)->int]
-4: Symbol: [ in scope 2 a of type int]
-5: Symbol: [ in scope 0 main of type function: ()->void]
+1: Symbol: [ in scope 0 f of type function: (int)->int]
+2: Symbol: [ in scope 1 p1 of type int]
+3: Symbol: [ in scope 1 a of type int]
+4: Symbol: [ in scope 0 main of type function: ()->void]
+5: Symbol: [ in scope 2 a of type int]
 
 IR dump:
 LT entry_main
@@ -277,11 +277,11 @@ LT entry_f
 Parsing: "class O1{int a_; int b_; int f(){return a_ + g();} int g(){return b_;} } void main(){O1 inst; int a; a = inst.f() + inst.a_;}"
 
 Scopes of module:
-Scope 0: {(5:O1) (8:main) }
+Scope 0: {(5:O1) (6:main) }
 HScope of O1 1: {(1:a_) (2:b_) (3:f) (4:g) }
 Scope 2: {}
 Scope 3: {}
-Scope 4: {(6:inst) (7:a) }
+Scope 4: {(7:inst) (8:a) }
 
 
 AST fully decorated dump:
@@ -318,9 +318,9 @@ AST fully decorated dump:
 
 Declaration Table:
 5: Symbol: [ in scope 0 O1 of type O1]
-6: Symbol: [ in scope 4 inst of type O1]
-7: Symbol: [ in scope 4 a of type int]
-8: Symbol: [ in scope 0 main of type function: ()->void]
+6: Symbol: [ in scope 0 main of type function: ()->void]
+7: Symbol: [ in scope 4 inst of type O1]
+8: Symbol: [ in scope 4 a of type int]
 
 IR dump:
 LT entry_O1::f
@@ -349,11 +349,11 @@ LT entry_main
 Parsing: "class A{int a;} class B{int b;} class C: A, B{int c;} void main(){C inst; int a; a = inst.c + inst.b + inst.a;}"
 
 Scopes of module:
-Scope 0: {(2:A) (4:B) (6:C) (9:main) }
+Scope 0: {(2:A) (4:B) (6:C) (7:main) }
 HScope of A 1: {(1:a) }
 HScope of B 2: {(3:b) }
 HScope of C 3: {(5:c) }
-Scope 4: {(7:inst) (8:a) }
+Scope 4: {(8:inst) (9:a) }
 
 
 AST fully decorated dump:
@@ -385,9 +385,9 @@ Declaration Table:
 2: Symbol: [ in scope 0 A of type A]
 4: Symbol: [ in scope 0 B of type B]
 6: Symbol: [ in scope 0 C of type C]
-7: Symbol: [ in scope 4 inst of type C]
-8: Symbol: [ in scope 4 a of type int]
-9: Symbol: [ in scope 0 main of type function: ()->void]
+7: Symbol: [ in scope 0 main of type function: ()->void]
+8: Symbol: [ in scope 4 inst of type C]
+9: Symbol: [ in scope 4 a of type int]
 
 IR dump:
 LT entry_main

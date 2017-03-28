@@ -66,23 +66,28 @@ public:
     }
 
 
-  const ScopeId NewFunction(const std::string& name, const ScopeOwnerId scope_owner_id){
+  //TODO: get rid of these
+  const ScopeId NewFunction(const std::string& name
+    , const AST::Symbols::SymbolId symbol_id
+    , const ScopeOwnerId scope_owner_id){
     const Label entry = NewFunctionEntryLabel(name);
     Label local;
     if(name == "main")  local = GetLabelMainLocals();
     else                local = NewFunctionARLabel(name);
-    FunctionManager::NewFunction(name, ModuleOffsetTable(), scope_owner_id
+    FunctionManager::NewFunction(name, symbol_id, ModuleOffsetTable(), scope_owner_id
       , entry, local);
     return NewNestedScope(scope_owner_id);
   }
 
 
-  const ScopeId NewFunction(const std::string& name, const std::string& class_name
+  const ScopeId NewFunction(const std::string& name
+    , const AST::Symbols::SymbolId symbol_id
+    , const std::string& class_name
     , const ScopeOwnerId scope_owner_id){
     const std::string mangled_name = Function::MangledName(name, class_name);
     const Label entry = NewFunctionEntryLabel(mangled_name);
     Label local       = NewFunctionARLabel(mangled_name);
-    Function& f = FunctionManager::NewFunction(name, class_name
+    Function& f = FunctionManager::NewFunction(name, symbol_id, class_name
       , ModuleOffsetTable(), scope_owner_id, entry, local);
     return NewNestedScope(scope_owner_id);
   }

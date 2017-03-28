@@ -24,10 +24,11 @@ PtrFuncDef ParserLL1RecDesc::ParseFuncDef(const Compiler::AST::Type& ret_type_in
   //Scope for
   scope_owner_id_.push( unit_.NewScopeOwner() );
   ScopeId func_scope_id;
+  const AST::Symbols::SymbolId sid = unit_.FreeSymbolId();
   if(not inside_member_function_definition_)
-    func_scope_id = unit_.NewFunction(name_inht, scope_owner_id_.top());
+    func_scope_id = unit_.NewFunction(name_inht, sid, scope_owner_id_.top());
   else
-    func_scope_id = unit_.NewFunction(name_inht, class_name_inht_, scope_owner_id_.top());
+    func_scope_id = unit_.NewFunction(name_inht, sid, class_name_inht_, scope_owner_id_.top());
   const ScopeId id = func_scope_id;
 
   std::vector<PtrVarDecl> par_list;
@@ -46,6 +47,7 @@ PtrFuncDef ParserLL1RecDesc::ParseFuncDef(const Compiler::AST::Type& ret_type_in
     Error(kErr32);
     return std::move(nullptr);
   }
+  
   PtrFuncDecl decl = NewFuncDecl(name_inht, ret_type_inht, par_list, scope_inht, locus_inht);
   unit_.EnterFunctionDefinition(decl.get());
 
@@ -67,7 +69,6 @@ PtrFuncDef ParserLL1RecDesc::ParseFuncDef(const Compiler::AST::Type& ret_type_in
   unit_.SetFuncOriginNode(*func_def_synth);
   unit_.ExitFunctionDefinition();
   unit_.RestoreScope();
-  const AST::Symbols::SymbolId sid = unit_.FreeSymbolId();
   unit_.RegisterDecl(name_inht, type_func, *decl, scope_inht, sid);
 
   return std::move(func_def_synth);
