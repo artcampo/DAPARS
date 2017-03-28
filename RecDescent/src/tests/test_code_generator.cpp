@@ -93,7 +93,7 @@ int main()
     "class O1{int a_; int b_; int f(){return a_ + g();} int g(){return b_;} } void main(){O1 inst; int a; a = inst.f() + inst.a_;}"), g);
   
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "class A{int a;} class B{int b;} class C: A, B{int c;} void main(){C inst; int a; a = inst.c + inst.b + inst.a;}"), g);  
+    "class A{int a; int fa(){return 1;}} class B{int b; int fb(){return 1;}} class C: A, B{int c; int fc(){return 1;}} void main(){C inst; int a; a = inst.fc() + inst.fb() + inst.fa();}"), g);  
 
   /*
   //Causes sigsev (hahah)

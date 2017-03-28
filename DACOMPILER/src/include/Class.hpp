@@ -68,6 +68,14 @@ public:
   }
 
 
+  const bool IsCallToParent(const std::string& name)const{
+    auto it = offset_of_func_.find(name);
+    return it != offset_of_func_.end();
+  }
+  const IR::Offset FuncPtrThisAdjust(const std::string& name)const{
+    return offset_of_func_.at(name);
+  }
+  
   Function& GetFunction(const std::string& name)const{
     return *function_by_name_.at(name);
   }
@@ -101,6 +109,10 @@ private:
   std::vector<std::pair<AST::Symbols::SymbolId, std::pair<IR::Offset, size_t>>> object_record_;
   //TODO: should use function sid instead
   std::map<std::string, Function*> function_by_name_;
+  std::vector<Function*> functions_;
+  
+  std::map<std::string, IR::Offset> offset_of_func_;
+  
 
 
   void InsertObjectRecord(const AST::Symbols::SymbolId sid, const Offset offset
@@ -112,8 +124,15 @@ private:
     size_t offset       = RtiSize();
     size_t next_offset  = offset; //offset after processing current parent
     
-    //Insert parent's variables
+    //Insert parent's functions and variables
     for(const auto& p : parents_){
+      //correction of this parent's function is current offset
+      for(const auto& f : *p){
+        AddFunction(*f);
+        offset_of_func_[f->Name()] = offset;
+      }
+      
+      //variables adapted to child layout
       for(const auto& sid_offset_size : p->object_record_){
         const size_t size = sid_offset_size.second.second;
         const Offset orig = sid_offset_size.second.first;
@@ -143,11 +162,23 @@ private:
   }
   void AddFunction(Function& f){
     function_by_name_[std::string(f.Name())] = &f;
+    functions_.push_back(&f);
   }
   
   const size_t RtiSize() const noexcept{ return 0;}
 
   FunctionManager* func_manager_;
+  
+public:  
+  using iterator = std::vector<Function*>::iterator;
+  using const_iterator = std::vector<Function*>::const_iterator;
+
+  iterator begin() { return functions_.begin(); }
+  iterator end()   { return functions_.end(); }
+  const_iterator begin()  const { return functions_.begin(); }
+  const_iterator end()    const { return functions_.end(); }
+  const_iterator cbegin() const { return functions_.cbegin(); }
+  const_iterator cend()   const { return functions_.cend(); }  
   /*
   Symbols::Symbol& GetSymbolDecl(const Node& n) const{
 //     std::cout << "Asking n: " << &n << " " << n.str() << std::endl;

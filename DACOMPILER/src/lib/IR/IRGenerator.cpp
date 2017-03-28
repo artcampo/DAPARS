@@ -301,21 +301,32 @@ void IRGenerator::Visit(DotOp const& p, const Node* successor){
   emit_addr_var_inht_ = false;
   p.Rhs().Accept(*this, successor);
 
-  const Type& t_dot      = unit_.GetTypeOfNode(p);
-  const ClassType& t_lhs = dynamic_cast<const ClassType&>(unit_.GetTypeOfNode(p.Lhs()));
-  const Class& c = unit_.GetClass(t_lhs);
+  const Type& t_dot       = unit_.GetTypeOfNode(p);
+  const ClassType& t_lhs  = dynamic_cast<const ClassType&>(unit_.GetTypeOfNode(p.Lhs()));
+  const Class& c          = unit_.GetClass(t_lhs);
+  const std::string fname = p.Rhs().Name();
 
   if(t_dot.IsFunc()){
     //Dot with function
 
     //pass pointer this
-    const IR::Reg r_src  = reg_dst_of_expr_[&p.Lhs()];
+    IR::Reg r_src  = reg_dst_of_expr_[&p.Lhs()];
     reg_dst_of_expr_[&p] = r_src;
+    
+    //adjust this if needed
+    if(c.IsCallToParent(fname)){
+      const IR::Offset o    = c.FuncPtrThisAdjust(fname);
+      const IR::Reg r_src2  = CurrentStream().AppendLoadI(o.GetAddr());
+      const IR::Reg r_dst   = CurrentStream().AppendArith(r_src, r_src2, IR::ArithType::kAdd);
+      reg_dst_of_expr_[&p] = r_dst;
+      r_src = r_dst;
+    }
+    
     //load this as first argument
     CurrentStream().AppendSetPar(r_src);
 
     //give the addr of the call
-    const MemAddr a = MemAddr( c.GetFunction(p.Rhs().Name()).EntryLabel(), 0);
+    const MemAddr a = MemAddr( c.GetFunction(fname).EntryLabel(), 0);
     addr_of_var_[&p] = a;
   }else{
     //Dot with var
