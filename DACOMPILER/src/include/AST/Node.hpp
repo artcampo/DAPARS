@@ -7,6 +7,7 @@
 #include "Types.hpp"
 #include "Scopes/ScopeId.hpp"
 #include "Locus.hpp"
+#include "Symbol.hpp"
 
 
 namespace Compiler{
@@ -132,6 +133,27 @@ struct TypedNode{
 protected:
   const Type*  type_;
 };
+
+struct BaseSymbolNode{
+  BaseSymbolNode(){}
+  BaseSymbolNode(AST::Symbols::SymbolId id): id_(id){}
+  
+  AST::Symbols::SymbolId Id() const noexcept{return id_;}
+  void SetId(const AST::Symbols::SymbolId& sid) noexcept{id_ = sid;}
+protected:
+  AST::Symbols::SymbolId id_;
+};
+
+//For AST nodes that can have their symbol_id at creation (var)
+struct SymbolNode : public BaseSymbolNode{
+  SymbolNode(AST::Symbols::SymbolId id) : BaseSymbolNode(id){}
+};
+
+//For AST nodes that can not have their symbol_id at creation (func)
+struct LateSymbolNode : public BaseSymbolNode{
+  LateSymbolNode(){}
+};
+
 
 
 

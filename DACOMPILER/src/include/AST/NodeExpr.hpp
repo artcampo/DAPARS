@@ -109,22 +109,18 @@ public:
 };
 
 /////////////////////////////////////////////////////////
-class Var : public ExprVar, public NamedNode, public TypedNode{
+class Var : public ExprVar, public NamedNode, public TypedNode, public SymbolNode{
 public:
   virtual ~Var() = default;
   Var(const std::string& name, const Type& type, Symbols::SymbolId id
     , const ScopeId scope_id , const Locus& locus)
-    : ExprVar(scope_id, locus), NamedNode(name), TypedNode(type), id_(id){}
+    : ExprVar(scope_id, locus), NamedNode(name), TypedNode(type), SymbolNode(id){}
 
   std::string str() const noexcept{return name_;}
-  Symbols::SymbolId Id() const noexcept{return id_;}
-  void SetId(const Symbols::SymbolId& sid) noexcept{id_ = sid;}
-
+  
   virtual void Accept(ASTVisitor& v);
   virtual void Accept(IRGenerator& v, const Node* successor);
 
-private:
-  Symbols::SymbolId id_;
 };
 
 
