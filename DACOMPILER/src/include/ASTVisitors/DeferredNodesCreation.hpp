@@ -28,6 +28,7 @@ public:
   }
 
   virtual void Visit(FuncCall& p){
+//     std::cout << "Visit: " << p.str() << "\n";
     p.Receiver().Accept(type_inf_visitor_);
 
     const Type& type = unit_.GetTypeOfNode(p.Receiver());

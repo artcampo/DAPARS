@@ -57,6 +57,7 @@ public:
     const DeclarationTable* declaration_table;
     auto it = Find(name, &declaration_table);
     const Symbols::SymbolId sid = it->second;
+//     DumpScope::Dump(*declaration_table);
     return declaration_table->at(sid)->GetType();
   }
   
@@ -67,14 +68,15 @@ public:
 
   SymbolTableItC Find(const std::string& name, const DeclarationTable** dec) const{
     auto it = symbol_table_.find(name);
-    if(not IsLast(it)) { *dec = &declaration_table_; return it;} 
-    
+    if(not IsLast(it)) { 
+        *dec = &declaration_table_; 
+        return it;
+    } 
     //check parents
     for(auto& parent : parents_){
-      auto itp = parent->Find(name);
-      if(not parent->IsLast(itp)) {*dec = &parent->declaration_table_; return itp;}
+      auto itp = parent->Find(name, dec);
+      if(not parent->IsLast(itp)) return itp;
     }    
-    
     //not found, return it to last element within this hscope
     return it;
   }

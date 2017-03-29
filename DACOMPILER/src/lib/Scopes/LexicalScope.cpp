@@ -116,5 +116,12 @@ void LexicalScope::UndoTables(){
 
 }
 
+namespace DumpScope{
+void Dump(const std::map<Symbols::SymbolId, std::unique_ptr<Symbols::Symbol>>& dec){
+  for(const auto& it : dec) 
+    std::cout << it.first << ": " << it.second->str() << "\n";  
+}
+}//end namespace DumpScope
+
 }//end namespace AST
 }//end namespace Compiler

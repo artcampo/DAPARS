@@ -90,10 +90,24 @@ int main()
     "int f(int p1){int a; a=p1; return a;} void main(){int a; a=f(2);}"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "class O1{int a_; int b_; int f(){return a_ + g();} int g(){return b_;} } void main(){O1 inst; int a; a = inst.f() + inst.a_;}"), g);
+    "class O1{int a_; int b_; int f(){return a_ + g();} int g(){return b_;} }") +  
+    "void main(){O1 inst; int a; a = inst.f() + inst.a_;}", g);
   
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "class A{int a; int fa(){return 1;}} class B{int b; int fb(){return 1;}} class C: A, B{int c; int fc(){return 1;}} void main(){C inst; int a; a = inst.fc() + inst.fb() + inst.fa();}"), g);  
+    "class A{int a; int fa(){return 1;}} class B{int b; int fb(){return 1;}}") +
+    "class C: A, B{int c; int fc(){return 1;}}" +
+    "void main(){C inst; int a; a = inst.fc() + inst.fb() + inst.fa();}", g);  
+  
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "class A        {int a; int fa(){return 1;}} ") +
+    "class B : A    {int b; int fb(){return 1;}} " +
+    "class C : B    {int c; int fc(){return 1;}} " +
+    "class D        {int d; int fd(){return 1;}} " +
+    "class E : D    {int e; int fe(){return 1;}} " +
+    "class F : E    {int f; int ff(){return 1;}} " +
+    "class G : D,F  {int g; int fg(){return 1;}} " +
+    "void main(){G inst; int a; a = inst.fa() + inst.fb() + inst.fc() + "
+    " inst.fd() + inst.fe() + inst.ff() + inst.fg();}", g);  
 
   /*
   //Causes sigsev (hahah)

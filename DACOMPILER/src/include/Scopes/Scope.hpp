@@ -51,5 +51,9 @@ protected:
 };
 
 
+namespace DumpScope{
+void Dump(const std::map<Symbols::SymbolId, std::unique_ptr<Symbols::Symbol>>& dec);
+}//end namespace DumpScope
+
 }//end namespace AST
 }//end namespace Compiler
