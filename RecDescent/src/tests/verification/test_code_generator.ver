@@ -274,7 +274,8 @@ LT entry_f
 3: Return
 
 ---------------------------------------------------
-Parsing: "class O1{int a_; int b_; int f(){return a_ + g();} int g(){return b_;} } void main(){O1 inst; int a; a = inst.f() + inst.a_;}"
+Parsing: "class O1{int a_; int b_; int f(){return a_ + g();} int g(){return b_;} }void main(){O1 inst; int a; a = inst.f() + inst.a_;}"
+ObjRec for O1
 
 Scopes of module:
 Scope 0: {(5:O1) (6:main) }
@@ -285,7 +286,7 @@ Scope 4: {(7:inst) (8:a) }
 
 
 AST fully decorated dump:
-[CDef] O1 [O1]
+[CDef] ClassDef: O1 [O1]
 -[VDec] int a_
 -[VDec] int b_
 -[FDef] FuncDef: f
@@ -346,23 +347,45 @@ LT entry_main
 8: ReturnMain
 
 ---------------------------------------------------
-Parsing: "class A{int a;} class B{int b;} class C: A, B{int c;} void main(){C inst; int a; a = inst.c + inst.b + inst.a;}"
+Parsing: "class A{int a; int fa(){return 1;}} class B{int b; int fb(){return 1;}}class C: A, B{int c; int fc(){return 1;}}void main(){C inst; int a; a = inst.fc() + inst.fb() + inst.fa();}"
+ObjRec for A
+ObjRec for B
+ObjRec for C:AB
+fa to 0
+a to 0
+fb to 1
+b to 1
 
 Scopes of module:
-Scope 0: {(2:A) (4:B) (6:C) (7:main) }
-HScope of A 1: {(1:a) }
-HScope of B 2: {(3:b) }
-HScope of C 3: {(5:c) }
-Scope 4: {(8:inst) (9:a) }
+Scope 0: {(3:A) (6:B) (9:C) (10:main) }
+HScope of A 1: {(1:a) (2:fa) }
+Scope 2: {}
+HScope of B 3: {(4:b) (5:fb) }
+Scope 4: {}
+HScope of C 5: {(7:c) (8:fc) }
+Scope 6: {}
+Scope 7: {(11:inst) (12:a) }
 
 
 AST fully decorated dump:
-[CDef] A [A]
+[CDef] ClassDef: A [A]
 -[VDec] int a
-[CDef] B [B]
+-[FDef] FuncDef: fa
+--[Retst] Return (1)
+---[Lit] 1 [int Rvalue]
+
+[CDef] ClassDef: B [B]
 -[VDec] int b
-[CDef] C:AB [C]
+-[FDef] FuncDef: fb
+--[Retst] Return (1)
+---[Lit] 1 [int Rvalue]
+
+[CDef] ClassDef: C [C]
 -[VDec] int c
+-[FDef] FuncDef: fc
+--[Retst] Return (1)
+---[Lit] 1 [int Rvalue]
+
 [FDef] FuncDef: main
 -[VDec] C inst 
 -[VDec] int a 
@@ -370,35 +393,288 @@ AST fully decorated dump:
 --[Var] a [int Lvalue Write Value Nmemb]
 --Op: +  [int Rvalue]
 ---Op: +  [int Rvalue]
-----[Dotop] inst.c [int Lvalue Memb]
------[Var] inst [C Lvalue Read Address Nmemb]
------[Vnam] c
-----[Dotop] inst.b [int Lvalue Memb]
------[Var] inst [C Lvalue Read Address Nmemb]
------[Vnam] b
----[Dotop] inst.a [int Lvalue Memb]
-----[Var] inst [C Lvalue Read Address Nmemb]
-----[Vnam] a
+----[Fret] FuncRet: int [int Rvalue Nmemb]
+-----[Fcal] FuncCall: inst.fc [function: ()->int]
+------[Dotop] inst.fc [function: ()->int Memb]
+-------[Var] inst [C Read Address Nmemb]
+-------[Vnam] fc
+----[Fret] FuncRet: int [int Rvalue Nmemb]
+-----[Fcal] FuncCall: inst.fb [function: ()->int]
+------[Dotop] inst.fb [function: ()->int Memb]
+-------[Var] inst [C Read Address Nmemb]
+-------[Vnam] fb
+---[Fret] FuncRet: int [int Rvalue Nmemb]
+----[Fcal] FuncCall: inst.fa [function: ()->int]
+-----[Dotop] inst.fa [function: ()->int Memb]
+------[Var] inst [C Read Address Nmemb]
+------[Vnam] fa
 
 
 Declaration Table:
-2: Symbol: [ in scope 0 A of type A]
-4: Symbol: [ in scope 0 B of type B]
-6: Symbol: [ in scope 0 C of type C]
-7: Symbol: [ in scope 0 main of type function: ()->void]
-8: Symbol: [ in scope 4 inst of type C]
-9: Symbol: [ in scope 4 a of type int]
+3: Symbol: [ in scope 0 A of type A]
+6: Symbol: [ in scope 0 B of type B]
+9: Symbol: [ in scope 0 C of type C]
+10: Symbol: [ in scope 0 main of type function: ()->void]
+11: Symbol: [ in scope 7 inst of type C]
+12: Symbol: [ in scope 7 a of type int]
 
 IR dump:
+LT entry_A::fa
+0: %0 = LoadI(1)
+1: Return
+LT entry_B::fb
+0: %0 = LoadI(1)
+1: Return
+LT entry_C::fc
+0: %0 = LoadI(1)
+1: Return
 LT entry_main
 0: %0 = PtrElem( LT MainDS:0 (inst))
-1: %1 = Load [ %0 + 2 (c)]
-2: %2 = PtrElem( LT MainDS:0 (inst))
-3: %3 = Load [ %2 + 1 (b)]
-4: %4 = %1 + %3
-5: %5 = PtrElem( LT MainDS:0 (inst))
-6: %6 = Load [ %5 + 0 (a)]
-7: %7 = %4 + %6
-8: store %7 to [LT MainDS:3 (a)]
-9: ReturnMain
+1: SetPar( %0)
+2: call [LT entry_C::fc:0 ()]
+3: %1 = GetRetVal()
+4: %2 = PtrElem( LT MainDS:0 (inst))
+5: %3 = LoadI(1)
+6: %4 = %2 + %3
+7: SetPar( %4)
+8: call [LT entry_B::fb:0 ()]
+9: %5 = GetRetVal()
+10: %6 = %1 + %5
+11: %7 = PtrElem( LT MainDS:0 (inst))
+12: %8 = LoadI(0)
+13: %9 = %7 + %8
+14: SetPar( %9)
+15: call [LT entry_A::fa:0 ()]
+16: %10 = GetRetVal()
+17: %11 = %6 + %10
+18: store %11 to [LT MainDS:3 (a)]
+19: ReturnMain
+
+---------------------------------------------------
+Parsing: "class A        {int a; int fa(){return 1;}} class B : A    {int b; int fb(){return 1;}} class C : B    {int c; int fc(){return 1;}} class D        {int d; int fd(){return 1;}} class E : D    {int e; int fe(){return 1;}} class F : E    {int f; int ff(){return 1;}} class G : C,F  {int g; int fg(){return 1;}} void main(){G inst; int a; a = inst.fa() + inst.fb() + inst.fc() +  inst.fd() + inst.fe() + inst.ff() + inst.fg();}"
+ObjRec for A
+ObjRec for B:A
+fa to 0
+a to 0
+ObjRec for C:B:A
+fa to 0
+fb to 0
+a to 0
+b to 1
+ObjRec for D
+ObjRec for E:D
+fd to 0
+d to 0
+ObjRec for F:E:D
+fd to 0
+fe to 0
+d to 0
+e to 1
+ObjRec for G:C:B:AF:E:D
+fa to 0
+fb to 0
+fc to 0
+a to 0
+b to 1
+c to 2
+fd to 3
+fe to 3
+ff to 3
+d to 3
+e to 4
+f to 5
+
+Scopes of module:
+Scope 0: {(3:A) (6:B) (9:C) (12:D) (15:E) (18:F) (21:G) (22:main) }
+HScope of A 1: {(1:a) (2:fa) }
+Scope 2: {}
+HScope of B 3: {(4:b) (5:fb) }
+Scope 4: {}
+HScope of C 5: {(7:c) (8:fc) }
+Scope 6: {}
+HScope of D 7: {(10:d) (11:fd) }
+Scope 8: {}
+HScope of E 9: {(13:e) (14:fe) }
+Scope 10: {}
+HScope of F 11: {(16:f) (17:ff) }
+Scope 12: {}
+HScope of G 13: {(19:g) (20:fg) }
+Scope 14: {}
+Scope 15: {(23:inst) (24:a) }
+
+
+AST fully decorated dump:
+[CDef] ClassDef: A [A]
+-[VDec] int a
+-[FDef] FuncDef: fa
+--[Retst] Return (1)
+---[Lit] 1 [int Rvalue]
+
+[CDef] ClassDef: B [B]
+-[VDec] int b
+-[FDef] FuncDef: fb
+--[Retst] Return (1)
+---[Lit] 1 [int Rvalue]
+
+[CDef] ClassDef: C [C]
+-[VDec] int c
+-[FDef] FuncDef: fc
+--[Retst] Return (1)
+---[Lit] 1 [int Rvalue]
+
+[CDef] ClassDef: D [D]
+-[VDec] int d
+-[FDef] FuncDef: fd
+--[Retst] Return (1)
+---[Lit] 1 [int Rvalue]
+
+[CDef] ClassDef: E [E]
+-[VDec] int e
+-[FDef] FuncDef: fe
+--[Retst] Return (1)
+---[Lit] 1 [int Rvalue]
+
+[CDef] ClassDef: F [F]
+-[VDec] int f
+-[FDef] FuncDef: ff
+--[Retst] Return (1)
+---[Lit] 1 [int Rvalue]
+
+[CDef] ClassDef: G [G]
+-[VDec] int g
+-[FDef] FuncDef: fg
+--[Retst] Return (1)
+---[Lit] 1 [int Rvalue]
+
+[FDef] FuncDef: main
+-[VDec] G inst 
+-[VDec] int a 
+-[Assgn] 
+--[Var] a [int Lvalue Write Value Nmemb]
+--Op: +  [int Rvalue]
+---Op: +  [int Rvalue]
+----Op: +  [int Rvalue]
+-----Op: +  [int Rvalue]
+------Op: +  [int Rvalue]
+-------Op: +  [int Rvalue]
+--------[Fret] FuncRet: int [int Rvalue Nmemb]
+---------[Fcal] FuncCall: inst.fa [function: ()->int]
+----------[Dotop] inst.fa [function: ()->int Memb]
+-----------[Var] inst [G Read Address Nmemb]
+-----------[Vnam] fa
+--------[Fret] FuncRet: int [int Rvalue Nmemb]
+---------[Fcal] FuncCall: inst.fb [function: ()->int]
+----------[Dotop] inst.fb [function: ()->int Memb]
+-----------[Var] inst [G Read Address Nmemb]
+-----------[Vnam] fb
+-------[Fret] FuncRet: int [int Rvalue Nmemb]
+--------[Fcal] FuncCall: inst.fc [function: ()->int]
+---------[Dotop] inst.fc [function: ()->int Memb]
+----------[Var] inst [G Read Address Nmemb]
+----------[Vnam] fc
+------[Fret] FuncRet: int [int Rvalue Nmemb]
+-------[Fcal] FuncCall: inst.fd [function: ()->int]
+--------[Dotop] inst.fd [function: ()->int Memb]
+---------[Var] inst [G Read Address Nmemb]
+---------[Vnam] fd
+-----[Fret] FuncRet: int [int Rvalue Nmemb]
+------[Fcal] FuncCall: inst.fe [function: ()->int]
+-------[Dotop] inst.fe [function: ()->int Memb]
+--------[Var] inst [G Read Address Nmemb]
+--------[Vnam] fe
+----[Fret] FuncRet: int [int Rvalue Nmemb]
+-----[Fcal] FuncCall: inst.ff [function: ()->int]
+------[Dotop] inst.ff [function: ()->int Memb]
+-------[Var] inst [G Read Address Nmemb]
+-------[Vnam] ff
+---[Fret] FuncRet: int [int Rvalue Nmemb]
+----[Fcal] FuncCall: inst.fg [function: ()->int]
+-----[Dotop] inst.fg [function: ()->int Memb]
+------[Var] inst [G Read Address Nmemb]
+------[Vnam] fg
+
+
+Declaration Table:
+3: Symbol: [ in scope 0 A of type A]
+6: Symbol: [ in scope 0 B of type B]
+9: Symbol: [ in scope 0 C of type C]
+12: Symbol: [ in scope 0 D of type D]
+15: Symbol: [ in scope 0 E of type E]
+18: Symbol: [ in scope 0 F of type F]
+21: Symbol: [ in scope 0 G of type G]
+22: Symbol: [ in scope 0 main of type function: ()->void]
+23: Symbol: [ in scope 15 inst of type G]
+24: Symbol: [ in scope 15 a of type int]
+
+IR dump:
+LT entry_A::fa
+0: %0 = LoadI(1)
+1: Return
+LT entry_B::fb
+0: %0 = LoadI(1)
+1: Return
+LT entry_C::fc
+0: %0 = LoadI(1)
+1: Return
+LT entry_D::fd
+0: %0 = LoadI(1)
+1: Return
+LT entry_E::fe
+0: %0 = LoadI(1)
+1: Return
+LT entry_F::ff
+0: %0 = LoadI(1)
+1: Return
+LT entry_G::fg
+0: %0 = LoadI(1)
+1: Return
+LT entry_main
+0: %0 = PtrElem( LT MainDS:0 (inst))
+1: %1 = LoadI(0)
+2: %2 = %0 + %1
+3: SetPar( %2)
+4: call [LT entry_A::fa:0 ()]
+5: %3 = GetRetVal()
+6: %4 = PtrElem( LT MainDS:0 (inst))
+7: %5 = LoadI(0)
+8: %6 = %4 + %5
+9: SetPar( %6)
+10: call [LT entry_B::fb:0 ()]
+11: %7 = GetRetVal()
+12: %8 = %3 + %7
+13: %9 = PtrElem( LT MainDS:0 (inst))
+14: %10 = LoadI(0)
+15: %11 = %9 + %10
+16: SetPar( %11)
+17: call [LT entry_C::fc:0 ()]
+18: %12 = GetRetVal()
+19: %13 = %8 + %12
+20: %14 = PtrElem( LT MainDS:0 (inst))
+21: %15 = LoadI(3)
+22: %16 = %14 + %15
+23: SetPar( %16)
+24: call [LT entry_D::fd:0 ()]
+25: %17 = GetRetVal()
+26: %18 = %13 + %17
+27: %19 = PtrElem( LT MainDS:0 (inst))
+28: %20 = LoadI(3)
+29: %21 = %19 + %20
+30: SetPar( %21)
+31: call [LT entry_E::fe:0 ()]
+32: %22 = GetRetVal()
+33: %23 = %18 + %22
+34: %24 = PtrElem( LT MainDS:0 (inst))
+35: %25 = LoadI(3)
+36: %26 = %24 + %25
+37: SetPar( %26)
+38: call [LT entry_F::ff:0 ()]
+39: %27 = GetRetVal()
+40: %28 = %23 + %27
+41: %29 = PtrElem( LT MainDS:0 (inst))
+42: SetPar( %29)
+43: call [LT entry_G::fg:0 ()]
+44: %30 = GetRetVal()
+45: %31 = %28 + %30
+46: store %31 to [LT MainDS:7 (a)]
+47: ReturnMain
 

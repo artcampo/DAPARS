@@ -21,6 +21,7 @@ class PassManager{
 public:
   PassManager(CompilationUnit& unit)
     : unit_(unit)
+    , dump_ast_after_each_pass_(false)
     , check_lval_rval_(unit_)
     , var_is_read_or_write_(unit_)
     , var_is_val_or_addr_(unit_)
@@ -66,6 +67,7 @@ private:
 
   std::vector<Pass*>            passes_;
   std::map<CompUnitInfo, bool>  defined_;
+  bool dump_ast_after_each_pass_;
 
   void Run(Pass& p){
     for(const auto& info : p.Uses())
@@ -75,6 +77,11 @@ private:
 //     std::cout << "Run pass: " << p.str() << "\n";
     if(unit_.HasErrors()) std::cout << p.str() << " failed. \n";
     for(const auto& info : p.Defines()) defined_[info] = true;
+    
+    if(dump_ast_after_each_pass_){
+      Dump visitor_dump(unit_, false, false);
+      visitor_dump.Visit(*unit_.GetAstProg());
+    }
   }
 
   bool InfoIsDefined(const CompUnitInfo& info) const{

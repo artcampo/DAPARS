@@ -18,10 +18,11 @@ void Dump::Visit(FuncDef const& p){
 }
 
 void Dump::Visit(ClassDef const& p){
-//   std::cout << "[CDef] " << p.str(); 
-  std::cout << "[CDef] " << unit_.GetClass(
-    dynamic_cast<const ClassType&>(unit_.GetTypeOfNode(p))
-    ).str();
+  if(not ast_has_type_info_)
+    std::cout << "[CDef] " << p.str(); 
+  else
+    std::cout << "[CDef] " << unit_.GetClass(
+      dynamic_cast<const ClassType&>(unit_.GetTypeOfNode(p)) ).str();
   DisplayAttributes(p); std::cout <<"\n";    
   bool first = true;
   for(auto& it : p.GetVarDecl()) {

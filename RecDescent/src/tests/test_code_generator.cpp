@@ -105,7 +105,7 @@ int main()
     "class D        {int d; int fd(){return 1;}} " +
     "class E : D    {int e; int fe(){return 1;}} " +
     "class F : E    {int f; int ff(){return 1;}} " +
-    "class G : D,F  {int g; int fg(){return 1;}} " +
+    "class G : C,F  {int g; int fg(){return 1;}} " +
     "void main(){G inst; int a; a = inst.fa() + inst.fb() + inst.fc() + "
     " inst.fd() + inst.fe() + inst.ff() + inst.fg();}", g);  
 

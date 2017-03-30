@@ -54,6 +54,7 @@ public:
     , parents_(parents)
     , class_def_(class_def)
     , func_manager_(func_manager){
+    BuildFuncsNotInht();
     BuildObjectRecord(class_def_);
     BuildFunctionsReferences();
   }
@@ -93,6 +94,9 @@ public:
     return n;
   }
   const size_t Size() const noexcept{ return class_size_;}
+  
+  std::vector<Function*>  GetFuncsNotInherited() noexcept{ return functions_not_inherited_;}
+  const std::vector<Function*>  GetFuncsNotInherited() const noexcept{ return functions_not_inherited_;}
 private:
   ScopeOwnerId            scope_owner_id_;
   std::string             name_;
@@ -108,11 +112,10 @@ private:
   //Each entry is a triplet (sid,offset,size)
   std::vector<std::pair<AST::Symbols::SymbolId, std::pair<IR::Offset, size_t>>> object_record_;
   //TODO: should use function sid instead
+  std::map<std::string, IR::Offset> offset_of_func_;
   std::map<std::string, Function*> function_by_name_;
   std::vector<Function*> functions_;
-  
-  std::map<std::string, IR::Offset> offset_of_func_;
-  
+  std::vector<Function*> functions_not_inherited_;
 
 
   void InsertObjectRecord(const AST::Symbols::SymbolId sid, const Offset offset
@@ -121,15 +124,20 @@ private:
     object_record_.push_back( {sid, {offset, size} });    
   }
   void BuildObjectRecord(const ClassDef& class_def){
+    std::cout << "ObjRec for " + str() + "\n";
     size_t offset       = RtiSize();
     size_t next_offset  = offset; //offset after processing current parent
     
     //Insert parent's functions and variables
     for(const auto& p : parents_){
       //correction of this parent's function is current offset
+      //this has to use explicitely the functions of parent not inherited from
+      //the parent's parent
+      //for(const auto& f : p->GetFuncsNotInherited()){
       for(const auto& f : *p){
         AddFunction(*f);
         offset_of_func_[f->Name()] = offset;
+        std::cout << f->Name() << " to " << offset << "\n";
       }
       
       //variables adapted to child layout
@@ -139,6 +147,7 @@ private:
         const Offset o    = Offset(orig.GetAddr() + offset, orig.Name());
         InsertObjectRecord( sid_offset_size.first, o, size);
         next_offset += size;
+        std::cout << orig.Name() << " to " << o.GetAddr() << "\n";
       }
       offset = next_offset;
     }
@@ -165,7 +174,12 @@ private:
     functions_.push_back(&f);
   }
   
-  const size_t RtiSize() const noexcept{ return 0;}
+  void BuildFuncsNotInht(){
+    for( const auto& it : class_def_) 
+      functions_not_inherited_.push_back(&func_manager_->GetFunc(*it));
+  }
+  
+  const size_t RtiSize() const noexcept{ return 0; }
 
   FunctionManager* func_manager_;
   
