@@ -71,7 +71,7 @@ int main()
 
   Grammar g;
   CreateGrammarExpr(g);
-  std::cout << g;
+//   std::cout << g;
 
 
   parse<Grammar,ParserLL1RecDesc>( std::string(

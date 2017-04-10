@@ -13,6 +13,7 @@ namespace IR{
 namespace Inst{
 
 struct Inst;
+
 struct JumpCond;
 struct JumpIncond;
 struct LoadI;

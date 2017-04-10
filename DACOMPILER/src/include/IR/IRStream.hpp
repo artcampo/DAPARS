@@ -44,6 +44,8 @@ struct IRStream : public IRBuilder{
 
 
   void Print() const noexcept;
+  
+  
 private:
   std::vector<Inst::PtrInst> stream_;
   Label entry_label_;
@@ -52,6 +54,17 @@ private:
 
   Reg RegAssignedToPreviousInst() const;
 
+public:  
+  using iterator = std::vector<Inst::PtrInst>::iterator;
+  using const_iterator = std::vector<Inst::PtrInst>::const_iterator;
+
+  iterator begin() { return stream_.begin(); }
+  iterator end()   { return stream_.end(); }
+  const_iterator begin()  const { return stream_.begin(); }
+  const_iterator end()    const { return stream_.end(); }
+  const_iterator cbegin() const { return stream_.cbegin(); }
+  const_iterator cend()   const { return stream_.cend(); }    
+  
 };
 
 

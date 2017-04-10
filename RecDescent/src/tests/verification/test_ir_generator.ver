@@ -1,17 +1,3 @@
-Grammar:
-PROG -> E  init 
-E -> T E' 
-E' -> + T E' 
-E' -> - T E' 
-E' -> {empty} 
-T -> F T' 
-T' -> * F T' 
-T' -> / F T' 
-T' -> {empty} 
-F -> ( E ) 
-F -> {num} 
-F -> {nam} 
-
 ---------------------------------------------------
 Parsing: "void main(){int a,b,c; while(true){b=2+3;} c=3+4; }"
 

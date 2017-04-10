@@ -27,6 +27,8 @@ public:
   IRGenerator(CompilationUnit& unit): unit_(unit), emit_addr_var_inht_(false)
     ,inside_member_func_def_(false){};
 
+  IR::IRUnit& GetIRUnit(){ return ir_unit_; }
+    
   virtual void Visit(ProgBody const& p, const Node* successor);
   virtual void Visit(ProgInit const& p, const Node* successor);
   virtual void Visit(ProgEnd const& p, const Node* successor);

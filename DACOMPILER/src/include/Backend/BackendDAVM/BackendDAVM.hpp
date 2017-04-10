@@ -20,8 +20,17 @@ public:
   }
 private:
   
-  void Visit(IR::IRStream& stream){}
-  
+  void Visit(IR::IRStream& stream){
+    for(auto& it : stream) Visit(*it);
+  }
+
+  void Visit(IR::Inst::Inst& inst){
+    std::cout << "Not implemented: " << inst.str() << "\n";
+  }
+  void Visit(IR::Inst::Load& inst){
+    std::cout << "yuhu" << inst.str() << "\n";
+  }
+
 
 };
 

@@ -64,8 +64,9 @@ void parse(const std::string& str, G& g)
     visitor_irgen.EndOfProgram();
     
     //
+    std::cout << "---------------\nBackend::Davm\n";
     using namespace Compiler::Backend::BackendDAVM;
-    BackendDAVM b(unit);
+    BackendDAVM b(unit, visitor_irgen.GetIRUnit() );
     b.Run();
   }
 
@@ -77,12 +78,10 @@ int main()
 
   Grammar g;
   CreateGrammarExpr(g);
-  std::cout << g;
 
-/*
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "void main(){int a; a = 1+2; }"), g);
-*/
+
 
 
   return 0;
