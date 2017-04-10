@@ -746,10 +746,9 @@ Scope 2: {(4:a) }
 
 ---------------------------------------------------
 Parsing: "class O1{} void main(){ O1 a;}"
-ObjRec for O1
 
 AST dump:
-[CDef] ClassDef: O1 [O1]
+[CDef] O1 [O1]
 [FDef] FuncDef: main
 -[VDec] O1 a 
 
@@ -766,10 +765,9 @@ Scope 2: {(3:a) }
 
 ---------------------------------------------------
 Parsing: "class O1{int a;} void main(){ O1 inst; int b; b = inst.a;}"
-ObjRec for O1
 
 AST dump:
-[CDef] ClassDef: O1 [O1]
+[CDef] O1 [O1]
 -[VDec] int a
 [FDef] FuncDef: main
 -[VDec] O1 inst 
@@ -794,13 +792,11 @@ Scope 2: {(4:inst) (5:b) }
 
 ---------------------------------------------------
 Parsing: "class O1{int a;} class O2{ O1 o1;} void main(){ O2 inst; int b; b = inst.o1.a;}"
-ObjRec for O1
-ObjRec for O2
 
 AST dump:
-[CDef] ClassDef: O1 [O1]
+[CDef] O1 [O1]
 -[VDec] int a
-[CDef] ClassDef: O2 [O2]
+[CDef] O2 [O2]
 -[VDec] O1 o1
 [FDef] FuncDef: main
 -[VDec] O2 inst 
@@ -829,10 +825,9 @@ Scope 3: {(6:inst) (7:b) }
 
 ---------------------------------------------------
 Parsing: "class O1{int f(int a, int b){int c; c = a+b; return c;}} void main(){ O1 inst; int b; b = inst.f(1,2);}"
-ObjRec for O1
 
 AST dump:
-[CDef] ClassDef: O1 [O1]
+[CDef] O1 [O1]
 -[FDef] FuncDef: f
 --[VDec] int c 
 --[Assgn] 
@@ -874,10 +869,9 @@ Scope 3: {(7:inst) (8:b) }
 
 ---------------------------------------------------
 Parsing: "class O1{int f(int a){return a + a_;} int a_;} void main(){ O1 inst; }"
-ObjRec for O1
 
 AST dump:
-[CDef] ClassDef: O1 [O1]
+[CDef] O1 [O1]
 -[VDec] int a_
 -[FDef] FuncDef: f
 --[Retst] Return ( + )
@@ -903,16 +897,14 @@ Scope 3: {(6:inst) }
 
 ---------------------------------------------------
 Parsing: "class O1{int f(){return 1;} } class O2{int g(){return inst_.f() + 1;} O1 inst_; } void main(){ O2 inst; }"
-ObjRec for O1
-ObjRec for O2
 
 AST dump:
-[CDef] ClassDef: O1 [O1]
+[CDef] O1 [O1]
 -[FDef] FuncDef: f
 --[Retst] Return (1)
 ---[Lit] 1 [int Rvalue]
 
-[CDef] ClassDef: O2 [O2]
+[CDef] O2 [O2]
 -[VDec] O1 inst_
 -[FDef] FuncDef: g
 --[Retst] Return ( + )
@@ -944,10 +936,9 @@ Scope 5: {(7:inst) }
 
 ---------------------------------------------------
 Parsing: "class O1{int f(){return g();} int g(){return 1;} } void main(){ O1 inst;}"
-ObjRec for O1
 
 AST dump:
-[CDef] ClassDef: O1 [O1]
+[CDef] O1 [O1]
 -[FDef] FuncDef: f
 --[Retst] Return (FuncRet: int)
 ---[Fret] FuncRet: int [int Rvalue Memb]
@@ -976,14 +967,12 @@ Scope 4: {(5:inst) }
 
 ---------------------------------------------------
 Parsing: "class A{int a;} class B : A{int b;} void main(){ B inst;}"
-ObjRec for A
-ObjRec for B:A
-a to 0
+ObjRec for B:A -> (a, 0) 
 
 AST dump:
-[CDef] ClassDef: A [A]
+[CDef] A [A]
 -[VDec] int a
-[CDef] ClassDef: B [B]
+[CDef] B:A [B]
 -[VDec] int b
 [FDef] FuncDef: main
 -[VDec] B inst 
@@ -1003,14 +992,12 @@ Scope 3: {(6:inst) }
 
 ---------------------------------------------------
 Parsing: "class A{int a;} class B : A{int b;} void main(){ B inst; inst.a = 2;}"
-ObjRec for A
-ObjRec for B:A
-a to 0
+ObjRec for B:A -> (a, 0) 
 
 AST dump:
-[CDef] ClassDef: A [A]
+[CDef] A [A]
 -[VDec] int a
-[CDef] ClassDef: B [B]
+[CDef] B:A [B]
 -[VDec] int b
 [FDef] FuncDef: main
 -[VDec] B inst 

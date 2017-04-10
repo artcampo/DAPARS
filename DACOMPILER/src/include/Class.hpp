@@ -54,8 +54,10 @@ public:
     , parents_(parents)
     , class_def_(class_def)
     , func_manager_(func_manager){
+    if(not parents_.empty()) std::cout << "ObjRec for " + str() << " -> ";
     BuildFuncsNotInht();
     BuildObjectRecord(class_def_);
+    if(not parents_.empty()) std::cout << "\n";
     BuildFunctionsReferences();
   }
 
@@ -124,7 +126,7 @@ private:
     object_record_.push_back( {sid, {offset, size} });    
   }
   void BuildObjectRecord(const ClassDef& class_def){
-    std::cout << "ObjRec for " + str() + "\n";
+    
     size_t offset       = RtiSize();
     size_t next_offset  = offset; //offset after processing current parent
     
@@ -137,7 +139,7 @@ private:
       for(const auto& f : *p){
         AddFunction(*f);
         offset_of_func_[f->Name()] = offset;
-        std::cout << f->Name() << " to " << offset << "\n";
+        std::cout <<  "(" << f->Name() << ", " << offset << ") ";
       }
       
       //variables adapted to child layout
@@ -147,7 +149,7 @@ private:
         const Offset o    = Offset(orig.GetAddr() + offset, orig.Name());
         InsertObjectRecord( sid_offset_size.first, o, size);
         next_offset += size;
-        std::cout << orig.Name() << " to " << o.GetAddr() << "\n";
+        std::cout << "("<< orig.Name() << ", " << o.GetAddr() << ") ";
       }
       offset = next_offset;
     }

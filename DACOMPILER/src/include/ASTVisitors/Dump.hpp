@@ -32,8 +32,8 @@ public:
   virtual void Visit(DotOp const& p);
 
 
-  Dump(CompilationUnit& unit, const bool show_attributes = false, const bool ast_has_type_info_ = true)
-    :  unit_(unit), indent_(0), show_attributes_(show_attributes){};
+  Dump(CompilationUnit& unit, const bool show_attributes = false, const bool ast_has_type_info = true)
+    :  unit_(unit), indent_(0), show_attributes_(show_attributes), ast_has_type_info_(ast_has_type_info){};
 
 private:
   void Indent();

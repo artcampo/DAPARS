@@ -52,7 +52,7 @@ void parse(const std::string& str, G& g)
   if(unit.GetAstProg() != nullptr){
     if(dump_decorated_ast_before_IRGen){
       std::cout << "\nAST fully decorated dump:\n";
-      Dump visitor_dump(unit, true);
+      Dump visitor_dump(unit, true, true);
       visitor_dump.Visit(*unit.GetAstProg());
     }
 
@@ -109,7 +109,12 @@ int main()
     "void main(){G inst; int a; a = inst.fa() + inst.fb() + inst.fc() + "
     " inst.fd() + inst.fe() + inst.ff() + inst.fg();}", g);  
 
+  
   /*
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "class A{int f(){return 1;}  }") +  
+    "void main(){A inst; A* pi; int a; pi = &inst; a = (*p).f(); }", g);
+    
   //Causes sigsev (hahah)
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "void main(){int a; a= *&a;}"), g);

@@ -1,0 +1,5 @@
+class A{ A self(){ return this;}  int f(){ return 1;} }
+void main(){ A inst; int a; a = inst.self().f(); }
+
+class A{ ptr<int()> f(){ return [](){return 1;}->int; }
+main(){ A inst; int a; a = (*inst.f())(); }

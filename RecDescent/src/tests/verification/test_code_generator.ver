@@ -275,7 +275,6 @@ LT entry_f
 
 ---------------------------------------------------
 Parsing: "class O1{int a_; int b_; int f(){return a_ + g();} int g(){return b_;} }void main(){O1 inst; int a; a = inst.f() + inst.a_;}"
-ObjRec for O1
 
 Scopes of module:
 Scope 0: {(5:O1) (6:main) }
@@ -286,7 +285,7 @@ Scope 4: {(7:inst) (8:a) }
 
 
 AST fully decorated dump:
-[CDef] ClassDef: O1 [O1]
+[CDef] O1 [O1]
 -[VDec] int a_
 -[VDec] int b_
 -[FDef] FuncDef: f
@@ -348,13 +347,7 @@ LT entry_main
 
 ---------------------------------------------------
 Parsing: "class A{int a; int fa(){return 1;}} class B{int b; int fb(){return 1;}}class C: A, B{int c; int fc(){return 1;}}void main(){C inst; int a; a = inst.fc() + inst.fb() + inst.fa();}"
-ObjRec for A
-ObjRec for B
-ObjRec for C:AB
-fa to 0
-a to 0
-fb to 1
-b to 1
+ObjRec for C:AB -> (fa, 0) (a, 0) (fb, 1) (b, 1) 
 
 Scopes of module:
 Scope 0: {(3:A) (6:B) (9:C) (10:main) }
@@ -368,19 +361,19 @@ Scope 7: {(11:inst) (12:a) }
 
 
 AST fully decorated dump:
-[CDef] ClassDef: A [A]
+[CDef] A [A]
 -[VDec] int a
 -[FDef] FuncDef: fa
 --[Retst] Return (1)
 ---[Lit] 1 [int Rvalue]
 
-[CDef] ClassDef: B [B]
+[CDef] B [B]
 -[VDec] int b
 -[FDef] FuncDef: fb
 --[Retst] Return (1)
 ---[Lit] 1 [int Rvalue]
 
-[CDef] ClassDef: C [C]
+[CDef] C:AB [C]
 -[VDec] int c
 -[FDef] FuncDef: fc
 --[Retst] Return (1)
@@ -452,37 +445,11 @@ LT entry_main
 
 ---------------------------------------------------
 Parsing: "class A        {int a; int fa(){return 1;}} class B : A    {int b; int fb(){return 1;}} class C : B    {int c; int fc(){return 1;}} class D        {int d; int fd(){return 1;}} class E : D    {int e; int fe(){return 1;}} class F : E    {int f; int ff(){return 1;}} class G : C,F  {int g; int fg(){return 1;}} void main(){G inst; int a; a = inst.fa() + inst.fb() + inst.fc() +  inst.fd() + inst.fe() + inst.ff() + inst.fg();}"
-ObjRec for A
-ObjRec for B:A
-fa to 0
-a to 0
-ObjRec for C:B:A
-fa to 0
-fb to 0
-a to 0
-b to 1
-ObjRec for D
-ObjRec for E:D
-fd to 0
-d to 0
-ObjRec for F:E:D
-fd to 0
-fe to 0
-d to 0
-e to 1
-ObjRec for G:C:B:AF:E:D
-fa to 0
-fb to 0
-fc to 0
-a to 0
-b to 1
-c to 2
-fd to 3
-fe to 3
-ff to 3
-d to 3
-e to 4
-f to 5
+ObjRec for B:A -> (fa, 0) (a, 0) 
+ObjRec for C:B:A -> (fa, 0) (fb, 0) (a, 0) (b, 1) 
+ObjRec for E:D -> (fd, 0) (d, 0) 
+ObjRec for F:E:D -> (fd, 0) (fe, 0) (d, 0) (e, 1) 
+ObjRec for G:C:B:AF:E:D -> (fa, 0) (fb, 0) (fc, 0) (a, 0) (b, 1) (c, 2) (fd, 3) (fe, 3) (ff, 3) (d, 3) (e, 4) (f, 5) 
 
 Scopes of module:
 Scope 0: {(3:A) (6:B) (9:C) (12:D) (15:E) (18:F) (21:G) (22:main) }
@@ -504,43 +471,43 @@ Scope 15: {(23:inst) (24:a) }
 
 
 AST fully decorated dump:
-[CDef] ClassDef: A [A]
+[CDef] A [A]
 -[VDec] int a
 -[FDef] FuncDef: fa
 --[Retst] Return (1)
 ---[Lit] 1 [int Rvalue]
 
-[CDef] ClassDef: B [B]
+[CDef] B:A [B]
 -[VDec] int b
 -[FDef] FuncDef: fb
 --[Retst] Return (1)
 ---[Lit] 1 [int Rvalue]
 
-[CDef] ClassDef: C [C]
+[CDef] C:B:A [C]
 -[VDec] int c
 -[FDef] FuncDef: fc
 --[Retst] Return (1)
 ---[Lit] 1 [int Rvalue]
 
-[CDef] ClassDef: D [D]
+[CDef] D [D]
 -[VDec] int d
 -[FDef] FuncDef: fd
 --[Retst] Return (1)
 ---[Lit] 1 [int Rvalue]
 
-[CDef] ClassDef: E [E]
+[CDef] E:D [E]
 -[VDec] int e
 -[FDef] FuncDef: fe
 --[Retst] Return (1)
 ---[Lit] 1 [int Rvalue]
 
-[CDef] ClassDef: F [F]
+[CDef] F:E:D [F]
 -[VDec] int f
 -[FDef] FuncDef: ff
 --[Retst] Return (1)
 ---[Lit] 1 [int Rvalue]
 
-[CDef] ClassDef: G [G]
+[CDef] G:C:B:AF:E:D [G]
 -[VDec] int g
 -[FDef] FuncDef: fg
 --[Retst] Return (1)
