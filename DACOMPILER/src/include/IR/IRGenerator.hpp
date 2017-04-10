@@ -4,6 +4,7 @@
 #include "CompilationUnit.hpp"
 #include "AST/ASTVisitor.hpp"
 #include "IR/IRStream.hpp"
+#include "IR/IRUnit.hpp"
 #include <map>
 #include <vector>
 
@@ -54,7 +55,7 @@ public:
   void EndOfProgram();
 private:
   CompilationUnit&  unit_;
-  std::vector<PtrIRStream> streams_;
+  IR::IRUnit        ir_unit_;
   IR::IRStream* current_stream_;
 
   //reg destination of Node
@@ -75,16 +76,16 @@ private:
   bool        is_member_call_inht_; //only within funcRet/funcCall
   bool        inside_member_func_def_;
 
-  IR::IRStream& CurrentStream() const noexcept{ return *current_stream_;}
   void BackPatch(const Node& n, const IR::Addr position);
   void AddToBackPatch(const Node& n, const IR::Addr position);
   void PrintBackPatch();
   void Print() const noexcept;
 
+  IR::IRStream& CurrentStream() const noexcept{ return *current_stream_;}
+  
   void NewStream(const Label& entry_label){
-    streams_.push_back( std::move(
-      std::make_unique<IR::IRStream>(entry_label) ));
-    current_stream_ = streams_.back().get();
+    ir_unit_.NewStream(entry_label);
+    current_stream_ = ir_unit_.streams_.back().get();
   }
 
 };

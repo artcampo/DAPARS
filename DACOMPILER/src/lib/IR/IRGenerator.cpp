@@ -344,7 +344,7 @@ void IRGenerator::Visit(DotOp const& p, const Node* successor){
 
 /////////////////////////////////////////////////////////////////////////////
 void IRGenerator::Print() const noexcept{
-  for(const auto& it : streams_) it->Print();
+  for(const auto& it : ir_unit_.streams_) it->Print();
 }
 
 /////////////////////////////////////////////////////////////////////////////

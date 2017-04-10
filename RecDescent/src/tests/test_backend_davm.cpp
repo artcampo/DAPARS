@@ -10,6 +10,7 @@
 #include "IR/IRGenerator.hpp"
 #include "CompilationUnit.hpp"
 #include "Passes/PassManager.hpp"
+#include "Backend/BackendDAVM/BackendDAVM.hpp"
 #include <iostream>
 #include <memory>
 #include <string>
@@ -61,6 +62,11 @@ void parse(const std::string& str, G& g)
 
     std::cout << "\nIR dump:\n";
     visitor_irgen.EndOfProgram();
+    
+    //
+    using namespace Compiler::Backend::BackendDAVM;
+    BackendDAVM b(unit);
+    b.Run();
   }
 
   std::cout << "\n";
