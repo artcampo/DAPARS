@@ -12,7 +12,8 @@ test_standalone test_grammar
 test_standalone test_grammar2
 test_standalone test_parser
 test_standalone test_errors_parser
-test_standalone test_code_generator
+test_standalone test_ir_generator
+test_standalone test_backend_davm
 
 
 test_with_input(){

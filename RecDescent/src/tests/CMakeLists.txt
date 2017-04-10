@@ -32,9 +32,11 @@ target_link_libraries(test_errors_parser ${lib_parser_comp})
 add_executable(test_parser_compiler test_parser_compiler.cpp)
 target_link_libraries(test_parser_compiler ${lib_parser_comp})
 
-add_executable(test_code_generator test_code_generator.cpp)
-target_link_libraries(test_code_generator ${lib_parser_comp})
+add_executable(test_ir_generator test_ir_generator.cpp)
+target_link_libraries(test_ir_generator ${lib_parser_comp})
 
+add_executable(test_backend_davm test_backend_davm.cpp)
+target_link_libraries(test_backend_davm ${lib_parser_comp})
 
 INSTALL(TARGETS test_grammar DESTINATION tests/ll1)
 INSTALL(TARGETS test_grammar2 DESTINATION tests/ll1)
@@ -42,5 +44,7 @@ INSTALL(TARGETS test_grammar_dalang DESTINATION tests/ll1)
 INSTALL(TARGETS test_parser DESTINATION tests/ll1)
 INSTALL(TARGETS test_errors_parser DESTINATION tests/ll1)
 INSTALL(TARGETS test_parser_compiler DESTINATION tests/ll1)
-INSTALL(TARGETS test_code_generator DESTINATION tests/ll1)
+INSTALL(TARGETS test_ir_generator DESTINATION tests/ll1)
+INSTALL(TARGETS test_backend_davm DESTINATION tests/ll1)
+
 

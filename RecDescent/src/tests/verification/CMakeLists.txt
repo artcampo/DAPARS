@@ -4,6 +4,8 @@ INSTALL(FILES test_grammar.ver  #standalone tests
               test_grammar2.ver
               test_parser.ver
               test_errors_parser.ver
+              test_ir_generator.ver
+              test_backend_davm.ver
               
               test_parse1.ver   #input tests
               test_parse2.ver
