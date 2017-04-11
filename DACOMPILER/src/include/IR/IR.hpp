@@ -31,6 +31,7 @@ struct InstAddress{
   InstAddress(const MemAddr addr)
     :addr_(addr){}
   ~InstAddress() = default;
+  MemAddr Addr() const noexcept{ return addr_;}
 protected:
   MemAddr addr_;
 };

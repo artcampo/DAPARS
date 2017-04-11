@@ -37,6 +37,7 @@ ReturnMain
 ---------
 Bytecode:
 Load, r:0 val: 1
-Load, r:0 val: 2
+Load, r:1 val: 2
+ADD, rs1:0 rs2: 1 rd:2
 STOP
 

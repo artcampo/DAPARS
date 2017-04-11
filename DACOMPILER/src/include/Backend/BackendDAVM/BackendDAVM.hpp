@@ -4,6 +4,7 @@
 #include "Utils.hpp"  //move to VM/
 #include "IRBuilder.hpp"
 #include "IR/IRVisitor.hpp"
+#include "Backend/RegisterAllocator.hpp"
 
 #include <map>
 #include <memory>
@@ -17,7 +18,7 @@ class BackendDAVM : public Backend, IR::IRVisitor{
 public:
 
   BackendDAVM(CompilationUnit& unit, IR::IRUnit& ir_unit)
-  : Backend(unit, ir_unit){}
+  : Backend(unit, ir_unit), reg_alloc_(10){} //TODO: machine description
 
   void Run(){
     for(auto& it : ir_unit_.streams_) Visit(*it);
@@ -25,7 +26,10 @@ public:
     std::cout << "---------\nBytecode:\n";
     VM::VMUtils::print(byte_code_);
   }
+  
 private:
+  VM::ByteCode      byte_code_;
+  RegisterAllocator reg_alloc_;  
   
   void Visit(IR::IRStream& stream){
     for(auto& it : stream) it->Accept(*this);
@@ -40,10 +44,14 @@ private:
   void Visit(const IR::Inst::JumpIncond& inst) override{
     std::cout << inst.str() << "\n";
   }
+  
   void Visit(const IR::Inst::LoadI& inst) override{
     std::cout << inst.str() << "\n";
-    byte_code_.Append( VM::IRBuilder::Load(0, inst.Value()));
+    RegMap rd( inst.RegDst() );
+    reg_alloc_.GetRegOut(rd);
+    byte_code_.Append( VM::IRBuilder::Load(rd.mreg_, inst.Value()));
   }
+  
   void Visit(const IR::Inst::Load& inst) override{
     std::cout << inst.str() << "\n";
   }
@@ -55,12 +63,24 @@ private:
   }
   void Visit(const IR::Inst::Store& inst) override{
     std::cout << inst.str() << "\n";
+    RegMap rs ( inst.RegSrc() );
+    reg_alloc_.GetRegOut(rs);
+//     byte_code_.Append( VM::IRBuilder::Store(rs.mreg_, int(inst.Addr())));
   }
   void Visit(const IR::Inst::StoreReg& inst) override{
     std::cout << inst.str() << "\n";
   }
   void Visit(const IR::Inst::Arith& inst) override{
     std::cout << inst.str() << "\n";
+    RegMap rd ( inst.RegDst() );
+    RegMap rs1( inst.RegSrc1() );
+    RegMap rs2( inst.RegSrc2() );
+    
+    reg_alloc_.GetRegOut(rd);
+    reg_alloc_.GetRegOut(rs1);
+    reg_alloc_.GetRegOut(rs2);
+    
+    byte_code_.Append( VM::IRBuilder::Arith(rs1.mreg_, rs2.mreg_, rd.mreg_, int(inst.Op())));
   }
   void Visit(const IR::Inst::Comparison& inst) override{
     std::cout << inst.str() << "\n";
@@ -90,9 +110,6 @@ private:
     std::cout << inst.str() << "\n";
   }    
   
-  
-
-  VM::ByteCode byte_code_;
   
 };
 
