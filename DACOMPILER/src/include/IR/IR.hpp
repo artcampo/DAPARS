@@ -6,54 +6,27 @@
 #include "IR/Label.hpp"
 #include "IR/Offset.hpp"
 #include "IR/MemAddr.hpp"
+#include "IR/IRVisitor.hpp"
 #include "AST/ASTNodes.hpp"
 
 namespace Compiler{
 namespace IR{
 namespace Inst{
 
-struct Inst;
+#include "IR/IRForwardDeclarations.inc"
 
-struct JumpCond;
-struct JumpIncond;
-struct LoadI;
-struct Load;
-struct LoadReg;
-struct LoadRegOffs;
-struct Store;
-struct StoreReg;
-struct Arith;
-struct Comparison;
-struct PtrElem;
-struct GetRetVal;
-struct SetRetVal;
-struct SetPar;
-struct Return;
-struct ReturnMain;
-struct Call;
+//Interface
+struct Inst{
+  Inst(){};
+  virtual ~Inst() = default;
 
-using PtrInst         = std::unique_ptr<Inst>;
-using PtrJumpIncond   = std::unique_ptr<JumpIncond>;
-using PtrJumpCond     = std::unique_ptr<JumpCond>;
-using PtrLoadI        = std::unique_ptr<LoadI>;
-using PtrLoad         = std::unique_ptr<Load>;
-using PtrLoadReg      = std::unique_ptr<LoadReg>;
-using PtrLoadRegOffs  = std::unique_ptr<LoadRegOffs>;
-using PtrStore        = std::unique_ptr<Store>;
-using PtrStoreReg     = std::unique_ptr<StoreReg>;
-using PtrArith        = std::unique_ptr<Arith>;
-using PtrComparison   = std::unique_ptr<Comparison>;
-using PtrPtrElem      = std::unique_ptr<PtrElem>;
+  virtual std::string str() const noexcept = 0;
+  
+  //non-conventional, but while developing I want to see unimplemented instructions
+  virtual void Accept(IRVisitor& v){ v.Visit(*this);};
+};
 
-using PtrGetRetVal    = std::unique_ptr<GetRetVal>;
-using PtrSetRetVal    = std::unique_ptr<SetRetVal>;
-using PtrSetPar       = std::unique_ptr<SetPar>;
-using PtrReturn       = std::unique_ptr<Return>;
-using PtrReturnMain   = std::unique_ptr<ReturnMain>;
-using PtrCall         = std::unique_ptr<Call>;
-
-
-
+//Policies 
 struct InstAddress{
   InstAddress(const MemAddr addr)
     :addr_(addr){}
@@ -108,14 +81,7 @@ protected:
 };
 
 
-//Interface
-struct Inst{
-  Inst(){};
-  virtual ~Inst() = default;
-
-  virtual std::string str() const noexcept = 0;
-};
-
+//Extended interfaces
 struct BinaryOp : public Inst, public InstDst, public InstSrcSrc{
   BinaryOp(const Reg reg_dst, const Reg src1, const Reg src2)
   : InstDst(reg_dst), InstSrcSrc(src1, src2){};

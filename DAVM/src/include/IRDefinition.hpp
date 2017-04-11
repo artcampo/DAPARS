@@ -1,5 +1,6 @@
 #pragma once
 
+namespace VM{
 namespace IRDefinition{
 
 
@@ -131,5 +132,5 @@ enum IRRegisters {
 };
 
 
-}; //namespace IRDefinition
-
+}//namespace IRDefinition
+}//end namespace VM

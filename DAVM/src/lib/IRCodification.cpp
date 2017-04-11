@@ -2,6 +2,8 @@
 #include "IRDefinition.hpp"
 #include <iostream>
 
+namespace VM{
+
 namespace IRCodification{
 
 using namespace IRDefinition;
@@ -104,4 +106,5 @@ void DecodeClass3(const VM::Inst instruction, uint32_t &reg_src1
            & kRegistertMask;
 }
 
-}; //namespace IRCodification
+}//namespace IRCodification
+}//end namespace VM

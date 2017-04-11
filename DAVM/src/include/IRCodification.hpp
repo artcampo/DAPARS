@@ -3,6 +3,7 @@
 #include <string>
 #include "BasicTypes.hpp"
 
+namespace VM{
 namespace IRCodification{
 
 uint32_t  DecodeClass (const uint32_t &instruction);
@@ -28,5 +29,5 @@ VM::Inst CodeClass3(const uint32_t &reg_src1, const uint32_t &reg_src2
 void DecodeClass3(const VM::Inst instruction, uint32_t &reg_src1
                  ,uint32_t &reg_src2, uint32_t &reg_dst, uint32_t &subtype);
 
-}; //namespace IRCodification
-
+} //namespace IRCodification
+}//end namespace VM

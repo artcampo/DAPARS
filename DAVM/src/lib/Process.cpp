@@ -1,6 +1,8 @@
 #include "Process.hpp"
 #include <iostream>
 
+namespace VM{
+
 void Process::NextOpCode(){
   execution_context_.instruction_pointer_++;
 }
@@ -28,3 +30,5 @@ void Process::DumpExecutionContext(int const registers_num) const{
   }
   std::cout << "\n";
 }
+
+}//end namespace VM

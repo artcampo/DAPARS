@@ -7,6 +7,7 @@
 #include <iostream>
 #include <fstream>
 
+namespace VM{
 namespace VMUtils{
 
 void print(ByteCode const &byte_code, const bool print_num_line){
@@ -63,4 +64,5 @@ ByteCode* readByteCode(std::string const &file_name){
   return byte_code;
 }
 
-}; //end namespace VMUtils
+}//end namespace VMUtils
+}//end namespace VM

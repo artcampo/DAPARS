@@ -8,7 +8,7 @@ public:
   RegisterAllocator() : next_register_(0){};
   
   int freeRegister(){
-    using namespace VirtualMachineSpecs;
+    using namespace VM::VirtualMachineSpecs;
     int r = next_register_;
     next_register_ = (next_register_ + 1) % kNumberRegisters;
     return r;

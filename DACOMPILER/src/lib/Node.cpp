@@ -60,8 +60,10 @@ void DotOp::Accept       (IRGenerator& v, const Node* successor){ return v.Visit
 
 
 std::string BinaryOp::OpString() const noexcept{
-  using namespace IRDefinition;
-  using namespace SubtypesArithmetic;
+//   using namespace VM;
+//   using namespace IRDefinition;
+//   using namespace SubtypesArithmetic;
+  using namespace VM::IRDefinition::SubtypesArithmetic;
   if (op == IR_ADD ) return " + ";
   if (op == IR_SUB ) return " - ";
   if (op == IR_MUL ) return " * ";

@@ -1,0 +1,40 @@
+---------------------------------------------------
+Parsing: "void main(){int a; a = 1+2; }"
+
+Scopes of module:
+Scope 0: {(1:main) }
+Scope 1: {(2:a) }
+
+
+AST fully decorated dump:
+[FDef] FuncDef: main
+-[VDec] int a 
+-[Assgn] 
+--[Var] a [int Lvalue Write Value Nmemb]
+--Op: +  [int Rvalue]
+---[Lit] 1 [int Rvalue]
+---[Lit] 2 [int Rvalue]
+
+
+Declaration Table:
+1: Symbol: [ in scope 0 main of type function: ()->void]
+2: Symbol: [ in scope 1 a of type int]
+
+IR dump:
+LT entry_main
+0: %0 = LoadI(1)
+1: %1 = LoadI(2)
+2: %2 = %0 + %1
+3: store %2 to [LT MainDS:0 (a)]
+4: ReturnMain
+---------------
+Backend::Davm
+%0 = LoadI(1)
+%1 = LoadI(2)
+%2 = %0 + %1
+store %2 to [LT MainDS:0 (a)]
+ReturnMain
+---------
+Bytecode:
+STOP
+

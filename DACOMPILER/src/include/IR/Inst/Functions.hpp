@@ -10,6 +10,8 @@ struct GetRetVal : public Inst, public InstDst {
   virtual std::string str() const noexcept{
     return "%" + std::to_string(dst_) + " = GetRetVal()";
   }
+  
+  void Accept(IRVisitor& v) override { v.Visit(*this); }
 };
 
 
@@ -20,6 +22,8 @@ struct SetRetVal : public Inst, public InstSrc{
   virtual std::string str() const noexcept{
     return "SetRetVal( %"  + std::to_string(src_) + ")";
   }
+  
+  void Accept(IRVisitor& v) override { v.Visit(*this); }
 };
 
 
@@ -30,6 +34,8 @@ struct SetPar : public Inst, public InstSrc{
   virtual std::string str() const noexcept{
     return "SetPar( %"  + std::to_string(src_) + ")";
   }
+  
+  void Accept(IRVisitor& v) override { v.Visit(*this); }
 };
 
 
@@ -40,6 +46,8 @@ struct Return : public Inst{
   virtual std::string str() const noexcept{
     return "Return";
   }
+  
+  void Accept(IRVisitor& v) override { v.Visit(*this); }
 };
 
 struct ReturnMain : public Inst{
@@ -49,6 +57,8 @@ struct ReturnMain : public Inst{
   virtual std::string str() const noexcept{
     return "ReturnMain";
   }
+  
+  void Accept(IRVisitor& v) override { v.Visit(*this); }
 };
 
 struct Call : public Inst, public InstAddress{
@@ -58,6 +68,8 @@ struct Call : public Inst, public InstAddress{
   virtual std::string str() const noexcept{
     return "call [" + addr_.str() + "]";
   }
+  
+  void Accept(IRVisitor& v) override { v.Visit(*this); }
 };
 
 

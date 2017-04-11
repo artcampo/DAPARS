@@ -4,6 +4,8 @@
 #include <memory>
 #include <stdint.h>
   
+namespace VM{
+  
 class VirtualMachine;
   
 class Process{
@@ -25,3 +27,5 @@ private:
   ExecutionContext  execution_context_;
   friend class VirtualMachine;
 };
+
+}//end namespace VM

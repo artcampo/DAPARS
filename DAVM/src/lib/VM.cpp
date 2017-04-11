@@ -6,6 +6,8 @@
 #include <stdint.h>
 #include <iostream>
 
+namespace VM{
+}//end namespace VM
 bool VirtualMachine::ExecProcess(){
   bool executing  = true;
   bool error      = false;

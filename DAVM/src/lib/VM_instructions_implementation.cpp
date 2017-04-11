@@ -6,6 +6,8 @@
 #include <stdint.h>
 #include <iostream>
 
+namespace VM{
+
 using namespace IRCodification;
 using namespace IRBuilder;
 
@@ -114,3 +116,5 @@ void VirtualMachine::InstLte (uint32_t const &reg_src1,
       process_->execution_context_.registers_.registers[reg_src1]
    <= process_->execution_context_.registers_.registers[reg_src2];
 }
+
+}//end namespace VM

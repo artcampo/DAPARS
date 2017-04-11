@@ -6,6 +6,8 @@
 #include <string>
 #include <memory>
 
+namespace VM{
+
 namespace VirtualMachineSpecs{
 const static int kNumberRegisters = 10;  
 };
@@ -58,6 +60,6 @@ private:
   void InstLte (uint32_t const &reg_src1, uint32_t const &reg_src2, 
                        uint32_t const &reg_dst);  
   
-  
-  
 };
+
+}//end namespace VM

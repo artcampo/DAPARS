@@ -7,6 +7,7 @@
 #include <iostream>
 
 int main(){
+  using namespace VM;
   std::unique_ptr<ByteCode> bc(new ByteCode());
   
   using namespace IRCodification;

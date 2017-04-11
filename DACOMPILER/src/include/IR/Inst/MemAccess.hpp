@@ -13,6 +13,8 @@ struct LoadI : public Inst, public InstDst, public InstVal{
          + std::string(" = LoadI(") + std::to_string(val_)
          + std::string(")") ;
   }
+  
+  void Accept(IRVisitor& v) override { v.Visit(*this); }
 };
 
 struct Load : public Inst, public InstDst, public InstAddress{
@@ -25,6 +27,8 @@ struct Load : public Inst, public InstDst, public InstAddress{
          + std::string(" = Load [") + addr_.str()
          + std::string("]");
   }
+  
+  void Accept(IRVisitor& v) override { v.Visit(*this); }
 };
 
 
@@ -38,6 +42,8 @@ struct LoadReg : public Inst, public InstDst, public InstSrc{
          + std::string(" = Load [ %") + std::to_string(src_)
          + std::string("]");
   }
+  
+  void Accept(IRVisitor& v) override { v.Visit(*this); }
 };
 
 
@@ -52,6 +58,8 @@ struct LoadRegOffs : public Inst, public InstDst, public InstSrc, public InstOff
          + " + " + offset_.str()
          + "]";
   }
+  
+  void Accept(IRVisitor& v) override { v.Visit(*this); }
 };
 
 
@@ -65,6 +73,8 @@ struct Store : public Inst, public InstSrc, public InstAddress{
          + std::string(" to [") + addr_.str()
          + std::string("]") ;
   }
+  
+  void Accept(IRVisitor& v) override { v.Visit(*this); }
 };
 
 struct StoreReg : public Inst, public InstSrcSrc{
@@ -77,6 +87,8 @@ struct StoreReg : public Inst, public InstSrcSrc{
          + std::string(" to [%") + std::to_string(src2_)
          + std::string("]") ;
   }
+  
+  void Accept(IRVisitor& v) override { v.Visit(*this); }
 };
 
 }//end namespace Inst

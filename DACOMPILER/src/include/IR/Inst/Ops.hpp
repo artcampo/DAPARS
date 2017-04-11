@@ -13,6 +13,8 @@ struct Arith : public BinaryOp{
          + std::string(" = %") + std::to_string(src1_) + std::string(" ")
          + Compiler::IR::str(op_) + std::string(" %")+ std::to_string(src2_);
   }
+  
+  void Accept(IRVisitor& v) override { v.Visit(*this); }
 protected:
   ArithType op_;
 };
@@ -27,6 +29,8 @@ struct Comparison : public BinaryOp{
          + std::string(" = %") + std::to_string(src1_) + std::string(" ")
          + Compiler::IR::str(op_) + std::string(" %")+ std::to_string(src2_);
   }
+  
+  void Accept(IRVisitor& v) override { v.Visit(*this); }
 protected:
   CompType op_;
 };
@@ -42,6 +46,8 @@ struct PtrElem : public Inst, public InstAddress, public InstDst{
          + std::string(" = PtrElem( ")
          + addr_.str() + std::string(")");
   }
+  
+  void Accept(IRVisitor& v) override { v.Visit(*this); }
 };
 
 }//end namespace Inst

@@ -4,6 +4,7 @@
 #include <cstddef>
 #include "BasicTypes.hpp"
 
+namespace VM{
 
 using VM::Addr;
 using VM::Inst;
@@ -20,3 +21,5 @@ struct ByteCode{
   //TODO:make private
   std::vector<uint32_t> stream;
 };
+
+}//end namespace VM

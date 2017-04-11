@@ -1,7 +1,10 @@
 #pragma once
 #include <string>
-class ByteCode;
 
+namespace VM{
+  
+class ByteCode;  
+  
 namespace VMUtils{
 
 class ASTVisitorCodeGenerator;
@@ -15,4 +18,5 @@ ByteCode* readByteCode(std::string const &file_name);
 //only useful for debugging/TESTING
 void printRaw(ByteCode const &byte_code);
 
-};//end namespace VMUtils
+}//end namespace VMUtils
+}//end namespace VM

@@ -5,6 +5,8 @@
 #include <iostream>
 #include "BasicTypes.hpp"
 
+namespace VM{
+
 namespace IRBuilder{
 
 using namespace IRDefinition;
@@ -206,4 +208,5 @@ std::string PrintInstruction(const uint32_t& instruction){
 }
 
 
-}; //namespace IRBuilder
+}//namespace IRBuilder
+}//end namespace VM

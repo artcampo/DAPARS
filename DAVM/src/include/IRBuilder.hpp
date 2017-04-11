@@ -2,6 +2,8 @@
 #include "IRCodification.hpp"
 //TODO:
 #include "BasicTypes.hpp"
+namespace VM{
+
 namespace IRBuilder{
 
 using VM::Addr;
@@ -54,7 +56,8 @@ Inst Mul(const Reg &reg_src1, const Reg &reg_src2,
 Inst Div(const Reg &reg_src1, const Reg &reg_src2,
              const Reg &reg_dst);
 
-}; //namespace IRBuilderAPI
+} //namespace IRBuilderAPI
 
-}; //namespace IRBuilder
+} //namespace IRBuilder
+}//end namespace VM
 

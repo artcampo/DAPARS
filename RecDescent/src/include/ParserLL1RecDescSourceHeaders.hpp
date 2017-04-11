@@ -13,8 +13,7 @@
 namespace RecDescent{
 
 using namespace Common;
-using namespace IRDefinition;
-using namespace SubtypesArithmetic;
+using namespace VM::IRDefinition::SubtypesArithmetic;
 using namespace Compiler;
 
 };

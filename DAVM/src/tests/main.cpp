@@ -5,6 +5,8 @@
 
 int main(int argc, char **argv){
   
+  using namespace VM;
+  
   if(argc != 2){
     std::cout << "Missing .bc input file\n";
     exit(1);

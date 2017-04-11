@@ -12,6 +12,7 @@ struct Jump: public Inst{
   virtual std::string str() const noexcept{
     return std::string("Jump to ") + std::to_string(target_);
   }
+  
 protected:
   Addr target_;
 };
@@ -24,6 +25,7 @@ struct JumpCond : public Jump{
   virtual std::string str() const noexcept{
     return std::string("JumpCond ");
   }
+  
 protected:
   Reg cond_;
 };
@@ -37,6 +39,8 @@ struct JumpCondFalse : public JumpCond{
     return std::string("JumpCondFalse %") + std::to_string(cond_)
          + std::string(" to:")  + std::to_string(target_);
   }
+  
+  void Accept(IRVisitor& v) override { v.Visit(*this); }
 };
 
 struct JumpCondTrue : public JumpCond{
@@ -48,6 +52,8 @@ struct JumpCondTrue : public JumpCond{
     return std::string("JumpCondTrue %") + std::to_string(cond_)
          + std::string(" to:")  + std::to_string(target_);
   }
+  
+  void Accept(IRVisitor& v) override { v.Visit(*this); }
 };
 
 struct JumpIncond : public Jump{
@@ -57,6 +63,8 @@ struct JumpIncond : public Jump{
   virtual std::string str() const noexcept{
     return std::string("JumpIncond") + std::to_string(target_);
   }
+  
+  void Accept(IRVisitor& v) override { v.Visit(*this); }
 };
 
 }//end namespace Inst

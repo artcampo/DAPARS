@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 
+namespace VM{
+
 template <typename T>
 struct RegisterBank{
   
@@ -12,3 +14,5 @@ struct RegisterBank{
       it = 0;
   }
 };
+
+}//end namespace VM
