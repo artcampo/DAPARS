@@ -1,5 +1,4 @@
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../include")
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../include/CodeGenerator")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../../DAVM/src/include")
 
 set(files
@@ -8,7 +7,6 @@ set(files
     Module/TypeTable.cpp
     ASTVisitors/Dump.cpp
     ASTVisitors/PrettyPrinter.cpp
-    CodeGenerator/RegisterAllocator.cpp
     IR/IR.cpp
     IR/IRStream.cpp
     IR/IRGenerator.cpp
