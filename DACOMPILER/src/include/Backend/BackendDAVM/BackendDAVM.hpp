@@ -42,6 +42,7 @@ private:
   }
   void Visit(const IR::Inst::LoadI& inst) override{
     std::cout << inst.str() << "\n";
+    byte_code_.Append( VM::IRBuilder::Load(0, inst.Value()));
   }
   void Visit(const IR::Inst::Load& inst) override{
     std::cout << inst.str() << "\n";

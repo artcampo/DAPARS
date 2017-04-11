@@ -5,6 +5,7 @@
 #include "AST/ASTVisitor.hpp"
 #include "IR/IRStream.hpp"
 #include "IR/IRUnit.hpp"
+#include "Function.hpp"
 #include <map>
 #include <vector>
 
@@ -85,8 +86,8 @@ private:
 
   IR::IRStream& CurrentStream() const noexcept{ return *current_stream_;}
   
-  void NewStream(const Label& entry_label){
-    ir_unit_.NewStream(entry_label);
+  void NewStream(const Label& entry_label, AST::Function& function){
+    ir_unit_.NewStream(entry_label, function);
     current_stream_ = ir_unit_.streams_.back().get();
   }
 

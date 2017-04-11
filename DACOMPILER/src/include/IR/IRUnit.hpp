@@ -13,9 +13,9 @@ public:
   IRUnit() = default;
   ~IRUnit() = default;
 
-  void NewStream(const Label& entry_label){
+  void NewStream(const Label& entry_label, AST::Function& function){
     streams_.push_back( std::move(
-      std::make_unique<IR::IRStream>(entry_label) ));
+      std::make_unique<IR::IRStream>(entry_label, function) ));
   }  
 
   std::vector<PtrIRStream> streams_;

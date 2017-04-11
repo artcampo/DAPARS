@@ -36,5 +36,7 @@ store %2 to [LT MainDS:0 (a)]
 ReturnMain
 ---------
 Bytecode:
+Load, r:0 val: 1
+Load, r:0 val: 2
 STOP
 

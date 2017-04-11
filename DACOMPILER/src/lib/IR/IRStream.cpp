@@ -1,6 +1,7 @@
 #include "IR/IRStream.hpp"
 #include "IR/IR.hpp"
 #include "IR/IRSubtypes.hpp"
+#include "Function.hpp"
 
 namespace Compiler{
 namespace IR{
@@ -70,9 +71,17 @@ void IRStream::AppendSetRetVal(const Reg src){
 }
 
 void IRStream::AppendSetPar(const Reg src)    { Append( SetPar(src) );}
-void IRStream::AppendReturn()                 { Append( Return() ); }
-void IRStream::AppendReturnMain()             { Append( ReturnMain() );  }
 void IRStream::AppendCall(const MemAddr addr) { Append( Call(addr) );  };
+
+void IRStream::AppendReturn(){ 
+  Append( Return() ); 
+  num_regs_used_ = UsedRegs();
+  
+}
+void IRStream::AppendReturnMain(){ 
+  Append( ReturnMain() );  
+  num_regs_used_ = UsedRegs();
+}
 
 Reg IRStream::RegAssignedToPreviousInst() const{
   Inst::InstDst& i = dynamic_cast<Inst::InstDst&>(*(stream_[ stream_.size() - 1 ]));

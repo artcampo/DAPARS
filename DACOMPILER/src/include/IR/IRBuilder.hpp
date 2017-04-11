@@ -94,6 +94,8 @@ protected:
     return std::make_unique<Inst::Call>(addr);
   }
 
+protected:
+  Reg   UsedRegs(){return next_free_reg_;}  
 
 private:
   Reg   next_free_reg_;

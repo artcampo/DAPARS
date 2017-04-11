@@ -1,4 +1,5 @@
 #pragma once
+#include "Function.hpp"
 #include "IR/IR.hpp"
 #include "IR/IRBuilder.hpp"
 #include "IR/Label.hpp"
@@ -7,14 +8,19 @@
 #include <memory>
 
 namespace Compiler{
+  
+// namespace AST{ class Function; }  
+  
 namespace IR{
 
 //Each stream is uniquely associated to a function
 struct IRStream;
+
 using PtrIRStream = std::unique_ptr<IRStream>;
 
 struct IRStream : public IRBuilder{
-  IRStream(const Label& entry_label) : entry_label_(entry_label){}
+  IRStream(const Label& entry_label, AST::Function& function)
+    : entry_label_(entry_label), function_(function){}
 
   Addr NextAddress() const noexcept{ return stream_.size(); }
 
@@ -49,6 +55,8 @@ struct IRStream : public IRBuilder{
 private:
   std::vector<Inst::PtrInst> stream_;
   Label entry_label_;
+  AST::Function& function_;
+  Reg num_regs_used_; //computed after appending return
 
   void Append(Inst::PtrInst inst){ stream_.push_back( std::move(inst)); }
 

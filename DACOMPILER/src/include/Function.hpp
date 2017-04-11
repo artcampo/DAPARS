@@ -7,6 +7,7 @@
 #include "Module/TypeTable.hpp"
 #include "IR/Offset.hpp"
 #include "IR/Label.hpp"
+#include "Scopes/Scope.hpp"
 #include <map>
 #include <memory>
 

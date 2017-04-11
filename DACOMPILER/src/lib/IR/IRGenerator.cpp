@@ -20,14 +20,14 @@ void IRGenerator::Visit(ProgBody const& p, const Node* successor){
 
   //Process main
   for(auto& it : p) if(it->Name()=="main"){
-    NewStream(unit_.GetFunctionEntryLabel("main"));
+    NewStream(unit_.GetFunctionEntryLabel("main"), unit_.GetFunc(it->Name()));
     it->Accept(*this, successor);
     CurrentStream().AppendReturnMain();
   }
 
   //Process the rest of the functions
   for(auto& it : p) if(it->Name()!="main"){
-    NewStream(unit_.GetFunctionEntryLabel(it->Name()));
+    NewStream(unit_.GetFunctionEntryLabel(it->Name()), unit_.GetFunc(it->Name()));
     it->Accept(*this, successor);
     CurrentStream().AppendReturn();
   }
@@ -41,7 +41,8 @@ void IRGenerator::Visit(ClassDef const& p, const Node* successor){
     class_label_inht_ = unit_.GetClass(p.Name()).ThisLabel();
     class_inht_ = &unit_.GetClass(p.Name());
     NewStream(unit_.GetFunctionEntryLabel(
-      unit_.GetFunc(*it).MangledName()));
+        unit_.GetFunc(*it).MangledName())
+      , unit_.GetFunc(it->Name()) );
     inside_member_func_def_ = true;
     it->Accept(*this, successor);
     inside_member_func_def_ = false;
