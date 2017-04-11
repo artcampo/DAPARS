@@ -5,6 +5,7 @@
 #include "IRBuilder.hpp"
 #include "IR/IRVisitor.hpp"
 #include "Backend/RegisterAllocator.hpp"
+#include "Backend/BackendDAVM/MemAllocator.hpp"
 
 #include <map>
 #include <memory>
@@ -18,7 +19,7 @@ class BackendDAVM : public Backend, IR::IRVisitor{
 public:
 
   BackendDAVM(CompilationUnit& unit, IR::IRUnit& ir_unit)
-  : Backend(unit, ir_unit), reg_alloc_(10){} //TODO: machine description
+  : Backend(unit, ir_unit), reg_alloc_(10), mem_alloc_(){} //TODO: machine description
 
   void Run(){
     for(auto& it : ir_unit_.streams_) Visit(*it);
@@ -30,6 +31,7 @@ public:
 private:
   VM::ByteCode      byte_code_;
   RegisterAllocator reg_alloc_;  
+  MemAllocator      mem_alloc_;
   
   void Visit(IR::IRStream& stream){
     for(auto& it : stream) it->Accept(*this);
@@ -65,7 +67,7 @@ private:
     std::cout << inst.str() << "\n";
     RegMap rs ( inst.RegSrc() );
     reg_alloc_.GetRegOut(rs);
-//     byte_code_.Append( VM::IRBuilder::Store(rs.mreg_, int(inst.Addr())));
+    byte_code_.Append( VM::IRBuilder::Store(rs.mreg_, mem_alloc_.Remap(inst.Addr())));
   }
   void Visit(const IR::Inst::StoreReg& inst) override{
     std::cout << inst.str() << "\n";
