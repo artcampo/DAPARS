@@ -10,6 +10,7 @@ set(files
     VM_instructions_implementation.cpp
     IRCodification.cpp
     IRBuilder.cpp
+    IRPrint.cpp
     Utils.cpp
 )
 

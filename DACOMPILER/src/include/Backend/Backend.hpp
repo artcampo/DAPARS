@@ -6,7 +6,6 @@
 #include <memory>
 
 namespace Compiler{
-
 namespace Backend{
 
 
@@ -24,5 +23,4 @@ protected:
 
 
 }//end namespace Backend
-
 }//end namespace Compiler

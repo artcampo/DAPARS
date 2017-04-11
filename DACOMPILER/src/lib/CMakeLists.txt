@@ -53,7 +53,8 @@ endif()
 set(VMInstructionBuilder
     ${CMAKE_CURRENT_SOURCE_DIR}/../../../DAVM/src/lib/IRCodification.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../../../DAVM/src/lib/Utils.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../../DAVM/src/lib/IRBuilder.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../../DAVM/src/lib/IRBuilder.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../../DAVM/src/lib/IRPrint.cpp)
 
 #Bare compiler without flex/bison
 add_library(BARECOMPILER STATIC ${files} ${VMInstructionBuilder})

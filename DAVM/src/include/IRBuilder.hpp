@@ -17,7 +17,8 @@ std::string PrintInstruction(const uint32_t& instruction);
 
 
 uint32_t Stop();
-uint32_t Load(const Reg &reg_dst, const uint32_t& literal);
+uint32_t Load (const Reg &reg_dst, const uint32_t& literal);
+uint32_t Store(const Reg &reg_src, const uint32_t& literal);
 
 //
 uint32_t Arith(const Reg &reg_src1, const Reg &reg_src2,
