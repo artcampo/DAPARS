@@ -50,7 +50,7 @@ private:
   void Visit(const IR::Inst::LoadI& inst) override{
     std::cout << inst.str() << "\n";
     RegMap rd( inst.RegDst() );
-    reg_alloc_.GetRegOut(rd);
+    reg_alloc_.GetRegLoadI(rd);
     byte_code_.Append( VM::IRBuilder::Load(rd.mreg_, inst.Value()));
   }
   
@@ -66,7 +66,7 @@ private:
   void Visit(const IR::Inst::Store& inst) override{
     std::cout << inst.str() << "\n";
     RegMap rs ( inst.RegSrc() );
-    reg_alloc_.GetRegOut(rs);
+    reg_alloc_.GetRegStore(rs);
     byte_code_.Append( VM::IRBuilder::Store(rs.mreg_, mem_alloc_.Remap(inst.Addr())));
   }
   void Visit(const IR::Inst::StoreReg& inst) override{
@@ -77,10 +77,7 @@ private:
     RegMap rd ( inst.RegDst() );
     RegMap rs1( inst.RegSrc1() );
     RegMap rs2( inst.RegSrc2() );
-    
-    reg_alloc_.GetRegOut(rd);
-    reg_alloc_.GetRegOut(rs1);
-    reg_alloc_.GetRegOut(rs2);
+    reg_alloc_.GetRegArith(rd, rs1, rs2);
     
     byte_code_.Append( VM::IRBuilder::Arith(rs1.mreg_, rs2.mreg_, rd.mreg_, int(inst.Op())));
   }

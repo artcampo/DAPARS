@@ -18,6 +18,8 @@ struct RegMap{
   MReg    mreg_;
 };
 
+//This register allocator is a simplification of the one provided in the
+//dragon book, page 544. It does not take liveness into account.
 class RegisterAllocator{
 public:
 
@@ -27,34 +29,37 @@ public:
     reg_desc_.resize(max_machine_reg_);
   }
 
-  //All the GetReg have the RegSym as input and the MReg as output
-  MReg GetReg(RegMap& mapping){
-    const RegSym& regsymb = mapping.regsymb_;
-    if(HasMregAssigned(regsymb)){
-      return MregAssigned(regsymb);
-    }
-    return GetFreeReg();
-  }  
-  /*
-  void GetRegIn(RegMap& mapping){
-    const RegSym& regsymb = mapping.regsymb_;
-    MReg free_reg = GetReg(mapping);
-    mapping.mreg_ = free_reg;
-    
-    addr_desc_[regsymb].push_back(free_reg);
-    is_in_memory_[regsymb] = true;
+  
+  void GetRegLoadI(RegMap& mapping){
+    GetReg(mapping);
+    UsageShared(mapping);
   }
-  */
-  void GetRegOut(RegMap& mapping){
-    const RegSym& regsymb = mapping.regsymb_;
-    MReg free_reg = GetReg(mapping);
-    mapping.mreg_ = free_reg;
-    
-    addr_desc_[regsymb].push_back(free_reg);
-    is_in_memory_[regsymb] = true;
-    reg_desc_[free_reg].clear();
-    reg_desc_[free_reg].push_back(regsymb);
+  
+  void GetRegArith(RegMap& md, RegMap& ms1, RegMap& ms2){
+    GetReg(ms1);
+    GetReg(ms2);
+    GetReg(md);
+    UsageShared(ms1);
+    UsageShared(ms2);
+    UsageNewValue(md);
   }  
+  
+  void GetRegStore(RegMap& mapping){
+    GetReg(mapping);
+    UsageBackToMem(mapping);    
+  }
+  
+  
+  
+  //Assign mreg to regsymb
+  void GetReg(RegMap& mapping){
+    const RegSym& regsymb = mapping.regsymb_;
+    if(HasMregAssigned(regsymb))
+      mapping.mreg_ = MregAssigned(regsymb);
+    else
+      mapping.mreg_ = GetFreeReg();
+  }  
+
     
   void Reset(){};
 private:
@@ -82,6 +87,46 @@ private:
     else{
       //free a register
     }
+  }
+
+  //(regsymb_, mreg_) mreg also contains regsymb, both hold it
+  void UsageShared(RegMap& mapping){
+    const RegSym& regsymb = mapping.regsymb_;
+    const MReg&   mreg    = mapping.mreg_;
+    addr_desc_[regsymb].push_back(mreg);
+    is_in_memory_[regsymb] = true;
+    reg_desc_[mreg].clear();
+    reg_desc_[mreg].push_back(regsymb);    
+  }
+  
+  //(regsymb_, mreg_) mreg regsymb have same variable, regsymb
+  //has now its copy in memory
+  void UsageBackToMem(RegMap& mapping){
+    const RegSym& regsymb = mapping.regsymb_;
+    const MReg&   mreg    = mapping.mreg_;    
+    is_in_memory_[regsymb] = true;
+  }  
+  
+  //(regsymb_, mreg_) mreg regsymb have same variable, however
+  //only mreg has its updated value
+  void UsageNewValue(RegMap& mapping){
+    const RegSym& regsymb = mapping.regsymb_;
+    const MReg&   mreg    = mapping.mreg_;   
+    RemoveMregFromOtherAddrDescriptors(mreg);
+    reg_desc_[mreg].clear();
+    reg_desc_[mreg].push_back(regsymb);   
+    addr_desc_[regsymb].clear();
+    addr_desc_[regsymb].push_back(mreg);
+    is_in_memory_[regsymb] = true;    
+  }
+  
+  void RemoveMregFromOtherAddrDescriptors(const MReg& mreg){
+    for(const auto& regsymb : reg_desc_[mreg])
+      addr_desc_[regsymb].erase(
+        std::remove(  addr_desc_[regsymb].begin()
+                    , addr_desc_[regsymb].end()
+                    , mreg)
+        , addr_desc_[regsymb].end());
   }
 
 };
