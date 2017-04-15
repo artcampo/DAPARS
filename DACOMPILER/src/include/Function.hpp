@@ -8,6 +8,7 @@
 #include "IR/Offset.hpp"
 #include "IR/Label.hpp"
 #include "Scopes/Scope.hpp"
+#include "Decoration/OffsetTable.hpp"
 #include <map>
 #include <memory>
 
@@ -26,7 +27,6 @@ using IR::Label;
 class Function;
 using PtrFunction = std::unique_ptr<Function>;
 
-using OffsetTable = std::map<Symbols::SymbolId, IR::Offset>;
 
 class Function{
 public:
@@ -74,12 +74,12 @@ public:
 
   void StoreSymbolOffset(Symbols::SymbolId id, IR::Offset o){
 //     std::cout << "Store: " << id << " o: " << o.str() << std::endl;
-    offset_table_[id] = o;
-    module_offset_table_[id] = o;
+    offset_table_.StoreOffset(id, o);
+    module_offset_table_.StoreOffset(id, o);
   }
 
-  IR::Offset LocalVarOffset(Symbols::SymbolId id)const{
-    return offset_table_.at(id);
+  IR::Offset LocalVarOffset(Symbols::SymbolId id) const{
+    return offset_table_.Offset(id);
   }
 
   const Label      EntryLabel() const noexcept{ return entry_label_;}

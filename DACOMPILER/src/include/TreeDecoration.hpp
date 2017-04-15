@@ -7,6 +7,7 @@
 #include "ErrorLog.hpp"
 #include "LnessRness.hpp"
 #include "Function.hpp"
+#include "Decoration/OffsetTable.hpp"
 #include <map>
 #include <memory>
 
@@ -62,7 +63,7 @@ public:
   }    
 
   IR::Offset LocalVarOffset(const Var& n) const{
-    return module_offset_table_.at(n.Id());
+    return module_offset_table_.Offset(n.Id());
   }
 
   bool HasReadWrite(const Node& n) const{
@@ -108,6 +109,9 @@ protected:
 
   std::map<const Node*, const LexicalScope*>  lscope_of_node_;
   std::map<const Node*, const Type*>  type_of_node_;
+  
+  //This table contains offsets of vars of all the functions, and is meant
+  //as a faster and more appropiate accesss to them
   OffsetTable       module_offset_table_;
 
   OffsetTable& ModuleOffsetTable() noexcept{ return module_offset_table_;}

@@ -29,7 +29,6 @@ public:
     reg_desc_.resize(max_machine_reg_);
   }
 
-  
   void GetRegLoadI(RegMap& mapping){
     GetReg(mapping);
     UsageShared(mapping);
@@ -48,18 +47,6 @@ public:
     GetReg(mapping);
     UsageBackToMem(mapping);    
   }
-  
-  
-  
-  //Assign mreg to regsymb
-  void GetReg(RegMap& mapping){
-    const RegSym& regsymb = mapping.regsymb_;
-    if(HasMregAssigned(regsymb))
-      mapping.mreg_ = MregAssigned(regsymb);
-    else
-      mapping.mreg_ = GetFreeReg();
-  }  
-
     
   void Reset(){};
 private:
@@ -69,6 +56,15 @@ private:
   std::vector<std::vector<RegSym>>      reg_desc_;
   std::map<RegSym, bool>                is_in_memory_;
   std::map<RegSym, std::vector<MReg>>   addr_desc_;
+  
+  //Assign mreg to regsymb
+  void GetReg(RegMap& mapping){
+    const RegSym& regsymb = mapping.regsymb_;
+    if(HasMregAssigned(regsymb))
+      mapping.mreg_ = MregAssigned(regsymb);
+    else
+      mapping.mreg_ = GetFreeReg();
+  }    
   
   bool  HasMregAssigned(RegSym regsymb){
     auto it = addr_desc_.find(regsymb);
