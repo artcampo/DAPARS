@@ -22,6 +22,7 @@ public:
   : Backend(unit, ir_unit), reg_alloc_(10), mem_alloc_(){} //TODO: machine description
 
   void Run(){
+    ComputeMainDataSegment();
     for(auto& it : ir_unit_.streams_) Visit(*it);
     
     std::cout << "---------\nBytecode:\n";
@@ -109,6 +110,10 @@ private:
     std::cout << inst.str() << "\n";
   }    
   
+  void ComputeMainDataSegment(){
+    auto size = unit_.GetFunc("main").LocalVars().Size();
+    byte_code_.SetStaticDataSegment(size);
+  }
   
 };
 

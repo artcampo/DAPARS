@@ -20,10 +20,10 @@ public:
     return offsets_.at(id);
   }  
   
+  size_t Size() const noexcept{ return total_size_; }
   
 private:
   std::map<Symbols::SymbolId, IR::Offset> offsets_;
-  IR::AddrOffset size_;
   size_t total_size_;
 };
 

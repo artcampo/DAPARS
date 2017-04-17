@@ -20,6 +20,12 @@ struct ByteCode{
 
   //TODO:make private
   std::vector<uint32_t> stream;
+  
+  size_t static_data_segment_size_;
+  
+  void SetStaticDataSegment(const size_t size){
+    static_data_segment_size_ = size;
+  }
 };
 
 }//end namespace VM
