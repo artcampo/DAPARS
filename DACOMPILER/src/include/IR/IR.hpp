@@ -54,7 +54,7 @@ protected:
   Reg src2_;
 };
 
-struct InstDst {
+struct InstDst{
   InstDst(const Reg reg_dst) : dst_(reg_dst){};
   ~InstDst() = default;
 
@@ -63,7 +63,7 @@ protected:
   Reg dst_;
 };
 
-struct InstVal {
+struct InstVal{
   InstVal( const NodeValue val) : val_(val){};
   ~InstVal() = default;
 
@@ -72,7 +72,7 @@ protected:
   NodeValue val_;
 };
 
-struct InstOffset {
+struct InstOffset{
   InstOffset(const Offset offset) : offset_(offset){};
   ~InstOffset() = default;
 

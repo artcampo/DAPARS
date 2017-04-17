@@ -18,6 +18,9 @@ public:
   VM::Addr  Remap(const IR::MemAddr addr){
     return 0;
   }
+  
+  void Remap(const IR::MemAddr addr_ir, VM::Addr addr_vm){
+  }
     
   void Reset(){};
 private:

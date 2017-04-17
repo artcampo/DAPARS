@@ -68,6 +68,8 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "void main(){int a; a = 1+2; }"), g);
 
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "void main(){int a, b, c; a = 4; b = 3; c = a + b; }"), g);
 
 
   return 0;

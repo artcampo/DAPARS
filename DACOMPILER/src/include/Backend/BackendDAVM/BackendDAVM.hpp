@@ -116,6 +116,7 @@ private:
   void ComputeMainDataSegment(){
     auto size = unit_.GetFunc("main").LocalVars().Size();
     byte_code_.SetStaticDataSegment(size);
+    //mem_alloc_.Remap();
   }
   
 };

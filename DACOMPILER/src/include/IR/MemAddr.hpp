@@ -19,6 +19,10 @@ struct MemAddr{
 
 //   const bool operator<  ( const Offset &o )const noexcept
 //     {return addr_ < o.addr_;}
+  Offset  GetOffset() noexcept { return o_;}
+  const Offset  GetOffset() const noexcept { return o_;}
+  Label  GetLabel() noexcept { return l_;}
+  const Label  GetLabel() const noexcept { return l_;}  
 private:
   Label   l_;
   Offset  o_;

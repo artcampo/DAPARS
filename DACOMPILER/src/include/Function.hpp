@@ -79,10 +79,11 @@ public:
   const OffsetTable& Params() const { return params_offset_table_; }  
   
   
-  void StoreSymbolOffset(Symbols::SymbolId id, IR::Offset o, const size_t size, OffsetTable& table){
+  void StoreSymbolAddress(Symbols::SymbolId id, const IR::Offset o
+                        , const Label l, const size_t size, OffsetTable& table){
 //     std::cout << "Store: " << id << " o: " << o.str() << std::endl;
-    table.StoreOffset(id, o, size);
-    module_offset_table_.StoreOffset(id, o, size);
+    table.StoreOffset(id, o, l, size);
+    module_offset_table_.StoreOffset(id, o, l, size);
   }
 
   IR::Offset LocalVarOffset(Symbols::SymbolId id) const{

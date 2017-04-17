@@ -32,7 +32,8 @@ public:
       Symbols::Symbol& s = func_.GetSymbolDecl(*it);
       auto size = s.Size();
       IR::AddrOffset offset    = -2 - (k - i);
-      func_.StoreSymbolOffset( s.Id(), IR::Offset(offset, s.BareName()), size, func_.Params());
+      func_.StoreSymbolAddress( s.Id(), IR::Offset(offset, s.BareName())
+                              , func_.LocalsLabel(), size, func_.Params());
 //       std::cout << s.str() << " to offset: " << offset << std::endl;
     }
     
@@ -44,7 +45,8 @@ public:
     Symbols::Symbol& s = func_.GetSymbolDecl(p);
 //     std::cout << s.str() << std::endl;
     auto size = s.Size();
-    func_.StoreSymbolOffset( s.Id(), IR::Offset(offset_, s.BareName()), size, func_.LocalVars());
+    func_.StoreSymbolAddress( s.Id(), IR::Offset(offset_, s.BareName())
+                            , func_.LocalsLabel(), size, func_.LocalVars());
     offset_ += size;
 
   };
