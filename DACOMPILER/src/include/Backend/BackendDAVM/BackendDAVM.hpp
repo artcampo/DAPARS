@@ -29,6 +29,9 @@ public:
     VM::VMUtils::print(byte_code_);
   }
   
+  VM::ByteCode& GetByteCode() noexcept { return byte_code_; }
+  const VM::ByteCode& GetByteCode() const noexcept { return byte_code_; }
+  
 private:
   VM::ByteCode      byte_code_;
   RegisterAllocator reg_alloc_;  

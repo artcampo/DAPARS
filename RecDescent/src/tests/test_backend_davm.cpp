@@ -41,33 +41,19 @@ void parse(const std::string& str, G& g)
 
   parser->Parse();
   if(unit.ValidAst()){
-    if(unit.NumScopes()>1){
-      Scopes v(unit);
-      v.Visit(*unit.GetAstProg());
-      std::cout << std::endl;
-    }
-
     PassManager pm(unit);
     pm.Run();
   }
-  if(unit.GetAstProg() != nullptr){
-    if(dump_decorated_ast_before_IRGen){
-      std::cout << "\nAST fully decorated dump:\n";
-      Dump visitor_dump(unit, true, true);
-      visitor_dump.Visit(*unit.GetAstProg());
-    }
 
+  if(unit.GetAstProg() != nullptr){
     IRGenerator visitor_irgen(unit);
     visitor_irgen.Visit(*unit.GetAstProg(), nullptr);
 
-    std::cout << "\nIR dump:\n";
-    visitor_irgen.EndOfProgram();
-    
-    //
-    std::cout << "---------------\nBackend::Davm\n";
+    std::cout << "Backend::Davm\n";
     using namespace Compiler::Backend::BackendDAVM;
     BackendDAVM b(unit, visitor_irgen.GetIRUnit() );
     b.Run();
+    std::cout << "Static data segment size: " << b.GetByteCode().static_data_segment_size_ << "\n";
   }
 
   std::cout << "\n";
