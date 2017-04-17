@@ -26,7 +26,7 @@ struct Offset{
   const bool operator<  ( const Offset &o )const noexcept
     {return addr_ < o.addr_;}
 
-  const int GetAddr() const noexcept{return addr_;}
+  const AddrOffset  GetAddr() const noexcept{return addr_;}
   const std::string Name() const noexcept{return name_;}
     
 private:

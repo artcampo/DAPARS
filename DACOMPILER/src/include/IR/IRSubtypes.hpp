@@ -5,8 +5,8 @@ namespace Compiler{
 namespace IR{
 
 using AddrOffset  = int;
-using Addr  = size_t;
-using Reg   = size_t;
+using Addr        = size_t;
+using Reg         = size_t;
 
 enum class ArithType{
     kAdd = 0

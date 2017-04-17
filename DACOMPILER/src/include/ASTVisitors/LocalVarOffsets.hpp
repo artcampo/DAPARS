@@ -24,24 +24,29 @@ public:
   virtual void Visit(FuncDef const& p){
 //     std::cout << "Local offset\n";
     p.GetBody().Accept(*this);
+    
     IR::AddrOffset k = p.NumPars() - 1;
     IR::AddrOffset i = 0;
     //for(auto& it = p.ParBegin(), end = p.ParEnd(); it != end; ++it){
     for(auto& it : p.ParList()){
       Symbols::Symbol& s = func_.GetSymbolDecl(*it);
+      auto size = s.Size();
       IR::AddrOffset offset    = -2 - (k - i);
-      func_.StoreSymbolOffset( s.Id(), IR::Offset(offset, s.BareName()));
+      func_.StoreSymbolOffset( s.Id(), IR::Offset(offset, s.BareName()), size, func_.Params());
 //       std::cout << s.str() << " to offset: " << offset << std::endl;
     }
+    
+    
   }
 
   virtual void Visit(VarDecl const& p){
 //     std::cout << p.str() << " to offset: " << offset_ << std::endl;
     Symbols::Symbol& s = func_.GetSymbolDecl(p);
 //     std::cout << s.str() << std::endl;
-    func_.StoreSymbolOffset( s.Id(), IR::Offset(offset_, s.BareName()));
-    offset_ += func_.GetSymbolDecl(p).Size();
-//     offset_
+    auto size = s.Size();
+    func_.StoreSymbolOffset( s.Id(), IR::Offset(offset_, s.BareName()), size, func_.LocalVars());
+    offset_ += size;
+
   };
 
   virtual void Visit(IfStmt const& p){

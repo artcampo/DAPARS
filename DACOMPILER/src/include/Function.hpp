@@ -72,15 +72,23 @@ public:
     origin_node_ = const_cast<FuncDef*>(&n);
   }
 
-  void StoreSymbolOffset(Symbols::SymbolId id, IR::Offset o){
+  
+  OffsetTable& LocalVars() { return locals_offset_table_; }
+  const OffsetTable& LocalVars() const { return locals_offset_table_; }
+  OffsetTable& Params() { return params_offset_table_; }
+  const OffsetTable& Params() const { return params_offset_table_; }  
+  
+  
+  void StoreSymbolOffset(Symbols::SymbolId id, IR::Offset o, const size_t size, OffsetTable& table){
 //     std::cout << "Store: " << id << " o: " << o.str() << std::endl;
-    offset_table_.StoreOffset(id, o);
-    module_offset_table_.StoreOffset(id, o);
+    table.StoreOffset(id, o, size);
+    module_offset_table_.StoreOffset(id, o, size);
   }
 
   IR::Offset LocalVarOffset(Symbols::SymbolId id) const{
-    return offset_table_.Offset(id);
+    return locals_offset_table_.Offset(id);
   }
+  
 
   const Label      EntryLabel() const noexcept{ return entry_label_;}
   const Label      LocalsLabel() const noexcept{ return locals_label_;}
@@ -104,7 +112,8 @@ private:
 
 
   OffsetTable&      module_offset_table_;
-  OffsetTable       offset_table_;
+  OffsetTable       locals_offset_table_;
+  OffsetTable       params_offset_table_;
   std::map<const Node*, Symbols::Symbol*> symbol_decl_of_node_;
 
 public:
