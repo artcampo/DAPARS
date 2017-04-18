@@ -3,30 +3,30 @@ Parsing: "void main(){int a; a = 1+2; }"
 Backend::Davm
 %0 = LoadI(1)
 r0: %0  
-desc %0 [m]: r0 
+%0 [m]: r0 
 
 %1 = LoadI(2)
 r0: %0  
 r1: %1  
-desc %0 [m]: r0 
-desc %1 [m]: r1 
+%0 [m]: r0 
+%1 [m]: r1 
 
 %2 = %0 + %1
 r0: %0  
 r1: %1  
 r2: %2  
-desc %0 [m]: r0 r0 
-desc %1 [m]: r1 r1 
-desc %2 [m]: r2 
+%0 [m]: r0 
+%1 [m]: r1 
+%2 [m]: r2 
 
 store %2 to [LT MainDS:0 (a)]
 r0: %0  
 r1: %1  
 r2: %2  a  
-desc %0 [m]: r0 r0 
-desc %1 [m]: r1 r1 
-desc %2 [m]: r2 
-desc a [m]: r2 
+%0 [m]: r0 
+%1 [m]: r1 
+%2 [m]: r2 
+a [m]: r2 
 
 ReturnMain
 ---------
@@ -43,71 +43,71 @@ Parsing: "void main(){int a, b, c; a = 4; b = 3; c = a + b; }"
 Backend::Davm
 %0 = LoadI(4)
 r0: %0  
-desc %0 [m]: r0 
+%0 [m]: r0 
 
 store %0 to [LT MainDS:0 (a)]
 r0: %0  a  
-desc %0 [m]: r0 
-desc a [m]: r0 
+%0 [m]: r0 
+a [m]: r0 
 
 %2 = LoadI(3)
 r0: %0  a  
 r1: %2  
-desc %0 [m]: r0 
-desc %2 [m]: r1 
-desc a [m]: r0 
+%0 [m]: r0 
+%2 [m]: r1 
+a [m]: r0 
 
 store %2 to [LT MainDS:1 (b)]
 r0: %0  a  
 r1: %2  b  
-desc %0 [m]: r0 
-desc %2 [m]: r1 
-desc a [m]: r0 
-desc b [m]: r1 
+%0 [m]: r0 
+%2 [m]: r1 
+a [m]: r0 
+b [m]: r1 
 
 %4 = Load [LT MainDS:0 (a)] !!!Load
-r0: %0  a  a  %4  
+r0: %4  a  
 r1: %2  b  
-desc %0 [m]: r0 
-desc %2 [m]: r1 
-desc %4 [r]: r0 
-desc a [r]: r0 
-desc b [m]: r1 
+%0 [m]: r0 
+%2 [m]: r1 
+%4 [r]: r0 
+a [m]: r0 
+b [m]: r1 
 
 %5 = Load [LT MainDS:1 (b)] !!!Load
-r0: %0  a  a  %4  
-r1: %2  b  b  %5  
-desc %0 [m]: r0 
-desc %2 [m]: r1 
-desc %4 [r]: r0 
-desc %5 [r]: r1 
-desc a [r]: r0 
-desc b [r]: r1 
+r0: %4  a  
+r1: %5  b  
+%0 [m]: r0 
+%2 [m]: r1 
+%4 [r]: r0 
+%5 [r]: r1 
+a [m]: r0 
+b [m]: r1 
 
 %6 = %4 + %5
 r0: %4  
 r1: %5  
 r2: %6  
-desc %0 [m]: r0 
-desc %2 [m]: r1 
-desc %4 [m]: r0 r0 
-desc %5 [m]: r1 r1 
-desc %6 [m]: r2 
-desc a [r]: r0 
-desc b [r]: r1 
+%0 [m]: r0 
+%2 [m]: r1 
+%4 [m]: r0 
+%5 [m]: r1 
+%6 [m]: r2 
+a [m]: r0 
+b [m]: r1 
 
 store %6 to [LT MainDS:2 (c)]
 r0: %4  
 r1: %5  
 r2: %6  c  
-desc %0 [m]: r0 
-desc %2 [m]: r1 
-desc %4 [m]: r0 r0 
-desc %5 [m]: r1 r1 
-desc %6 [m]: r2 
-desc a [r]: r0 
-desc b [r]: r1 
-desc c [m]: r2 
+%0 [m]: r0 
+%2 [m]: r1 
+%4 [m]: r0 
+%5 [m]: r1 
+%6 [m]: r2 
+a [m]: r0 
+b [m]: r1 
+c [m]: r2 
 
 ReturnMain
 ---------

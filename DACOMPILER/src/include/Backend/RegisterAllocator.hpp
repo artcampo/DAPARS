@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <set>
 #include <map>
 #include <memory>
 #include "IR/MemAddr.hpp"
@@ -80,7 +81,7 @@ public:
     if(HasMregAssigned(ms)){
       GetReg(ms);
       md.mreg_ = ms.mreg_;
-      UsageCopy(ms);
+      UsageShared(ms);
       UsageCopy(md);
       Dump();
       return false;
@@ -103,7 +104,7 @@ public:
     
     for(const auto& it : addr_desc_){
       if(not it.second.empty()){
-        std::cout << "desc " << str(it.first);
+        std::cout << str(it.first);
         if(IsInMemory(it.first)) std::cout <<"[m]"; else std::cout <<"[r]";
         std::cout<< ": ";
         for(const auto& it_rs : it.second) std::cout << "r"<< it_rs << " ";
@@ -125,9 +126,9 @@ private:
   int         register_usage_;
   
   //what has been allocated and where
-  std::vector<std::vector<RegSym>>    reg_desc_;
-  std::map<RegSym, bool>              is_in_memory_;
-  std::map<RegSym, std::vector<MReg>> addr_desc_;
+  std::vector<std::set<RegSym>>    reg_desc_;
+  std::map<RegSym, bool>           is_in_memory_;
+  std::map<RegSym, std::set<MReg>> addr_desc_;
   
   //Identifiers for MemAddr
   std::map<IR::MemAddr, RegSym>       reg_sym_id_of_mem_addr_;
@@ -154,23 +155,25 @@ private:
       mapping.mreg_ = GetFreeReg();
   }    
   
-  bool  IsInMemory(const RegSym rs){
+  bool  IsInMemory(const RegSym rs) const {
     return is_in_memory_.at(rs);
   }
   
-  bool  HasMregAssigned(RegMap& mapping){
+  bool  HasMregAssigned(RegMap& mapping) const {
     return HasMregAssigned(mapping.regsymb_);
   }
   
-  bool  HasMregAssigned(RegSym regsymb){
+  bool  HasMregAssigned(RegSym regsymb) const {
     auto it = addr_desc_.find(regsymb);
     if(it == addr_desc_.end()) return false;
     return it->second.size() > 0;
   }
   
-  MReg  MregAssigned(RegSym regsymb){
-    auto it = addr_desc_.find(regsymb);
-    return it->second.front();
+  MReg  MregAssigned(RegSym regsymb) const {
+    auto it       = addr_desc_.find(regsymb);
+    std::set<MReg>::iterator mreg_it  = it->second.begin();
+    MReg m        = *mreg_it;
+    return m;
   }  
   
   MReg GetFreeReg(){
@@ -185,10 +188,10 @@ private:
   void UsageShared(RegMap& mapping){
     const RegSym& regsymb = mapping.regsymb_;
     const MReg&   mreg    = mapping.mreg_;
-    addr_desc_[regsymb].push_back(mreg);
-    is_in_memory_[regsymb] = true;
+    addr_desc_[regsymb].emplace(mreg);
     reg_desc_[mreg].clear();
-    reg_desc_[mreg].push_back(regsymb);    
+    reg_desc_[mreg].emplace(regsymb);    
+    is_in_memory_[regsymb] = true;
   }
   
   //(regsymb_, mreg_) mreg regsymb have same variable, regsymb
@@ -196,10 +199,10 @@ private:
   void UsageBackToMem(RegMap& ms, RegMap& md){
     const RegSym& regsymb = md.regsymb_;
     const MReg&   mreg    = ms.mreg_;
-    is_in_memory_[regsymb] = true;
-    reg_desc_[mreg].push_back(regsymb);
+    reg_desc_[mreg].emplace(regsymb);
     addr_desc_[regsymb].clear();
-    addr_desc_[regsymb].push_back(mreg);    
+    addr_desc_[regsymb].emplace(mreg);   
+    is_in_memory_[regsymb] = true;
   }  
   
   //(regsymb_, mreg_) mreg regsymb have same variable, however
@@ -209,9 +212,9 @@ private:
     const MReg&   mreg    = mapping.mreg_;   
     RemoveMregFromOtherAddrDescriptors(mreg);
     reg_desc_[mreg].clear();
-    reg_desc_[mreg].push_back(regsymb);   
+    reg_desc_[mreg].emplace(regsymb);   
     addr_desc_[regsymb].clear();
-    addr_desc_[regsymb].push_back(mreg);
+    addr_desc_[regsymb].emplace(mreg);
     is_in_memory_[regsymb] = true;    
   }
   
@@ -219,20 +222,16 @@ private:
   void UsageCopy(RegMap& mapping){
     const RegSym& regsymb = mapping.regsymb_;
     const MReg&   mreg    = mapping.mreg_;   
-    reg_desc_[mreg].push_back(regsymb);   
+    reg_desc_[mreg].emplace(regsymb);   
     addr_desc_[regsymb].clear();
-    addr_desc_[regsymb].push_back(mreg);
+    addr_desc_[regsymb].emplace(mreg);
     is_in_memory_[regsymb] = false;
   }  
   
   
   void RemoveMregFromOtherAddrDescriptors(const MReg& mreg){
     for(const auto& regsymb : reg_desc_[mreg])
-      addr_desc_[regsymb].erase(
-        std::remove(  addr_desc_[regsymb].begin()
-                    , addr_desc_[regsymb].end()
-                    , mreg)
-        , addr_desc_[regsymb].end());
+      addr_desc_[regsymb].erase(mreg);
   }
 
 };
