@@ -39,7 +39,7 @@ namespace AST{ class Dump;};
 using AST::PtrLexicalScope;
 using AST::Scope;
 using AST::SymbolIdOfNode;
-// using AST::OffsetTable;
+// using AST::AddressTable;
 using AST::ScopeOwnerId;
 using IR::Label;
 
@@ -74,7 +74,7 @@ public:
     Label local;
     if(name == "main")  local = GetLabelMainLocals();
     else                local = NewFunctionARLabel(name);
-    FunctionManager::NewFunction(name, symbol_id, ModuleOffsetTable(), scope_owner_id
+    FunctionManager::NewFunction(name, symbol_id, ModuleAddressTable(), scope_owner_id
       , entry, local);
     return NewNestedScope(scope_owner_id);
   }
@@ -88,7 +88,7 @@ public:
     const Label entry = NewFunctionEntryLabel(mangled_name);
     Label local       = NewFunctionARLabel(mangled_name);
     Function& f = FunctionManager::NewFunction(name, symbol_id, class_name
-      , ModuleOffsetTable(), scope_owner_id, entry, local);
+      , ModuleAddressTable(), scope_owner_id, entry, local);
     return NewNestedScope(scope_owner_id);
   }
 

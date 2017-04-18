@@ -12,7 +12,7 @@ using AST::FuncDef;
 using AST::FuncDecl;
 using AST::PtrFunction;
 using AST::Function;
-using AST::OffsetTable;
+using AST::AddressTable;
 using AST::ScopeOwnerId;
 using IR::Label;
 
@@ -40,7 +40,7 @@ public:
   //Create regular function
   void NewFunction(const std::string& name
     , const AST::Symbols::SymbolId symbol_id
-    , OffsetTable& module_offset_table
+    , AddressTable& module_offset_table
     , const ScopeOwnerId scope_owner_id
     , const Label entry, const Label local){
     functions_.push_back( std::move(
@@ -58,7 +58,7 @@ public:
   Function& NewFunction(const std::string& name
     , const AST::Symbols::SymbolId symbol_id
     , const std::string& class_name
-    , OffsetTable& module_offset_table
+    , AddressTable& module_offset_table
     , const ScopeOwnerId scope_owner_id
     , const Label entry, const Label local){
     functions_.push_back( std::move(

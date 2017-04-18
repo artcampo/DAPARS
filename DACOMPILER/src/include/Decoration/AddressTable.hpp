@@ -9,9 +9,9 @@ namespace Compiler{
 namespace AST{
 
 //This represents a contigous allocation of variables  
-class OffsetTable{
+class AddressTable{
 public:
-  OffsetTable() : total_size_(0){}
+  AddressTable() : total_size_(0){}
   
   void StoreOffset(Symbols::SymbolId id, const IR::Offset o
                  , const IR::Label l,  const size_t size){

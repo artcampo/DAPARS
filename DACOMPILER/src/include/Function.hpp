@@ -8,7 +8,7 @@
 #include "IR/Offset.hpp"
 #include "IR/Label.hpp"
 #include "Scopes/Scope.hpp"
-#include "Decoration/OffsetTable.hpp"
+#include "Decoration/AddressTable.hpp"
 #include <map>
 #include <memory>
 
@@ -31,7 +31,7 @@ using PtrFunction = std::unique_ptr<Function>;
 class Function{
 public:
   static PtrFunction NewFunction(const std::string& name
-    , const AST::Symbols::SymbolId symbol_id , OffsetTable& module_offset_table
+    , const AST::Symbols::SymbolId symbol_id , AddressTable& module_offset_table
     , const ScopeOwnerId scope_owner_id, const Label entry_label
     , const Label locals_label){
     return std::move( std::make_unique<Function>
@@ -42,7 +42,7 @@ public:
   static PtrFunction NewMemberFunction(const std::string& name
     , const AST::Symbols::SymbolId symbol_id
     , const std::string& class_name
-    , OffsetTable& module_offset_table
+    , AddressTable& module_offset_table
     , const ScopeOwnerId scope_owner_id, const Label entry_label
     , const Label locals_label){
     return std::move( std::make_unique<Function>
@@ -73,14 +73,14 @@ public:
   }
 
   
-  OffsetTable& LocalVars() { return locals_offset_table_; }
-  const OffsetTable& LocalVars() const { return locals_offset_table_; }
-  OffsetTable& Params() { return params_offset_table_; }
-  const OffsetTable& Params() const { return params_offset_table_; }  
+  AddressTable& LocalVars() { return locals_offset_table_; }
+  const AddressTable& LocalVars() const { return locals_offset_table_; }
+  AddressTable& Params() { return params_offset_table_; }
+  const AddressTable& Params() const { return params_offset_table_; }  
   
   
   void StoreSymbolAddress(Symbols::SymbolId id, const IR::Offset o
-                        , const Label l, const size_t size, OffsetTable& table){
+                        , const Label l, const size_t size, AddressTable& table){
 //     std::cout << "Store: " << id << " o: " << o.str() << std::endl;
     table.StoreOffset(id, o, l, size);
     module_offset_table_.StoreOffset(id, o, l, size);
@@ -112,9 +112,9 @@ private:
   bool              is_member_;
 
 
-  OffsetTable&      module_offset_table_;
-  OffsetTable       locals_offset_table_;
-  OffsetTable       params_offset_table_;
+  AddressTable&      module_offset_table_;
+  AddressTable       locals_offset_table_;
+  AddressTable       params_offset_table_;
   std::map<const Node*, Symbols::Symbol*> symbol_decl_of_node_;
 
 public:
@@ -122,7 +122,7 @@ public:
     , const AST::Symbols::SymbolId symbol_id
     , const std::string& class_name
     , const std::string& mangled_name
-    , OffsetTable& module_offset_table
+    , AddressTable& module_offset_table
     , const ScopeOwnerId scope_owner_id, const Label entry_label
     , const Label locals_label, const bool is_member)
   : name_(name)

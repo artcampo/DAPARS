@@ -7,7 +7,7 @@
 #include "ErrorLog.hpp"
 #include "LnessRness.hpp"
 #include "Function.hpp"
-#include "Decoration/OffsetTable.hpp"
+#include "Decoration/AddressTable.hpp"
 #include <map>
 #include <memory>
 
@@ -16,7 +16,7 @@ namespace Compiler{
 using AST::Node;
 using AST::Var;
 using AST::ExprVar;
-using AST::OffsetTable;
+using AST::AddressTable;
 using AST::LexicalScope;
 
 class TreeDecoration : public LnessRness{
@@ -112,10 +112,10 @@ protected:
   
   //This table contains offsets of vars of all the functions, and is meant
   //as a faster and more appropiate accesss to them
-  OffsetTable       module_offset_table_;
+  AddressTable       module_offset_table_;
 
-  OffsetTable& ModuleOffsetTable() noexcept{ return module_offset_table_;}
-  const OffsetTable& ModuleOffsetTable() const noexcept{ return module_offset_table_;}
+  AddressTable& ModuleAddressTable() noexcept{ return module_offset_table_;}
+  const AddressTable& ModuleAddressTable() const noexcept{ return module_offset_table_;}
 };
 
 
