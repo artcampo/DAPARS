@@ -57,7 +57,7 @@ public:
   void GetRegLoadI(RegMap& mapping){
     GetReg(mapping);
     UsageShared(mapping);
-    Dump();
+//     Dump();
   }
   
   void GetRegArith(RegMap& md, RegMap& ms1, RegMap& ms2){
@@ -67,13 +67,13 @@ public:
     UsageShared(ms1);
     UsageShared(ms2);
     UsageNewValue(md);
-    Dump();
+//     Dump();
   }  
   
   void GetRegStore(RegMap& ms, RegMap& md){
     GetReg(ms);
     UsageBackToMem(ms, md);
-    Dump();
+//     Dump();
   }
   
   //returns true if ms was not already on a register (thus load needs to happen)
@@ -83,7 +83,7 @@ public:
       md.mreg_ = ms.mreg_;
       UsageShared(ms);
       UsageCopy(md);
-      Dump();
+//       Dump();
       return false;
     }
 //     GetReg(md);
