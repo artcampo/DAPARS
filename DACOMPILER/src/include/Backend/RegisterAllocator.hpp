@@ -2,6 +2,8 @@
 #include <vector>
 #include <map>
 #include <memory>
+#include "IR/MemAddr.hpp"
+#include "IR/IRSubtypes.hpp"
 
 namespace Compiler{
 namespace Backend{
@@ -16,6 +18,7 @@ struct RegMap{
   
   RegSym  regsymb_;
   MReg    mreg_;
+  
 };
 
 //This register allocator is a simplification of the one provided in the
@@ -29,9 +32,29 @@ public:
     reg_desc_.resize(max_machine_reg_);
   }
 
+  //Initialize regAllocator for a function given its max_ir_registers
+  void Reset(const IR::Reg max_ir_registers){
+    for(int i = 0; i < max_machine_reg_; ++i) reg_desc_[i].clear();
+    is_in_memory_.clear();
+    addr_desc_.clear();
+    reg_sym_id_of_mem_addr_.clear();
+    id_free_for_mem_addr_ = max_ir_registers;
+  }  
+  
+  //Structure for mappjng an IR register
+  RegMap IRReg(RegSym in){
+    return RegMap(in);
+  }  
+  
+  //Structure for mappjng an IR MemAddr
+  RegMap IRMemAddr(const IR::MemAddr addr){
+    return RegMap(RegSymId(addr));
+  }    
+  
   void GetRegLoadI(RegMap& mapping){
     GetReg(mapping);
     UsageShared(mapping);
+    Dump();
   }
   
   void GetRegArith(RegMap& md, RegMap& ms1, RegMap& ms2){
@@ -41,21 +64,56 @@ public:
     UsageShared(ms1);
     UsageShared(ms2);
     UsageNewValue(md);
+    Dump();
   }  
   
-  void GetRegStore(RegMap& mapping){
-    GetReg(mapping);
-    UsageBackToMem(mapping);    
+  void GetRegStore(RegMap& ms, RegMap& md){
+    GetReg(ms);
+    UsageBackToMem(ms, md);
+    Dump();
   }
     
-  void Reset(){};
+  
+  void Dump(){
+    for(int i = 0; i < max_machine_reg_; ++i){
+      if(not reg_desc_[i].empty()){
+        std::cout << "r" << i << ": ";
+        for(auto& it : reg_desc_[i]) std::cout << it << " ";
+        std::cout << "\n";
+      }
+    }
+    
+    for(const auto& it : addr_desc_){
+      if(not it.second.empty()){
+        std::cout << "regsym" << it.first << ": ";
+        for(auto& it : it.second) std::cout << it << " ";
+        std::cout << "\n";        
+      }
+    }
+  }
+  
+  
 private:
   const int   max_machine_reg_;
   int         register_usage_;
   
-  std::vector<std::vector<RegSym>>      reg_desc_;
-  std::map<RegSym, bool>                is_in_memory_;
-  std::map<RegSym, std::vector<MReg>>   addr_desc_;
+  //what has been allocated and where
+  std::vector<std::vector<RegSym>>    reg_desc_;
+  std::map<RegSym, bool>              is_in_memory_;
+  std::map<RegSym, std::vector<MReg>> addr_desc_;
+  
+  //Identifiers for MemAddr
+  std::map<IR::MemAddr, RegSym>       reg_sym_id_of_mem_addr_;
+  RegSym      id_free_for_mem_addr_;
+  
+  RegSym RegSymId(const IR::MemAddr addr){
+    auto it = reg_sym_id_of_mem_addr_.find(addr);
+    if(it == reg_sym_id_of_mem_addr_.end()){
+      reg_sym_id_of_mem_addr_[addr] = id_free_for_mem_addr_;
+      return id_free_for_mem_addr_++;
+    }
+    return it->second;
+  }  
   
   //Assign mreg to regsymb
   void GetReg(RegMap& mapping){
@@ -97,10 +155,13 @@ private:
   
   //(regsymb_, mreg_) mreg regsymb have same variable, regsymb
   //has now its copy in memory
-  void UsageBackToMem(RegMap& mapping){
-    const RegSym& regsymb = mapping.regsymb_;
-    const MReg&   mreg    = mapping.mreg_;    
+  void UsageBackToMem(RegMap& ms, RegMap& md){
+    const RegSym& regsymb = md.regsymb_;
+    const MReg&   mreg    = ms.mreg_;
     is_in_memory_[regsymb] = true;
+    reg_desc_[mreg].push_back(regsymb);
+    addr_desc_[regsymb].clear();
+    addr_desc_[regsymb].push_back(mreg);    
   }  
   
   //(regsymb_, mreg_) mreg regsymb have same variable, however

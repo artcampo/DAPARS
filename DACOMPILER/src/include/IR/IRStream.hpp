@@ -51,6 +51,7 @@ struct IRStream : public IRBuilder{
 
   void Print() const noexcept;
   
+  Reg   MaxRegUsed() const noexcept { return num_regs_used_;} 
   
 private:
   std::vector<Inst::PtrInst> stream_;

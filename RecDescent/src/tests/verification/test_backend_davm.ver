@@ -2,9 +2,28 @@
 Parsing: "void main(){int a; a = 1+2; }"
 Backend::Davm
 %0 = LoadI(1)
+r0: 0 
+regsym0: 0 
 %1 = LoadI(2)
+r0: 0 
+r1: 1 
+regsym0: 0 
+regsym1: 1 
 %2 = %0 + %1
+r0: 0 
+r1: 1 
+r2: 2 
+regsym0: 0 0 
+regsym1: 1 1 
+regsym2: 2 
 store %2 to [LT MainDS:0 (a)]
+r0: 0 
+r1: 1 
+r2: 2 4 
+regsym0: 0 0 
+regsym1: 1 1 
+regsym2: 2 
+regsym4: 2 
 ReturnMain
 ---------
 Bytecode:
@@ -19,13 +38,54 @@ Static data segment size: 1
 Parsing: "void main(){int a, b, c; a = 4; b = 3; c = a + b; }"
 Backend::Davm
 %0 = LoadI(4)
+r0: 0 
+regsym0: 0 
 store %0 to [LT MainDS:0 (a)]
+r0: 0 8 
+regsym0: 0 
+regsym8: 0 
 %2 = LoadI(3)
+r0: 0 8 
+r1: 2 
+regsym0: 0 
+regsym2: 1 
+regsym8: 0 
 store %2 to [LT MainDS:1 (b)]
-%4 = Load [LT MainDS:0 (a)]
-%5 = Load [LT MainDS:1 (b)]
+r0: 0 8 
+r1: 2 9 
+regsym0: 0 
+regsym2: 1 
+regsym8: 0 
+regsym9: 1 
+%4 = Load [LT MainDS:0 (a)] !!!Load
+%5 = Load [LT MainDS:1 (b)] !!!Load
 %6 = %4 + %5
+r0: 0 8 
+r1: 2 9 
+r2: 4 
+r3: 5 
+r4: 6 
+regsym0: 0 
+regsym2: 1 
+regsym4: 2 
+regsym5: 3 
+regsym6: 4 
+regsym8: 0 
+regsym9: 1 
 store %6 to [LT MainDS:2 (c)]
+r0: 0 8 
+r1: 2 9 
+r2: 4 
+r3: 5 
+r4: 6 10 
+regsym0: 0 
+regsym2: 1 
+regsym4: 2 
+regsym5: 3 
+regsym6: 4 
+regsym8: 0 
+regsym9: 1 
+regsym10: 4 
 ReturnMain
 ---------
 Bytecode:

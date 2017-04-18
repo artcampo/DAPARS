@@ -38,6 +38,7 @@ private:
   MemAllocator      mem_alloc_;
   
   void Visit(IR::IRStream& stream){
+    reg_alloc_.Reset( stream.MaxRegUsed() );
     for(auto& it : stream) it->Accept(*this);
   }
 
@@ -45,63 +46,64 @@ private:
     std::cout << "Not implemented: " << inst.str() << "\n";
   }
   void Visit(const IR::Inst::JumpCond& inst) override{
-    std::cout << inst.str() << "\n";
+    std::cout << inst.str() << " !!!\n";
   }
   void Visit(const IR::Inst::JumpIncond& inst) override{
-    std::cout << inst.str() << "\n";
+    std::cout << inst.str() << " !!!\n";
   }
   
   void Visit(const IR::Inst::LoadI& inst) override{
     std::cout << inst.str() << "\n";
-    RegMap rd( inst.RegDst() );
+    RegMap rd = reg_alloc_.IRReg( inst.RegDst() );
     reg_alloc_.GetRegLoadI(rd);
     byte_code_.Append( VM::IRBuilder::Load(rd.mreg_, inst.Value()));
   }
   
   void Visit(const IR::Inst::Load& inst) override{
-    std::cout << inst.str() << "\n";
+    std::cout << inst.str() << " !!!Load\n";
   }
   void Visit(const IR::Inst::LoadReg& inst) override{
-    std::cout << inst.str() << "\n";
+    std::cout << inst.str() << " !!!LoadReg\n";
   }
   void Visit(const IR::Inst::LoadRegOffs& inst) override{
-    std::cout << inst.str() << "\n";
+    std::cout << inst.str() << " !!!LoadRegOffs\n";
   }
   void Visit(const IR::Inst::Store& inst) override{
     std::cout << inst.str() << "\n";
-    RegMap rs ( inst.RegSrc() );
-    reg_alloc_.GetRegStore(rs);
+    RegMap rs = reg_alloc_.IRReg    (inst.RegSrc());
+    RegMap rd = reg_alloc_.IRMemAddr(inst.Addr());
+    reg_alloc_.GetRegStore(rs, rd);
     byte_code_.Append( VM::IRBuilder::Store(rs.mreg_, mem_alloc_.Remap(inst.Addr())));
   }
   void Visit(const IR::Inst::StoreReg& inst) override{
-    std::cout << inst.str() << "\n";
+    std::cout << inst.str() << " !!!\n";
   }
   void Visit(const IR::Inst::Arith& inst) override{
     std::cout << inst.str() << "\n";
-    RegMap rd ( inst.RegDst() );
-    RegMap rs1( inst.RegSrc1() );
-    RegMap rs2( inst.RegSrc2() );
+    RegMap rd  = reg_alloc_.IRReg( inst.RegDst() );
+    RegMap rs1 = reg_alloc_.IRReg( inst.RegSrc1() );
+    RegMap rs2 = reg_alloc_.IRReg( inst.RegSrc2() );
     reg_alloc_.GetRegArith(rd, rs1, rs2);
     
     byte_code_.Append( VM::IRBuilder::Arith(rs1.mreg_, rs2.mreg_, rd.mreg_, int(inst.Op())));
   }
   void Visit(const IR::Inst::Comparison& inst) override{
-    std::cout << inst.str() << "\n";
+    std::cout << inst.str() << " !!!\n";
   }  
   void Visit(const IR::Inst::PtrElem& inst) override{
-    std::cout << inst.str() << "\n";
+    std::cout << inst.str() << " !!!\n";
   }  
   void Visit(const IR::Inst::GetRetVal& inst) override{
-    std::cout << inst.str() << "\n";
+    std::cout << inst.str() << " !!!\n";
   }  
   void Visit(const IR::Inst::SetRetVal& inst) override{
-    std::cout << inst.str() << "\n";
+    std::cout << inst.str() << " !!!\n";
   }  
   void Visit(const IR::Inst::SetPar& inst) override{
-    std::cout << inst.str() << "\n";
+    std::cout << inst.str() << " !!!\n";
   }  
   void Visit(const IR::Inst::Return& inst) override{
-    std::cout << inst.str() << "\n";
+    std::cout << inst.str() << " !!!\n";
   }  
   
   void Visit(const IR::Inst::ReturnMain& inst) override{
