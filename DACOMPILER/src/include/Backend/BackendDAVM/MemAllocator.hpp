@@ -16,14 +16,19 @@ public:
   MemAllocator(){}
 
   VM::Addr  Remap(const IR::MemAddr addr){
-    return 0;
+    return translation_.at(addr);
   }
   
-  void Remap(const IR::MemAddr addr_ir, VM::Addr addr_vm){
+  //Remap a variable
+  void ComputeRemap(const IR::MemAddr addr_ir ){
+//     if(addr_ir.GetLabel().IsLinkTime()
+    VM::Addr addr_vm(addr_ir.GetOffset().GetAddr());
+    translation_[addr_ir] = addr_vm;
   }
     
   void Reset(){};
 private:
+  std::map<IR::MemAddr, VM::Addr> translation_;
 
 
 };

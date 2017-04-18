@@ -17,8 +17,11 @@ struct MemAddr{
 //   std::string str() const noexcept {return l_.str() + o_.str;}
   std::string str() const noexcept {return l_.str() + ":"+ o_.str();}
 
-//   const bool operator<  ( const Offset &o )const noexcept
-//     {return addr_ < o.addr_;}
+  const bool operator<  ( const MemAddr &rhs )const noexcept{
+    if(l_ == rhs.l_)  return o_ < rhs.o_;
+    else              return l_ < rhs.l_;
+  }
+    
   Offset  GetOffset() noexcept { return o_;}
   const Offset  GetOffset() const noexcept { return o_;}
   Label  GetLabel() noexcept { return l_;}

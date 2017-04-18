@@ -25,6 +25,16 @@ public:
   
   size_t Size() const noexcept{ return total_size_; }
   
+  using iterator = std::map<Symbols::SymbolId, IR::MemAddr>::iterator;
+  using const_iterator = std::map<Symbols::SymbolId, IR::MemAddr>::const_iterator;
+
+  iterator begin() { return offsets_.begin(); }
+  iterator end()   { return offsets_.end(); }
+  const_iterator begin()  const { return offsets_.begin(); }
+  const_iterator end()    const { return offsets_.end(); }
+  const_iterator cbegin() const { return offsets_.cbegin(); }
+  const_iterator cend()   const { return offsets_.cend(); }    
+  
 private:
   std::map<Symbols::SymbolId, IR::MemAddr> offsets_;
   size_t total_size_;

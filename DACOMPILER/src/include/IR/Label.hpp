@@ -17,13 +17,9 @@ struct Label{
   Label& operator= ( const Label &o ) = default;
   Label( const Label &o ) = default;
   ~Label() = default;
-  /*
-  Label& operator= ( const Label &o ){
-    id_ = o.id_;
-    name_ = o.name_;
-    is_rt_or_lt_ = o.is_rt_or_lt_;
-  }
-   */
+
+  const bool operator<  ( const Label &rhs ) const{ return id_ < rhs.id_; }  
+  const bool operator== ( const Label &rhs ) const{ return id_ == rhs.id_; }  
 
   static Label LabelLT(const LabelId id, std::string name){
     return Label(id, name, false);

@@ -8,10 +8,10 @@ store %2 to [LT MainDS:0 (a)]
 ReturnMain
 ---------
 Bytecode:
-Load, r:0 val: 1
-Load, r:1 val: 2
-ADD, rs1:0 rs2: 1 rd:2
-Store, r:2 to [@0]
+LOAD, r0 val: 1
+LOAD, r1 val: 2
+ADD, rs0 rs1 rd2
+STORE, r2 to [@0]
 STOP
 Static data segment size: 1
 
@@ -29,12 +29,12 @@ store %6 to [LT MainDS:2 (c)]
 ReturnMain
 ---------
 Bytecode:
-Load, r:0 val: 4
-Store, r:0 to [@0]
-Load, r:1 val: 3
-Store, r:1 to [@0]
-ADD, rs1:2 rs2: 3 rd:4
-Store, r:4 to [@0]
+LOAD, r0 val: 4
+STORE, r0 to [@0]
+LOAD, r1 val: 3
+STORE, r1 to [@1]
+ADD, rs2 rs3 rd4
+STORE, r4 to [@2]
 STOP
 Static data segment size: 3
 

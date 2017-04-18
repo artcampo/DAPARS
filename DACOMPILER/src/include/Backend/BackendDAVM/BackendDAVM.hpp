@@ -114,8 +114,14 @@ private:
   }    
   
   void ComputeMainDataSegment(){
-    auto size = unit_.GetFunc("main").LocalVars().Size();
+    auto main = unit_.GetFunc("main");
+    auto vars = main.LocalVars();
+    auto size = vars.Size();
     byte_code_.SetStaticDataSegment(size);
+    for(const auto& it : vars){
+      IR::MemAddr addr_ir = it.second;
+      mem_alloc_.ComputeRemap(addr_ir);
+    }
     //mem_alloc_.Remap();
   }
   

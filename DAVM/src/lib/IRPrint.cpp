@@ -49,51 +49,51 @@ std::string PrintInstruction(const uint32_t& instruction){
       s = string("JUMP: @") + to_string(literal);
       break;
     case IR_NEW_VAR:
-      s = string("NewVar: TypeId") + to_string(literal);
+      s = string("NEWVAR: TypeId") + to_string(literal);
       break;
 
     //Class 1
     case IR_LOAD:
-      s = string("Load, r:") + to_string(reg_dst) + " val: " +
+      s = string("LOAD, r") + to_string(reg_dst) + " val: " +
           to_string(literal);
       break;
     case IR_STORE:  
-      s = string("Store, r:") + to_string(reg_dst) + " to [@" +
+      s = string("STORE, r") + to_string(reg_dst) + " to [@" +
           to_string(literal) + "]";
       break;
 
     //Class 2
     case IR_JMPC:
-      s = string("jump if ");
-      if(sub_type == SubtypesJMPC::IR_TRUE) s += string("true");
+      s = string("JUMPIF ");
+      if(sub_type == SubtypesJMPC::IR_TRUE ) s += string("true");
       if(sub_type == SubtypesJMPC::IR_FALSE) s += string("false");
-      s += string("to:") + to_string(literal);
+      s += string(" to:") + to_string(literal);
       break;
 
     //Class 3
     case IR_ARI:
       using namespace SubtypesArithmetic;
       switch(sub_type){
-        case IR_ADD: s = string("ADD, rs1:"); break;
-        case IR_SUB: s = string("SUB, rs1:"); break;
-        case IR_MUL: s = string("MUL, rs1:"); break;
-        case IR_DIV: s = string("DIV, rs1:"); break;
+        case IR_ADD: s = string("ADD, rs"); break;
+        case IR_SUB: s = string("SUB, rs"); break;
+        case IR_MUL: s = string("MUL, rs"); break;
+        case IR_DIV: s = string("DIV, rs"); break;
         default:     s = string(" - ERROR in print decode -"); break;
       }
-      s = s + to_string(reg_src1) + string(" rs2: ") +
-          to_string(reg_src2) + string(" rd:") + to_string(reg_dst);
+      s = s + to_string(reg_src1) + string(" rs") +
+          to_string(reg_src2) + string(" rd") + to_string(reg_dst);
       break;//case IR_ARI
     case IR_CMP:
       using namespace SubtypesComparison;
       switch(sub_type){
-        case IR_NOT: s = string("NOT, rs1:"); break;
-        case IR_EQL: s = string("EQL, rs1:"); break;
-        case IR_LST: s = string("LST, rs1:"); break;
-        case IR_LTE: s = string("LTE, rs1:"); break;
+        case IR_NOT: s = string("NOT, rs"); break;
+        case IR_EQL: s = string("EQL, rs"); break;
+        case IR_LST: s = string("LST, rs"); break;
+        case IR_LTE: s = string("LTE, rs"); break;
         default:     s = string(" - ERROR in print decode -"); break;
       }
-      s = s + to_string(reg_src1) + string(" rs2: ") +
-          to_string(reg_src2) + string(" rd:") + to_string(reg_dst);
+      s = s + to_string(reg_src1) + string(" rs") +
+          to_string(reg_src2) + string(" rd") + to_string(reg_dst);
       break;//case IR_CMP
     default: s = string(" - ERROR in print decode -"); break;
   };
