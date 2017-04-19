@@ -34,14 +34,16 @@ public:
   }
 
   //Initialize regAllocator for a function given its max_ir_registers
-  void Reset(const IR::Reg max_ir_registers){
+  //and the max of machine reg
+  void Reset(const IR::Reg max_ir_registers, const int function_max_machine_reg){
     for(int i = 0; i < max_machine_reg_; ++i) reg_desc_[i].clear();
     is_in_memory_.clear();
     addr_desc_.clear();
     reg_sym_id_of_mem_addr_.clear();
     mem_addr_of_reg_sym_id_.clear();
-    id_free_for_mem_addr_ = max_ir_registers;
-    max_ir_registers_     = max_ir_registers;
+    id_free_for_mem_addr_     = max_ir_registers;
+    max_ir_registers_         = max_ir_registers;
+    function_max_machine_reg_ = function_max_machine_reg;
   }  
   
   //Structure for mappjng an IR register
@@ -124,6 +126,7 @@ public:
 private:
   const int   max_machine_reg_;
   int         register_usage_;
+  int         function_max_machine_reg_;  //registers reserved for: stack, arp and/or this
   
   //what has been allocated and where
   std::vector<std::set<RegSym>>    reg_desc_;
@@ -177,10 +180,12 @@ private:
   }  
   
   MReg GetFreeReg(){
-    if(register_usage_ < max_machine_reg_)
+    if(register_usage_ < function_max_machine_reg_)
       return register_usage_++;
     else{
       //free a register
+      std::cout << "Registers full. Shame on you.\n";
+      exit(1);
     }
   }
 

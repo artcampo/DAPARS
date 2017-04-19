@@ -53,6 +53,8 @@ struct IRStream : public IRBuilder{
   
   Reg   MaxRegUsed() const noexcept { return num_regs_used_;} 
   
+  const AST::Function& GetFunction()const noexcept { return function_;} 
+  
 private:
   std::vector<Inst::PtrInst> stream_;
   Label entry_label_;

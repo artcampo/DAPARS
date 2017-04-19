@@ -3,6 +3,7 @@
 #include "ByteCode.hpp"
 #include "Utils.hpp"  //move to VM/
 #include "IRBuilder.hpp"
+#include "Function.hpp"
 #include "IR/IRVisitor.hpp"
 #include "Backend/RegisterAllocator.hpp"
 #include "Backend/BackendDAVM/MemAllocator.hpp"
@@ -20,7 +21,9 @@ class BackendDAVM : public Backend, IR::IRVisitor{
 public:
 
   BackendDAVM(CompilationUnit& unit, IR::IRUnit& ir_unit)
-  : Backend(unit, ir_unit, TargetDefDAVM()), reg_alloc_(10), mem_alloc_(){} //TODO: machine description
+  : Backend(unit, ir_unit, TargetDefDAVM())
+  , reg_alloc_(TargetDefDAVM().NumRegisters())
+  , mem_alloc_(){} //TODO: machine description
 
   void Run(){
     ComputeMainDataSegment();
@@ -39,7 +42,14 @@ private:
   MemAllocator      mem_alloc_;
   
   void Visit(IR::IRStream& stream){
-    reg_alloc_.Reset( stream.MaxRegUsed() );
+    //Account for stack_ptr
+    int basic_register_usage = 1;
+    //Account for arp_ptr
+    if(stream.GetFunction().Name() != "main") basic_register_usage++;
+    //Account for this_ptr
+    if(stream.GetFunction().IsMember()) basic_register_usage++;
+      
+    reg_alloc_.Reset( stream.MaxRegUsed(), basic_register_usage );
     for(auto& it : stream) it->Accept(*this);
   }
 
