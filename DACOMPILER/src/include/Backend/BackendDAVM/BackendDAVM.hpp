@@ -23,11 +23,13 @@ public:
   BackendDAVM(CompilationUnit& unit, IR::IRUnit& ir_unit)
   : Backend(unit, ir_unit, TargetDefDAVM())
   , reg_alloc_(TargetDefDAVM().NumRegisters())
-  , mem_alloc_(){} //TODO: machine description
+  , mem_alloc_()
+  , backpatch_free_id_(0){}
 
   void Run(){
     ComputeMainDataSegment();
     for(auto& it : ir_unit_.streams_) Visit(*it);
+    BackpathCallTargets();
     
     std::cout << "---------\nBytecode:\n";
     VM::VMUtils::print(byte_code_);
@@ -40,8 +42,12 @@ private:
   VM::ByteCode      byte_code_;
   RegisterAllocator reg_alloc_;  
   MemAllocator      mem_alloc_;
+  bool              is_first_arg_;
+  std::map<IR::MemAddr, VM::Target> backpatch_ids_;
+  VM::Target backpatch_free_id_;
   
   void Visit(IR::IRStream& stream){
+    is_first_arg_ = true;
     //Account for stack_ptr
     int basic_register_usage = 1;
     //Account for arp_ptr
@@ -116,7 +122,23 @@ private:
     std::cout << inst.str() << " !!!\n";
   }  
   void Visit(const IR::Inst::SetPar& inst) override{
-    std::cout << inst.str() << " !!!\n";
+    std::cout << inst.str() << "\n";
+    if(is_first_arg_){
+      RegMap rs = reg_alloc_.IRReg(inst.RegSrc());
+      reg_alloc_.GetRegRead(rs);
+      //If it's not already on mreg=0, move it
+      if(rs.mreg_ != reg_alloc_.MRegRetValue()){
+        reg_alloc_.Flush( reg_alloc_.MRegRetValue());
+        RegMap rd = reg_alloc_.ForceReg( reg_alloc_.MRegRetValue() );
+        byte_code_.Append( VM::IRBuilder::Move(rs.mreg_, rd.mreg_));
+      }
+    
+    }else{
+      //push arg to the stack
+      //TODO
+    }
+    
+    is_first_arg_ = false;
   }  
   void Visit(const IR::Inst::Return& inst) override{
     std::cout << inst.str() << " !!!\n";
@@ -129,6 +151,15 @@ private:
   
   void Visit(const IR::Inst::Call& inst) override{
     std::cout << inst.str() << "\n";
+    
+    if(inst.Addr().GetLabel().IsLinkTime()){
+      VM::Target target_id = BackpatchId(inst.Addr());
+      byte_code_.Append( VM::IRBuilder::Call(target_id));
+    }else{
+      //TODO: call through computed register
+    }
+    
+    is_first_arg_ = true; //next set of arguments will not belong to this call
   }
   
   void ComputeMainDataSegment(){
@@ -141,6 +172,19 @@ private:
       mem_alloc_.ComputeRemap(addr_ir);
     }
     //mem_alloc_.Remap();
+  }
+  
+  VM::Target BackpatchId(const IR::MemAddr addr){
+    auto it = backpatch_ids_.find(addr);
+    if(it == backpatch_ids_.end()){
+      backpatch_ids_[addr] = backpatch_free_id_;
+      return backpatch_free_id_++;
+    }
+    return it->second;
+  }
+  
+  void BackpathCallTargets(){
+    
   }
   
 };

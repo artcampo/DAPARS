@@ -44,7 +44,7 @@ Backend::Davm
 %0 = LoadI(1)
 store %0 to [LT MainDS:0 (a)]
 %2 = Load [LT MainDS:0 (a)]
-SetPar( %2) !!!
+SetPar( %2)
 call [LT entry_f:0 ()]
 %3 = GetRetVal() !!!
 store %3 to [LT MainDS:0 (a)]
@@ -55,6 +55,7 @@ Return !!!
 Bytecode:
 LOAD, r0 val: 1
 STORE, r0 to [@0]
+[Not implemented]
 STORE, r1 to [@0]
 STOP
 Static data segment size: 1

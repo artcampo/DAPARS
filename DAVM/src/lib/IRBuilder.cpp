@@ -43,6 +43,14 @@ bool checkIRCodification(){
 }
 
 
+uint32_t Move (const Reg &reg_src, const Reg &reg_dst){
+  return IR_NOT_IMPL;
+}//TODO
+
+Inst Call(const Target& target){
+  return IR_NOT_IMPL;
+}//TODO
+
 ////////////////////////////////////////////////////////////////////////
 //CLASS 0
 Inst Jump(const Target& target){

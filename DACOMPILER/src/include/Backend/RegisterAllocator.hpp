@@ -32,10 +32,15 @@ public:
     , register_usage_(0){
     reg_desc_.resize(max_machine_reg_);
   }
+  
+  MReg MRegRetValue() const noexcept{ return 0; }
+  MReg MRegStackPtr() const noexcept{ return max_machine_reg_ - 1; }
+  MReg MRegArpPtr()   const noexcept{ return max_machine_reg_ - 2; }
+  MReg MRegThisPtr()  const noexcept{ return max_machine_reg_ - 3; }
 
   //Initialize regAllocator for a function given its max_ir_registers
   //and the max of machine reg
-  void Reset(const IR::Reg max_ir_registers, const int function_max_machine_reg){
+  void Reset(const IR::Reg max_ir_registers, const int function_fixed_usage_machine_reg){
     for(int i = 0; i < max_machine_reg_; ++i) reg_desc_[i].clear();
     is_in_memory_.clear();
     addr_desc_.clear();
@@ -43,7 +48,7 @@ public:
     mem_addr_of_reg_sym_id_.clear();
     id_free_for_mem_addr_     = max_ir_registers;
     max_ir_registers_         = max_ir_registers;
-    function_max_machine_reg_ = function_max_machine_reg;
+    function_max_machine_reg_ = max_machine_reg_ - function_fixed_usage_machine_reg;
   }  
   
   //Structure for mappjng an IR register
@@ -51,10 +56,27 @@ public:
     return RegMap(in);
   }  
   
+  void Flush(const MReg r){
+    
+  }
+  
+  //Actually, only the mreg=0 will be forced
+  RegMap ForceReg(const MReg r){
+    if(r == 0 and register_usage_ == 0) register_usage_ = 1;
+    return RegMap(-1, r);
+  }
+  
   //Structure for mappjng an IR MemAddr
   RegMap IRMemAddr(const IR::MemAddr addr){
     return RegMap(RegSymId(addr));
   }    
+  
+  
+  void GetRegRead(RegMap& mapping){
+    GetReg(mapping);
+    UsageShared(mapping);
+//     Dump();
+  }  
   
   void GetRegLoadI(RegMap& mapping){
     GetReg(mapping);
@@ -184,7 +206,7 @@ private:
       return register_usage_++;
     else{
       //free a register
-      std::cout << "Registers full. Shame on you.\n";
+      std::cout << "Registers full. Shame on you. (function max:"<< function_max_machine_reg_<< ")\n";
       exit(1);
     }
   }

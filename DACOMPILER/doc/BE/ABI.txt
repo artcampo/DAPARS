@@ -1,0 +1,7 @@
+Machine registers are numbered 0,1,..k-1, of those, the following can be locked:
+- k - 1, stack pointer
+- k - 2, arp
+- k - 3, this pointer
+- 0, return value of function / first argument of function
+
+Al arguments but the first one, go to the stack.
