@@ -6,6 +6,7 @@
 #include "IR/IRVisitor.hpp"
 #include "Backend/RegisterAllocator.hpp"
 #include "Backend/BackendDAVM/MemAllocator.hpp"
+#include "Backend/BackendDAVM/TargetDefDAVM.hpp"
 
 #include <map>
 #include <memory>
@@ -19,7 +20,7 @@ class BackendDAVM : public Backend, IR::IRVisitor{
 public:
 
   BackendDAVM(CompilationUnit& unit, IR::IRUnit& ir_unit)
-  : Backend(unit, ir_unit), reg_alloc_(10), mem_alloc_(){} //TODO: machine description
+  : Backend(unit, ir_unit, TargetDefDAVM()), reg_alloc_(10), mem_alloc_(){} //TODO: machine description
 
   void Run(){
     ComputeMainDataSegment();
@@ -60,7 +61,7 @@ private:
   }
   
   void Visit(const IR::Inst::Load& inst) override{
-    std::cout << inst.str() << " !!!Load\n";
+    std::cout << inst.str() << "\n";
     RegMap rd = reg_alloc_.IRReg    (inst.RegDst());
     RegMap rs = reg_alloc_.IRMemAddr(inst.Addr());
     reg_alloc_.GetRegLoad(rd, rs);
@@ -118,7 +119,7 @@ private:
   
   void Visit(const IR::Inst::Call& inst) override{
     std::cout << inst.str() << "\n";
-  }    
+  }
   
   void ComputeMainDataSegment(){
     auto main = unit_.GetFunc("main");

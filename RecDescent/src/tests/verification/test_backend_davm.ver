@@ -22,8 +22,8 @@ Backend::Davm
 store %0 to [LT MainDS:0 (a)]
 %2 = LoadI(3)
 store %2 to [LT MainDS:1 (b)]
-%4 = Load [LT MainDS:0 (a)] !!!Load
-%5 = Load [LT MainDS:1 (b)] !!!Load
+%4 = Load [LT MainDS:0 (a)]
+%5 = Load [LT MainDS:1 (b)]
 %6 = %4 + %5
 store %6 to [LT MainDS:2 (c)]
 ReturnMain
@@ -37,4 +37,25 @@ ADD, rs0 rs1 rd2
 STORE, r2 to [@2]
 STOP
 Static data segment size: 3
+
+---------------------------------------------------
+Parsing: "int f(int p){ return p; }void main(){int a; a = 1; a = f(a); }"
+Backend::Davm
+%0 = LoadI(1)
+store %0 to [LT MainDS:0 (a)]
+%2 = Load [LT MainDS:0 (a)]
+SetPar( %2) !!!
+call [LT entry_f:0 ()]
+%3 = GetRetVal() !!!
+store %3 to [LT MainDS:0 (a)]
+ReturnMain
+%0 = Load [RT arp_f:-2 (p)]
+Return !!!
+---------
+Bytecode:
+LOAD, r0 val: 1
+STORE, r0 to [@0]
+STORE, r1 to [@0]
+STOP
+Static data segment size: 1
 
