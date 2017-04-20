@@ -44,7 +44,7 @@ struct GetArg : public Inst, public InstDst, public InstVal{
   virtual ~GetArg() = default;
 
   virtual std::string str() const noexcept{
-    return "%" + std::to_string(dst_) + "GetArg( arg" + std::to_string(val_) + " )";
+    return "%" + std::to_string(dst_) + " = GetArg( arg" + std::to_string(val_) + " )";
   }
   
   void Accept(IRVisitor& v) override { v.Visit(*this); }

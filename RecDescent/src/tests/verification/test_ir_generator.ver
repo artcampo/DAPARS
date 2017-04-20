@@ -207,7 +207,7 @@ LT entry_main
 1: store %0 to [LT MainDS:0 (a)]
 2: ReturnMain
 LT entry_f
-0: %0 = Load [RT arp_f:-2 (p1)]
+0: %0 = GetArg( arg0 )
 1: store %0 to [RT arp_f:0 (a)]
 2: Return
 
@@ -254,7 +254,7 @@ LT entry_main
 4: store %1 to [LT MainDS:0 (a)]
 5: ReturnMain
 LT entry_f
-0: %0 = Load [RT arp_f:-2 (p1)]
+0: %0 = GetArg( arg0 )
 1: store %0 to [RT arp_f:0 (a)]
 2: %2 = Load [RT arp_f:0 (a)]
 3: SetRetVal( %2)

@@ -226,9 +226,12 @@ void IRGenerator::Visit(Var const& p, const Node* successor){
     a = unit_.LocalVarMemAddr(p);
   }
 
-  
-//   const IR::Reg r_dst   = CurrentStream().AppendGetArg(a);
-//   reg_dst_of_expr_[&p]  = r_dst;
+  //Load to an argument which is in a register
+  if(a.GetLabel() == unit_.GetLabelArgumentInReg()){
+    const IR::Reg r_dst   = CurrentStream().AppendGetArg(a.GetOffset().GetAddr());
+    reg_dst_of_expr_[&p]  = r_dst;    
+    return;
+  }
   
   //regular memory access
   if(unit_.IsRead(p)){

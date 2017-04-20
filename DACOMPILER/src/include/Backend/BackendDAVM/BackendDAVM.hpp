@@ -140,6 +140,12 @@ private:
     
     is_first_arg_ = false;
   }  
+  
+  void Visit(const IR::Inst::GetArg& inst) override{
+    std::cout << inst.str() << "\n";
+//     byte_code_.Append( VM::IRBuilder::Return());
+  }    
+  
   void Visit(const IR::Inst::Return& inst) override{
     std::cout << inst.str() << "\n";
     byte_code_.Append( VM::IRBuilder::Return());

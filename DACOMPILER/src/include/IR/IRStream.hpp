@@ -34,16 +34,17 @@ struct IRStream : public IRBuilder{
   void AppendStore(const Reg src,const MemAddr addr);
   void AppendStoreReg(const Reg src1, const Reg src2);
 
-  Reg AppendLoadI(const NodeValue val);
-  Reg AppendLoad(const MemAddr addr);
-  Reg AppendLoadReg(const Reg src);
-  Reg AppendLoadRegOffs(const Reg src, const Offset o);
-  Reg AppendArith(const Reg src1, const Reg src2, const ArithType op);
-  Reg AppendPtrElem(const MemAddr addr);
+  Reg  AppendLoadI(const NodeValue val);
+  Reg  AppendLoad(const MemAddr addr);
+  Reg  AppendLoadReg(const Reg src);
+  Reg  AppendLoadRegOffs(const Reg src, const Offset o);
+  Reg  AppendArith(const Reg src1, const Reg src2, const ArithType op);
+  Reg  AppendPtrElem(const MemAddr addr);
 
-  Reg AppendGetRetVal();
+  Reg  AppendGetRetVal();
   void AppendSetRetVal(const Reg src);
   void AppendSetPar(const Reg src);
+  Reg  AppendGetArg(const NodeValue position);
   void AppendReturn();
   void AppendReturnMain();
   void AppendCall(const MemAddr addr);

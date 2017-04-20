@@ -49,7 +49,7 @@ call [LT entry_f:0 ()]
 %3 = GetRetVal() !!!
 store %3 to [LT MainDS:0 (a)]
 ReturnMain
-%0 = Load [RT arp_f:-2 (p)]
+%0 = GetArg( arg0 )
 SetRetVal( %0) !!!
 Return
 ---------

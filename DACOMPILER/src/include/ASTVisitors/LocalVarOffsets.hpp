@@ -32,14 +32,12 @@ public:
     for(auto& it : p.ParList()){
       Symbols::Symbol& s = func_.GetSymbolDecl(*it);
       auto size = s.Size();
-//       if(arg_position < IR::kNumArgsInRegister){
-      if(false){
+      if(arg_position < IR::kNumArgsInRegister){
         IR::AddrOffset offset = arg_position;
         func_.StoreSymbolAddress( s.Id(), IR::Offset(offset, s.BareName())
                                 , unit_.GetLabelArgumentInReg(), size, func_.Params());
       }else{
-        //IR::AddrOffset offset    = 2 + (k - 1 - i);
-        IR::AddrOffset offset    = -2 - (k - i);
+        IR::AddrOffset offset    = 2 + (k - 1 - i);
         func_.StoreSymbolAddress( s.Id(), IR::Offset(offset, s.BareName())
                                 , func_.LocalsLabel(), size, func_.Params());
         //std::cout << s.str() << " to offset: " << offset << std::endl;

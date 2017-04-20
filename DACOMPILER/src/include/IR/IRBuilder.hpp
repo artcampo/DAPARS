@@ -81,6 +81,12 @@ protected:
   Inst::PtrSetPar SetPar(const Reg src){
     return std::make_unique<Inst::SetPar>(src);
   }
+  
+  Inst::PtrGetArg GetArg(const NodeValue position){
+    Reg assigned_reg = FreeReg();
+    return std::make_unique<Inst::GetArg>(assigned_reg, position);
+  }
+    
 
   Inst::PtrReturn Return(){
     return std::make_unique<Inst::Return>();

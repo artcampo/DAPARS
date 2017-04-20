@@ -28,15 +28,10 @@ struct Label{
   static Label LabelRT(const LabelId id, std::string name){
     return Label(id, name, true);
   }
-  
-  //Label for an argument that is mapped to a register instead of stack
-  static Label LabelArgReg(const LabelId id, std::string name){
-  }
 
   const LabelId Id() const noexcept{ return id_;}
   bool  IsRunTime()  const noexcept{ return is_rt_or_lt_;}
   bool  IsLinkTime() const noexcept{ return not is_rt_or_lt_;}
-
 
   std::string str() const noexcept{
     std::string  s;

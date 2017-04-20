@@ -22,7 +22,8 @@ Run-time labels: local vars for any function other than main.
 The IR already encodes the decision of how many arguments of a function
 are passed in the stack or in registers. For the latter case a special
 MemAddr is used. This ensures uniformity and makes further translation 
-by the backend explicit.
+by the backend explicit. This MemAddr is RT, has the label "ArgReg" and
+as offset the argument's position in the parameter list.
 
 The amount of registers used is in IR/IRSubtypes.hpp. For ease of testing
 this number was set to 1, but the treatment is general as to handle n, where

@@ -25,6 +25,7 @@ public:
   virtual void Visit(Inst::GetRetVal const& p)  = 0;
   virtual void Visit(Inst::SetRetVal const& p)  = 0;
   virtual void Visit(Inst::SetPar const& p)     = 0;
+  virtual void Visit(Inst::GetArg const& p)     = 0;
   virtual void Visit(Inst::Return const& p)     = 0;
   virtual void Visit(Inst::ReturnMain const& p) = 0;
   virtual void Visit(Inst::Call const& p)       = 0;

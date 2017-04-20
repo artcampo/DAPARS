@@ -73,11 +73,16 @@ void IRStream::AppendSetRetVal(const Reg src){
 void IRStream::AppendSetPar(const Reg src)    { Append( SetPar(src) );}
 void IRStream::AppendCall(const MemAddr addr) { Append( Call(addr) );  };
 
+Reg IRStream::AppendGetArg(const NodeValue position){ 
+  Append( GetArg(position) );   
+  return RegAssignedToPreviousInst();
+}
+
 void IRStream::AppendReturn(){ 
   Append( Return() ); 
   num_regs_used_ = UsedRegs();
-  
 }
+
 void IRStream::AppendReturnMain(){ 
   Append( ReturnMain() );  
   num_regs_used_ = UsedRegs();
