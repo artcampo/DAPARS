@@ -25,10 +25,9 @@ public:
 //     std::cout << "Local offset\n";
     p.GetBody().Accept(*this);
     
-    IR::AddrOffset k = p.NumPars() - 1;
-    IR::AddrOffset i = 0;
-    //for(auto& it = p.ParBegin(), end = p.ParEnd(); it != end; ++it){
-    int arg_position = 0;
+    IR::AddrOffset k            = p.NumPars() - 1;
+    IR::AddrOffset arg_position = 0;
+
     for(auto& it : p.ParList()){
       Symbols::Symbol& s = func_.GetSymbolDecl(*it);
       auto size = s.Size();
@@ -37,7 +36,7 @@ public:
         func_.StoreSymbolAddress( s.Id(), IR::Offset(offset, s.BareName())
                                 , unit_.GetLabelArgumentInReg(), size, func_.Params());
       }else{
-        IR::AddrOffset offset    = 2 + (k - 1 - i);
+        IR::AddrOffset offset    =  (k - arg_position) + 2;
         func_.StoreSymbolAddress( s.Id(), IR::Offset(offset, s.BareName())
                                 , func_.LocalsLabel(), size, func_.Params());
         //std::cout << s.str() << " to offset: " << offset << std::endl;

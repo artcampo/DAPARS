@@ -62,3 +62,30 @@ STOP
 RETURN
 Static data segment size: 1
 
+---------------------------------------------------
+Parsing: "int f(int p0, int p1){ return p0 + p1; }void main(){int a; a = f(9,8); }"
+Backend::Davm
+%0 = LoadI(9)
+%1 = LoadI(8)
+SetPar( %0)
+SetPar( %1)
+call [LT entry_f:0 ()]
+%2 = GetRetVal() !!!
+store %2 to [LT MainDS:0 (a)]
+ReturnMain
+%0 = GetArg( arg0 )
+%1 = Load [RT arp_f:2 (p1)]
+%2 = %0 + %1
+SetRetVal( %2) !!!
+Return
+---------
+Bytecode:
+LOAD, r0 val: 9
+LOAD, r1 val: 8
+CALL: @0
+STORE, r2 to [@0]
+STOP
+ADD, rs3 rs4 rd5
+RETURN
+Static data segment size: 1
+

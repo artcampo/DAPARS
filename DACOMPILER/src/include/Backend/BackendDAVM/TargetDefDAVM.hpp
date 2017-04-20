@@ -10,7 +10,7 @@ public:
 
   TargetDefDAVM(){}
 
-  size_t  NumRegisters() const noexcept{ return 10; }
+  size_t  NumRegisters() const noexcept{ return 16; }
 protected:
 
 

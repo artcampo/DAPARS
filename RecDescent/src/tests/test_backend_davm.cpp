@@ -75,6 +75,11 @@ int main()
     "int f(int p){ return p; }") + 
     "void main(){int a; a = 1; a = f(a); }"
     , g);  
+  
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "int f(int p0, int p1){ return p0 + p1; }") + 
+    "void main(){int a; a = f(9,8); }"
+    , g);    
 
 
   return 0;
