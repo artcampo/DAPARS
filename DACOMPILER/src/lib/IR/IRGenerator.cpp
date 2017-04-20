@@ -197,7 +197,6 @@ void IRGenerator::Visit(DerefOp const& n, const Node* successor){
   n.Rhs().Accept(*this, successor);
   const IR::Reg reg_src_addr = reg_dst_of_expr_[&n.Rhs()];
   if(unit_.IsRead(n)){
-
     const IR::Reg r       = CurrentStream().AppendLoadReg(reg_src_addr);
     reg_dst_of_expr_[&n]  = r;
   }else{

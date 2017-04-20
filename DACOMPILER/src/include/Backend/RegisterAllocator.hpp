@@ -3,33 +3,29 @@
 #include <set>
 #include <map>
 #include <memory>
+#include <functional>
 #include "IR/MemAddr.hpp"
 #include "IR/IRSubtypes.hpp"
+#include "Backend/RegMap.hpp"
+#include "Backend/BackendCallbacks.hpp"
+
 
 namespace Compiler{
 namespace Backend{
 
-using MReg    = int;
-using RegSym  = int;
-
-//mapping of an IR symbol (variable or abstract register) to a machine register
-struct RegMap{
-  RegMap(RegSym in) : regsymb_(in){}
-  RegMap(RegSym in, MReg out) : regsymb_(in), mreg_(out){}
-  
-  RegSym  regsymb_;
-  MReg    mreg_;
-  
-};
+class Backend;
 
 //This register allocator is a simplification of the one provided in the
 //dragon book, page 544. It does not take liveness into account.
 class RegisterAllocator{
 public:
 
-  RegisterAllocator(const int max_machine_reg)
+  RegisterAllocator(const int max_machine_reg, IssueLoad callback_load
+  , Backend* backend)
     : max_machine_reg_(max_machine_reg)
-    , register_usage_(0){
+    , register_usage_(0)
+    , callback_load_(callback_load)
+    , backend_(backend){
     reg_desc_.resize(max_machine_reg_);
   }
   
@@ -91,13 +87,13 @@ public:
     UsageShared(ms1);
     UsageShared(ms2);
     UsageNewValue(md);
-//     Dump();
+    Dump();
   }  
   
   void GetRegStore(RegMap& ms, RegMap& md){
     GetReg(ms);
     UsageBackToMem(ms, md);
-//     Dump();
+    Dump();
   }
   
   //returns true if ms was not already on a register (thus load needs to happen)
@@ -107,12 +103,19 @@ public:
       md.mreg_ = ms.mreg_;
       UsageShared(ms);
       UsageCopy(md);
-//       Dump();
+      Dump();
       return false;
     }
-//     GetReg(md);
-//     UsageNewValue(md);
-//     UsageShared(ms);
+//     
+//     
+//     
+    GetReg(md);
+    UsageNewValue(md);
+    ms.mreg_ = md.mreg_;
+    UsageShared(ms);
+    //std::invoke(backend_, callback_load_, md.mreg_, mem_addr_of_reg_sym_id_.at() );
+    (backend_->*callback_load_)(md.mreg_, mem_addr_of_reg_sym_id_.at(ms.regsymb_));
+    Dump();
     return true;
   }  
   
@@ -160,6 +163,10 @@ private:
   std::map<RegSym, IR::MemAddr>       mem_addr_of_reg_sym_id_;  //only for debug
   RegSym      id_free_for_mem_addr_;
   RegSym      max_ir_registers_;
+  
+  //Callbacks to the backed
+  IssueLoad callback_load_;
+  Backend*  backend_;
   
   RegSym RegSymId(const IR::MemAddr addr){
     auto it = reg_sym_id_of_mem_addr_.find(addr);

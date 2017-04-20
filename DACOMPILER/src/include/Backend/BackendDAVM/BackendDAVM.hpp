@@ -6,6 +6,7 @@
 #include "Function.hpp"
 #include "IR/IRVisitor.hpp"
 #include "Backend/RegisterAllocator.hpp"
+#include "Backend/BackendCallbacks.hpp"
 #include "Backend/BackendDAVM/MemAllocator.hpp"
 #include "Backend/BackendDAVM/TargetDefDAVM.hpp"
 
@@ -22,7 +23,9 @@ public:
 
   BackendDAVM(CompilationUnit& unit, IR::IRUnit& ir_unit)
   : Backend(unit, ir_unit, TargetDefDAVM())
-  , reg_alloc_(TargetDefDAVM().NumRegisters())
+  , reg_alloc_( TargetDefDAVM().NumRegisters()
+              , &Backend::LoadCallBack
+              , this)
   , mem_alloc_()
   , backpatch_free_id_(0){}
 
@@ -33,6 +36,10 @@ public:
     
     std::cout << "---------\nBytecode:\n";
     VM::VMUtils::print(byte_code_);
+  }
+  
+  void LoadCallBack(const MReg r, const IR::MemAddr addr) override {
+    std::cout << "Load callback\n";
   }
   
   VM::ByteCode& GetByteCode() noexcept { return byte_code_; }
@@ -77,12 +84,12 @@ private:
   }
   
   void Visit(const IR::Inst::Load& inst) override{
-    std::cout << inst.str() << "\n";
+    std::cout << inst.str() << " **\n";
     RegMap rd = reg_alloc_.IRReg    (inst.RegDst());
     RegMap rs = reg_alloc_.IRMemAddr(inst.Addr());
     reg_alloc_.GetRegLoad(rd, rs);
     //TODO:issue load if rs is not in register
-    
+    reg_alloc_.Dump();
   }
   void Visit(const IR::Inst::LoadReg& inst) override{
     std::cout << inst.str() << " !!!LoadReg\n";

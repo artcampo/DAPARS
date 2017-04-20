@@ -2,7 +2,7 @@
 #include "CompilationUnit.hpp"
 #include "IR/IRUnit.hpp"
 #include "Backend/TargetDefinition.hpp"
-//#include "AST/AST.hpp"
+#include "Backend/RegMap.hpp"
 #include <map>
 #include <memory>
 
@@ -16,6 +16,7 @@ public:
   Backend(CompilationUnit& unit, IR::IRUnit& ir_unit, TargetDefinition&& target_definition)
   : unit_(unit), ir_unit_(ir_unit), target_definition_(target_definition){}
 
+  virtual void LoadCallBack(const MReg r, const IR::MemAddr addr) = 0;
 protected:
   CompilationUnit&  unit_;
   IR::IRUnit&       ir_unit_;
