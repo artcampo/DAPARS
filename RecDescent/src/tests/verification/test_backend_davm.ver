@@ -50,6 +50,7 @@ call [LT entry_f:0 ()]
 store %3 to [LT MainDS:0 (a)]
 ReturnMain
 %0 = Load [RT arp_f:-2 (p)]
+SetRetVal( %0) !!!
 Return !!!
 ---------
 Bytecode:

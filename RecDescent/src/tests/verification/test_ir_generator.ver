@@ -257,7 +257,8 @@ LT entry_f
 0: %0 = Load [RT arp_f:-2 (p1)]
 1: store %0 to [RT arp_f:0 (a)]
 2: %2 = Load [RT arp_f:0 (a)]
-3: Return
+3: SetRetVal( %2)
+4: Return
 
 ---------------------------------------------------
 Parsing: "class O1{int a_; int b_; int f(){return a_ + g();} int g(){return b_;} }void main(){O1 inst; int a; a = inst.f() + inst.a_;}"
@@ -316,10 +317,12 @@ LT entry_O1::f
 3: call [LT entry_O1::g:0 ()]
 4: %2 = GetRetVal()
 5: %3 = %0 + %2
-6: Return
+6: SetRetVal( %3)
+7: Return
 LT entry_O1::g
 0: %0 = Load [RT this_O1:1 (b_)]
-1: Return
+1: SetRetVal( %0)
+2: Return
 LT entry_main
 0: %0 = PtrElem( LT MainDS:0 (inst))
 1: SetPar( %0)
@@ -400,13 +403,16 @@ Declaration Table:
 IR dump:
 LT entry_A::fa
 0: %0 = LoadI(1)
-1: Return
+1: SetRetVal( %0)
+2: Return
 LT entry_B::fb
 0: %0 = LoadI(1)
-1: Return
+1: SetRetVal( %0)
+2: Return
 LT entry_C::fc
 0: %0 = LoadI(1)
-1: Return
+1: SetRetVal( %0)
+2: Return
 LT entry_main
 0: %0 = PtrElem( LT MainDS:0 (inst))
 1: SetPar( %0)
@@ -562,25 +568,32 @@ Declaration Table:
 IR dump:
 LT entry_A::fa
 0: %0 = LoadI(1)
-1: Return
+1: SetRetVal( %0)
+2: Return
 LT entry_B::fb
 0: %0 = LoadI(1)
-1: Return
+1: SetRetVal( %0)
+2: Return
 LT entry_C::fc
 0: %0 = LoadI(1)
-1: Return
+1: SetRetVal( %0)
+2: Return
 LT entry_D::fd
 0: %0 = LoadI(1)
-1: Return
+1: SetRetVal( %0)
+2: Return
 LT entry_E::fe
 0: %0 = LoadI(1)
-1: Return
+1: SetRetVal( %0)
+2: Return
 LT entry_F::ff
 0: %0 = LoadI(1)
-1: Return
+1: SetRetVal( %0)
+2: Return
 LT entry_G::fg
 0: %0 = LoadI(1)
-1: Return
+1: SetRetVal( %0)
+2: Return
 LT entry_main
 0: %0 = PtrElem( LT MainDS:0 (inst))
 1: %1 = LoadI(0)

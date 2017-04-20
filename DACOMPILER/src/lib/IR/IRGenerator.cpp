@@ -272,12 +272,14 @@ void IRGenerator::Visit(FuncCall& p, const Node* successor){
 //   Var* e_var  = dynamic_cast<Var*>(e);
 //   if(e_var) a = MemAddr(unit_.GetFunc(e_var->Name()).EntryLabel(), 0);
   CurrentStream().AppendCall(a);
+
 }
 
 /////////////////////////////////////////////////////////////////////////////
 void IRGenerator::Visit(FuncRet& p, const Node* successor){
   is_member_call_inht_ = unit_.IsMemberVar(p);
   p.GetCall().Accept(*this, successor);
+//   std::cout << p.str() << " - " << p.GetType().str()<<"\n";
   if( p.GetType() != unit_.GetTypeVoid() ){
     const IR::Reg r_dst = CurrentStream().AppendGetRetVal();
     reg_dst_of_expr_[&p] = r_dst;
@@ -287,6 +289,11 @@ void IRGenerator::Visit(FuncRet& p, const Node* successor){
 /////////////////////////////////////////////////////////////////////////////
 void IRGenerator::Visit(ReturnStmt const& p, const Node* successor){
    p.RetExpr().Accept(*this, successor);
+   
+   if( unit_.GetTypeOfNode(p.RetExpr()) != unit_.GetTypeVoid() ){
+    const IR::Reg r_src = reg_dst_of_expr_[&p.RetExpr()];
+    CurrentStream().AppendSetRetVal(r_src); 
+   }     
 }
 
 
