@@ -43,18 +43,16 @@ bool checkIRCodification(){
 }
 
 
-uint32_t Move (const Reg &reg_src, const Reg &reg_dst){
-  return IR_NOT_IMPL;
-}//TODO
 
-Inst Call(const Target& target){
-  return IR_NOT_IMPL;
-}//TODO
 
 ////////////////////////////////////////////////////////////////////////
 //CLASS 0
 Inst Jump(const Target& target){
   return CodeClass0(target, IR_JMP);
+}
+
+Inst Call(const Target& target){
+  return CodeClass0(target, IR_CALL);
 }
 
 Inst NewVar(const TypeId &type_literal){
@@ -94,11 +92,18 @@ uint32_t Comp(const uint32_t&reg_src1, const uint32_t&reg_src2,
   return CodeClass3(reg_src1, reg_src2, reg_dst, IR_CMP, op);
 }
 
+uint32_t Move (const Reg &reg_src, const Reg &reg_dst){
+  return CodeClass3(reg_src, IR_REG0, reg_dst, IR_ARI, SubtypesArithmetic::IR_MOV);
+}
 
 
+///////////////////////////////
+//TODO
 Inst NewTypeId(const Reg&reg_src1, const Reg&reg_src2){
   return IR_NOT_IMPL;
 }
+//end TODO
+///////////////////////////////
 
 
 

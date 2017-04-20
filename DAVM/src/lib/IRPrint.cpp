@@ -22,7 +22,7 @@ std::string PrintInstruction(const uint32_t& instruction){
 //   std::cout << "Op: " << current_op_code <<"\n";
   //Decode operans
   switch(current_class){
-    case InstClassNoReg:
+    case InstClassLit:
       DecodeClass0(instruction, literal);  break;
     case InstClassRegLit:
       DecodeClass1(instruction, reg_dst, literal);  break;
@@ -48,6 +48,9 @@ std::string PrintInstruction(const uint32_t& instruction){
     case IR_JMP:
       s = string("JUMP: @") + to_string(literal);
       break;
+    case IR_CALL:
+      s = string("CALL: @") + to_string(literal);
+      break;      
     case IR_NEW_VAR:
       s = string("NEWVAR: TypeId") + to_string(literal);
       break;

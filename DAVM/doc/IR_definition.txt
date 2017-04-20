@@ -20,5 +20,21 @@ ret
 
 subtypes 
 comparison: ==, !=, <, !
-arith: +,-,/,*
+arith: +,-,/,*,move
+
+The mapping of those fields to a 32 bit word is as follows:
+
+0 -----------LLLLLLLLLLLLLLLLTTTCC
+1 --------LLLLLLLLLLLLLLLLRRRRTTCC
+2 ------LLLLLLLLLLLLLLLLRRRRSSSTCC
+3 ---------------RRRRRRRRRRRRSSTCC
+  !---!---!---!---!---!---!---!---
+
+where:
+- C, Class
+- T, type of instruction (C+T = Opcode)
+- S, subtype of instruction (in which case S+C+T = Opcode)
+- R, Register
+- L, Literal
+
 

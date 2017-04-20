@@ -5,11 +5,11 @@ namespace IRDefinition{
 
 
 enum InstClasses{
-    InstClassNoReg        = 0
+    InstClassLit          = 0
   , InstClassRegLit       = 1
   , InstClassRegLitSub    = 2
   , InstClassRegRegRegSub = 3
-  , NumBits = 2
+  , NumBits = 2//TODO: del?
 };
 
 enum IRClass0{
@@ -17,13 +17,13 @@ enum IRClass0{
   , IR_CID_STOP = 1
   , IR_CID_NOT_IMPL = 2
   , IR_CID_JMP = 3
-  , IR_CID_NEW_VAR = 4
+  , IR_CID_CALL = 4
+  , IR_CID_NEW_VAR = 5
 };
 
 enum IRClass1{
     IR_CID_LOAD  = 0
-  , IR_CID_CALL  = 1
-  , IR_CID_STORE = 2
+  , IR_CID_STORE = 1
 };
 
 enum IRClass2{
@@ -48,7 +48,8 @@ const static int kClassNumBits    = 2;
   const static int kClass3OpcodeNumBits = kClassNumBits + kClass3InstTypeNumBits;
 const static int kRegisterNumBits = 4;
 const static int kLiteralNumBits  = 16;
-const static int kSubtypeNumBits  = 2;
+const static int kSubtypeNumBits = 3;
+
 
 const static int kClassBitMask =     (1 << kClassNumBits) - 1;
   const static int kClass0BitMask =  (1 << kClass0InstTypeNumBits) - 1;
@@ -60,23 +61,23 @@ const static int kClassBitMask =     (1 << kClassNumBits) - 1;
   const static int kClass2OpcodeBitMask =  (1 << kClass2OpcodeNumBits) - 1;
   const static int kClass3OpcodeBitMask =  (1 << kClass3OpcodeNumBits) - 1;
 const static int kRegistertMask =    (1 << kRegisterNumBits) - 1;
-const static int kLiteraltMask  =    (1 << kLiteralNumBits) - 1;
+const static int kLiteraltMask  =    (1 << kLiteralNumBits)  - 1;
 const static int kSubtypeMask   =    (1 << kSubtypeNumBits) - 1;
 
 
 // namespace OpCodes{
 enum IRCodf {
   //Class 0
-  IR_NOP      = InstClassNoReg + (IR_CID_NOP      << kClassNumBits),
-  IR_STOP     = InstClassNoReg + (IR_CID_STOP     << kClassNumBits),
-  IR_NOT_IMPL = InstClassNoReg + (IR_CID_NOT_IMPL << kClassNumBits),
-  IR_JMP      = InstClassNoReg + (IR_CID_JMP      << kClassNumBits),
-  IR_NEW_VAR  = InstClassNoReg + (IR_CID_NEW_VAR  << kClassNumBits),
+  IR_NOP      = InstClassLit + (IR_CID_NOP      << kClassNumBits),
+  IR_STOP     = InstClassLit + (IR_CID_STOP     << kClassNumBits),
+  IR_NOT_IMPL = InstClassLit + (IR_CID_NOT_IMPL << kClassNumBits),
+  IR_JMP      = InstClassLit + (IR_CID_JMP      << kClassNumBits),
+  IR_CALL     = InstClassLit + (IR_CID_CALL     << kClassNumBits),
+  IR_NEW_VAR  = InstClassLit + (IR_CID_NEW_VAR  << kClassNumBits),
 
   //Class 1
 
   IR_LOAD  = InstClassRegLit + (IR_CID_LOAD  << kClassNumBits),
-  IR_CALL  = InstClassRegLit + (IR_CID_CALL  << kClassNumBits),
   IR_STORE = InstClassRegLit + (IR_CID_STORE << kClassNumBits),
 
   //Class 2
@@ -94,7 +95,8 @@ enum IRSubtypesArithmetic{
   IR_ADD = 0,
   IR_SUB = 1,
   IR_MUL = 2,
-  IR_DIV = 3
+  IR_DIV = 3,
+  IR_MOV = 4,
 };
 };
 

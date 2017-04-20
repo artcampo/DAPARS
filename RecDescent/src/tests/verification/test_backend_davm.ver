@@ -55,7 +55,7 @@ Return !!!
 Bytecode:
 LOAD, r0 val: 1
 STORE, r0 to [@0]
-[Not implemented]
+CALL: @0
 STORE, r1 to [@0]
 STOP
 Static data segment size: 1

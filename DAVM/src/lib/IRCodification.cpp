@@ -15,7 +15,7 @@ uint32_t  DecodeClass (uint32_t const &instruction){
 
 
 uint32_t  DecodeType (uint32_t const &instruction, uint32_t const &inst_class){
-  if( inst_class == InstClassNoReg )
+  if( inst_class == InstClassLit )
     return (instruction >> kClassNumBits) & kClass0BitMask;
   else if( inst_class == InstClassRegLit )
     return (instruction >> kClassNumBits) & kClass1BitMask;
