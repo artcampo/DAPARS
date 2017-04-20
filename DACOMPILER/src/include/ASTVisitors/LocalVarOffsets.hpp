@@ -28,13 +28,23 @@ public:
     IR::AddrOffset k = p.NumPars() - 1;
     IR::AddrOffset i = 0;
     //for(auto& it = p.ParBegin(), end = p.ParEnd(); it != end; ++it){
+    int arg_position = 0;
     for(auto& it : p.ParList()){
       Symbols::Symbol& s = func_.GetSymbolDecl(*it);
       auto size = s.Size();
-      IR::AddrOffset offset    = -2 - (k - i);
-      func_.StoreSymbolAddress( s.Id(), IR::Offset(offset, s.BareName())
-                              , func_.LocalsLabel(), size, func_.Params());
-//       std::cout << s.str() << " to offset: " << offset << std::endl;
+//       if(arg_position < IR::kNumArgsInRegister){
+      if(false){
+        IR::AddrOffset offset = arg_position;
+        func_.StoreSymbolAddress( s.Id(), IR::Offset(offset, s.BareName())
+                                , unit_.GetLabelArgumentInReg(), size, func_.Params());
+      }else{
+        //IR::AddrOffset offset    = 2 + (k - 1 - i);
+        IR::AddrOffset offset    = -2 - (k - i);
+        func_.StoreSymbolAddress( s.Id(), IR::Offset(offset, s.BareName())
+                                , func_.LocalsLabel(), size, func_.Params());
+        //std::cout << s.str() << " to offset: " << offset << std::endl;
+      }
+      ++arg_position;
     }
     
     

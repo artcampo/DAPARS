@@ -19,15 +19,18 @@ struct Label{
   ~Label() = default;
 
   const bool operator<  ( const Label &rhs ) const{ return id_ < rhs.id_; }  
-  const bool operator== ( const Label &rhs ) const{ return id_ == rhs.id_; }  
+  const bool operator== ( const Label &rhs ) const{ return id_ == rhs.id_; }    
 
   static Label LabelLT(const LabelId id, std::string name){
     return Label(id, name, false);
   }
 
-
   static Label LabelRT(const LabelId id, std::string name){
     return Label(id, name, true);
+  }
+  
+  //Label for an argument that is mapped to a register instead of stack
+  static Label LabelArgReg(const LabelId id, std::string name){
   }
 
   const LabelId Id() const noexcept{ return id_;}

@@ -223,10 +223,14 @@ void IRGenerator::Visit(Var const& p, const Node* successor){
     o = class_inht_->MemberVarOffset(sid);
     a = MemAddr(class_label_inht_, o);
   }else{
-    o = unit_.LocalVarOffset(p);
-    a = MemAddr(local_label_inht_, o);
+    a = unit_.LocalVarMemAddr(p);
   }
 
+  
+//   const IR::Reg r_dst   = CurrentStream().AppendGetArg(a);
+//   reg_dst_of_expr_[&p]  = r_dst;
+  
+  //regular memory access
   if(unit_.IsRead(p)){
     //Var, Read
     if(unit_.IsValueAccess(p)){

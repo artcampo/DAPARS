@@ -19,8 +19,8 @@ public:
     total_size_  += size;
   }
   
-  IR::Offset Offset(Symbols::SymbolId id) const{
-    return offsets_.at(id).GetOffset();
+  IR::MemAddr GetMemAddr(Symbols::SymbolId id) const{
+    return offsets_.at(id);
   }  
   
   size_t Size() const noexcept{ return total_size_; }

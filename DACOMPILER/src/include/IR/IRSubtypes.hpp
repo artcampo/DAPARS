@@ -8,6 +8,8 @@ using AddrOffset  = int;
 using Addr        = size_t;
 using Reg         = size_t;
 
+const static int kNumArgsInRegister = 1;
+
 enum class ArithType{
     kAdd = 0
   , kSub = 1

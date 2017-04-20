@@ -86,8 +86,8 @@ public:
     module_offset_table_.StoreOffset(id, o, l, size);
   }
 
-  IR::Offset LocalVarOffset(Symbols::SymbolId id) const{
-    return locals_offset_table_.Offset(id);
+  IR::MemAddr LocalVarMemAddr(Symbols::SymbolId id) const{
+    return locals_offset_table_.GetMemAddr(id);
   }
   
 

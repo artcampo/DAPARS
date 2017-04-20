@@ -11,8 +11,8 @@ namespace IR{
 
 struct MemAddr{
   MemAddr() = default;
-  MemAddr(const Label l, const Offset o)
-    : l_(l), o_(o){}
+  MemAddr(const Label l, const Offset o, const bool in_register = false)
+    : l_(l), o_(o), in_register_(in_register){}
 
 //   std::string str() const noexcept {return l_.str() + o_.str;}
   std::string str() const noexcept {return l_.str() + ":"+ o_.str();}
@@ -26,9 +26,12 @@ struct MemAddr{
   const Offset  GetOffset() const noexcept { return o_;}
   Label  GetLabel() noexcept { return l_;}
   const Label  GetLabel() const noexcept { return l_;}  
+  
+  bool ResidesInRegister() const noexcept { return in_register_;}  
 private:
   Label   l_;
   Offset  o_;
+  bool    in_register_;
 };
 
 

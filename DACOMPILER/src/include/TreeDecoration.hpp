@@ -62,8 +62,8 @@ public:
     return *lscope_of_node_[&n];
   }    
 
-  IR::Offset LocalVarOffset(const Var& n) const{
-    return module_offset_table_.Offset(n.Id());
+  IR::MemAddr LocalVarMemAddr(const Var& n) const{
+    return module_offset_table_.GetMemAddr(n.Id());
   }
 
   bool HasReadWrite(const Node& n) const{

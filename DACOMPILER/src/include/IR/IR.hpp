@@ -64,7 +64,7 @@ protected:
 };
 
 struct InstVal{
-  InstVal( const NodeValue val) : val_(val){};
+  InstVal(const NodeValue val) : val_(val){};
   ~InstVal() = default;
 
   NodeValue Value() const noexcept { return val_;}

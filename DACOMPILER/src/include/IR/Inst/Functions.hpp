@@ -39,6 +39,19 @@ struct SetPar : public Inst, public InstSrc{
 };
 
 
+struct GetArg : public Inst, public InstDst, public InstVal{
+  GetArg(const Reg dst, const NodeValue val) : InstDst(dst), InstVal(val){};
+  virtual ~GetArg() = default;
+
+  virtual std::string str() const noexcept{
+    return "%" + std::to_string(dst_) + "GetArg( arg" + std::to_string(val_) + " )";
+  }
+  
+  void Accept(IRVisitor& v) override { v.Visit(*this); }
+};
+
+
+
 struct Return : public Inst{
   Return(): Inst(){};
   virtual ~Return() = default;
