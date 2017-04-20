@@ -19,6 +19,7 @@ enum IRClass0{
   , IR_CID_JMP = 3
   , IR_CID_CALL = 4
   , IR_CID_NEW_VAR = 5
+  , IR_CID_RET = 6
 };
 
 enum IRClass1{
@@ -74,6 +75,7 @@ enum IRCodf {
   IR_JMP      = InstClassLit + (IR_CID_JMP      << kClassNumBits),
   IR_CALL     = InstClassLit + (IR_CID_CALL     << kClassNumBits),
   IR_NEW_VAR  = InstClassLit + (IR_CID_NEW_VAR  << kClassNumBits),
+  IR_RET      = InstClassLit + (IR_CID_RET      << kClassNumBits),
 
   //Class 1
 

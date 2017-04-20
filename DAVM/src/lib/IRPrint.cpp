@@ -54,6 +54,10 @@ std::string PrintInstruction(const uint32_t& instruction){
     case IR_NEW_VAR:
       s = string("NEWVAR: TypeId") + to_string(literal);
       break;
+    case IR_RET:
+      s = string("RETURN");
+      break;      
+      
 
     //Class 1
     case IR_LOAD:

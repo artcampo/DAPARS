@@ -16,17 +16,18 @@ std::string PrintInstruction(const uint32_t& instruction);
 
 
 
-uint32_t Stop();
-uint32_t Load (const Reg &reg_dst, const uint32_t& literal);  //TODO
-uint32_t Store(const Reg &reg_src, const uint32_t& literal);  //TODO
-uint32_t Move (const Reg &reg_src, const Reg &reg_dst);       //TODO
+Inst Stop();
+Inst Load (const Reg &reg_dst, const uint32_t& literal);  //TODO
+Inst Store(const Reg &reg_src, const uint32_t& literal);  //TODO
+Inst Move (const Reg &reg_src, const Reg &reg_dst);       //TODO
 Inst Call(const Target& target);//TODO
+Inst Return();
 
 //
-uint32_t Arith(const Reg &reg_src1, const Reg &reg_src2,
+Inst Arith(const Reg &reg_src1, const Reg &reg_src2,
                const Reg &reg_dst, const uint32_t& op);
 
-uint32_t Comp(const Reg &reg_src1, const Reg &reg_src2,
+Inst Comp(const Reg &reg_src1, const Reg &reg_src2,
                const Reg &reg_dst, const uint32_t& op);
 
 Inst Comp(const Reg &reg_src1, const Reg &reg_src2,

@@ -59,13 +59,17 @@ Inst NewVar(const TypeId &type_literal){
   return CodeClass0(type_literal, IR_NEW_VAR);
 }
 
+Inst Return(){
+  return CodeClass0(0, IR_RET);
+}
+
 ////////////////////////////////////////////////////////////////////////
 //CLASS 1
-uint32_t Load(const uint32_t&reg_dst, const uint32_t& literal){
+Inst Load(const uint32_t&reg_dst, const uint32_t& literal){
   return CodeClass1(reg_dst, literal, IR_LOAD);
 }
 
-uint32_t Store(const Reg &reg_src, const uint32_t& literal){
+Inst Store(const Reg &reg_src, const uint32_t& literal){
   return CodeClass1(reg_src, literal, IR_STORE);
 }
 
@@ -82,17 +86,17 @@ Inst JumpIfFalse (const Reg&reg_src1, const Target& target){
 
 ////////////////////////////////////////////////////////////////////////
 //CLASS 3
-uint32_t Arith(const uint32_t&reg_src1, const uint32_t&reg_src2,
+Inst Arith(const uint32_t&reg_src1, const uint32_t&reg_src2,
                const uint32_t&reg_dst, const uint32_t&op){
   return CodeClass3(reg_src1, reg_src2, reg_dst, IR_ARI, op);
 }
 
-uint32_t Comp(const uint32_t&reg_src1, const uint32_t&reg_src2,
+Inst Comp(const uint32_t&reg_src1, const uint32_t&reg_src2,
                const uint32_t&reg_dst, const uint32_t&op){
   return CodeClass3(reg_src1, reg_src2, reg_dst, IR_CMP, op);
 }
 
-uint32_t Move (const Reg &reg_src, const Reg &reg_dst){
+Inst Move (const Reg &reg_src, const Reg &reg_dst){
   return CodeClass3(reg_src, IR_REG0, reg_dst, IR_ARI, SubtypesArithmetic::IR_MOV);
 }
 
@@ -120,23 +124,23 @@ void PatchJump(Inst& inst, const Target& target){
 namespace IRBuilderAPI{
 using namespace SubtypesArithmetic;
 
-uint32_t Add(const uint32_t&reg_src1, const uint32_t&reg_src2,
+Inst Add(const uint32_t&reg_src1, const uint32_t&reg_src2,
              const uint32_t&reg_dst){
   return CodeClass3(reg_src1, reg_src2, reg_dst, IR_ARI, IR_ADD);
 }
 
-uint32_t Sub(const uint32_t&reg_src1, const uint32_t&reg_src2,
+Inst Sub(const uint32_t&reg_src1, const uint32_t&reg_src2,
              const uint32_t&reg_dst){
   return CodeClass3(reg_src1, reg_src2, reg_dst, IR_ARI, IR_SUB);
 }
 
-uint32_t Mul(const uint32_t&reg_src1, const uint32_t&reg_src2,
+Inst Mul(const uint32_t&reg_src1, const uint32_t&reg_src2,
              const uint32_t&reg_dst){
   return CodeClass3(reg_src1, reg_src2, reg_dst, IR_ARI, IR_MUL);
 }
 
 
-uint32_t Div(const uint32_t&reg_src1, const uint32_t&reg_src2,
+Inst Div(const uint32_t&reg_src1, const uint32_t&reg_src2,
              const uint32_t&reg_dst){
   return CodeClass3(reg_src1, reg_src2, reg_dst, IR_ARI, IR_DIV);
 }

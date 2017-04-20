@@ -51,7 +51,7 @@ store %3 to [LT MainDS:0 (a)]
 ReturnMain
 %0 = Load [RT arp_f:-2 (p)]
 SetRetVal( %0) !!!
-Return !!!
+Return
 ---------
 Bytecode:
 LOAD, r0 val: 1
@@ -59,5 +59,6 @@ STORE, r0 to [@0]
 CALL: @0
 STORE, r1 to [@0]
 STOP
+RETURN
 Static data segment size: 1
 
