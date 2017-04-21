@@ -24,7 +24,7 @@ bool checkIRCodification(){
  //Class 1
   wellFormed &= ( kClassNumBits
                 + kClass1InstTypeNumBits
-                + kRegisterNumBits
+                + kRegisterNumBits*2
                 + kLiteralNumBits) <= 32;
 
  //Class 2
@@ -66,11 +66,19 @@ Inst Return(){
 ////////////////////////////////////////////////////////////////////////
 //CLASS 1
 Inst Load(const uint32_t&reg_dst, const uint32_t& literal){
-  return CodeClass1(reg_dst, literal, IR_LOAD);
+  return CodeClass1(reg_dst, 0, literal, IR_LOAD);
+}
+
+Inst LoadB(const uint32_t&reg_dst, const uint32_t&reg_base, const uint32_t& literal){
+  return CodeClass1(reg_dst, reg_base, literal, IR_LOADB);
 }
 
 Inst Store(const Reg &reg_src, const uint32_t& literal){
-  return CodeClass1(reg_src, literal, IR_STORE);
+  return CodeClass1(reg_src, 0, literal, IR_STORE);
+}
+
+Inst StoreB(const Reg &reg_src, const uint32_t&reg_base, const uint32_t& literal){
+  return CodeClass1(reg_src, reg_base, literal, IR_STOREB);
 }
 
 

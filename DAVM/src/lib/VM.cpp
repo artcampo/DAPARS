@@ -27,7 +27,7 @@ bool VirtualMachine::ExecProcess(){
       uint32_t const current_class        = DecodeClass(current_instruction);
       uint32_t const current_type         = DecodeType(current_instruction, current_class);
       uint32_t const current_op_code      = DecodeOpCode(current_class, current_type);
-      uint32_t reg_src1, reg_src2, reg_dst, sub_type, literal, op_offset;
+      uint32_t reg_src1, reg_src2, reg_dst,reg_base, sub_type, literal, op_offset;
 
       if (current_op_code == IR_STOP){
         std::cout << "STOP\n";
@@ -50,7 +50,7 @@ bool VirtualMachine::ExecProcess(){
 
           ////////////////////////////////////////////////////////////
           case InstClassRegLit:
-            DecodeClass1(current_instruction, reg_dst, literal);
+            DecodeClass1(current_instruction, reg_dst, reg_base, literal);
             switch(current_op_code){
               case IR_LOAD: InstLoad(reg_dst, literal); break;
               default:      error_log_->errors.push_back(

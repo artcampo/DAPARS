@@ -35,11 +35,12 @@ VM::Inst CodeClass0(uint32_t const& literal, const uint32_t &type){
     + (literal << kClass0OpcodeNumBits);
 }
 
-VM::Inst CodeClass1(uint32_t const &reg_dst, uint32_t const& literal,
-                    uint32_t const &type){
+VM::Inst CodeClass1(uint32_t const &reg_dst, const uint32_t&reg_base,
+                    uint32_t const& literal, uint32_t const &type){
   return type
-    + (reg_dst << (kClass1OpcodeNumBits))
-    + (literal << (kClass1OpcodeNumBits+ kRegisterNumBits));
+    + (reg_dst  << (kClass1OpcodeNumBits))
+    + (reg_base << (kClass1OpcodeNumBits + kRegisterNumBits));
+    + (literal  << (kClass1OpcodeNumBits + kRegisterNumBits*2));
 }
 
 VM::Inst CodeClass2(uint32_t const &reg_dst, uint32_t const& literal,
@@ -68,11 +69,13 @@ void DecodeClass0(const VM::Inst instruction, uint32_t& literal){
             & kLiteraltMask;
 }
 
-void DecodeClass1(const VM::Inst instruction, uint32_t &reg_dst,
-                uint32_t &literal){
+void DecodeClass1(const VM::Inst instruction, uint32_t&reg_base,
+                  uint32_t &reg_dst, uint32_t &literal){
   reg_dst = (instruction >> kClass1OpcodeNumBits)
             & kRegistertMask;
-  literal = (instruction >> (kClass1OpcodeNumBits + kRegisterNumBits))
+  reg_base = (instruction >> (kClass1OpcodeNumBits + kRegisterNumBits))
+            & kRegistertMask;         
+  literal = (instruction >> (kClass1OpcodeNumBits + kRegisterNumBits*2))
             & kLiteraltMask;
 }
 

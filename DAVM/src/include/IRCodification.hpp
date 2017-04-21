@@ -13,10 +13,10 @@ uint32_t  DecodeOpCode(const uint32_t &inst_class, const uint32_t &inst_type);
 VM::Inst CodeClass0(uint32_t const& literal, const uint32_t &type);
 void DecodeClass0(const VM::Inst instruction, uint32_t& literal);
 
-VM::Inst CodeClass1(const uint32_t &reg_dst, uint32_t const& literal,
-                    const uint32_t &type);
-void DecodeClass1(const VM::Inst instruction, uint32_t& reg_dst,
-                uint32_t& literal);
+VM::Inst CodeClass1(const uint32_t &reg_dst, const uint32_t&reg_base,
+                    uint32_t const& literal, const uint32_t &type);
+void DecodeClass1(const VM::Inst instruction, uint32_t&reg_base,
+                  uint32_t& reg_dst,uint32_t& literal);
 
 VM::Inst CodeClass2(const uint32_t &reg_dst, uint32_t const& literal,
                     const uint32_t &type, const uint32_t &subtype);

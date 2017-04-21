@@ -16,7 +16,7 @@ std::string PrintInstruction(const uint32_t& instruction){
   const uint32_t current_class   = DecodeClass(instruction);
   const uint32_t current_type    = DecodeType(instruction, current_class);
   const uint32_t current_op_code = DecodeOpCode(current_class, current_type);
-  uint32_t reg_src1, reg_src2, reg_dst, sub_type, literal, op_offset;
+  uint32_t reg_src1, reg_src2, reg_dst, reg_base, sub_type, literal, op_offset;
   std::string s;
 
 //   std::cout << "Op: " << current_op_code <<"\n";
@@ -25,7 +25,7 @@ std::string PrintInstruction(const uint32_t& instruction){
     case InstClassLit:
       DecodeClass0(instruction, literal);  break;
     case InstClassRegLit:
-      DecodeClass1(instruction, reg_dst, literal);  break;
+      DecodeClass1(instruction, reg_dst, reg_base, literal);  break;
     case InstClassRegLitSub:
       DecodeClass2(instruction, reg_dst, literal, sub_type);  break;
     case InstClassRegRegRegSub:
@@ -68,6 +68,14 @@ std::string PrintInstruction(const uint32_t& instruction){
       s = string("STORE, r") + to_string(reg_dst) + " to [@" +
           to_string(literal) + "]";
       break;
+    case IR_LOADB:
+      s = string("LOAD, r") + to_string(reg_dst) + " [@ " +
+          "r" + to_string(reg_base) + " + " + to_string(literal) + "]";
+      break;
+    case IR_STOREB:  
+      s = string("STORE, r") + to_string(reg_dst) + " to [@" +
+          "r" + to_string(reg_base) + " + " + to_string(literal) + "]";
+      break;      
 
     //Class 2
     case IR_JMPC:

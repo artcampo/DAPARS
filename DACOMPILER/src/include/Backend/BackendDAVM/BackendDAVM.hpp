@@ -4,6 +4,7 @@
 #include "Utils.hpp"  //move to VM/
 #include "IRBuilder.hpp"
 #include "Function.hpp"
+#include "IR/Label.hpp"
 #include "IR/IRVisitor.hpp"
 #include "Backend/RegisterAllocator.hpp"
 #include "Backend/BackendCallbacks.hpp"
@@ -40,6 +41,10 @@ public:
   
   void LoadCallBack(const MReg r, const IR::MemAddr addr) override {
     std::cout << "Load callback\n";
+    if(addr.GetLabel().IsRunTime()){
+      //if(addr.GetLabel().
+      byte_code_.Append( VM::IRBuilder::LoadB(rd.mreg_, addr.GetOffset().GetAddr()));
+    }
   }
   
   VM::ByteCode& GetByteCode() noexcept { return byte_code_; }

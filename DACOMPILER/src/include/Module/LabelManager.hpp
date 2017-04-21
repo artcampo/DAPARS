@@ -30,17 +30,20 @@ public:
   const IR::Label NewFunctionEntryLabel(std::string function_name) noexcept{
     IR::LabelId id = RegisterLabelLT("entry_" + function_name);
     entry_label_of_name_[function_name] = id;
+    labels_[id].SetIsTarget();
     return labels_.at(id);
   }
 
   const IR::Label NewFunctionARLabel(std::string function_name) noexcept{
     IR::LabelId id = RegisterLabelRT("arp_" + function_name);
     ar_label_of_name_[function_name] = id;
+    labels_[id].SetIsArp();
     return labels_.at(id);
   }
 
   const IR::Label NewClassThisLabel(std::string class_name) noexcept{
     IR::LabelId id = RegisterLabelRT("this_" + class_name);
+    labels_[id].SetIsThisPtr();
     return labels_.at(id);
   }
 
