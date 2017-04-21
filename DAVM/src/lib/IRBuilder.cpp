@@ -65,8 +65,8 @@ Inst Return(){
 
 ////////////////////////////////////////////////////////////////////////
 //CLASS 1
-Inst Load(const uint32_t&reg_dst, const uint32_t& literal){
-  return CodeClass1(reg_dst, 0, literal, IR_LOAD);
+Inst LoadI(const uint32_t&reg_dst, const uint32_t& literal){
+  return CodeClass1(reg_dst, 0, literal, IR_LOADI);
 }
 
 Inst LoadB(const uint32_t&reg_dst, const uint32_t&reg_base, const uint32_t& literal){

@@ -60,8 +60,8 @@ std::string PrintInstruction(const uint32_t& instruction){
       
 
     //Class 1
-    case IR_LOAD:
-      s = string("LOAD, r") + to_string(reg_dst) + " val: " +
+    case IR_LOADI:
+      s = string("LOADI, r") + to_string(reg_dst) + " val: " +
           to_string(literal);
       break;
     case IR_STORE:  
@@ -69,11 +69,11 @@ std::string PrintInstruction(const uint32_t& instruction){
           to_string(literal) + "]";
       break;
     case IR_LOADB:
-      s = string("LOAD, r") + to_string(reg_dst) + " [@ " +
+      s = string("LOADB, r") + to_string(reg_dst) + " <- [@ " +
           "r" + to_string(reg_base) + " + " + to_string(literal) + "]";
       break;
     case IR_STOREB:  
-      s = string("STORE, r") + to_string(reg_dst) + " to [@" +
+      s = string("STORE, r") + to_string(reg_dst) + " -> [@" +
           "r" + to_string(reg_base) + " + " + to_string(literal) + "]";
       break;      
 

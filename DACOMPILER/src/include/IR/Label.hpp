@@ -30,9 +30,9 @@ struct Label{
     return Label(id, name, true);
   }
 
-  const LabelId Id() const noexcept{ return id_;}
-  bool  IsRunTime()  const noexcept{ return is_rt_or_lt_;}
-  bool  IsLinkTime() const noexcept{ return not is_rt_or_lt_;}
+  const LabelId Id() const noexcept { return id_;}
+  bool  IsRunTime()  const noexcept { return is_rt_or_lt_;}
+  bool  IsLinkTime() const noexcept { return not is_rt_or_lt_;}
   bool  IsTarget()  const noexcept  { return is_target_;}
   bool  IsArp()     const noexcept  { return is_arp_;}
   bool  IsThisPtr() const noexcept  { return is_this_ptr_;}
@@ -41,6 +41,9 @@ struct Label{
     std::string  s;
     if(IsRunTime()) s = "RT "; else s = "LT ";
     s += name_;
+    if(IsTarget()) s+= "[isTarget]";
+    if(IsArp()) s+= "[isArp]";
+    if(IsThisPtr()) s+= "[isThisPtr]";
     return s;
   };
   
@@ -61,7 +64,8 @@ protected:
   bool  is_this_ptr_;  
 
   Label(const LabelId id, const std::string& name, const bool is_rt_or_lt)
-  : id_(id), name_(name), is_rt_or_lt_(is_rt_or_lt){};
+  : id_(id), name_(name), is_rt_or_lt_(is_rt_or_lt), is_target_(false)
+  , is_arp_(false), is_this_ptr_(false){};
 };
 
 

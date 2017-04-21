@@ -31,7 +31,9 @@ public:
   
   MReg MRegRetValue() const noexcept{ return 0; }
   MReg MRegStackPtr() const noexcept{ return max_machine_reg_ - 1; }
-  MReg MRegArpPtr()   const noexcept{ return max_machine_reg_ - 2; }
+  MReg MRegArpPtr()   const noexcept{ 
+    std::cout << "asking arp " << max_machine_reg_ << "\n";
+    return max_machine_reg_ - 2; }
   MReg MRegThisPtr()  const noexcept{ return max_machine_reg_ - 3; }
 
   //Initialize regAllocator for a function given its max_ir_registers
@@ -45,6 +47,7 @@ public:
     id_free_for_mem_addr_     = max_ir_registers;
     max_ir_registers_         = max_ir_registers;
     function_max_machine_reg_ = max_machine_reg_ - function_fixed_usage_machine_reg;
+    register_usage_ = 0;
   }  
   
   //Structure for mappjng an IR register
@@ -71,13 +74,13 @@ public:
   void GetRegRead(RegMap& mapping){
     GetReg(mapping);
     UsageShared(mapping);
-//     Dump();
+    Dump();
   }  
   
   void GetRegLoadI(RegMap& mapping){
     GetReg(mapping);
     UsageShared(mapping);
-//     Dump();
+    Dump();
   }
   
   void GetRegArith(RegMap& md, RegMap& ms1, RegMap& ms2){
@@ -110,6 +113,9 @@ public:
 //     
 //     
     GetReg(md);
+    std::cout << "dest: " << md.mreg_<<"\n";
+    std::cout << "rs: " << md.regsymb_<<"\n";
+    std::cout << "@: " << mem_addr_of_reg_sym_id_.at(ms.regsymb_).str()<<"\n";
     UsageNewValue(md);
     ms.mreg_ = md.mreg_;
     UsageShared(ms);
@@ -118,6 +124,12 @@ public:
     Dump();
     return true;
   }  
+  
+  void SetRegGetArg(RegMap& md){
+    UsageShared(md);
+    ReserveNoFlush(md.mreg_);
+    Dump();
+  }
   
   void Dump(){
     for(int i = 0; i < max_machine_reg_; ++i){
@@ -147,7 +159,7 @@ public:
     else              
       return mem_addr_of_reg_sym_id_[rs].GetOffset().Name() + " ";            
   }
-  
+
 private:
   const int   max_machine_reg_;
   int         register_usage_;
@@ -267,7 +279,15 @@ private:
     for(const auto& regsymb : reg_desc_[mreg])
       addr_desc_[regsymb].erase(mreg);
   }
-
+  
+  //do not allow mreg to be flushed (used for registers that are
+  //not available in memory (args in regs)
+  void ReserveNoFlush(const MReg& mreg){
+    register_usage_++;
+    //TODO
+  }
+  
+  
 };
 
 

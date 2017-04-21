@@ -23,7 +23,7 @@ enum IRClass0{
 };
 
 enum IRClass1{
-    IR_CID_LOAD   = 0
+    IR_CID_LOADI  = 0
   , IR_CID_STORE  = 1
   , IR_CID_LOADB  = 2
   , IR_CID_STOREB = 3
@@ -81,7 +81,7 @@ enum IRCodf {
 
   //Class 1
 
-  IR_LOAD  = InstClassRegLit + (IR_CID_LOAD  << kClassNumBits),
+  IR_LOADI = InstClassRegLit + (IR_CID_LOADI << kClassNumBits),
   IR_STORE = InstClassRegLit + (IR_CID_STORE << kClassNumBits),
   
   IR_LOADB  = InstClassRegLit + (IR_CID_LOADB  << kClassNumBits),

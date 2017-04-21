@@ -39,11 +39,15 @@ public:
     VM::VMUtils::print(byte_code_);
   }
   
-  void LoadCallBack(const MReg r, const IR::MemAddr addr) override {
-    std::cout << "Load callback\n";
+  void LoadCallBack(const MReg reg_dst, const IR::MemAddr addr) override {
+    std::cout << "Load callback\n" << reg_dst <<"\n";
     if(addr.GetLabel().IsRunTime()){
-      //if(addr.GetLabel().
-      byte_code_.Append( VM::IRBuilder::LoadB(rd.mreg_, addr.GetOffset().GetAddr()));
+      MReg reg_base;
+      if(addr.GetLabel().IsArp())     reg_base = reg_alloc_.MRegArpPtr();
+      if(addr.GetLabel().IsThisPtr()) reg_base = reg_alloc_.MRegThisPtr();
+      std::cout << "Base: " << reg_base << addr.GetLabel().str()<<"\n";
+      byte_code_.Append( VM::IRBuilder::LoadB(reg_dst, reg_base, addr.GetOffset().GetAddr()));
+//       std::cout << "loadOff: " << addr.GetOffset().GetAddr() << "\n";
     }
   }
   
@@ -85,7 +89,7 @@ private:
     std::cout << inst.str() << "\n";
     RegMap rd = reg_alloc_.IRReg( inst.RegDst() );
     reg_alloc_.GetRegLoadI(rd);
-    byte_code_.Append( VM::IRBuilder::Load(rd.mreg_, inst.Value()));
+    byte_code_.Append( VM::IRBuilder::LoadI(rd.mreg_, inst.Value()));
   }
   
   void Visit(const IR::Inst::Load& inst) override{
@@ -155,7 +159,9 @@ private:
   
   void Visit(const IR::Inst::GetArg& inst) override{
     std::cout << inst.str() << "\n";
-//     byte_code_.Append( VM::IRBuilder::Return());
+    RegMap rd = reg_alloc_.IRReg( inst.RegDst() );
+    rd.mreg_  = inst.Value ();
+    reg_alloc_.SetRegGetArg(rd);
   }    
   
   void Visit(const IR::Inst::Return& inst) override{

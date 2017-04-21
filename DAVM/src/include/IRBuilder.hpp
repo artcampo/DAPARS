@@ -17,12 +17,13 @@ std::string PrintInstruction(const uint32_t& instruction);
 
 
 Inst Stop();
-Inst Load (const Reg &reg_dst, const uint32_t& literal);  //TODO
+Inst LoadI (const Reg &reg_dst, const uint32_t& literal);  //TODO
 Inst Store(const Reg &reg_src, const uint32_t& literal);  //TODO
 Inst Move (const Reg &reg_src, const Reg &reg_dst);       //TODO
 Inst Call(const Target& target);//TODO
 Inst Return();
-
+Inst LoadB(const uint32_t&reg_dst, const uint32_t&reg_base, const uint32_t& literal);  //TODO
+Inst StoreB(const Reg &reg_src, const uint32_t&reg_base, const uint32_t& literal); //TODO
 //
 Inst Arith(const Reg &reg_src1, const Reg &reg_src2,
                const Reg &reg_dst, const uint32_t& op);
