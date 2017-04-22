@@ -23,7 +23,7 @@ public:
   RegisterAllocator(const int max_machine_reg, IssueLoad callback_load
   , Backend* backend)
     : max_machine_reg_(max_machine_reg)
-    , register_usage_(0)
+    , register_usage_(FirstMachRegFree())
     , callback_load_(callback_load)
     , backend_(backend){
     reg_desc_.resize(max_machine_reg_);
@@ -31,11 +31,11 @@ public:
   
   MReg MRegRetValue() const noexcept{ return 0; }
   MReg MRegStackPtr() const noexcept{ return max_machine_reg_ - 1; }
-  MReg MRegArpPtr()   const noexcept{ 
-    std::cout << "asking arp " << max_machine_reg_ << "\n";
-    return max_machine_reg_ - 2; }
+  MReg MRegArpPtr()   const noexcept{ return max_machine_reg_ - 2; }
   MReg MRegThisPtr()  const noexcept{ return max_machine_reg_ - 3; }
 
+  static int FirstMachRegFree() noexcept { return 1; }  //forbid use of mach_r0
+  
   //Initialize regAllocator for a function given its max_ir_registers
   //and the max of machine reg
   void Reset(const IR::Reg max_ir_registers, const int function_fixed_usage_machine_reg){
@@ -47,7 +47,7 @@ public:
     id_free_for_mem_addr_     = max_ir_registers;
     max_ir_registers_         = max_ir_registers;
     function_max_machine_reg_ = max_machine_reg_ - function_fixed_usage_machine_reg;
-    register_usage_ = 0;
+    register_usage_ = FirstMachRegFree();
   }  
   
   //Structure for mappjng an IR register
@@ -131,9 +131,17 @@ public:
     Dump();
   }
   
+  void GetRegGetRetVal(RegMap& md){
+    GetReg(md);
+    UsageShared(md);
+    Dump();
+  }  
+  
   void Dump(){
+    return;
     for(int i = 0; i < max_machine_reg_; ++i){
       if(not reg_desc_[i].empty()){
+        std::cout << "---- ";
         std::cout << "r" << i << ": ";
         for(auto& it : reg_desc_[i]) std::cout << str(it)  << " ";
           
@@ -143,6 +151,7 @@ public:
     
     for(const auto& it : addr_desc_){
       if(not it.second.empty()){
+        std::cout << "----";
         std::cout << str(it.first);
         if(IsInMemory(it.first)) std::cout <<"[m]"; else std::cout <<"[r]";
         std::cout<< ": ";
@@ -283,7 +292,7 @@ private:
   //do not allow mreg to be flushed (used for registers that are
   //not available in memory (args in regs)
   void ReserveNoFlush(const MReg& mreg){
-    register_usage_++;
+    if(mreg != 0) register_usage_++;
     //TODO
   }
   

@@ -24,6 +24,9 @@ Inst Call(const Target& target);//TODO
 Inst Return();
 Inst LoadB(const uint32_t&reg_dst, const uint32_t&reg_base, const uint32_t& literal);  //TODO
 Inst StoreB(const Reg &reg_src, const uint32_t&reg_base, const uint32_t& literal); //TODO
+Inst ArithI(const Reg &reg_dst, const uint32_t& literal, const uint32_t& op);
+
+
 //
 Inst Arith(const Reg &reg_src1, const Reg &reg_src2,
                const Reg &reg_dst, const uint32_t& op);
@@ -31,8 +34,7 @@ Inst Arith(const Reg &reg_src1, const Reg &reg_src2,
 Inst Comp(const Reg &reg_src1, const Reg &reg_src2,
                const Reg &reg_dst, const uint32_t& op);
 
-Inst Comp(const Reg &reg_src1, const Reg &reg_src2,
-              const Reg &reg_dst, const uint32_t& op);
+
 
 
 Inst Jump       (const Target& target);

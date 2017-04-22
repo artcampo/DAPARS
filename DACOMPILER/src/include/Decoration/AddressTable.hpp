@@ -23,7 +23,8 @@ public:
     return offsets_.at(id);
   }  
   
-  size_t Size() const noexcept{ return total_size_; }
+  int     NumVars() const noexcept{ return offsets_.size(); }
+  size_t  Size() const noexcept{ return total_size_; }
   
   using iterator = std::map<Symbols::SymbolId, IR::MemAddr>::iterator;
   using const_iterator = std::map<Symbols::SymbolId, IR::MemAddr>::const_iterator;

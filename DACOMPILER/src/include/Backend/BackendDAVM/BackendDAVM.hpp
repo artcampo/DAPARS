@@ -3,6 +3,7 @@
 #include "ByteCode.hpp"
 #include "Utils.hpp"  //move to VM/
 #include "IRBuilder.hpp"
+#include "IRDefinition.hpp"
 #include "Function.hpp"
 #include "IR/Label.hpp"
 #include "IR/IRVisitor.hpp"
@@ -40,12 +41,12 @@ public:
   }
   
   void LoadCallBack(const MReg reg_dst, const IR::MemAddr addr) override {
-    std::cout << "Load callback\n" << reg_dst <<"\n";
+//     std::cout << "Load callback\n" << reg_dst <<"\n";
     if(addr.GetLabel().IsRunTime()){
       MReg reg_base;
       if(addr.GetLabel().IsArp())     reg_base = reg_alloc_.MRegArpPtr();
       if(addr.GetLabel().IsThisPtr()) reg_base = reg_alloc_.MRegThisPtr();
-      std::cout << "Base: " << reg_base << addr.GetLabel().str()<<"\n";
+//       std::cout << "Base: " << reg_base << addr.GetLabel().str()<<"\n";
       byte_code_.Append( VM::IRBuilder::LoadB(reg_dst, reg_base, addr.GetOffset().GetAddr()));
 //       std::cout << "loadOff: " << addr.GetOffset().GetAddr() << "\n";
     }
@@ -64,15 +65,18 @@ private:
   
   void Visit(IR::IRStream& stream){
     is_first_arg_ = true;
+    bool is_main  = stream.GetFunction().Name() == "main";
     //Account for stack_ptr
     int basic_register_usage = 1;
     //Account for arp_ptr
-    if(stream.GetFunction().Name() != "main") basic_register_usage++;
+    if(not is_main) basic_register_usage++;
     //Account for this_ptr
     if(stream.GetFunction().IsMember()) basic_register_usage++;
       
     reg_alloc_.Reset( stream.MaxRegUsed(), basic_register_usage );
+    if(not is_main) FuncPrologue(stream.GetFunction());
     for(auto& it : stream) it->Accept(*this);
+    if(not is_main) FuncEpilogue(stream.GetFunction());
   }
 
   void Visit(const IR::Inst::Inst& inst) override{
@@ -131,9 +135,15 @@ private:
   void Visit(const IR::Inst::PtrElem& inst) override{
     std::cout << inst.str() << " !!!\n";
   }  
+  
   void Visit(const IR::Inst::GetRetVal& inst) override{
     std::cout << inst.str() << " !!!\n";
+    RegMap rd     = reg_alloc_.IRReg( inst.RegDst() );
+    MReg rs_mreg  = reg_alloc_.MRegRetValue();
+    reg_alloc_.GetRegGetRetVal(rd);
+    byte_code_.Append( VM::IRBuilder::Move(rs_mreg, rd.mreg_));    
   }  
+  
   void Visit(const IR::Inst::SetRetVal& inst) override{
     std::cout << inst.str() << " !!!\n";
   }  
@@ -187,6 +197,26 @@ private:
     is_first_arg_ = true; //next set of arguments will not belong to this call
   }
   
+  void FuncPrologue(const Function& f){
+    byte_code_.Append( VM::IRBuilder::Move( reg_alloc_.MRegStackPtr()
+                                          , reg_alloc_.MRegArpPtr() ));
+    if(f.HasLocals()){
+      const size_t  locals_size = f.LocalVars().Size();
+      const MReg    rd = reg_alloc_.MRegStackPtr();
+      byte_code_.Append( VM::IRBuilder::ArithI(rd
+                                , locals_size
+                                , VM::IRDefinition::SubtypesArithmetic::IR_SUB));
+    }
+  }
+  
+  void FuncEpilogue(const Function& f){
+    if(f.HasLocals()){ 
+      byte_code_.Append( VM::IRBuilder::Move( reg_alloc_.MRegArpPtr()
+                                            , reg_alloc_.MRegStackPtr()));
+    }
+  }
+  
+  //Other functions that do not handle sections of IR
   void ComputeMainDataSegment(){
     auto main = unit_.GetFunc("main");
     auto vars = main.LocalVars();

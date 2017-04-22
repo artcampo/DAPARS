@@ -2,39 +2,16 @@
 Parsing: "void main(){int a; a = 1+2; }"
 Backend::Davm
 %0 = LoadI(1)
-r0: %0  
-%0 [m]: r0 
-
 %1 = LoadI(2)
-r0: %0  
-r1: %1  
-%0 [m]: r0 
-%1 [m]: r1 
-
 %2 = %0 + %1
-r0: %0  
-r1: %1  
-r2: %2  
-%0 [m]: r0 
-%1 [m]: r1 
-%2 [m]: r2 
-
 store %2 to [LT MainDS:0 (a)]
-r0: %0  
-r1: %1  
-r2: %2  a  
-%0 [m]: r0 
-%1 [m]: r1 
-%2 [m]: r2 
-a [m]: r2 
-
 ReturnMain
 ---------
 Bytecode:
-LOADI, r0 val: 1
-LOADI, r1 val: 2
-ADD, rs0 rs1 rd2
-STORE, r2 to [@0]
+LOADI, r1 val: 1
+LOADI, r2 val: 2
+ADD, rs1 rs2 rd3
+STORE, r3 to [@0]
 STOP
 Static data segment size: 1
 
@@ -42,99 +19,22 @@ Static data segment size: 1
 Parsing: "void main(){int a, b, c; a = 4; b = 3; c = a + b; }"
 Backend::Davm
 %0 = LoadI(4)
-r0: %0  
-%0 [m]: r0 
-
 store %0 to [LT MainDS:0 (a)]
-r0: %0  a  
-%0 [m]: r0 
-a [m]: r0 
-
 %2 = LoadI(3)
-r0: %0  a  
-r1: %2  
-%0 [m]: r0 
-%2 [m]: r1 
-a [m]: r0 
-
 store %2 to [LT MainDS:1 (b)]
-r0: %0  a  
-r1: %2  b  
-%0 [m]: r0 
-%2 [m]: r1 
-a [m]: r0 
-b [m]: r1 
-
 %4 = Load [LT MainDS:0 (a)] **
-r0: %4  a  
-r1: %2  b  
-%0 [m]: r0 
-%2 [m]: r1 
-%4 [r]: r0 
-a [m]: r0 
-b [m]: r1 
-
-r0: %4  a  
-r1: %2  b  
-%0 [m]: r0 
-%2 [m]: r1 
-%4 [r]: r0 
-a [m]: r0 
-b [m]: r1 
-
 %5 = Load [LT MainDS:1 (b)] **
-r0: %4  a  
-r1: %5  b  
-%0 [m]: r0 
-%2 [m]: r1 
-%4 [r]: r0 
-%5 [r]: r1 
-a [m]: r0 
-b [m]: r1 
-
-r0: %4  a  
-r1: %5  b  
-%0 [m]: r0 
-%2 [m]: r1 
-%4 [r]: r0 
-%5 [r]: r1 
-a [m]: r0 
-b [m]: r1 
-
 %6 = %4 + %5
-r0: %4  
-r1: %5  
-r2: %6  
-%0 [m]: r0 
-%2 [m]: r1 
-%4 [m]: r0 
-%5 [m]: r1 
-%6 [m]: r2 
-a [m]: r0 
-b [m]: r1 
-
 store %6 to [LT MainDS:2 (c)]
-r0: %4  
-r1: %5  
-r2: %6  c  
-%0 [m]: r0 
-%2 [m]: r1 
-%4 [m]: r0 
-%5 [m]: r1 
-%6 [m]: r2 
-a [m]: r0 
-b [m]: r1 
-c [m]: r2 
-
 ReturnMain
 ---------
 Bytecode:
-LOADI, r0 val: 4
-STORE, r0 to [@0]
-LOADI, r1 val: 3
-STORE, r1 to [@1]
-ADD, rs0 rs1 rd2
-STORE, r2 to [@2]
+LOADI, r1 val: 4
+STORE, r1 to [@0]
+LOADI, r2 val: 3
+STORE, r2 to [@1]
+ADD, rs1 rs2 rd3
+STORE, r3 to [@2]
 STOP
 Static data segment size: 3
 
@@ -142,54 +42,26 @@ Static data segment size: 3
 Parsing: "int f(int p){ return p; }void main(){int a; a = 1; a = f(a); }"
 Backend::Davm
 %0 = LoadI(1)
-r0: %0  
-%0 [m]: r0 
-
 store %0 to [LT MainDS:0 (a)]
-r0: %0  a  
-%0 [m]: r0 
-a [m]: r0 
-
 %2 = Load [LT MainDS:0 (a)] **
-r0: %2  a  
-%0 [m]: r0 
-%2 [r]: r0 
-a [m]: r0 
-
-r0: %2  a  
-%0 [m]: r0 
-%2 [r]: r0 
-a [m]: r0 
-
 SetPar( %2)
-r0: %2  
-%0 [m]: r0 
-%2 [m]: r0 
-a [m]: r0 
-
 call [LT entry_f[isTarget]:0 ()]
 %3 = GetRetVal() !!!
 store %3 to [LT MainDS:0 (a)]
-r0: %2  
-r1: a  
-%0 [m]: r0 
-%2 [m]: r0 
-a [m]: r1 
-
 ReturnMain
 %0 = GetArg( arg0 )
-r0: %0  
-%0 [m]: r0 
-
 SetRetVal( %0) !!!
 Return
 ---------
 Bytecode:
-LOADI, r0 val: 1
-STORE, r0 to [@0]
-CALL: @0
+LOADI, r1 val: 1
 STORE, r1 to [@0]
+MOV, rs1 rd0
+CALL: @0
+MOV, rs0 rd2
+STORE, r2 to [@0]
 STOP
+MOV, rs15 rd14
 RETURN
 Static data segment size: 1
 
@@ -197,75 +69,31 @@ Static data segment size: 1
 Parsing: "int f(int p0, int p1){ return p0 + p1; }void main(){int a; a = f(9,8); }"
 Backend::Davm
 %0 = LoadI(9)
-r0: %0  
-%0 [m]: r0 
-
 %1 = LoadI(8)
-r0: %0  
-r1: %1  
-%0 [m]: r0 
-%1 [m]: r1 
-
 SetPar( %0)
-r0: %0  
-r1: %1  
-%0 [m]: r0 
-%1 [m]: r1 
-
 SetPar( %1)
 call [LT entry_f[isTarget]:0 ()]
 %2 = GetRetVal() !!!
 store %2 to [LT MainDS:0 (a)]
-r0: %0  
-r1: %1  
-r2: a  
-%0 [m]: r0 
-%1 [m]: r1 
-a [m]: r2 
-
 ReturnMain
 %0 = GetArg( arg0 )
-r0: %0  
-%0 [m]: r0 
-
 %1 = Load [RT arp_f[isArp]:2 (p1)] **
 dest: 1
 rs: 1
 @: RT arp_f[isArp]:2 (p1)
-Load callback
-1
-asking arp 16
-Base: 14RT arp_f[isArp]
-r0: %0  
-r1: p1  
-%0 [m]: r0 
-%1 [m]: r1 
-p1 [m]: r1 
-
-r0: %0  
-r1: p1  
-%0 [m]: r0 
-%1 [m]: r1 
-p1 [m]: r1 
-
 %2 = %0 + %1
-r0: %0  
-r1: %1  
-r2: %2  
-%0 [m]: r0 
-%1 [m]: r1 
-%2 [m]: r2 
-p1 [m]: r1 
-
 SetRetVal( %2) !!!
 Return
 ---------
 Bytecode:
-LOADI, r0 val: 9
-LOADI, r1 val: 8
+LOADI, r1 val: 9
+LOADI, r2 val: 8
+MOV, rs1 rd0
 CALL: @0
-STORE, r2 to [@0]
+MOV, rs0 rd3
+STORE, r3 to [@0]
 STOP
+MOV, rs15 rd14
 LOADB, r1 <- [@ r14 + 2]
 ADD, rs0 rs1 rd2
 RETURN

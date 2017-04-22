@@ -12,6 +12,45 @@ using namespace IRDefinition;
 using namespace IRCodification;
 using namespace VM;
 
+std::string ArithString(const uint32_t reg_src1, const uint32_t reg_src2
+  , const uint32_t reg_dst, const uint32_t sub_type){
+  using namespace std;
+  using namespace SubtypesArithmetic;
+  std::string s;
+  bool three_regs = true;
+  switch(sub_type){
+    case IR_ADD: s = string("ADD, rs"); break;
+    case IR_SUB: s = string("SUB, rs"); break;
+    case IR_MUL: s = string("MUL, rs"); break;
+    case IR_DIV: s = string("DIV, rs"); break;
+    case IR_MOV: s = string("MOV, rs"); three_regs = false; break;
+    default:     s = string(" - ERROR in print decode -"); break;
+  }
+  if(three_regs)
+    s = s + to_string(reg_src1) + string(" rs") +
+        to_string(reg_src2) + string(" rd") + to_string(reg_dst);
+  else
+    s = s + to_string(reg_src1) + string(" rd") + to_string(reg_dst);  
+  return s;
+}
+
+std::string ArithString(const uint32_t reg_dst, const uint32_t literal, const uint32_t sub_type){
+  using namespace std;
+  using namespace SubtypesArithmetic;
+  std::string s;
+  bool three_regs = true;
+  switch(sub_type){
+    case IR_ADD: s = string("ADDI, rd"); break;
+    case IR_SUB: s = string("SUBI, rd"); break;
+    case IR_MUL: s = string("MULI, rd"); break;
+    case IR_DIV: s = string("DIVI, rd"); break;
+    case IR_MOV: s = string("MOVI, rd"); three_regs = false; break;
+    default:     s = string(" - ERROR in print decode -"); break;
+  }
+  s += to_string(reg_dst) + string(" ") + to_string(literal);  
+  return s;
+}
+
 std::string PrintInstruction(const uint32_t& instruction){
   const uint32_t current_class   = DecodeClass(instruction);
   const uint32_t current_type    = DecodeType(instruction, current_class);
@@ -84,19 +123,13 @@ std::string PrintInstruction(const uint32_t& instruction){
       if(sub_type == SubtypesJMPC::IR_FALSE) s += string("false");
       s += string(" to:") + to_string(literal);
       break;
+    case IR_ARII:
+      s = ArithString(reg_dst, literal, sub_type);
+      break;      
 
     //Class 3
     case IR_ARI:
-      using namespace SubtypesArithmetic;
-      switch(sub_type){
-        case IR_ADD: s = string("ADD, rs"); break;
-        case IR_SUB: s = string("SUB, rs"); break;
-        case IR_MUL: s = string("MUL, rs"); break;
-        case IR_DIV: s = string("DIV, rs"); break;
-        default:     s = string(" - ERROR in print decode -"); break;
-      }
-      s = s + to_string(reg_src1) + string(" rs") +
-          to_string(reg_src2) + string(" rd") + to_string(reg_dst);
+      s = ArithString(reg_src1, reg_src2, reg_dst, sub_type);
       break;//case IR_ARI
     case IR_CMP:
       using namespace SubtypesComparison;

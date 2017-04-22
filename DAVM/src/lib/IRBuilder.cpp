@@ -92,6 +92,10 @@ Inst JumpIfFalse (const Reg&reg_src1, const Target& target){
   return CodeClass2(0, target, IR_JMPC, SubtypesJMPC::IR_FALSE);
 }
 
+Inst ArithI(const Reg &reg_dst, const uint32_t& literal, const uint32_t& op){
+  return CodeClass2(reg_dst, literal, IR_ARII, op);
+}
+
 ////////////////////////////////////////////////////////////////////////
 //CLASS 3
 Inst Arith(const uint32_t&reg_src1, const uint32_t&reg_src2,
