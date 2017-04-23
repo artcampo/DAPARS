@@ -97,7 +97,7 @@ private:
   }
   
   void Visit(const IR::Inst::Load& inst) override{
-    std::cout << inst.str() << " **\n";
+    std::cout << inst.str() << "\n";
     RegMap rd = reg_alloc_.IRReg    (inst.RegDst());
     RegMap rs = reg_alloc_.IRMemAddr(inst.Addr());
     reg_alloc_.GetRegLoad(rd, rs);

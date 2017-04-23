@@ -97,7 +97,6 @@ std::string PrintInstruction(const uint32_t& instruction){
       s = string("RETURN");
       break;      
       
-
     //Class 1
     case IR_LOADI:
       s = string("LOADI, r") + to_string(reg_dst) + " val: " +
@@ -114,8 +113,14 @@ std::string PrintInstruction(const uint32_t& instruction){
     case IR_STOREB:  
       s = string("STORE, r") + to_string(reg_dst) + " -> [@" +
           "r" + to_string(reg_base) + " + " + to_string(literal) + "]";
+      break;
+    case IR_POP:  
+      s = string("POP, r") + to_string(reg_dst);      
+      break;
+    case IR_PUSH:  
+      s = string("PUSH, r") + to_string(reg_dst);
       break;      
-
+      
     //Class 2
     case IR_JMPC:
       s = string("JUMPIF ");

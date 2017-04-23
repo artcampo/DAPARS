@@ -62,11 +62,12 @@ Inst NewVar(const TypeId &type_literal){
 Inst Return(){
   return CodeClass0(0, IR_RET);
 }
+//TODO: remove constants such as 0!
 
 ////////////////////////////////////////////////////////////////////////
 //CLASS 1
 Inst LoadI(const uint32_t&reg_dst, const uint32_t& literal){
-  return CodeClass1(reg_dst, 0, literal, IR_LOADI);
+  return CodeClass1(reg_dst, kIRUnusedReg, literal, IR_LOADI);
 }
 
 Inst LoadB(const uint32_t&reg_dst, const uint32_t&reg_base, const uint32_t& literal){
@@ -74,11 +75,19 @@ Inst LoadB(const uint32_t&reg_dst, const uint32_t&reg_base, const uint32_t& lite
 }
 
 Inst Store(const Reg &reg_src, const uint32_t& literal){
-  return CodeClass1(reg_src, 0, literal, IR_STORE);
+  return CodeClass1(reg_src, kIRUnusedReg, literal, IR_STORE);
 }
 
 Inst StoreB(const Reg &reg_src, const uint32_t&reg_base, const uint32_t& literal){
   return CodeClass1(reg_src, reg_base, literal, IR_STOREB);
+}
+
+Inst Pop (const Reg &reg_dst, const uint32_t& literal){
+  return CodeClass1(reg_dst, kIRUnusedReg, literal, IR_POP);
+}
+
+Inst Push(const Reg &reg_src, const uint32_t& literal){
+  return CodeClass1(reg_src, kIRUnusedReg, literal, IR_PUSH);
 }
 
 

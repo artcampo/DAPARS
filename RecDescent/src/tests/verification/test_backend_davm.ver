@@ -22,8 +22,8 @@ Backend::Davm
 store %0 to [LT MainDS:0 (a)]
 %2 = LoadI(3)
 store %2 to [LT MainDS:1 (b)]
-%4 = Load [LT MainDS:0 (a)] **
-%5 = Load [LT MainDS:1 (b)] **
+%4 = Load [LT MainDS:0 (a)]
+%5 = Load [LT MainDS:1 (b)]
 %6 = %4 + %5
 store %6 to [LT MainDS:2 (c)]
 ReturnMain
@@ -43,7 +43,7 @@ Parsing: "int f(int p){ return p; }void main(){int a; a = 1; a = f(a); }"
 Backend::Davm
 %0 = LoadI(1)
 store %0 to [LT MainDS:0 (a)]
-%2 = Load [LT MainDS:0 (a)] **
+%2 = Load [LT MainDS:0 (a)]
 SetPar( %2)
 call [LT entry_f[isTarget]:0 ()]
 %3 = GetRetVal() !!!
@@ -77,10 +77,7 @@ call [LT entry_f[isTarget]:0 ()]
 store %2 to [LT MainDS:0 (a)]
 ReturnMain
 %0 = GetArg( arg0 )
-%1 = Load [RT arp_f[isArp]:2 (p1)] **
-dest: 1
-rs: 1
-@: RT arp_f[isArp]:2 (p1)
+%1 = Load [RT arp_f[isArp]:2 (p1)]
 %2 = %0 + %1
 SetRetVal( %2) !!!
 Return

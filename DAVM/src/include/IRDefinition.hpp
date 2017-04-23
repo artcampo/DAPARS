@@ -27,6 +27,8 @@ enum IRClass1{
   , IR_CID_STORE  = 1
   , IR_CID_LOADB  = 2
   , IR_CID_STOREB = 3
+  , IR_CID_PUSH   = 4
+  , IR_CID_POP    = 5
 };
 
 enum IRClass2{
@@ -38,11 +40,11 @@ enum IRClass3{
     IR_CID_ARI = 0
   , IR_CID_CMP = 1
 };
-//enum class
+
 
 const static int kClassNumBits    = 2;
   const static int kClass0InstTypeNumBits    = 3;
-  const static int kClass1InstTypeNumBits    = 2;
+  const static int kClass1InstTypeNumBits    = 3;
   const static int kClass2InstTypeNumBits    = 1;
   const static int kClass3InstTypeNumBits    = 1;
   const static int kClass0OpcodeNumBits = kClassNumBits + kClass0InstTypeNumBits;
@@ -80,13 +82,12 @@ enum IRCodf {
   IR_RET      = InstClassLit + (IR_CID_RET      << kClassNumBits),
 
   //Class 1
-
-  IR_LOADI = InstClassRegLit + (IR_CID_LOADI << kClassNumBits),
-  IR_STORE = InstClassRegLit + (IR_CID_STORE << kClassNumBits),
-  
+  IR_LOADI  = InstClassRegLit + (IR_CID_LOADI  << kClassNumBits),
+  IR_STORE  = InstClassRegLit + (IR_CID_STORE  << kClassNumBits),
   IR_LOADB  = InstClassRegLit + (IR_CID_LOADB  << kClassNumBits),
   IR_STOREB = InstClassRegLit + (IR_CID_STOREB << kClassNumBits),  
-  
+  IR_PUSH   = InstClassRegLit + (IR_CID_PUSH   << kClassNumBits),
+  IR_POP    = InstClassRegLit + (IR_CID_POP    << kClassNumBits),
   
   //Class 2
   IR_JMPC  = InstClassRegLitSub + (IR_CID_JMPC << kClassNumBits),
@@ -142,6 +143,8 @@ enum IRRegisters {
   IR_REG14 = 14,
   IR_REG15 = 15
 };
+
+const static int kIRUnusedReg = 0;
 
 
 }//namespace IRDefinition

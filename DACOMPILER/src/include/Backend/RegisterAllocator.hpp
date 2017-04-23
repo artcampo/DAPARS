@@ -113,9 +113,9 @@ public:
 //     
 //     
     GetReg(md);
-    std::cout << "dest: " << md.mreg_<<"\n";
-    std::cout << "rs: " << md.regsymb_<<"\n";
-    std::cout << "@: " << mem_addr_of_reg_sym_id_.at(ms.regsymb_).str()<<"\n";
+//     std::cout << "dest: " << md.mreg_<<"\n";
+//     std::cout << "rs: " << md.regsymb_<<"\n";
+//     std::cout << "@: " << mem_addr_of_reg_sym_id_.at(ms.regsymb_).str()<<"\n";
     UsageNewValue(md);
     ms.mreg_ = md.mreg_;
     UsageShared(ms);

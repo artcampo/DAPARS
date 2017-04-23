@@ -1,23 +1,10 @@
 Classes of instructions:
+-Class 0: 1 Literal. Bit layout: type, class
+-Class 1: 1 or 2 reg, literal. Bit layout: regs1, literal, type, class
+-Class 2: 1 reg, literal, subtype. Bit layout: regs1, literal, subtype, type, class
+-Class 3: 3 regs, subtype. Bit layout: regs1,regs2,regd, subtype, type, class
 
-- 3 regs, subtype. Bit layout: regs1,regs2,regd, subtype, type, class
-arithmetic
-comparison
-
-
-- 1 or 2 reg, literal. Bit layout: regs1, literal, type, class
-load
-jmp
-
-- 1 reg, literal, subtype. Bit layout: regs1, literal, subtype, type, class
-jmpc
-arithmeticInmediate
-
-- 0 reg. Bit layout: type, class
-stop
-ret
-
-subtypes 
+Subtypes 
 comparison: ==, !=, <, !
 arith: +,-,/,*,move
 
