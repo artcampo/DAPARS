@@ -150,3 +150,55 @@ MOV, rs6 rd0
 RETURN
 Static data segment size: 1
 
+---------------------------------------------------
+Parsing: "int f(){ int a; return a; }void main(){int a; a = f(); }"
+Backend::Davm
+call [LT entry_f[isTarget]:0 ()]
+%0 = GetRetVal() !!!
+store %0 to [LT MainDS:0 (a)]
+ReturnMain
+%0 = Load [RT arp_f[isArp]:0 (a)]
+SetRetVal( %0)
+Return
+---------
+Bytecode:
+CALL: @0
+MOV, rs0 rd1
+STORE, r1 to [@0]
+STOP
+MOV, rs15 rd14
+SUBI, rd15 1
+LOADB, r1 <- [@ r14 + 0]
+MOV, rs1 rd0
+RETURN
+MOV, rs14 rd15
+Static data segment size: 1
+
+---------------------------------------------------
+Parsing: "int f(){ int a,b,c,d; return a + d; }void main(){int a; a = f(); }"
+Backend::Davm
+call [LT entry_f[isTarget]:0 ()]
+%0 = GetRetVal() !!!
+store %0 to [LT MainDS:0 (a)]
+ReturnMain
+%0 = Load [RT arp_f[isArp]:0 (a)]
+%1 = Load [RT arp_f[isArp]:3 (d)]
+%2 = %0 + %1
+SetRetVal( %2)
+Return
+---------
+Bytecode:
+CALL: @0
+MOV, rs0 rd1
+STORE, r1 to [@0]
+STOP
+MOV, rs15 rd14
+SUBI, rd15 4
+LOADB, r1 <- [@ r14 + 0]
+LOADB, r2 <- [@ r14 + 3]
+ADD, rs1 rs2 rd3
+MOV, rs3 rd0
+RETURN
+MOV, rs14 rd15
+Static data segment size: 1
+

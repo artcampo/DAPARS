@@ -89,7 +89,19 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int f(int p0, int p1, int p2, int p3){ return p0 + p1 + p2 + p3; }") + 
     "void main(){int a; a = f(9,8,7,6); }"
-    , g);      
+    , g);   
+  
+  //locals alloc, size = 1
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "int f(){ int a; return a; }") + 
+    "void main(){int a; a = f(); }"
+    , g);
+
+  //locals alloc, size = 4
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "int f(){ int a,b,c,d; return a + d; }") + 
+    "void main(){int a; a = f(); }"
+    , g);     
 
 
   return 0;
