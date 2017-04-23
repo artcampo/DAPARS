@@ -50,7 +50,7 @@ call [LT entry_f[isTarget]:0 ()]
 store %3 to [LT MainDS:0 (a)]
 ReturnMain
 %0 = GetArg( arg0 )
-SetRetVal( %0) !!!
+SetRetVal( %0)
 Return
 ---------
 Bytecode:
@@ -62,6 +62,7 @@ MOV, rs0 rd2
 STORE, r2 to [@0]
 STOP
 MOV, rs15 rd14
+MOV, rs0 rd0
 RETURN
 Static data segment size: 1
 
@@ -79,7 +80,7 @@ ReturnMain
 %0 = GetArg( arg0 )
 %1 = Load [RT arp_f[isArp]:2 (p1)]
 %2 = %0 + %1
-SetRetVal( %2) !!!
+SetRetVal( %2)
 Return
 ---------
 Bytecode:
@@ -95,6 +96,7 @@ STOP
 MOV, rs15 rd14
 LOADB, r1 <- [@ r14 + 2]
 ADD, rs0 rs1 rd2
+MOV, rs2 rd0
 RETURN
 Static data segment size: 1
 
@@ -120,7 +122,7 @@ ReturnMain
 %4 = %2 + %3
 %5 = Load [RT arp_f[isArp]:2 (p3)]
 %6 = %4 + %5
-SetRetVal( %6) !!!
+SetRetVal( %6)
 Return
 ---------
 Bytecode:
@@ -144,6 +146,7 @@ LOADB, r3 <- [@ r14 + 3]
 ADD, rs2 rs3 rd4
 LOADB, r5 <- [@ r14 + 2]
 ADD, rs4 rs5 rd6
+MOV, rs6 rd0
 RETURN
 Static data segment size: 1
 

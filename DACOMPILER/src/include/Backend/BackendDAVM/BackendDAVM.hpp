@@ -147,7 +147,10 @@ private:
   }  
   
   void Visit(const IR::Inst::SetRetVal& inst) override{
-    std::cout << inst.str() << " !!!\n";
+    std::cout << inst.str() << "\n";
+    RegMap rs = reg_alloc_.IRReg(inst.RegSrc());
+    reg_alloc_.GetRegRead(rs);
+    byte_code_.Append( VM::IRBuilder::Move(rs.mreg_, reg_alloc_.MRegRetValue()));
   }  
   
   void Visit(const IR::Inst::SetPar& inst) override{
