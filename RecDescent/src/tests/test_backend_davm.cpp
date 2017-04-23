@@ -65,21 +65,31 @@ int main()
   Grammar g;
   CreateGrammarExpr(g);
 
+  //basic mem access and arith
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "void main(){int a; a = 1+2; }"), g);
 
+  //different offsets to main data segment
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "void main(){int a, b, c; a = 4; b = 3; c = a + b; }"), g);
   
+  //return value
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int f(int p){ return p; }") + 
     "void main(){int a; a = 1; a = f(a); }"
     , g);  
   
+  //args mixed: reg and stack
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int f(int p0, int p1){ return p0 + p1; }") + 
     "void main(){int a; a = f(9,8); }"
     , g);    
+  
+  //3 args in stack
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "int f(int p0, int p1, int p2, int p3){ return p0 + p1 + p2 + p3; }") + 
+    "void main(){int a; a = f(9,8,7,6); }"
+    , g);      
 
 
   return 0;

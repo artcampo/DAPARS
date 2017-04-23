@@ -86,13 +86,64 @@ Bytecode:
 LOADI, r1 val: 9
 LOADI, r2 val: 8
 MOV, rs1 rd0
+PUSH, r2
 CALL: @0
+ADDI, rd15 1
 MOV, rs0 rd3
 STORE, r3 to [@0]
 STOP
 MOV, rs15 rd14
 LOADB, r1 <- [@ r14 + 2]
 ADD, rs0 rs1 rd2
+RETURN
+Static data segment size: 1
+
+---------------------------------------------------
+Parsing: "int f(int p0, int p1, int p2, int p3){ return p0 + p1 + p2 + p3; }void main(){int a; a = f(9,8,7,6); }"
+Backend::Davm
+%0 = LoadI(9)
+%1 = LoadI(8)
+%2 = LoadI(7)
+%3 = LoadI(6)
+SetPar( %0)
+SetPar( %1)
+SetPar( %2)
+SetPar( %3)
+call [LT entry_f[isTarget]:0 ()]
+%4 = GetRetVal() !!!
+store %4 to [LT MainDS:0 (a)]
+ReturnMain
+%0 = GetArg( arg0 )
+%1 = Load [RT arp_f[isArp]:4 (p1)]
+%2 = %0 + %1
+%3 = Load [RT arp_f[isArp]:3 (p2)]
+%4 = %2 + %3
+%5 = Load [RT arp_f[isArp]:2 (p3)]
+%6 = %4 + %5
+SetRetVal( %6) !!!
+Return
+---------
+Bytecode:
+LOADI, r1 val: 9
+LOADI, r2 val: 8
+LOADI, r3 val: 7
+LOADI, r4 val: 6
+MOV, rs1 rd0
+PUSH, r2
+PUSH, r3
+PUSH, r4
+CALL: @0
+ADDI, rd15 3
+MOV, rs0 rd5
+STORE, r5 to [@0]
+STOP
+MOV, rs15 rd14
+LOADB, r1 <- [@ r14 + 4]
+ADD, rs0 rs1 rd2
+LOADB, r3 <- [@ r14 + 3]
+ADD, rs2 rs3 rd4
+LOADB, r5 <- [@ r14 + 2]
+ADD, rs4 rs5 rd6
 RETURN
 Static data segment size: 1
 

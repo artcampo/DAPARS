@@ -60,11 +60,13 @@ private:
   RegisterAllocator reg_alloc_;  
   MemAllocator      mem_alloc_;
   bool              is_first_arg_;
+  int               pushed_args_for_current_call_;
   std::map<IR::MemAddr, VM::Target> backpatch_ids_;
   VM::Target backpatch_free_id_;
   
   void Visit(IR::IRStream& stream){
     is_first_arg_ = true;
+    pushed_args_for_current_call_ = 0;
     bool is_main  = stream.GetFunction().Name() == "main";
     //Account for stack_ptr
     int basic_register_usage = 1;
@@ -147,6 +149,7 @@ private:
   void Visit(const IR::Inst::SetRetVal& inst) override{
     std::cout << inst.str() << " !!!\n";
   }  
+  
   void Visit(const IR::Inst::SetPar& inst) override{
     std::cout << inst.str() << "\n";
     if(is_first_arg_){
@@ -161,9 +164,11 @@ private:
     
     }else{
       //push arg to the stack
-      //TODO
+      RegMap rs = reg_alloc_.IRReg(inst.RegSrc());
+      reg_alloc_.GetRegRead(rs);
+      byte_code_.Append( VM::IRBuilder::Push(rs.mreg_));
+      ++pushed_args_for_current_call_;
     }
-    
     is_first_arg_ = false;
   }  
   
@@ -194,7 +199,16 @@ private:
       //TODO: call through computed register
     }
     
-    is_first_arg_ = true; //next set of arguments will not belong to this call
+    if(pushed_args_for_current_call_ > 0){
+      //effectively pop all pushed args at once
+      byte_code_.Append( VM::IRBuilder::ArithI(reg_alloc_.MRegStackPtr()
+                                , pushed_args_for_current_call_
+                                , VM::IRDefinition::SubtypesArithmetic::IR_ADD));      
+    }
+    
+    //prepare for next call
+    is_first_arg_ = true; 
+    pushed_args_for_current_call_ = 0;
   }
   
   void FuncPrologue(const Function& f){

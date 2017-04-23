@@ -82,12 +82,12 @@ Inst StoreB(const Reg &reg_src, const uint32_t&reg_base, const uint32_t& literal
   return CodeClass1(reg_src, reg_base, literal, IR_STOREB);
 }
 
-Inst Pop (const Reg &reg_dst, const uint32_t& literal){
-  return CodeClass1(reg_dst, kIRUnusedReg, literal, IR_POP);
+Inst Pop (const Reg &reg_dst){
+  return CodeClass1(reg_dst, kIRUnusedReg, kIrUnusedLit, IR_POP);
 }
 
-Inst Push(const Reg &reg_src, const uint32_t& literal){
-  return CodeClass1(reg_src, kIRUnusedReg, literal, IR_PUSH);
+Inst Push(const Reg &reg_src){
+  return CodeClass1(reg_src, kIRUnusedReg, kIrUnusedLit, IR_PUSH);
 }
 
 

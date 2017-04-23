@@ -145,6 +145,7 @@ enum IRRegisters {
 };
 
 const static int kIRUnusedReg = 0;
+const static int kIrUnusedLit = 0;
 
 
 }//namespace IRDefinition

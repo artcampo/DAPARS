@@ -102,6 +102,7 @@ public:
   //returns true if ms was not already on a register (thus load needs to happen)
   bool GetRegLoad(RegMap& md, RegMap& ms){
     if(HasMregAssigned(ms)){
+      //variable to load is already in a register
       GetReg(ms);
       md.mreg_ = ms.mreg_;
       UsageShared(ms);
@@ -109,9 +110,7 @@ public:
       Dump();
       return false;
     }
-//     
-//     
-//     
+    //variable does need load
     GetReg(md);
 //     std::cout << "dest: " << md.mreg_<<"\n";
 //     std::cout << "rs: " << md.regsymb_<<"\n";
