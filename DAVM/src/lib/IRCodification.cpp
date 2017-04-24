@@ -31,30 +31,30 @@ SubInst  DecodeOpCode(SubInst const &inst_class, SubInst const &inst_type){
   return inst_class + (inst_type << kClassNumBits);
 }
 
-VM::Inst CodeClass0(SubInst const& literal, const SubInst &type){
+VM::Inst CodeClass0(const Word& literal, const SubInst &type){
   return type
-    + (literal << kClass0OpcodeNumBits);
+    + (Code(literal) << kClass0OpcodeNumBits);
 }
 
 VM::Inst CodeClass1(Reg const &reg_dst, const Reg&reg_base,
-                    SubInst const& literal, SubInst const &type){
+                    const Word& literal, SubInst const &type){
   return type
     + (reg_dst  << (kClass1OpcodeNumBits))
     + (reg_base << (kClass1OpcodeNumBits + kRegisterNumBits))
-    + (literal  << (kClass1OpcodeNumBits + kRegisterNumBits*2));
+    + (Code(literal)  << (kClass1OpcodeNumBits + kRegisterNumBits*2));
 }
 
-VM::Inst CodeClass2(Reg const &reg_dst, SubInst const& literal,
+VM::Inst CodeClass2(Reg const &reg_dst, const Word& literal,
                     SubInst const &type, SubInst const &subtype){
   return type
     + (subtype  << (kClass2OpcodeNumBits))
     + (reg_dst <<  (kClass2OpcodeNumBits + kSubtypeNumBits))
-    + (literal <<  (kClass2OpcodeNumBits + kSubtypeNumBits + kRegisterNumBits));
+    + (Code(literal) <<  (kClass2OpcodeNumBits + kSubtypeNumBits + kRegisterNumBits));
 }
 
 VM::Inst CodeClass3(Reg const &reg_src1, Reg const &reg_src2
                    ,Reg const &reg_dst, SubInst const &type
-                   ,SubInst const &subtype){
+                   ,const SubInst& subtype){
   return type
     + (subtype  << (kClass3OpcodeNumBits))
     + (reg_src1 << (kClass3OpcodeNumBits + kSubtypeNumBits))
@@ -64,34 +64,36 @@ VM::Inst CodeClass3(Reg const &reg_src1, Reg const &reg_src2
                     + kRegisterNumBits*2));
 }
 
-
-void DecodeClass0(const VM::Inst instruction, SubInst& literal){
-  literal = (instruction >> kClass0OpcodeNumBits)
-            & kLiteraltMask;
+void DecodeClass0(const VM::Inst instruction, Word& literal){
+  literal = Decode(
+              (instruction >> kClass0OpcodeNumBits)
+              & kLiteraltMask);
 }
 
 void DecodeClass1(const VM::Inst instruction, Reg&reg_dst,
-                  Reg &reg_base, SubInst &literal){
+                  Reg &reg_base, Word& literal){
   reg_dst = (instruction >> kClass1OpcodeNumBits)
             & kRegistertMask;
   reg_base = (instruction >> (kClass1OpcodeNumBits + kRegisterNumBits))
             & kRegistertMask;         
-  literal = (instruction >> (kClass1OpcodeNumBits + kRegisterNumBits*2))
-            & kLiteraltMask;
+  literal = Decode(
+              (instruction >> (kClass1OpcodeNumBits + kRegisterNumBits*2))
+              & kLiteraltMask);
 }
 
 
 void DecodeClass2(const VM::Inst instruction, Reg& reg_dst
-                 ,SubInst& literal, SubInst& subtype){
+                 ,Word& literal, SubInst& subtype){
   subtype  = (instruction >> (kClass2OpcodeNumBits))
            & kSubtypeMask;
   reg_dst  = (instruction >> (kClass2OpcodeNumBits
                               + kSubtypeNumBits))
            & kRegistertMask;
-  literal  = (instruction >> (kClass2OpcodeNumBits
+  literal  = Decode(
+              (instruction >> (kClass2OpcodeNumBits
                               + kSubtypeNumBits
                               + kRegisterNumBits))
-           & kLiteraltMask;
+              & kLiteraltMask);
 }
 
 void DecodeClass3(const VM::Inst instruction, Reg &reg_src1
@@ -109,6 +111,24 @@ void DecodeClass3(const VM::Inst instruction, Reg &reg_src1
                               + kSubtypeNumBits + kRegisterNumBits*2))
            & kRegistertMask;
 }
+
+
+SubInst Code(const Word literal){
+  if(literal < 0){
+    SubInst l = SubInst((-literal) & kLiteralUnsignedMask);
+    l += 1 << kLiteralSignPosition; 
+  }else{
+    SubInst l = SubInst(literal & kLiteralUnsignedMask);
+    return l;
+  }
+}
+
+Word Decode(const SubInst literal){
+  SubInst sign = (literal >> kLiteralSignPosition) & 1;
+  if(not sign)  return Word(literal);
+  else          return Word(-literal);
+}
+
 
 }//namespace IRCodification
 }//end namespace VM

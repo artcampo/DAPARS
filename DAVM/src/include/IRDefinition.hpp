@@ -56,6 +56,7 @@ const static int kLiteralNumBits  = 16;
 const static int kSubtypeNumBits = 3;
 
 
+
 const static int kClassBitMask =     (1 << kClassNumBits) - 1;
   const static int kClass0BitMask =  (1 << kClass0InstTypeNumBits) - 1;
   const static int kClass1BitMask =  (1 << kClass1InstTypeNumBits) - 1;
@@ -68,6 +69,8 @@ const static int kClassBitMask =     (1 << kClassNumBits) - 1;
 const static int kRegistertMask =    (1 << kRegisterNumBits) - 1;
 const static int kLiteraltMask  =    (1 << kLiteralNumBits)  - 1;
 const static int kSubtypeMask   =    (1 << kSubtypeNumBits) - 1;
+const static int kLiteralSignPosition = (kLiteralNumBits - 1);
+const static int kLiteralUnsignedMask = (1 << kLiteralSignPosition) - 1;
 
 
 // namespace OpCodes{

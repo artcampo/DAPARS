@@ -55,7 +55,10 @@ std::string PrintInstruction(const Inst& instruction){
   const SubInst current_class   = DecodeClass(instruction);
   const SubInst current_type    = DecodeType(instruction, current_class);
   const SubInst current_op_code = DecodeOpCode(current_class, current_type);
-  SubInst reg_src1, reg_src2, reg_dst, reg_base, sub_type, literal, op_offset;
+  
+  Reg     reg_src1, reg_src2, reg_dst, reg_base;
+  SubInst sub_type, op_offset;
+  Word    literal;
   std::string s;
 
 //   std::cout << "Op: " << current_op_code <<"\n";
