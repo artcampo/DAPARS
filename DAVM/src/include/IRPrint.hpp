@@ -5,12 +5,7 @@
 namespace VM{
 namespace IRBuilder{
 
-using VM::Addr;
-using VM::Inst;
-using VM::Target;
-using VM::Reg;
-
-std::string PrintInstruction(const uint32_t& instruction);
+std::string PrintInstruction(const Inst& instruction);
 
 } //namespace IRBuilder
 }//end namespace VM

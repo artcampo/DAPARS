@@ -31,34 +31,34 @@ private:
   ByteCode* ReadByteCode(const std::string &file_name);
   
 private:
-  void InstLoad(uint32_t const &reg_dst, uint32_t const &literal);
+  void InstLoad(const Reg &reg_dst, uint32_t const &literal);
   
   //Class 3: Type Ari
-  bool InstTypeArihmetic(uint32_t const &reg_src1, uint32_t const &reg_src2, 
-                            uint32_t const &reg_dst, uint32_t const &sub_type);
+  bool InstTypeArihmetic(const Reg &reg_src1, const Reg &reg_src2, 
+                            const Reg &reg_dst, uint32_t const &sub_type);
   
-  void InstAdd (uint32_t const &reg_src1, uint32_t const &reg_src2, 
-                       uint32_t const &reg_dst);
-  void InstSub (uint32_t const &reg_src1, uint32_t const &reg_src2, 
-                       uint32_t const &reg_dst);
-  void InstMul (uint32_t const &reg_src1, uint32_t const &reg_src2, 
-                       uint32_t const &reg_dst);
-  void InstDiv (uint32_t const &reg_src1, uint32_t const &reg_src2, 
-                       uint32_t const &reg_dst);  
+  void InstAdd (const Reg &reg_src1, const Reg &reg_src2, 
+                       const Reg &reg_dst);
+  void InstSub (const Reg &reg_src1, const Reg &reg_src2, 
+                       const Reg &reg_dst);
+  void InstMul (const Reg &reg_src1, const Reg &reg_src2, 
+                       const Reg &reg_dst);
+  void InstDiv (const Reg &reg_src1, const Reg &reg_src2, 
+                       const Reg &reg_dst);  
 
   //Class 3: Type Cmp
 
-  bool InstTypeComparison(uint32_t const &reg_src1, uint32_t const &reg_src2, 
-                            uint32_t const &reg_dst, uint32_t const &sub_type);
+  bool InstTypeComparison(const Reg &reg_src1, const Reg &reg_src2, 
+                            const Reg &reg_dst, uint32_t const &sub_type);
  
-  void InstNot (uint32_t const &reg_src1, uint32_t const &reg_src2, 
-                       uint32_t const &reg_dst);
-  void InstEql (uint32_t const &reg_src1, uint32_t const &reg_src2, 
-                       uint32_t const &reg_dst);
-  void InstLst (uint32_t const &reg_src1, uint32_t const &reg_src2, 
-                       uint32_t const &reg_dst);
-  void InstLte (uint32_t const &reg_src1, uint32_t const &reg_src2, 
-                       uint32_t const &reg_dst);  
+  void InstNot (const Reg &reg_src1, const Reg &reg_src2, 
+                       const Reg &reg_dst);
+  void InstEql (const Reg &reg_src1, const Reg &reg_src2, 
+                       const Reg &reg_dst);
+  void InstLst (const Reg &reg_src1, const Reg &reg_src2, 
+                       const Reg &reg_dst);
+  void InstLte (const Reg &reg_src1, const Reg &reg_src2, 
+                       const Reg &reg_dst);  
   
 };
 

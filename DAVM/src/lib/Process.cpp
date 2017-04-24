@@ -13,16 +13,16 @@ bool Process::NextOpCodeIsValid() const{
 }
 
 // PRE: NextOpCodeIsValid() is true
-uint32_t Process::GetCurrentOpCode() const{
+Inst Process::GetCurrentOpCode() const{
   return byte_code_.stream[execution_context_.instruction_pointer_];
 }
 
-void Process::ModifyIP(uint32_t const &offset){
+void Process::ModifyIP(const Target &offset){
   execution_context_.instruction_pointer_++;
   execution_context_.instruction_pointer_ += offset;
 }
 
-void Process::DumpExecutionContext(int const registers_num) const{
+void Process::DumpExecutionContext(const int registers_num) const{
   std::cout << "Registers: ";
   for( int i = 0; i < registers_num ; ++i){
     std::cout << execution_context_.registers_.registers[i];

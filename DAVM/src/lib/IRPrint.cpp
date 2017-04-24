@@ -12,8 +12,8 @@ using namespace IRDefinition;
 using namespace IRCodification;
 using namespace VM;
 
-std::string ArithString(const uint32_t reg_src1, const uint32_t reg_src2
-  , const uint32_t reg_dst, const uint32_t sub_type){
+std::string ArithString(const Reg reg_src1, const Reg reg_src2
+  , const Reg reg_dst, const SubInst sub_type){
   using namespace std;
   using namespace SubtypesArithmetic;
   std::string s;
@@ -34,7 +34,7 @@ std::string ArithString(const uint32_t reg_src1, const uint32_t reg_src2
   return s;
 }
 
-std::string ArithString(const uint32_t reg_dst, const uint32_t literal, const uint32_t sub_type){
+std::string ArithString(const Reg reg_dst, const SubInst literal, const SubInst sub_type){
   using namespace std;
   using namespace SubtypesArithmetic;
   std::string s;
@@ -51,11 +51,11 @@ std::string ArithString(const uint32_t reg_dst, const uint32_t literal, const ui
   return s;
 }
 
-std::string PrintInstruction(const uint32_t& instruction){
-  const uint32_t current_class   = DecodeClass(instruction);
-  const uint32_t current_type    = DecodeType(instruction, current_class);
-  const uint32_t current_op_code = DecodeOpCode(current_class, current_type);
-  uint32_t reg_src1, reg_src2, reg_dst, reg_base, sub_type, literal, op_offset;
+std::string PrintInstruction(const Inst& instruction){
+  const SubInst current_class   = DecodeClass(instruction);
+  const SubInst current_type    = DecodeType(instruction, current_class);
+  const SubInst current_op_code = DecodeOpCode(current_class, current_type);
+  SubInst reg_src1, reg_src2, reg_dst, reg_base, sub_type, literal, op_offset;
   std::string s;
 
 //   std::cout << "Op: " << current_op_code <<"\n";

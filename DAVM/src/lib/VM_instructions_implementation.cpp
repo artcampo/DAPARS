@@ -11,15 +11,15 @@ namespace VM{
 using namespace IRCodification;
 using namespace IRBuilder;
 
-void VirtualMachine::InstLoad(uint32_t const &reg_dst, uint32_t const &literal){
+void VirtualMachine::InstLoad(const Reg &reg_dst, const SubInst &literal){
   std::cout << "LOAD R"<< reg_dst <<"="<<literal<<"\n";
   process_->execution_context_.registers_.registers[reg_dst] = literal;
 }
 
 /////////////////////////////////////////////////////////////////////////////
 //  Class 3: type ARI
-bool VirtualMachine::InstTypeArihmetic (uint32_t const &reg_src1,
-  uint32_t const &reg_src2, uint32_t const &reg_dst, uint32_t const &sub_type){
+bool VirtualMachine::InstTypeArihmetic (const Reg &reg_src1,
+  const Reg &reg_src2, const Reg &reg_dst, const SubInst &sub_type){
   bool error = false;
   using namespace IRDefinition;
   using namespace SubtypesArithmetic;
@@ -34,32 +34,32 @@ bool VirtualMachine::InstTypeArihmetic (uint32_t const &reg_src1,
   return error;
 }
 
-void VirtualMachine::InstAdd (uint32_t const &reg_src1,
-  uint32_t const &reg_src2, uint32_t const &reg_dst){
+void VirtualMachine::InstAdd (const Reg &reg_src1,
+  const Reg &reg_src2, const Reg &reg_dst){
   std::cout << "ADD R"<<reg_dst<<"=R"<<reg_src1<<" op R"<< reg_src2 <<"\n";
   process_->execution_context_.registers_.registers[reg_dst] =
       process_->execution_context_.registers_.registers[reg_src1]
     + process_->execution_context_.registers_.registers[reg_src2];
 }
 
-void VirtualMachine::InstSub (uint32_t const &reg_src1,
-  uint32_t const &reg_src2, uint32_t const &reg_dst){
+void VirtualMachine::InstSub (const Reg &reg_src1,
+  const Reg &reg_src2, const Reg &reg_dst){
   std::cout << "SUB R"<<reg_dst<<"=R"<<reg_src1<<" op R"<< reg_src2 <<"\n";
   process_->execution_context_.registers_.registers[reg_dst] =
       process_->execution_context_.registers_.registers[reg_src1]
     - process_->execution_context_.registers_.registers[reg_src2];
 }
 
-void VirtualMachine::InstMul (uint32_t const &reg_src1,
-  uint32_t const &reg_src2, uint32_t const &reg_dst){
+void VirtualMachine::InstMul (const Reg &reg_src1,
+  const Reg &reg_src2, const Reg &reg_dst){
   std::cout << "MUL R"<<reg_dst<<"=R"<<reg_src1<<" op R"<< reg_src2 <<"\n";
   process_->execution_context_.registers_.registers[reg_dst] =
       process_->execution_context_.registers_.registers[reg_src1]
     * process_->execution_context_.registers_.registers[reg_src2];
 }
 
-void VirtualMachine::InstDiv (uint32_t const &reg_src1,
-  uint32_t const &reg_src2, uint32_t const &reg_dst){
+void VirtualMachine::InstDiv (const Reg &reg_src1,
+  const Reg &reg_src2, const Reg &reg_dst){
   std::cout << "DIV R"<<reg_dst<<"=R"<<reg_src1<<" op R"<< reg_src2 <<"\n";
   process_->execution_context_.registers_.registers[reg_dst] =
       process_->execution_context_.registers_.registers[reg_src1]
@@ -70,8 +70,8 @@ void VirtualMachine::InstDiv (uint32_t const &reg_src1,
 
 /////////////////////////////////////////////////////////////////////////////
 //  Class 3: type CMP
-bool VirtualMachine::InstTypeComparison (uint32_t const &reg_src1,
-  uint32_t const &reg_src2, uint32_t const &reg_dst, uint32_t const &sub_type){
+bool VirtualMachine::InstTypeComparison (const Reg &reg_src1,
+  const Reg &reg_src2, const Reg &reg_dst, const SubInst &sub_type){
   bool error = false;
   using namespace IRDefinition;
   using namespace SubtypesComparison;
@@ -86,31 +86,31 @@ bool VirtualMachine::InstTypeComparison (uint32_t const &reg_src1,
   return error;
 }
 
-void VirtualMachine::InstNot (uint32_t const &reg_src1,
-  uint32_t const &reg_src2, uint32_t const &reg_dst){
+void VirtualMachine::InstNot (const Reg &reg_src1,
+  const Reg &reg_src2, const Reg &reg_dst){
   std::cout << "NOT R"<<reg_dst<<"= !R"<<reg_src1<<"\n";
   process_->execution_context_.registers_.registers[reg_dst] =
       not process_->execution_context_.registers_.registers[reg_src1];
 }
 
-void VirtualMachine::InstEql (uint32_t const &reg_src1,
-  uint32_t const &reg_src2, uint32_t const &reg_dst){
+void VirtualMachine::InstEql (const Reg &reg_src1,
+  const Reg &reg_src2, const Reg &reg_dst){
   std::cout << "EQL R"<<reg_dst<<"=R"<<reg_src1<<" == R"<< reg_src2 <<"\n";
   process_->execution_context_.registers_.registers[reg_dst] =
       process_->execution_context_.registers_.registers[reg_src1]
    == process_->execution_context_.registers_.registers[reg_src2];
 }
 
-void VirtualMachine::InstLst (uint32_t const &reg_src1,
-  uint32_t const &reg_src2, uint32_t const &reg_dst){
+void VirtualMachine::InstLst (const Reg &reg_src1,
+  const Reg &reg_src2, const Reg &reg_dst){
   std::cout << "LST R"<<reg_dst<<"=R"<<reg_src1<<" < R"<< reg_src2 <<"\n";
   process_->execution_context_.registers_.registers[reg_dst] =
       process_->execution_context_.registers_.registers[reg_src1]
     < process_->execution_context_.registers_.registers[reg_src2];
 }
 
-void VirtualMachine::InstLte (uint32_t const &reg_src1,
-  uint32_t const &reg_src2, uint32_t const &reg_dst){
+void VirtualMachine::InstLte (const Reg &reg_src1,
+  const Reg &reg_src2, const Reg &reg_dst){
   std::cout << "LTE R"<<reg_dst<<"=R"<<reg_src1<<" <= R"<< reg_src2 <<"\n";
   process_->execution_context_.registers_.registers[reg_dst] =
       process_->execution_context_.registers_.registers[reg_src1]
