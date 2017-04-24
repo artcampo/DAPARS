@@ -52,7 +52,7 @@ public:
     Symbols::Symbol& s = func_.GetSymbolDecl(p);
 //     std::cout << s.str() << std::endl;
     auto size = s.Size();
-    func_.StoreSymbolAddress( s.Id(), IR::Offset(offset_, s.BareName())
+    func_.StoreSymbolAddress( s.Id(), IR::Offset(-offset_, s.BareName())
                             , func_.LocalsLabel(), size, func_.LocalVars());
     offset_ += size;
 

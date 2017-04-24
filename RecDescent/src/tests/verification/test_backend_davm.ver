@@ -21,11 +21,11 @@ Backend::Davm
 %0 = LoadI(4)
 store %0 to [LT MainDS:0 (a)]
 %2 = LoadI(3)
-store %2 to [LT MainDS:1 (b)]
+store %2 to [LT MainDS:-1 (b)]
 %4 = Load [LT MainDS:0 (a)]
-%5 = Load [LT MainDS:1 (b)]
+%5 = Load [LT MainDS:-1 (b)]
 %6 = %4 + %5
-store %6 to [LT MainDS:2 (c)]
+store %6 to [LT MainDS:-2 (c)]
 ReturnMain
 ---------
 Bytecode:
@@ -182,7 +182,7 @@ call [LT entry_f[isTarget]:0 ()]
 store %0 to [LT MainDS:0 (a)]
 ReturnMain
 %0 = Load [RT arp_f[isArp]:0 (a)]
-%1 = Load [RT arp_f[isArp]:3 (d)]
+%1 = Load [RT arp_f[isArp]:-3 (d)]
 %2 = %0 + %1
 SetRetVal( %2)
 Return
