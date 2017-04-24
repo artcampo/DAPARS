@@ -6,34 +6,30 @@ namespace VM{
 
 namespace IRBuilder{
 
-using VM::Addr;
-using VM::Inst;
-using VM::Target;
-using VM::Reg;
 
 bool        checkIRCodification();
-std::string PrintInstruction(const uint32_t& instruction);
+std::string PrintInstruction(const Inst& instruction);
 
 
 
 Inst Stop();
-Inst LoadI (const Reg &reg_dst, const uint32_t& literal);  //TODO
-Inst Store(const Reg &reg_src, const uint32_t& literal);  //TODO
+Inst LoadI (const Reg &reg_dst, const SubInst& literal);  //TODO
+Inst Store(const Reg &reg_src, const SubInst& literal);  //TODO
 Inst Move (const Reg &reg_src, const Reg &reg_dst);       //TODO
 Inst Call(const Target& target);//TODO
 Inst Return();
-Inst LoadB(const uint32_t&reg_dst, const uint32_t&reg_base, const uint32_t& literal);  //TODO
-Inst StoreB(const Reg &reg_src, const uint32_t&reg_base, const uint32_t& literal); //TODO
-Inst ArithI(const Reg &reg_dst, const uint32_t& literal, const uint32_t& op);
+Inst LoadB(const Reg&reg_dst, const Reg&reg_base, const SubInst& literal);  //TODO
+Inst StoreB(const Reg &reg_src, const Reg&reg_base, const SubInst& literal); //TODO
+Inst ArithI(const Reg &reg_dst, const Reg& literal, const SubInst& op);
 Inst Pop (const Reg &reg_dst);  //TODO
 Inst Push(const Reg &reg_src);  //TODO
 
 //
 Inst Arith(const Reg &reg_src1, const Reg &reg_src2,
-               const Reg &reg_dst, const uint32_t& op);
+               const Reg &reg_dst, const SubInst& op);
 
 Inst Comp(const Reg &reg_src1, const Reg &reg_src2,
-               const Reg &reg_dst, const uint32_t& op);
+               const Reg &reg_dst, const SubInst& op);
 
 
 

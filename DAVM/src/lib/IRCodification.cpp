@@ -9,12 +9,13 @@ namespace IRCodification{
 using namespace IRDefinition;
 using namespace VM;
 
-uint32_t  DecodeClass (uint32_t const &instruction){
+//TODO: change const order!!
+SubInst  DecodeClass (Inst const &instruction){
   return instruction & kClassBitMask;
 }
 
 
-uint32_t  DecodeType (uint32_t const &instruction, uint32_t const &inst_class){
+SubInst  DecodeType (Inst const &instruction, SubInst const &inst_class){
   if( inst_class == InstClassLit )
     return (instruction >> kClassNumBits) & kClass0BitMask;
   else if( inst_class == InstClassRegLit )
@@ -26,34 +27,34 @@ uint32_t  DecodeType (uint32_t const &instruction, uint32_t const &inst_class){
 }
 
 
-uint32_t  DecodeOpCode(uint32_t const &inst_class, uint32_t const &inst_type){
+SubInst  DecodeOpCode(SubInst const &inst_class, SubInst const &inst_type){
   return inst_class + (inst_type << kClassNumBits);
 }
 
-VM::Inst CodeClass0(uint32_t const& literal, const uint32_t &type){
+VM::Inst CodeClass0(SubInst const& literal, const SubInst &type){
   return type
     + (literal << kClass0OpcodeNumBits);
 }
 
-VM::Inst CodeClass1(uint32_t const &reg_dst, const uint32_t&reg_base,
-                    uint32_t const& literal, uint32_t const &type){
+VM::Inst CodeClass1(Reg const &reg_dst, const Reg&reg_base,
+                    SubInst const& literal, SubInst const &type){
   return type
     + (reg_dst  << (kClass1OpcodeNumBits))
     + (reg_base << (kClass1OpcodeNumBits + kRegisterNumBits))
     + (literal  << (kClass1OpcodeNumBits + kRegisterNumBits*2));
 }
 
-VM::Inst CodeClass2(uint32_t const &reg_dst, uint32_t const& literal,
-                    uint32_t const &type, uint32_t const &subtype){
+VM::Inst CodeClass2(Reg const &reg_dst, SubInst const& literal,
+                    SubInst const &type, SubInst const &subtype){
   return type
     + (subtype  << (kClass2OpcodeNumBits))
     + (reg_dst <<  (kClass2OpcodeNumBits + kSubtypeNumBits))
     + (literal <<  (kClass2OpcodeNumBits + kSubtypeNumBits + kRegisterNumBits));
 }
 
-VM::Inst CodeClass3(uint32_t const &reg_src1, uint32_t const &reg_src2
-                   ,uint32_t const &reg_dst, uint32_t const &type
-                   ,uint32_t const &subtype){
+VM::Inst CodeClass3(Reg const &reg_src1, Reg const &reg_src2
+                   ,Reg const &reg_dst, SubInst const &type
+                   ,SubInst const &subtype){
   return type
     + (subtype  << (kClass3OpcodeNumBits))
     + (reg_src1 << (kClass3OpcodeNumBits + kSubtypeNumBits))
@@ -64,13 +65,13 @@ VM::Inst CodeClass3(uint32_t const &reg_src1, uint32_t const &reg_src2
 }
 
 
-void DecodeClass0(const VM::Inst instruction, uint32_t& literal){
+void DecodeClass0(const VM::Inst instruction, SubInst& literal){
   literal = (instruction >> kClass0OpcodeNumBits)
             & kLiteraltMask;
 }
 
-void DecodeClass1(const VM::Inst instruction, uint32_t&reg_dst,
-                  uint32_t &reg_base, uint32_t &literal){
+void DecodeClass1(const VM::Inst instruction, Reg&reg_dst,
+                  Reg &reg_base, SubInst &literal){
   reg_dst = (instruction >> kClass1OpcodeNumBits)
             & kRegistertMask;
   reg_base = (instruction >> (kClass1OpcodeNumBits + kRegisterNumBits))
@@ -80,8 +81,8 @@ void DecodeClass1(const VM::Inst instruction, uint32_t&reg_dst,
 }
 
 
-void DecodeClass2(const VM::Inst instruction, uint32_t& reg_dst
-                 ,uint32_t& literal, uint32_t& subtype){
+void DecodeClass2(const VM::Inst instruction, Reg& reg_dst
+                 ,SubInst& literal, SubInst& subtype){
   subtype  = (instruction >> (kClass2OpcodeNumBits))
            & kSubtypeMask;
   reg_dst  = (instruction >> (kClass2OpcodeNumBits
@@ -93,8 +94,8 @@ void DecodeClass2(const VM::Inst instruction, uint32_t& reg_dst
            & kLiteraltMask;
 }
 
-void DecodeClass3(const VM::Inst instruction, uint32_t &reg_src1
-                 ,uint32_t &reg_src2, uint32_t &reg_dst, uint32_t &subtype){
+void DecodeClass3(const VM::Inst instruction, Reg &reg_src1
+                 ,Reg &reg_src2, Reg &reg_dst, SubInst &subtype){
 
   subtype  = (instruction >> (kClass3OpcodeNumBits))
            & kSubtypeMask;

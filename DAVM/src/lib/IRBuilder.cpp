@@ -66,19 +66,19 @@ Inst Return(){
 
 ////////////////////////////////////////////////////////////////////////
 //CLASS 1
-Inst LoadI(const uint32_t&reg_dst, const uint32_t& literal){
+Inst LoadI(const Reg&reg_dst, const SubInst& literal){
   return CodeClass1(reg_dst, kIRUnusedReg, literal, IR_LOADI);
 }
 
-Inst LoadB(const uint32_t&reg_dst, const uint32_t&reg_base, const uint32_t& literal){
+Inst LoadB(const Reg&reg_dst, const Reg&reg_base, const SubInst& literal){
   return CodeClass1(reg_dst, reg_base, literal, IR_LOADB);
 }
 
-Inst Store(const Reg &reg_src, const uint32_t& literal){
+Inst Store(const Reg &reg_src, const SubInst& literal){
   return CodeClass1(reg_src, kIRUnusedReg, literal, IR_STORE);
 }
 
-Inst StoreB(const Reg &reg_src, const uint32_t&reg_base, const uint32_t& literal){
+Inst StoreB(const Reg &reg_src, const Reg&reg_base, const SubInst& literal){
   return CodeClass1(reg_src, reg_base, literal, IR_STOREB);
 }
 
@@ -101,19 +101,19 @@ Inst JumpIfFalse (const Reg&reg_src1, const Target& target){
   return CodeClass2(0, target, IR_JMPC, SubtypesJMPC::IR_FALSE);
 }
 
-Inst ArithI(const Reg &reg_dst, const uint32_t& literal, const uint32_t& op){
+Inst ArithI(const Reg &reg_dst, const SubInst& literal, const SubInst& op){
   return CodeClass2(reg_dst, literal, IR_ARII, op);
 }
 
 ////////////////////////////////////////////////////////////////////////
 //CLASS 3
-Inst Arith(const uint32_t&reg_src1, const uint32_t&reg_src2,
-               const uint32_t&reg_dst, const uint32_t&op){
+Inst Arith(const Reg&reg_src1, const Reg&reg_src2,
+               const Reg&reg_dst, const SubInst&op){
   return CodeClass3(reg_src1, reg_src2, reg_dst, IR_ARI, op);
 }
 
-Inst Comp(const uint32_t&reg_src1, const uint32_t&reg_src2,
-               const uint32_t&reg_dst, const uint32_t&op){
+Inst Comp(const Reg&reg_src1, const Reg&reg_src2,
+               const Reg&reg_dst, const SubInst&op){
   return CodeClass3(reg_src1, reg_src2, reg_dst, IR_CMP, op);
 }
 
@@ -137,7 +137,7 @@ void PatchJump(Inst& inst, const Target& target){
     inst = CodeClass0(target, IR_JMP);
 
   if((inst & kClass2OpcodeBitMask) == IR_JMPC){
-    uint32_t subt = (inst >> kClass2OpcodeNumBits) & kLiteraltMask;
+    SubInst subt = (inst >> kClass2OpcodeNumBits) & kLiteraltMask;
     inst = CodeClass2(0, target, IR_JMPC, subt);
   }
 }
@@ -145,29 +145,29 @@ void PatchJump(Inst& inst, const Target& target){
 namespace IRBuilderAPI{
 using namespace SubtypesArithmetic;
 
-Inst Add(const uint32_t&reg_src1, const uint32_t&reg_src2,
-             const uint32_t&reg_dst){
+Inst Add(const Reg&reg_src1, const Reg&reg_src2,
+             const Reg&reg_dst){
   return CodeClass3(reg_src1, reg_src2, reg_dst, IR_ARI, IR_ADD);
 }
 
-Inst Sub(const uint32_t&reg_src1, const uint32_t&reg_src2,
-             const uint32_t&reg_dst){
+Inst Sub(const Reg&reg_src1, const Reg&reg_src2,
+             const Reg&reg_dst){
   return CodeClass3(reg_src1, reg_src2, reg_dst, IR_ARI, IR_SUB);
 }
 
-Inst Mul(const uint32_t&reg_src1, const uint32_t&reg_src2,
-             const uint32_t&reg_dst){
+Inst Mul(const Reg&reg_src1, const Reg&reg_src2,
+             const Reg&reg_dst){
   return CodeClass3(reg_src1, reg_src2, reg_dst, IR_ARI, IR_MUL);
 }
 
 
-Inst Div(const uint32_t&reg_src1, const uint32_t&reg_src2,
-             const uint32_t&reg_dst){
+Inst Div(const Reg&reg_src1, const Reg&reg_src2,
+             const Reg&reg_dst){
   return CodeClass3(reg_src1, reg_src2, reg_dst, IR_ARI, IR_DIV);
 }
 }; //namespace IRBuilderAPI
 
-uint32_t Stop(){
+Inst Stop(){
   return IR_STOP;
 }
 

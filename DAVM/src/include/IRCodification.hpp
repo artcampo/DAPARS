@@ -6,28 +6,28 @@
 namespace VM{
 namespace IRCodification{
 
-uint32_t  DecodeClass (const uint32_t &instruction);
-uint32_t  DecodeType  (const uint32_t &instruction, const uint32_t &inst_class);
-uint32_t  DecodeOpCode(const uint32_t &inst_class, const uint32_t &inst_type);
+SubInst  DecodeClass (const Inst &instruction);
+SubInst  DecodeType  (const Inst &instruction, const SubInst &inst_class);
+SubInst  DecodeOpCode(const SubInst &inst_class, const SubInst &inst_type);
 
-VM::Inst CodeClass0(uint32_t const& literal, const uint32_t &type);
-void DecodeClass0(const VM::Inst instruction, uint32_t& literal);
+Inst CodeClass0(SubInst const& literal, const SubInst &type);
+void DecodeClass0(const VM::Inst instruction, SubInst& literal);
 
-VM::Inst CodeClass1(const uint32_t &reg_dst, const uint32_t&reg_base,
-                    uint32_t const& literal, const uint32_t &type);
-void DecodeClass1(const VM::Inst instruction, uint32_t&reg_base,
-                  uint32_t& reg_dst,uint32_t& literal);
+Inst CodeClass1(const Reg &reg_dst, const Reg&reg_base,
+                    SubInst const& literal, const SubInst &type);
+void DecodeClass1(const VM::Inst instruction, Reg&reg_base,
+                  Reg& reg_dst,SubInst& literal);
 
-VM::Inst CodeClass2(const uint32_t &reg_dst, uint32_t const& literal,
-                    const uint32_t &type, const uint32_t &subtype);
-void DecodeClass2(const VM::Inst instruction, uint32_t &reg_dst
-                 ,uint32_t& literal, uint32_t& subtype);
+Inst CodeClass2(const Reg &reg_dst, SubInst const& literal,
+                    const SubInst &type, const SubInst &subtype);
+void DecodeClass2(const VM::Inst instruction, Reg &reg_dst
+                 ,SubInst& literal, SubInst& subtype);
 
-VM::Inst CodeClass3(const uint32_t &reg_src1, const uint32_t &reg_src2
-                   ,const uint32_t &reg_dst, const uint32_t &type
-                   ,const uint32_t &subtype);
-void DecodeClass3(const VM::Inst instruction, uint32_t &reg_src1
-                 ,uint32_t &reg_src2, uint32_t &reg_dst, uint32_t &subtype);
+Inst CodeClass3(const Reg &reg_src1, const Reg &reg_src2
+                   ,const Reg &reg_dst, const SubInst &type
+                   ,const SubInst &subtype);
+void DecodeClass3(const VM::Inst instruction, Reg &reg_src1
+                 ,Reg &reg_src2, Reg &reg_dst, SubInst &subtype);
 
 } //namespace IRCodification
 }//end namespace VM

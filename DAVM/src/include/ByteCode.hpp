@@ -6,9 +6,6 @@
 
 namespace VM{
 
-using VM::Addr;
-using VM::Inst;
-
 struct ByteCode{
 
   void Append(const Inst inst){ stream.push_back(inst);}
@@ -19,7 +16,7 @@ struct ByteCode{
   Inst& GetInst(VM::Addr addr){ return stream[addr];}
 
   //TODO:make private
-  std::vector<uint32_t> stream;
+  std::vector<Inst> stream;
   
   size_t static_data_segment_size_;
   

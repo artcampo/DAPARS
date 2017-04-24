@@ -9,7 +9,7 @@
 namespace VM{
 
 namespace VirtualMachineSpecs{
-const static int kNumberRegisters = 10;  
+const static int kNumberRegisters = 16;  
 };
 
 class VirtualMachine{
