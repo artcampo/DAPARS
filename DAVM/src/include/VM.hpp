@@ -2,6 +2,7 @@
 #include "ByteCode.hpp"
 #include "Process.hpp"
 #include "ErrorLog.hpp"
+#include "BasicTypes.hpp"
 
 #include <string>
 #include <memory>

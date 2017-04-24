@@ -12,7 +12,7 @@ regenerate_test_from_dacomp(){
 regenerate_test_from_dacomp test1
 regenerate_test_from_dacomp test2
 regenerate_test_from_dacomp test3
-regenerate_test_from_dacomp test4
+# regenerate_test_from_dacomp test4
 
 ###################################################################
 regenerate_test_standalone(){

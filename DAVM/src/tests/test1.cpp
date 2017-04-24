@@ -15,10 +15,10 @@ int main(){
   using namespace IRDefinition;
   using namespace IRBuilderAPI;
   bc->stream = std::vector<uint32_t> {
-    Load( IR_REG0, 12),
-    Load( IR_REG1, 15),   
-    Add ( IR_REG0, IR_REG1, IR_REG2),
-    Stop()
+    LoadI( IR_REG0, 12),
+    LoadI( IR_REG1, 15),   
+    Add  ( IR_REG0, IR_REG1, IR_REG2),
+    Stop ()
   };
   
   

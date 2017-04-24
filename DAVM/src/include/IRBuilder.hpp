@@ -1,9 +1,8 @@
 #pragma once
 #include "IRCodification.hpp"
-//TODO:
 #include "BasicTypes.hpp"
-namespace VM{
 
+namespace VM{
 namespace IRBuilder{
 
 

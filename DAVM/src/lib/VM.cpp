@@ -7,7 +7,7 @@
 #include <iostream>
 
 namespace VM{
-}//end namespace VM
+
 bool VirtualMachine::ExecProcess(){
   bool executing  = true;
   bool error      = false;
@@ -42,7 +42,7 @@ bool VirtualMachine::ExecProcess(){
 
         switch(current_class){
           ////////////////////////////////////////////////////////////
-          case InstClassNoReg:
+          case InstClassLit:
             DecodeClass0(current_instruction, literal);
             switch(current_op_code){
               default:      error_log_->errors.push_back(
@@ -55,10 +55,10 @@ bool VirtualMachine::ExecProcess(){
           case InstClassRegLit:
             DecodeClass1(current_instruction, reg_dst, reg_base, literal);
             switch(current_op_code){
-              case IR_LOAD: InstLoad(reg_dst, literal); break;
-              default:      error_log_->errors.push_back(
+              case IR_LOADI:  InstLoad(reg_dst, literal); break;
+              default:        error_log_->errors.push_back(
                                           "op not found (c1)");
-                            error = true; break;
+                              error = true; break;
             }
             break;
 
@@ -139,3 +139,5 @@ void VirtualMachine::DumpExecutionContext(int const registers_num) const{
 int VirtualMachine::LoadProcess(const std::string &file_name){
   std::unique_ptr<ByteCode> byte_code(ReadByteCode(file_name));
 }
+
+}//end namespace VM

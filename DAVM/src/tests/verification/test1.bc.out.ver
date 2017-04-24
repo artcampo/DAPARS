@@ -1,6 +1,3 @@
 EXEC
-OP: LOAD R0=2
-OP: LOAD R1=1
-OP: ADD R2=R0 op R1
-STOP
-Registers: 2, 1, 3, 0, 0, 0, 0, 0, 0, 0
+OP: Errors in execution:
+op not found (c1)

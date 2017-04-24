@@ -17,9 +17,9 @@ int main(){
   using namespace SubtypesComparison;
   
   bc->stream = std::vector<uint32_t> {
-    Load( IR_REG0, 42),
-    Load( IR_REG1, 42),
-    Load( IR_REG2, 12),
+    LoadI( IR_REG0, 42),
+    LoadI( IR_REG1, 42),
+    LoadI( IR_REG2, 12),
     
     Comp( IR_REG0, IR_REG1, IR_REG3, IR_NOT),
     Comp( IR_REG0, IR_REG1, IR_REG4, IR_EQL),
