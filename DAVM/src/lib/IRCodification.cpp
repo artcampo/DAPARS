@@ -115,8 +115,9 @@ void DecodeClass3(const VM::Inst instruction, Reg &reg_src1
 
 SubInst Code(const Word literal){
   if(literal < 0){
-    SubInst l = SubInst((-literal) & kLiteralUnsignedMask);
+    SubInst l = SubInst((-literal)) & kLiteralUnsignedMask;
     l += 1 << kLiteralSignPosition; 
+    return l;
   }else{
     SubInst l = SubInst(literal & kLiteralUnsignedMask);
     return l;
@@ -125,8 +126,8 @@ SubInst Code(const Word literal){
 
 Word Decode(const SubInst literal){
   SubInst sign = (literal >> kLiteralSignPosition) & 1;
-  if(not sign)  return Word(literal);
-  else          return Word(-literal);
+  if(not sign)  return  Word(literal & kLiteralUnsignedMask);
+  else          return -Word(literal & kLiteralUnsignedMask);
 }
 
 
