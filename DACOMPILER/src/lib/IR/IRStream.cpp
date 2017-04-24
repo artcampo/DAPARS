@@ -70,7 +70,7 @@ void IRStream::AppendSetRetVal(const Reg src){
   Append( SetRetVal(src) );
 }
 
-void IRStream::AppendSetPar(const Reg src)    { Append( SetPar(src) );}
+void IRStream::AppendSetArg(const Reg src)    { Append( SetArg(src) );}
 void IRStream::AppendCall(const MemAddr addr) { Append( Call(addr) );  };
 
 Reg IRStream::AppendGetArg(const NodeValue position){ 

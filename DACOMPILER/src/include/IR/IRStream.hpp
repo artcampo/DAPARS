@@ -43,7 +43,7 @@ struct IRStream : public IRBuilder{
 
   Reg  AppendGetRetVal();
   void AppendSetRetVal(const Reg src);
-  void AppendSetPar(const Reg src);
+  void AppendSetArg(const Reg src);
   Reg  AppendGetArg(const NodeValue position);
   void AppendReturn();
   void AppendReturnMain();

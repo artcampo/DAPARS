@@ -81,6 +81,17 @@ protected:
    Offset offset_;
 };
 
+struct InstTarget{
+  InstTarget() : target_(kAddrUninitialized){};
+  InstTarget(const Addr target) : target_(target){};
+  ~InstTarget() = default;
+
+  void PatchJump(const Addr target){ target_ = target;}
+  
+protected:
+  Addr target_;
+};
+
 
 //Extended interfaces
 struct BinaryOp : public Inst, public InstDst, public InstSrcSrc{

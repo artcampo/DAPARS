@@ -44,7 +44,7 @@ Backend::Davm
 %0 = LoadI(1)
 store %0 to [LT MainDS:0 (a)]
 %2 = Load [LT MainDS:0 (a)]
-SetPar( %2)
+SetArg( %2)
 call [LT entry_f[isTarget]:0 ()]
 %3 = GetRetVal() !!!
 store %3 to [LT MainDS:0 (a)]
@@ -71,8 +71,8 @@ Parsing: "int f(int p0, int p1){ return p0 + p1; }void main(){int a; a = f(9,8);
 Backend::Davm
 %0 = LoadI(9)
 %1 = LoadI(8)
-SetPar( %0)
-SetPar( %1)
+SetArg( %0)
+SetArg( %1)
 call [LT entry_f[isTarget]:0 ()]
 %2 = GetRetVal() !!!
 store %2 to [LT MainDS:0 (a)]
@@ -107,10 +107,10 @@ Backend::Davm
 %1 = LoadI(8)
 %2 = LoadI(7)
 %3 = LoadI(6)
-SetPar( %0)
-SetPar( %1)
-SetPar( %2)
-SetPar( %3)
+SetArg( %0)
+SetArg( %1)
+SetArg( %2)
+SetArg( %3)
 call [LT entry_f[isTarget]:0 ()]
 %4 = GetRetVal() !!!
 store %4 to [LT MainDS:0 (a)]

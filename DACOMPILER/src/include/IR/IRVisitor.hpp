@@ -10,7 +10,7 @@ namespace Inst{
   
 class IRVisitor{
 public:
-  virtual void Visit(Inst::Inst const& p)   = 0;
+  virtual void Visit(Inst::Inst const& p)       = 0;  //TODO: delete: only for debug
   virtual void Visit(Inst::JumpCond const& p)   = 0;
   virtual void Visit(Inst::JumpIncond const& p) = 0;
   virtual void Visit(Inst::LoadI const& p)      = 0;
@@ -24,7 +24,7 @@ public:
   virtual void Visit(Inst::PtrElem const& p)    = 0;
   virtual void Visit(Inst::GetRetVal const& p)  = 0;
   virtual void Visit(Inst::SetRetVal const& p)  = 0;
-  virtual void Visit(Inst::SetPar const& p)     = 0;
+  virtual void Visit(Inst::SetArg const& p)     = 0;
   virtual void Visit(Inst::GetArg const& p)     = 0;
   virtual void Visit(Inst::Return const& p)     = 0;
   virtual void Visit(Inst::ReturnMain const& p) = 0;

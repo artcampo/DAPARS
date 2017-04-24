@@ -2,19 +2,14 @@ namespace Compiler{
 namespace IR{
 namespace Inst{
 
-struct Jump: public Inst{
-  Jump() : target_(0){};
-  Jump(const Addr target) : target_(target){};
+struct Jump: public Inst, InstTarget{
+  Jump() : InstTarget(0){};
+  Jump(const Addr target) : InstTarget(target){};
   ~Jump() = default;
-
-  void PatchJump(const Addr target){ target_ = target;}
 
   virtual std::string str() const noexcept{
     return std::string("Jump to ") + std::to_string(target_);
   }
-  
-protected:
-  Addr target_;
 };
 
 struct JumpCond : public Jump{

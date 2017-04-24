@@ -153,7 +153,7 @@ private:
     byte_code_.Append( VM::IRBuilder::Move(rs.mreg_, reg_alloc_.MRegRetValue()));
   }  
   
-  void Visit(const IR::Inst::SetPar& inst) override{
+  void Visit(const IR::Inst::SetArg& inst) override{
     std::cout << inst.str() << "\n";
     if(is_first_arg_){
       RegMap rs = reg_alloc_.IRReg(inst.RegSrc());

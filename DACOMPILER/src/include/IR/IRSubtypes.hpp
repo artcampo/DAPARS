@@ -5,8 +5,11 @@ namespace Compiler{
 namespace IR{
 
 using AddrOffset  = int;
-using Addr        = size_t;
+using Addr        = size_t; //for @ to code
 using Reg         = size_t;
+
+//0 can only point to start of main, which is not referenced
+const static Addr kAddrUninitialized = 0; 
 
 const static int kNumArgsInRegister = 1;
 

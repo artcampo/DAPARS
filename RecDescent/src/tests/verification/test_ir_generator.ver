@@ -248,7 +248,7 @@ Declaration Table:
 IR dump:
 LT entry_main[isTarget]
 0: %0 = LoadI(2)
-1: SetPar( %0)
+1: SetArg( %0)
 2: call [LT entry_f[isTarget]:0 ()]
 3: %1 = GetRetVal()
 4: store %1 to [LT MainDS:0 (a)]
@@ -313,7 +313,7 @@ IR dump:
 LT entry_O1::f[isTarget]
 0: %0 = Load [RT this_O1[isThisPtr]:0 (a_)]
 1: %1 = Load [RT this_O1[isThisPtr]:0 ()]
-2: SetPar( %1)
+2: SetArg( %1)
 3: call [LT entry_O1::g[isTarget]:0 ()]
 4: %2 = GetRetVal()
 5: %3 = %0 + %2
@@ -325,7 +325,7 @@ LT entry_O1::g[isTarget]
 2: Return
 LT entry_main[isTarget]
 0: %0 = PtrElem( LT MainDS:0 (inst))
-1: SetPar( %0)
+1: SetArg( %0)
 2: call [LT entry_O1::f[isTarget]:0 ()]
 3: %1 = GetRetVal()
 4: %2 = PtrElem( LT MainDS:0 (inst))
@@ -415,20 +415,20 @@ LT entry_C::fc[isTarget]
 2: Return
 LT entry_main[isTarget]
 0: %0 = PtrElem( LT MainDS:0 (inst))
-1: SetPar( %0)
+1: SetArg( %0)
 2: call [LT entry_C::fc[isTarget]:0 ()]
 3: %1 = GetRetVal()
 4: %2 = PtrElem( LT MainDS:0 (inst))
 5: %3 = LoadI(1)
 6: %4 = %2 + %3
-7: SetPar( %4)
+7: SetArg( %4)
 8: call [LT entry_B::fb[isTarget]:0 ()]
 9: %5 = GetRetVal()
 10: %6 = %1 + %5
 11: %7 = PtrElem( LT MainDS:0 (inst))
 12: %8 = LoadI(0)
 13: %9 = %7 + %8
-14: SetPar( %9)
+14: SetArg( %9)
 15: call [LT entry_A::fa[isTarget]:0 ()]
 16: %10 = GetRetVal()
 17: %11 = %6 + %10
@@ -598,46 +598,46 @@ LT entry_main[isTarget]
 0: %0 = PtrElem( LT MainDS:0 (inst))
 1: %1 = LoadI(0)
 2: %2 = %0 + %1
-3: SetPar( %2)
+3: SetArg( %2)
 4: call [LT entry_A::fa[isTarget]:0 ()]
 5: %3 = GetRetVal()
 6: %4 = PtrElem( LT MainDS:0 (inst))
 7: %5 = LoadI(0)
 8: %6 = %4 + %5
-9: SetPar( %6)
+9: SetArg( %6)
 10: call [LT entry_B::fb[isTarget]:0 ()]
 11: %7 = GetRetVal()
 12: %8 = %3 + %7
 13: %9 = PtrElem( LT MainDS:0 (inst))
 14: %10 = LoadI(0)
 15: %11 = %9 + %10
-16: SetPar( %11)
+16: SetArg( %11)
 17: call [LT entry_C::fc[isTarget]:0 ()]
 18: %12 = GetRetVal()
 19: %13 = %8 + %12
 20: %14 = PtrElem( LT MainDS:0 (inst))
 21: %15 = LoadI(3)
 22: %16 = %14 + %15
-23: SetPar( %16)
+23: SetArg( %16)
 24: call [LT entry_D::fd[isTarget]:0 ()]
 25: %17 = GetRetVal()
 26: %18 = %13 + %17
 27: %19 = PtrElem( LT MainDS:0 (inst))
 28: %20 = LoadI(3)
 29: %21 = %19 + %20
-30: SetPar( %21)
+30: SetArg( %21)
 31: call [LT entry_E::fe[isTarget]:0 ()]
 32: %22 = GetRetVal()
 33: %23 = %18 + %22
 34: %24 = PtrElem( LT MainDS:0 (inst))
 35: %25 = LoadI(3)
 36: %26 = %24 + %25
-37: SetPar( %26)
+37: SetArg( %26)
 38: call [LT entry_F::ff[isTarget]:0 ()]
 39: %27 = GetRetVal()
 40: %28 = %23 + %27
 41: %29 = PtrElem( LT MainDS:0 (inst))
-42: SetPar( %29)
+42: SetArg( %29)
 43: call [LT entry_G::fg[isTarget]:0 ()]
 44: %30 = GetRetVal()
 45: %31 = %28 + %30

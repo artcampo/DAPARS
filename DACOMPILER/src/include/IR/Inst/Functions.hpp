@@ -27,12 +27,12 @@ struct SetRetVal : public Inst, public InstSrc{
 };
 
 
-struct SetPar : public Inst, public InstSrc{
-  SetPar(const Reg src) : InstSrc(src){};
-  virtual ~SetPar() = default;
+struct SetArg : public Inst, public InstSrc{
+  SetArg(const Reg src) : InstSrc(src){};
+  virtual ~SetArg() = default;
 
   virtual std::string str() const noexcept{
-    return "SetPar( %"  + std::to_string(src_) + ")";
+    return "SetArg( %"  + std::to_string(src_) + ")";
   }
   
   void Accept(IRVisitor& v) override { v.Visit(*this); }

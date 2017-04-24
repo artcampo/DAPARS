@@ -259,13 +259,13 @@ void IRGenerator::Visit(FuncCall& p, const Node* successor){
     //TODO: adjust offset to parent's objects
     MemAddr a = MemAddr(class_label_inht_, 0);
     const IR::Reg r  = CurrentStream().AppendLoad(a);
-    CurrentStream().AppendSetPar(r);
+    CurrentStream().AppendSetArg(r);
   }
   
   //generate arguments
   for(const auto& it : p) it->Accept(*this, successor);
   //generate set prior to call
-  for(const auto& it : p) CurrentStream().AppendSetPar( reg_dst_of_expr_[&*it] );
+  for(const auto& it : p) CurrentStream().AppendSetArg( reg_dst_of_expr_[&*it] );
 
   //Process receiver to get its addr
   p.Receiver().Accept(*this, successor);
@@ -337,7 +337,7 @@ void IRGenerator::Visit(DotOp const& p, const Node* successor){
     }
     
     //load this as first argument
-    CurrentStream().AppendSetPar(r_src);
+    CurrentStream().AppendSetArg(r_src);
 
     //give the addr of the call
     const MemAddr a = MemAddr( c.GetFunction(fname).EntryLabel(), 0);

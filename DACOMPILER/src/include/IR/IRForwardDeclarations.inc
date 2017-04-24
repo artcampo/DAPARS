@@ -13,7 +13,7 @@ struct Comparison;
 struct PtrElem;
 struct GetRetVal;
 struct SetRetVal;
-struct SetPar;
+struct SetArg;
 struct GetArg;
 struct Return;
 struct ReturnMain;
@@ -34,7 +34,7 @@ using PtrPtrElem      = std::unique_ptr<PtrElem>;
 
 using PtrGetRetVal    = std::unique_ptr<GetRetVal>;
 using PtrSetRetVal    = std::unique_ptr<SetRetVal>;
-using PtrSetPar       = std::unique_ptr<SetPar>;
+using PtrSetArg       = std::unique_ptr<SetArg>;
 using PtrGetArg       = std::unique_ptr<GetArg>;
 using PtrReturn       = std::unique_ptr<Return>;
 using PtrReturnMain   = std::unique_ptr<ReturnMain>;
