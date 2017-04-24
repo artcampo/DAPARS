@@ -139,7 +139,7 @@ private:
   }  
   
   void Visit(const IR::Inst::GetRetVal& inst) override{
-    std::cout << inst.str() << " !!!\n";
+    std::cout << inst.str() << "\n";
     RegMap rd     = reg_alloc_.IRReg( inst.RegDst() );
     MReg rs_mreg  = reg_alloc_.MRegRetValue();
     reg_alloc_.GetRegGetRetVal(rd);
@@ -184,7 +184,7 @@ private:
   
   void Visit(const IR::Inst::Return& inst) override{
     std::cout << inst.str() << "\n";
-    byte_code_.Append( VM::IRBuilder::Return());
+    //Return emitted alongside epilogue
   }  
   
   void Visit(const IR::Inst::ReturnMain& inst) override{
@@ -231,6 +231,7 @@ private:
       byte_code_.Append( VM::IRBuilder::Move( reg_alloc_.MRegArpPtr()
                                             , reg_alloc_.MRegStackPtr()));
     }
+    byte_code_.Append( VM::IRBuilder::Return());
   }
   
   //Other functions that do not handle sections of IR

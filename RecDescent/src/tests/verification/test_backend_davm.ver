@@ -32,9 +32,9 @@ Bytecode:
 LOADI, r1 val: 4
 STORE, r1 to [@0]
 LOADI, r2 val: 3
-STORE, r2 to [@1]
+STORE, r2 to [@-1]
 ADD, rs1 rs2 rd3
-STORE, r3 to [@2]
+STORE, r3 to [@-2]
 STOP
 Static data segment size: 3
 
@@ -46,7 +46,7 @@ store %0 to [LT MainDS:0 (a)]
 %2 = Load [LT MainDS:0 (a)]
 SetArg( %2)
 call [LT entry_f[isTarget]:0 ()]
-%3 = GetRetVal() !!!
+%3 = GetRetVal()
 store %3 to [LT MainDS:0 (a)]
 ReturnMain
 %0 = GetArg( arg0 )
@@ -74,7 +74,7 @@ Backend::Davm
 SetArg( %0)
 SetArg( %1)
 call [LT entry_f[isTarget]:0 ()]
-%2 = GetRetVal() !!!
+%2 = GetRetVal()
 store %2 to [LT MainDS:0 (a)]
 ReturnMain
 %0 = GetArg( arg0 )
@@ -112,7 +112,7 @@ SetArg( %1)
 SetArg( %2)
 SetArg( %3)
 call [LT entry_f[isTarget]:0 ()]
-%4 = GetRetVal() !!!
+%4 = GetRetVal()
 store %4 to [LT MainDS:0 (a)]
 ReturnMain
 %0 = GetArg( arg0 )
@@ -154,7 +154,7 @@ Static data segment size: 1
 Parsing: "int f(){ int a; return a; }void main(){int a; a = f(); }"
 Backend::Davm
 call [LT entry_f[isTarget]:0 ()]
-%0 = GetRetVal() !!!
+%0 = GetRetVal()
 store %0 to [LT MainDS:0 (a)]
 ReturnMain
 %0 = Load [RT arp_f[isArp]:0 (a)]
@@ -170,15 +170,15 @@ MOV, rs15 rd14
 SUBI, rd15 1
 LOADB, r1 <- [@ r14 + 0]
 MOV, rs1 rd0
-RETURN
 MOV, rs14 rd15
+RETURN
 Static data segment size: 1
 
 ---------------------------------------------------
 Parsing: "int f(){ int a,b,c,d; return a + d; }void main(){int a; a = f(); }"
 Backend::Davm
 call [LT entry_f[isTarget]:0 ()]
-%0 = GetRetVal() !!!
+%0 = GetRetVal()
 store %0 to [LT MainDS:0 (a)]
 ReturnMain
 %0 = Load [RT arp_f[isArp]:0 (a)]
@@ -195,10 +195,10 @@ STOP
 MOV, rs15 rd14
 SUBI, rd15 4
 LOADB, r1 <- [@ r14 + 0]
-LOADB, r2 <- [@ r14 + 3]
+LOADB, r2 <- [@ r14 + -3]
 ADD, rs1 rs2 rd3
 MOV, rs3 rd0
-RETURN
 MOV, rs14 rd15
+RETURN
 Static data segment size: 1
 
