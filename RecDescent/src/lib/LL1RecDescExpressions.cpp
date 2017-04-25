@@ -24,16 +24,14 @@ PtrExpr ParserLL1RecDesc::ExprPrime(PtrExpr& eprime_inht, const ScopeId scope_in
   PtrExpr eprime_synt(nullptr);
   Locus l = CurrentLocus();
 
-  if(TryAndAccept(kToken::plus)){
+  if(TryAndAccept(kToken::kwd_or)){
     PtrExpr t_synt = RelExpr(scope_inht);
-    PtrExpr eprime1_inht = NewBinaryOp(eprime_inht, IR_ADD, t_synt, scope_inht, l);
-    //TODO: do not use VM's definition IR_ADD
+    PtrExpr eprime1_inht = NewBinaryOp(eprime_inht, BinaryOp::kOr, t_synt, scope_inht, l);
     
     //A new E' will op against current op+
     eprime_synt = ExprPrime(eprime1_inht, scope_inht);
     if(eprime_synt.get() == nullptr) Error("[err:12] operand to or missing");
     return std::move(eprime_synt);
-
   }
 
   //E' -> {empty}  => , {empty} = ) ;
@@ -68,7 +66,7 @@ PtrExpr ParserLL1RecDesc::RelExprPrime(PtrExpr& eprime_inht, const ScopeId scope
 
   if(TryAndAccept(kToken::lessthan)){
     PtrExpr t_synt = Term(scope_inht);
-    PtrExpr eprime1_inht = NewBinaryOp(eprime_inht, IR_ADD, t_synt, scope_inht, l);
+    PtrExpr eprime1_inht = NewBinaryOp(eprime_inht, BinaryOp::kLessThan, t_synt, scope_inht, l);
 
     eprime_synt = RelExprPrime(eprime1_inht, scope_inht);
     if(eprime_synt.get() == nullptr)
@@ -110,7 +108,7 @@ PtrExpr ParserLL1RecDesc::NumExprPrime(PtrExpr& eprime_inht, const ScopeId scope
 
   if(TryAndAccept(kToken::plus)){
     PtrExpr t_synt = Term(scope_inht);
-    PtrExpr eprime1_inht = NewBinaryOp(eprime_inht, IR_ADD, t_synt, scope_inht, l);
+    PtrExpr eprime1_inht = NewBinaryOp(eprime_inht, BinaryOp::kAdd, t_synt, scope_inht, l);
     //TODO: do not use VM's definition IR_ADD
     
     //A new E' will op against current op+

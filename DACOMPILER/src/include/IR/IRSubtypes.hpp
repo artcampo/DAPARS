@@ -20,6 +20,10 @@ enum class ArithType{
   , kDiv = 3
 };
 
+enum class LogicType{
+    kOr = 0
+};
+
 enum class CompType{
     kNotEqual = 0
   , kEqual = 1

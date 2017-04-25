@@ -16,6 +16,8 @@ struct Arith : public BinaryOp{
   
   void Accept(IRVisitor& v) override { v.Visit(*this); }
   ArithType Op() const noexcept{ return op_;}
+  
+  enum Op { kAdd };
 protected:
   ArithType op_;
 };

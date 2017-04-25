@@ -177,11 +177,14 @@ void IRGenerator::Visit(BinaryOp const& n, const Node* successor){
   n.Lhs().Accept(*this, successor);
   n.Rhs().Accept(*this, successor);
 
-  const IR::Reg reg_src1 = reg_dst_of_expr_[&n.Lhs()];
-  const IR::Reg reg_src2 = reg_dst_of_expr_[&n.Rhs()];
-  const IR::ArithType op = IR::ArithType(n.op);
-  const IR::Reg r        = CurrentStream().AppendArith(reg_src1, reg_src2, op);
-  reg_dst_of_expr_[&n]   = r;
+  int op = n.op;
+  if(op == BinaryOp::kAdd){
+    const IR::Reg reg_src1 = reg_dst_of_expr_[&n.Lhs()];
+    const IR::Reg reg_src2 = reg_dst_of_expr_[&n.Rhs()];
+    const IR::ArithType op = IR::IR_ADD;
+    const IR::Reg r        = CurrentStream().AppendArith(reg_src1, reg_src2, op);
+    reg_dst_of_expr_[&n]   = r;
+  }
 //   std::cout << "OP: " << op << "\n";
 
 }
