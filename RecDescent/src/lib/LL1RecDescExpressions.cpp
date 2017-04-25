@@ -36,7 +36,8 @@ PtrExpr ParserLL1RecDesc::ExprPrime(PtrExpr& eprime_inht, const ScopeId scope_in
   if(TryAndAccept(kToken::plus)){
     PtrExpr t_synt = Term(scope_inht);
     PtrExpr eprime1_inht = NewBinaryOp(eprime_inht, IR_ADD, t_synt, scope_inht, l);
-
+    //TODO: do not use VM's definition IR_ADD
+    
     //A new E' will op against current op+
     eprime_synt = ExprPrime(eprime1_inht, scope_inht);
     if(eprime_synt.get() == nullptr)

@@ -56,7 +56,7 @@ E'    := + T E'
       |  empty
 T     := F
 F     := *F'
-      |  @F'
+      |  &F'
       |  F'
 F'    := ( E )
       |  numerical

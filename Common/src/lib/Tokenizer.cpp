@@ -85,6 +85,12 @@ ParseKeyword(std::vector<char>::const_iterator& current_position
     current_position += 6; t = kToken::kwd_return; return true;
   }
 
+  if(chars_left >= 2
+    and *(current_position + 0) == 'o' and *(current_position + 1) == 'r'){
+    current_position += 2; t = kToken::kwd_or; return true;
+  }  
+  
+  //TODO: delete these
   //For dragon test grammar
   if(chars_left >= 2){
     if(*current_position == '_' and *(current_position + 1) == 'c')
@@ -138,6 +144,7 @@ ParseNumerical(std::vector<char>::const_iterator& current_position
 kToken
 ParseToken(std::vector<char>::const_iterator& current_position
              , std::vector<char>::const_iterator end_position) noexcept{
+  //TODO:OPT: use switch             
   if(*current_position == '('){ ++current_position; return kToken::lpar; }
   if(*current_position == ')'){ ++current_position; return kToken::rpar; }
   if(*current_position == '{'){ ++current_position; return kToken::lcbr; }
@@ -147,6 +154,7 @@ ParseToken(std::vector<char>::const_iterator& current_position
   if(*current_position == ';'){ ++current_position; return kToken::semicolon; }
   if(*current_position == ','){ ++current_position; return kToken::comma; }
   if(*current_position == '='){ ++current_position; return kToken::equality; }
+  if(*current_position == '<'){ ++current_position; return kToken::lessthan; }
   if(*current_position == '&'){ ++current_position; return kToken::ampersand; }
   if(*current_position == '.'){ ++current_position; return kToken::dot; }
   if(*current_position == ':'){ ++current_position; return kToken::colon; }
@@ -174,16 +182,15 @@ std::string str(const kToken& t){
     case kToken::astk:      return "*";  break;
     case kToken::semicolon: return ";";  break;
     case kToken::equality:  return "=";  break;
+    case kToken::lessthan:  return "<";  break;
     case kToken::ampersand: return "&";  break;
     case kToken::dot:       return ".";  break;
     case kToken::colon:     return ":";  break;
-
 
     case kToken::kwd_if:    return "if";  break;
     case kToken::kwd_else:  return "else";  break;
     case kToken::kwd_while: return "while";  break;
     case kToken::kwd_return:return "return";  break;
-
 
     case kToken::kwd_int:   return "int";  break;
     case kToken::kwd_bool:  return "bool";  break;
@@ -192,7 +199,9 @@ std::string str(const kToken& t){
 
     case kToken::kwd_true:  return "true";  break;
     case kToken::kwd_false: return "false";  break;
-
+    
+    case kToken::kwd_or:    return "or";  break;
+    
     case kToken::numerical: return "num";  break;
     case kToken::name:      return "name";  break;
 

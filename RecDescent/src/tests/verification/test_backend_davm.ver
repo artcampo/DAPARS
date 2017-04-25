@@ -202,3 +202,14 @@ MOV, rs14 rd15
 RETURN
 Static data segment size: 1
 
+---------------------------------------------------
+Parsing: "void main(){int a, b, c, d; a = 1; b = 0;if((a+b) > 2){a = 1;} else {a=2;} c = a; d = b;"
+[err:2] Token not recognized at: ";if((a+b) " -> "> 2){a = 1;} else {a=2;} c = a; d = b;"
+[err:8] if missing rpar. at: ";if((a+b) " -> "> 2){a = 1;} else {a=2;} c = a; d = b;"
+[err:3] Block not finishing in rcbr at: ";if((a+b) " -> "> 2){a = 1;} else {a=2;} c = a; d = b;"
+[err:31] function body empty at: ";if((a+b) " -> "> 2){a = 1;} else {a=2;} c = a; d = b;"
+[err:30] function declaration's body not closed with '}' at: ";if((a+b) " -> "> 2){a = 1;} else {a=2;} c = a; d = b;"
+[err:33] function must start with return type at: ";if((a+b) " -> "> 2){a = 1;} else {a=2;} c = a; d = b;"
+AST not build (no functions) at: ";if((a+b) " -> "> 2){a = 1;} else {a=2;} c = a; d = b;"
+AST not build (fatal errors) at: ";if((a+b) " -> "> 2){a = 1;} else {a=2;} c = a; d = b;"
+

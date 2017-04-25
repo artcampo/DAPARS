@@ -11,7 +11,8 @@ Instantiation of void Variables or pointer to it is forbidden.
 Recursive types: pointers to any type, functions over any type.
 While pointers do exists, its arithmetic is strictly forbidden.
 
-Variables have to be defined before use.
+Variables have to be defined before use, member variables are
+an exception to this rule.
 Multiple variable declaration is allowed, comma-separated
 Ex: int a, b, c;
 
@@ -30,6 +31,11 @@ Return statement is mandatory if return type is not void.
 No inheritance (to be soon changed).
 Closed class structure.
 
+-- Operators
+The order of preference is as follows:
+1) &, *
+2) +
+3) <
 
 ------------------------------------
 

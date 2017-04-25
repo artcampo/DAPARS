@@ -11,11 +11,12 @@ namespace Tokenizer{
 enum class kToken{ eof, numerical, name
                  , lpar, rpar, lcbr, rcbr
                  , plus, minus, astk, div
-                 , equality
+                 , equality, lessthan
                  , dot, colon
                  , kwd_if, kwd_else, kwd_while, kwd_return
                  , kwd_int, kwd_bool, kwd_void, kwd_class
                  , kwd_true, kwd_false
+                 , kwd_or
                  , semicolon, comma, ampersand
                  , name_type  //only if pre-registered
                  , error  //should not be issued
