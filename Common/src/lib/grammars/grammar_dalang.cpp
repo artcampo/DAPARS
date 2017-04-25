@@ -26,6 +26,8 @@ void CreateGrammarDalang(G& g){
   const Symbol lcbr  = g.AddTerminal("LCBR", "{", Tokenizer::kToken::lcbr);
   const Symbol rcbr  = g.AddTerminal("RCBR", "}", Tokenizer::kToken::rcbr);
   const Symbol equl  = g.AddTerminal("EQUL", "=", Tokenizer::kToken::equality);
+  const Symbol lessthan = g.AddTerminal("LEST", "<", Tokenizer::kToken::lessthan);
+  
   const Symbol amps  = g.AddTerminal("AMPS", "&", Tokenizer::kToken::ampersand);
   const Symbol dot   = g.AddTerminal("DOT", ".", Tokenizer::kToken::dot);
   const Symbol colon = g.AddTerminal("COLON", ":", Tokenizer::kToken::colon);
@@ -47,6 +49,8 @@ void CreateGrammarDalang(G& g){
   const Symbol kwd_true  = g.AddTerminalKeyword("TRUE", " true",  Tokenizer::kToken::kwd_true);
   const Symbol kwd_false = g.AddTerminalKeyword("FALSE", "false", Tokenizer::kToken::kwd_false);
 
+  const Symbol kwd_or    = g.AddTerminalKeyword("OR", "or", Tokenizer::kToken::kwd_or);
+  
 
 
   //Prog
@@ -82,6 +86,10 @@ void CreateGrammarDalang(G& g){
   //Exprs
   const Symbol E      = g.AddNonTerminal("E");
   const Symbol EP     = g.AddNonTerminal("E'");
+  const Symbol RE     = g.AddNonTerminal("RE");
+  const Symbol REP    = g.AddNonTerminal("RE'");
+  const Symbol NE     = g.AddNonTerminal("NE");
+  const Symbol NEP    = g.AddNonTerminal("NE'");  
   const Symbol T      = g.AddNonTerminal("T");
   const Symbol TP     = g.AddNonTerminal("T''");
   const Symbol F      = g.AddNonTerminal("F");
@@ -165,11 +173,18 @@ void CreateGrammarDalang(G& g){
   g.AddRule(Rule(NAME_LISTP, {empty}));
 
   //Exprs
-  g.AddRule(Rule(E,  {T, EP}));
-  g.AddRule(Rule(EP, {plus, T, EP}));
-//   g.AddRule(Rule(EP, {minu, T, EP}));
-  g.AddRule(Rule(EP, {empty}));
-  g.AddRule(Rule(T,  {F}));
+  g.AddRule(Rule(E,   {RE, EP}));
+  g.AddRule(Rule(EP,  {kwd_or, RE, EP}));
+  g.AddRule(Rule(EP,  {empty}));
+  g.AddRule(Rule(RE,  {NE, REP}));
+  g.AddRule(Rule(REP, {lessthan, NE, REP}));    
+  g.AddRule(Rule(REP, {empty}));
+  g.AddRule(Rule(NE,  {T, NEP}));
+  g.AddRule(Rule(NEP, {plus, T, NEP}));
+  g.AddRule(Rule(NEP, {empty}));
+//   g.AddRule(Rule(NEP, {minu, T, NEP}));
+  
+  g.AddRule(Rule(T,   {F}));
 
   g.AddRule(Rule(F,  {amps, FP}));
   g.AddRule(Rule(F,  {astk, FP}));

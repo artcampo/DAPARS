@@ -51,8 +51,14 @@ IFELSE:= else{STMTS}
 
 ---------------------------------------------
 
-E     := T E'
-E'    := + T E'
+Expr    := RelExpr Expr'
+Expr'   := or RelExpr
+        |  empty
+RelExpr := NumExpr RelExpr'
+RelExpr':= < NumExpr 
+        |  empty
+NE    := T NE'
+NE'   := + T NE'
       |  empty
 T     := F
 F     := *F'
