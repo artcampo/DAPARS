@@ -60,14 +60,27 @@ void ParserLL1RecDesc::BuildTokenVectors(){
     , kToken::plus, kToken::rpar, kToken::semicolon});
 
 
-  //E' -> + T E'  => +
-  set_eprime_ = std::vector<kToken>({kToken::plus});
 
-  //E' -> {empty}  => , {empty} = ) ;
+  //E' -> or RE E'  => or 
+  set_eprime_   = std::vector<kToken>({kToken::kwd_or});
+  //E' -> {empty}  => , {empty} = ) ; 
   empty_eprime_ = std::vector<kToken>({kToken::comma, kToken::equality
-    , kToken::rpar, kToken::semicolon});
+    , kToken::rpar, kToken::semicolon});  
+  
+  //RE' -> < NE RE'  => < 
+  set_releprime_ = std::vector<kToken>({kToken::lessthan});
+  
+  //RE' -> {empty}  => , {empty} = or ) ; 
+  empty_releprime_ = std::vector<kToken>({kToken::comma, kToken::equality
+    , kToken::kwd_or, kToken::rpar, kToken::semicolon});  
+  
 
+  //NE' -> + T NE'  => +   
+  set_numeprime_ = std::vector<kToken>({kToken::plus});
 
+  //NE' -> {empty}  => , {empty} = < or ) ; 
+  empty_numeprime_ = std::vector<kToken>({kToken::comma, kToken::equality
+    , kToken::lessthan, kToken::kwd_or, kToken::rpar, kToken::semicolon});  
 }
 
 PtrBlock ParserLL1RecDesc::ParseSubBlock(const ScopeId scope, const std::string& error){

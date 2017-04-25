@@ -37,8 +37,14 @@ private:
   //////////////////////////////////////////////////////////////////////
   //Expr
   PtrExpr Expr(const ScopeId scope_inht);
-  PtrExpr ExprPrime(PtrExpr& eprime_inht
-                          , const ScopeId scope_inht); // make it const
+  PtrExpr ExprPrime(PtrExpr& eprime_inht, const ScopeId scope_inht);
+  
+  PtrExpr RelExpr(const ScopeId scope_inht);
+  PtrExpr RelExprPrime(PtrExpr& eprime_inht, const ScopeId scope_inht); // make it const
+  
+  PtrExpr NumExpr(const ScopeId scope_inht);
+  PtrExpr NumExprPrime(PtrExpr& eprime_inht, const ScopeId scope_inht); // make it const
+  
   PtrExpr Term(const ScopeId scope_inht);
   PtrExpr Factor(const ScopeId scope_inht);
   PtrExpr FactorPrime(const ScopeId scope_inht);
@@ -160,8 +166,11 @@ private:
   std::vector<kToken> set_argm_;
 
   std::vector<kToken> set_eprime_;
-
   std::vector<kToken> empty_eprime_;
+  std::vector<kToken> set_releprime_;
+  std::vector<kToken> empty_releprime_;
+  std::vector<kToken> set_numeprime_;
+  std::vector<kToken> empty_numeprime_;  
 
 };
 

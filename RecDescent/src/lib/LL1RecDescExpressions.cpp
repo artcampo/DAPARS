@@ -2,11 +2,9 @@
 
 namespace RecDescent{
 
-
-//TODO: should return PtrExpr
 PtrExpr ParserLL1RecDesc::Expr(const ScopeId scope_inht){
 
-  PtrExpr term_synth  = Term(scope_inht);
+  PtrExpr term_synth  = RelExpr(scope_inht);
 
   if(not term_synth) return std::move(nullptr);
 
@@ -18,17 +16,94 @@ PtrExpr ParserLL1RecDesc::Expr(const ScopeId scope_inht){
 }
 
 
-PtrExpr ParserLL1RecDesc::Term(const ScopeId scope_inht){
-//   std::cout << "T\n";
-  return std::move(Factor(scope_inht));
+// E'    := + T E'     ** E'1.inht = new Node(+, E'.inht, T.node)
+//                        E'.synt  = E'1.synt
+//       |  empty      ** E'.synt  = E'1.synt
+PtrExpr ParserLL1RecDesc::ExprPrime(PtrExpr& eprime_inht, const ScopeId scope_inht){
+//   std::cout << "Exp'\n";
+  PtrExpr eprime_synt(nullptr);
+  Locus l = CurrentLocus();
+
+  if(TryAndAccept(kToken::plus)){
+    PtrExpr t_synt = RelExpr(scope_inht);
+    PtrExpr eprime1_inht = NewBinaryOp(eprime_inht, IR_ADD, t_synt, scope_inht, l);
+    //TODO: do not use VM's definition IR_ADD
+    
+    //A new E' will op against current op+
+    eprime_synt = ExprPrime(eprime1_inht, scope_inht);
+    if(eprime_synt.get() == nullptr) Error("[err:12] operand to or missing");
+    return std::move(eprime_synt);
+
+  }
+
+  //E' -> {empty}  => , {empty} = ) ;
+  if(AcceptEmpty(empty_eprime_, "Expecting expression delimiter"))
+    eprime_synt = std::move(eprime_inht);
+  
+  return std::move(eprime_synt);
 }
 
+
+////////////////////////////////////////////////////////////////////////////
+
+
+PtrExpr ParserLL1RecDesc::RelExpr(const ScopeId scope_inht){
+
+  PtrExpr term_synth  = NumExpr(scope_inht);
+
+  if(not term_synth) return std::move(nullptr);
+
+  if(not Check(set_releprime_))
+    return std::move(term_synth);
+
+  PtrExpr eprime_synt = RelExprPrime(term_synth, scope_inht);
+  return std::move(eprime_synt);
+}
+
+
+PtrExpr ParserLL1RecDesc::RelExprPrime(PtrExpr& eprime_inht, const ScopeId scope_inht){
+//   std::cout << "Exp'\n";
+  PtrExpr eprime_synt(nullptr);
+  Locus l = CurrentLocus();
+
+  if(TryAndAccept(kToken::lessthan)){
+    PtrExpr t_synt = Term(scope_inht);
+    PtrExpr eprime1_inht = NewBinaryOp(eprime_inht, IR_ADD, t_synt, scope_inht, l);
+
+    eprime_synt = RelExprPrime(eprime1_inht, scope_inht);
+    if(eprime_synt.get() == nullptr)
+      Error("[] operand to < missing");
+    return std::move(eprime_synt);
+  }
+
+  if(AcceptEmpty(empty_releprime_,"Expecting expression delimiter"))
+    eprime_synt = std::move(eprime_inht);
+  
+  return std::move(eprime_synt);
+}
+
+
+////////////////////////////////////////////////////////////////////////////
+
+//NE -> T NE'  => & * false ( {nam} {num}  true
+PtrExpr ParserLL1RecDesc::NumExpr(const ScopeId scope_inht){
+
+  PtrExpr term_synth  = Term(scope_inht);
+
+  if(not term_synth) return std::move(nullptr);
+
+  if(not Check(set_numeprime_))
+    return std::move(term_synth);
+
+  PtrExpr eprime_synt = NumExprPrime(term_synth, scope_inht);
+  return std::move(eprime_synt);
+}
 
 
 // E'    := + T E'     ** E'1.inht = new Node(+, E'.inht, T.node)
 //                        E'.synt  = E'1.synt
 //       |  empty      ** E'.synt  = E'1.synt
-PtrExpr ParserLL1RecDesc::ExprPrime(PtrExpr& eprime_inht, const ScopeId scope_inht){
+PtrExpr ParserLL1RecDesc::NumExprPrime(PtrExpr& eprime_inht, const ScopeId scope_inht){
 //   std::cout << "Exp'\n";
   PtrExpr eprime_synt(nullptr);
   Locus l = CurrentLocus();
@@ -39,7 +114,7 @@ PtrExpr ParserLL1RecDesc::ExprPrime(PtrExpr& eprime_inht, const ScopeId scope_in
     //TODO: do not use VM's definition IR_ADD
     
     //A new E' will op against current op+
-    eprime_synt = ExprPrime(eprime1_inht, scope_inht);
+    eprime_synt = NumExprPrime(eprime1_inht, scope_inht);
     if(eprime_synt.get() == nullptr)
       Error("[err:12] operand to + missing");
     return std::move(eprime_synt);
@@ -47,7 +122,7 @@ PtrExpr ParserLL1RecDesc::ExprPrime(PtrExpr& eprime_inht, const ScopeId scope_in
   }
 
   //E' -> {empty}  => , {empty} = ) ;
-  if(AcceptEmpty(empty_eprime_,
+  if(AcceptEmpty(empty_numeprime_,
 //       , kToken::rcbr},  //not in original set but better error detection
       "Expecting expression delimiter")){
     eprime_synt = std::move(eprime_inht);
@@ -57,6 +132,15 @@ PtrExpr ParserLL1RecDesc::ExprPrime(PtrExpr& eprime_inht, const ScopeId scope_in
   return std::move(eprime_synt);
 }
 
+////////////////////////////////////////////////////////////////////////////
+
+PtrExpr ParserLL1RecDesc::Term(const ScopeId scope_inht){
+//   std::cout << "T\n";
+  return std::move(Factor(scope_inht));
+}
+
+
+////////////////////////////////////////////////////////////////////////////
 
 PtrExpr ParserLL1RecDesc::Factor(const ScopeId scope_inht){
   PtrExpr f_synt;
@@ -134,6 +218,8 @@ PtrExpr ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
   return std::move(fp_synt);
 }
 
+
+////////////////////////////////////////////////////////////////////////////
 
 //This function has to consider when are we inside a class definition,
 //as in that case access to yet not declared members is valid
