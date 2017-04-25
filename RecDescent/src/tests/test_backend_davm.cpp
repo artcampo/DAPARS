@@ -103,6 +103,11 @@ int main()
     "void main(){int a; a = f(); }"
     , g);     
 
+  //If/else
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "void main(){int a, b, c, d; a = 1; b = 0;") +
+    "if((a+b) > 2){a = 1;} else {a=2;} c = a; d = b;"
+    , g);      
 
   return 0;
 }
