@@ -52,7 +52,7 @@ PtrExpr ParserLL1RecDesc::ArgList(const std::string& name_inht, PtrExprVar& var_
 
   //ARGL -> E ARGLP  => & * false ( {nam} {num}  true
   if(Check(set_expr_)){
-    PtrExpr e = Exprs(scope_inht);
+    PtrExpr e = Expr(scope_inht);
     if(e) args_inht.push_back(std::move(e));
     return ArgListPrime(name_inht, var_inht, type_inht, args_inht, scope_inht, locus_inht);
   }
@@ -73,7 +73,7 @@ PtrExpr ParserLL1RecDesc::ArgListPrime(const std::string& name_inht, PtrExprVar&
 
   //ARGLP -> , E ARGLP  => ,
   if(TryAndAccept({kToken::comma}) and Check(set_expr_)){
-    PtrExpr e = Exprs(scope_inht);
+    PtrExpr e = Expr(scope_inht);
     if(e) args_inht.push_back(std::move(e));
     return ArgListPrime(name_inht, var_inht, type_inht, args_inht, scope_inht, locus_inht);
   }

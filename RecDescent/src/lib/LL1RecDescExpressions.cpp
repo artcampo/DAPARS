@@ -4,7 +4,7 @@ namespace RecDescent{
 
 
 //TODO: should return PtrExpr
-PtrExpr ParserLL1RecDesc::Exprs(const ScopeId scope_inht){
+PtrExpr ParserLL1RecDesc::Expr(const ScopeId scope_inht){
 
   PtrExpr term_synth  = Term(scope_inht);
 
@@ -118,7 +118,7 @@ PtrExpr ParserLL1RecDesc::FactorPrime(const ScopeId scope_inht){
 
   //F := ( E )
   if(TryAndAccept(kToken::lpar)){
-    fp_synt = Exprs(scope_inht);
+    fp_synt = Expr(scope_inht);
     Accept(kToken::rpar, kErr14);
   }else{
     //Error recover

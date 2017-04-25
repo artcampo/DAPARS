@@ -35,8 +35,8 @@ private:
 
 
   //////////////////////////////////////////////////////////////////////
-  //Exprs
-  PtrExpr Exprs(const ScopeId scope_inht);
+  //Expr
+  PtrExpr Expr(const ScopeId scope_inht);
   PtrExpr ExprPrime(PtrExpr& eprime_inht
                           , const ScopeId scope_inht); // make it const
   PtrExpr Term(const ScopeId scope_inht);

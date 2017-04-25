@@ -83,7 +83,7 @@ void CreateGrammarDalang(G& g){
   const Symbol RETURN = g.AddNonTerminal("RETURN");
 
 
-  //Exprs
+  //Expr
   const Symbol E      = g.AddNonTerminal("E");
   const Symbol EP     = g.AddNonTerminal("E'");
   const Symbol RE     = g.AddNonTerminal("RE");
@@ -172,7 +172,7 @@ void CreateGrammarDalang(G& g){
   g.AddRule(Rule(NAME_LISTP, {comma, name, NAME_LISTP}));
   g.AddRule(Rule(NAME_LISTP, {empty}));
 
-  //Exprs
+  //Expr
   g.AddRule(Rule(E,   {RE, EP}));
   g.AddRule(Rule(EP,  {kwd_or, RE, EP}));
   g.AddRule(Rule(EP,  {empty}));

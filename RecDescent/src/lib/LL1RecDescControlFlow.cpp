@@ -13,7 +13,7 @@ PtrStatement ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
 
 //      std::cout << "stmt::if\n";
     if(not Accept(kToken::lpar, "[err:6] if missing lpar.")) return std::move(stmt_synt);
-    PtrExpr expr_synt = Exprs(scope_inht);
+    PtrExpr expr_synt = Expr(scope_inht);
     if(expr_synt.get() == nullptr) Error("[err:7] if condition wrong.");
 
     if(not Accept(kToken::rpar, "[err:8] if missing rpar.")) return std::move(stmt_synt);
@@ -40,7 +40,7 @@ PtrStatement ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
   //while(E){STMTS}
   if(TryAndAccept(kToken::kwd_while)){
     if(not Accept(kToken::lpar, "[err:] while missing lpar.")) return std::move(stmt_synt);
-    PtrExpr expr_synt = Exprs(scope_inht);
+    PtrExpr expr_synt = Expr(scope_inht);
     if(expr_synt.get() == nullptr) Error("[err:] while condition wrong.");
     if(not Accept(kToken::rpar, "[err:] while missing rpar.")) return std::move(stmt_synt);
 
@@ -65,11 +65,11 @@ PtrStatement ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
   //STMT -> E = E ;  => & * false ( {nam} {num}  true
   if(Check(set_expr_)){
 //     std::cout << "stmt::assign stmt\n";
-    PtrExpr expr_lhs  = Exprs(scope_inht);
+    PtrExpr expr_lhs  = Expr(scope_inht);
     if(not Accept(kToken::equality, "[err:] assignment missing '='")){
       return std::move(stmt_synt);
     }
-    PtrExpr expr_rhs  = Exprs(scope_inht);
+    PtrExpr expr_rhs  = Expr(scope_inht);
     stmt_synt         = NewAssignStmt(expr_lhs, expr_rhs, scope_inht, l);
 
     Accept(kToken::semicolon, kErr4);
@@ -79,7 +79,7 @@ PtrStatement ParserLL1RecDesc::Stmt(const ScopeId scope_inht){
   //STMT -> return E ;  => return
   if(TryAndAccept({kToken::kwd_return})){
 //     std::cout << "ReturnStmt\n";
-    PtrExpr exp = Exprs(scope_inht);
+    PtrExpr exp = Expr(scope_inht);
     Accept(kToken::semicolon, kErr43);
 
     if(not unit_.InsideFunctionDefinition()){
