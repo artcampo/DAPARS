@@ -45,7 +45,7 @@ void parse(const std::string& str, G& g)
     pm.Run();
   }
 
-  if(unit.GetAstProg() != nullptr){
+  if(unit.GetAstProg() != nullptr and not unit.HasErrors()){
     IRGenerator visitor_irgen(unit);
     visitor_irgen.Visit(*unit.GetAstProg(), nullptr);
 
@@ -106,7 +106,7 @@ int main()
   //If/else
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "void main(){int a, b, c, d; a = 1; b = 0;") +
-    "if((a+b) > 2){a = 1;} else {a=2;} c = a; d = b;"
+    "if((a+b) < 2){a = 2;} else {a=1;} c = a; d = b; }"
     , g);      
 
   return 0;
