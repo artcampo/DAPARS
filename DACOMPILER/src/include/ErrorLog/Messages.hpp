@@ -42,6 +42,12 @@ const static std::string kErr44("[err:44] Return statement not inside function d
 const static std::string kErr45("[err:45] Return's expression doesn not match function return type: ");
 const static std::string kErr46("[err:46] function call used before declaration");
 
+const static std::string kErr50("[err:50] Lhs is not Int");
+const static std::string kErr51("[err:51] Rhs is not Int");
+const static std::string kErr52("[err:50] Lhs is not Bool");
+const static std::string kErr53("[err:51] Rhs is not Bool");
+const static std::string kErr54("[err:54] Lhs and Rhs do not match");
+
 const static std::string kErr80("[err:80] class declaration name missing");
 const static std::string kErr81("[err:81] class declaration not started with '{'");
 const static std::string kErr82("[err:82] class declaration not closed with '}'");

@@ -27,8 +27,12 @@ public:
   virtual void Visit(BinaryOp const& p){
     p.Lhs().Accept(*this);
     p.Rhs().Accept(*this);
-    unit_.SetTypeOfNode(p, unit_.GetTypeOfNode(p.Lhs()));
+    const int op = p.op;
+    if(op == BinaryOp::kAdd)      unit_.SetTypeOfNode(p, unit_.GetTypeOfNode(p.Lhs()));
+    if(op == BinaryOp::kOr)       unit_.SetTypeOfNode(p, unit_.GetTypeBool());
+    if(op == BinaryOp::kLessThan) unit_.SetTypeOfNode(p, unit_.GetTypeBool());
   }
+  
   virtual void Visit(AssignStmt const& p){
     p.Lhs().Accept(*this);
     p.Rhs().Accept(*this);

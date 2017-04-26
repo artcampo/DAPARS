@@ -2,6 +2,7 @@
 #include "AST/ASTVisitor.hpp"
 #include "AST/Node.hpp"
 #include "CompilationUnit.hpp"
+#include "ErrorLog/Messages.hpp"
 
 namespace Compiler{
 namespace AST{
@@ -33,10 +34,20 @@ public:
   virtual void Visit(BinaryOp const& p){
     p.Lhs().Accept(*this);
     p.Rhs().Accept(*this);
-    if(unit_.GetTypeOfNode(p.Lhs()) != unit_.GetTypeOfNode(p.Rhs()))
-      unit_.Error("[err:17] Incompatible types in op", p.GetLocus());
-
+    const int op         = p.op;
+    const Type& type_rhs = unit_.GetTypeOfNode(p.Rhs());
+    const Type& type_lhs = unit_.GetTypeOfNode(p.Lhs());
+    if(op == BinaryOp::kAdd or op == BinaryOp::kLessThan){
+      if(type_lhs != unit_.GetTypeInt()) unit_.Error(kErr50, p.GetLocus());      
+      if(type_rhs != unit_.GetTypeInt()) unit_.Error(kErr51, p.GetLocus());      
+    }
+    if(op == BinaryOp::kOr){
+      if(type_lhs != unit_.GetTypeBool()) unit_.Error(kErr52, p.GetLocus());      
+      if(type_rhs != unit_.GetTypeBool()) unit_.Error(kErr53, p.GetLocus());            
+    }  
+    if(type_rhs != type_lhs) unit_.Error(kErr54, p.GetLocus());      
   }
+  
   virtual void Visit(AssignStmt const& p){
     p.Lhs().Accept(*this);
     p.Rhs().Accept(*this);

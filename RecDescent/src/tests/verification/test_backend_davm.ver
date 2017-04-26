@@ -204,6 +204,43 @@ Static data segment size: 1
 
 ---------------------------------------------------
 Parsing: "void main(){int a, b, c, d; a = 1; b = 0;if((a+b) < 2){a = 2;} else {a=1;} c = a; d = b; }"
-[err:21] if's condition is not a bool at: "if((a+b) <" -> " 2){a = 2;} else {a=1;} c = a; d = b; }"
-TypeCheck failed. 
+Backend::Davm
+%0 = LoadI(1)
+store %0 to [LT MainDS:0 (a)]
+%2 = LoadI(0)
+store %2 to [LT MainDS:-1 (b)]
+%4 = Load [LT MainDS:0 (a)]
+%5 = Load [LT MainDS:-1 (b)]
+%6 = %4 + %5
+%7 = LoadI(2)
+%8 = %6 < %7 !!!
+JumpCondTrue %8 to:11 !!!
+JumpCondFalse %8 to:14 !!!
+%9 = LoadI(2)
+store %9 to [LT MainDS:0 (a)]
+JumpIncond17 !!!
+%11 = LoadI(1)
+store %11 to [LT MainDS:0 (a)]
+JumpIncond17 !!!
+%13 = Load [LT MainDS:0 (a)]
+store %13 to [LT MainDS:-2 (c)]
+%15 = Load [LT MainDS:-1 (b)]
+store %15 to [LT MainDS:-3 (d)]
+ReturnMain
+---------
+Bytecode:
+LOADI, r1 val: 1
+STORE, r1 to [@0]
+LOADI, r2 val: 0
+STORE, r2 to [@-1]
+ADD, rs1 rs2 rd3
+LOADI, r4 val: 2
+LOADI, r5 val: 2
+STORE, r5 to [@0]
+LOADI, r6 val: 1
+STORE, r6 to [@0]
+STORE, r6 to [@-2]
+STORE, r2 to [@-3]
+STOP
+Static data segment size: 4
 

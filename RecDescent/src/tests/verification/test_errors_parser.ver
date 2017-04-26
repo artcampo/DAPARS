@@ -171,11 +171,14 @@ ResolveMemberTypes failed.
 
 ------------------------------------------------------------------
 Parsing: "void main(){int a; bool b; a=a+b; }"
-[err:17] Incompatible types in op at: "ol b; a=a+" -> "b; }"
+[err:51] Rhs is not Int at: "ol b; a=a+" -> "b; }"
+[err:54] Lhs and Rhs do not match at: "ol b; a=a+" -> "b; }"
 TypeCheck failed. 
 
 ------------------------------------------------------------------
 Parsing: "void main(){int a; bool b; a=b+b; }"
+[err:50] Lhs is not Int at: "ol b; a=b+" -> "b; }"
+[err:51] Rhs is not Int at: "ol b; a=b+" -> "b; }"
 [err:18] Incompatible types in assignment: int to bool at: " bool b; a" -> "=b+b; }"
 TypeCheck failed. 
 
