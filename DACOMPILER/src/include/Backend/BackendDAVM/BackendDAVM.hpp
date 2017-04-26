@@ -29,7 +29,8 @@ public:
               , &Backend::LoadCallBack
               , this)
   , mem_alloc_()
-  , backpatch_free_id_(0){}
+  , call_backpatch_free_id_(0)
+  , jump_backpatch_free_id_(0){}
 
   void Run(){
     ComputeMainDataSegment();
@@ -61,8 +62,10 @@ private:
   MemAllocator      mem_alloc_;
   bool              is_first_arg_;
   int               pushed_args_for_current_call_;
-  std::map<IR::MemAddr, VM::Target> backpatch_ids_;
-  VM::Target backpatch_free_id_;
+  std::map<IR::MemAddr, VM::Target> call_backpatch_ids_;
+  std::map<IR::Addr, VM::Target>    jump_backpatch_ids_;
+  VM::Target call_backpatch_free_id_;
+  VM::Target jump_backpatch_free_id_;
   
   void Visit(IR::IRStream& stream){
     is_first_arg_ = true;
@@ -84,9 +87,18 @@ private:
   void Visit(const IR::Inst::Inst& inst) override{
     std::cout << "Not implemented: " << inst.str() << "\n";
   }
+  
   void Visit(const IR::Inst::JumpCond& inst) override{
-    std::cout << inst.str() << " !!!\n";
+    std::cout << inst.str() << "\n";
+    RegMap rc = reg_alloc_.IRReg(inst.RegCond());
+    reg_alloc_.GetRegRead(rc);
+    VM::Target target_id = BackpatchId(inst.GetTarget());
+    if(inst.GetJumpCondType() == IR::JumpCondType::kTrue)
+      byte_code_.Append( VM::IRBuilder::JumpIfTrue (rc.mreg_, target_id));
+    else
+      byte_code_.Append( VM::IRBuilder::JumpIfFalse(rc.mreg_, target_id));
   }
+  
   void Visit(const IR::Inst::JumpIncond& inst) override{
     std::cout << inst.str() << " !!!\n";
   }
@@ -262,11 +274,23 @@ private:
     //mem_alloc_.Remap();
   }
   
+  VM::Target BackpatchId(const IR::Addr addr){
+    return addr;
+    /*
+    auto it = jump_backpatch_ids_.find(addr);
+    if(it == jump_backpatch_ids_.end()){
+      jump_backpatch_ids_[addr] = jump_backpatch_free_id_;
+      return jump_backpatch_free_id_++;
+    }
+    return it->second;
+    */
+  }
+  
   VM::Target BackpatchId(const IR::MemAddr addr){
-    auto it = backpatch_ids_.find(addr);
-    if(it == backpatch_ids_.end()){
-      backpatch_ids_[addr] = backpatch_free_id_;
-      return backpatch_free_id_++;
+    auto it = call_backpatch_ids_.find(addr);
+    if(it == call_backpatch_ids_.end()){
+      call_backpatch_ids_[addr] = call_backpatch_free_id_;
+      return call_backpatch_free_id_++;
     }
     return it->second;
   }

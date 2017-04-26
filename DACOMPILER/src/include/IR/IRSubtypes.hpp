@@ -32,6 +32,11 @@ enum class CompType{
   , kLessEqualThan = 3
 };
 
+enum class JumpCondType{
+    kTrue = 0
+  , kFalse = 1
+};
+
 
 std::string str(const ArithType op) noexcept;
 std::string str(const LogicType op) noexcept;

@@ -88,6 +88,9 @@ struct InstTarget{
 
   void PatchJump(const Addr target){ target_ = target;}
   
+  Addr GetTarget() const noexcept { return target_; }
+  
+  
 protected:
   Addr target_;
 };
