@@ -10,6 +10,7 @@ set(files
     IR/IR.cpp
     IR/IRStream.cpp
     IR/IRGenerator.cpp
+    IR/IRSubtypes.cpp
 )
 
 #Set intermediate library

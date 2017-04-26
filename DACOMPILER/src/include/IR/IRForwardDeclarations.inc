@@ -9,6 +9,7 @@ struct LoadRegOffs;
 struct Store;
 struct StoreReg;
 struct Arith;
+struct Logic;
 struct Comparison;
 struct PtrElem;
 struct GetRetVal;
@@ -29,6 +30,7 @@ using PtrLoadRegOffs  = std::unique_ptr<LoadRegOffs>;
 using PtrStore        = std::unique_ptr<Store>;
 using PtrStoreReg     = std::unique_ptr<StoreReg>;
 using PtrArith        = std::unique_ptr<Arith>;
+using PtrLogic        = std::unique_ptr<Logic>;
 using PtrComparison   = std::unique_ptr<Comparison>;
 using PtrPtrElem      = std::unique_ptr<PtrElem>;
 

@@ -32,6 +32,11 @@ protected:
     Reg assigned_reg = FreeReg();
     return std::make_unique<Inst::Arith>(assigned_reg, src1, src2, op);
   }
+  
+  Inst::PtrLogic Logic(const Reg src1, const Reg src2, const LogicType op){
+    Reg assigned_reg = FreeReg();
+    return std::make_unique<Inst::Logic>(assigned_reg, src1, src2, op);
+  }  
 
   Inst::PtrLoadI LoadI(const NodeValue val){
     Reg assigned_reg = FreeReg();

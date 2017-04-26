@@ -1,9 +1,10 @@
 #include "IR/IRSubtypes.hpp"
+#include <string>
 
 namespace Compiler{
 namespace IR{
 
-std::string str(const OpType op) noexcept{
+std::string str(const ArithType op) noexcept{
   if(op == ArithType::kAdd) return std::string("+");
   /*
   if(op == 1) return std::string("-");
