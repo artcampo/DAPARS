@@ -180,9 +180,11 @@ void IRGenerator::Visit(BinaryOp const& n, const Node* successor){
 
   const IR::Reg reg_src1 = reg_dst_of_expr_[&n.Lhs()];
   const IR::Reg reg_src2 = reg_dst_of_expr_[&n.Rhs()];  
+  const int op           = n.op;
   IR::Reg r;
   
-  int op = n.op;
+  
+  //TODO: worth the switch?
   if(op == BinaryOp::kAdd){
     const IR::ArithType op = IR::ArithType::kAdd;
     r = CurrentStream().AppendArith(reg_src1, reg_src2, op);
@@ -192,7 +194,8 @@ void IRGenerator::Visit(BinaryOp const& n, const Node* successor){
     r = CurrentStream().AppendLogic(reg_src1, reg_src2, op);
   }  
   if(op == BinaryOp::kLessThan){
-    
+    const IR::CompType op = IR::CompType::kLessThan;
+    r = CurrentStream().AppendComparison(reg_src1, reg_src2, op);
   }
   
   reg_dst_of_expr_[&n]   = r;

@@ -38,6 +38,11 @@ protected:
     return std::make_unique<Inst::Logic>(assigned_reg, src1, src2, op);
   }  
 
+  Inst::PtrComparison Comparison(const Reg src1, const Reg src2, const CompType op){
+    Reg assigned_reg = FreeReg();
+    return std::make_unique<Inst::Comparison>(assigned_reg, src1, src2, op);
+  }  
+
   Inst::PtrLoadI LoadI(const NodeValue val){
     Reg assigned_reg = FreeReg();
     return std::make_unique<Inst::LoadI>(assigned_reg, val);
