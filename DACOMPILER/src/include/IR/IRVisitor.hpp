@@ -20,6 +20,7 @@ public:
   virtual void Visit(Inst::Store const& p)      = 0;
   virtual void Visit(Inst::StoreReg const& p)   = 0;
   virtual void Visit(Inst::Arith const& p)      = 0;
+  virtual void Visit(Inst::Logic const& p)      = 0;
   virtual void Visit(Inst::Comparison const& p) = 0;
   virtual void Visit(Inst::PtrElem const& p)    = 0;
   virtual void Visit(Inst::GetRetVal const& p)  = 0;

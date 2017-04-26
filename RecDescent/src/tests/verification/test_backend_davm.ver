@@ -213,7 +213,7 @@ store %2 to [LT MainDS:-1 (b)]
 %5 = Load [LT MainDS:-1 (b)]
 %6 = %4 + %5
 %7 = LoadI(2)
-%8 = %6 < %7 !!!
+%8 = %6 < %7
 JumpCondTrue %8 to:11 !!!
 JumpCondFalse %8 to:14 !!!
 %9 = LoadI(2)
@@ -235,11 +235,12 @@ LOADI, r2 val: 0
 STORE, r2 to [@-1]
 ADD, rs1 rs2 rd3
 LOADI, r4 val: 2
-LOADI, r5 val: 2
-STORE, r5 to [@0]
-LOADI, r6 val: 1
+LST, rs3 rs4 rd5
+LOADI, r6 val: 2
 STORE, r6 to [@0]
-STORE, r6 to [@-2]
+LOADI, r7 val: 1
+STORE, r7 to [@0]
+STORE, r7 to [@-2]
 STORE, r2 to [@-3]
 STOP
 Static data segment size: 4

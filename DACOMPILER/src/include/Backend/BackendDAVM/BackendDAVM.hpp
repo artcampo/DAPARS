@@ -129,12 +129,26 @@ private:
     RegMap rs2 = reg_alloc_.IRReg( inst.RegSrc2() );
     reg_alloc_.GetRegArith(rd, rs1, rs2);
     
-    //VM::IRDefinition::SubtypesArithmetic::IR_ADD;
-    byte_code_.Append( VM::IRBuilder::Arith(rs1.mreg_, rs2.mreg_, rd.mreg_, int(inst.Op())));
+    int op = VM::IRDefinition::SubtypesArithmetic::IR_ADD;
+    byte_code_.Append( VM::IRBuilder::Arith(rs1.mreg_, rs2.mreg_, rd.mreg_, op));
   }
-  void Visit(const IR::Inst::Comparison& inst) override{
+  
+  void Visit(const IR::Inst::Logic& inst) override{
     std::cout << inst.str() << " !!!\n";
   }  
+  
+  void Visit(const IR::Inst::Comparison& inst) override{
+    std::cout << inst.str() << "\n";
+    RegMap rd  = reg_alloc_.IRReg( inst.RegDst() );
+    RegMap rs1 = reg_alloc_.IRReg( inst.RegSrc1() );
+    RegMap rs2 = reg_alloc_.IRReg( inst.RegSrc2() );
+    reg_alloc_.GetRegArith(rd, rs1, rs2);
+    
+    int op = VM::IRDefinition::SubtypesComparison::IR_LST;
+    //VM::IRDefinition::SubtypesArithmetic::IR_ADD;
+    byte_code_.Append( VM::IRBuilder::Comp(rs1.mreg_, rs2.mreg_, rd.mreg_, op));    
+  }  
+  
   void Visit(const IR::Inst::PtrElem& inst) override{
     std::cout << inst.str() << " !!!\n";
   }  
