@@ -100,6 +100,8 @@ struct BinaryOp : public Inst, public InstDst, public InstSrcSrc{
   virtual ~BinaryOp() = default;
 
   virtual std::string str() const noexcept = 0;
+  
+  
 };
 
 struct UnaryOp : public Inst, public InstDst, public InstSrc{

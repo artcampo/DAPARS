@@ -32,8 +32,9 @@ enum class CompType{
 };
 
 
-std::string str(const ArithType op)     noexcept;
-std::string str(const CompType op)      noexcept;
+std::string str(const ArithType op) noexcept;
+std::string str(const CompType op)  noexcept;
+std::string str(const LogicType op) noexcept;
 
 
 }//end namespace IR

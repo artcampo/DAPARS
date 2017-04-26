@@ -1,6 +1,7 @@
 #include "IR/IRGenerator.hpp"
 #include "IR/MemAddr.hpp"
 #include "IR/IRSubtypes.hpp"
+#include "IRDefinition.hpp"
 
 namespace Compiler{
 
@@ -181,7 +182,7 @@ void IRGenerator::Visit(BinaryOp const& n, const Node* successor){
   if(op == BinaryOp::kAdd){
     const IR::Reg reg_src1 = reg_dst_of_expr_[&n.Lhs()];
     const IR::Reg reg_src2 = reg_dst_of_expr_[&n.Rhs()];
-    const IR::ArithType op = IR::IR_ADD;
+    const IR::ArithType op = IR::ArithType::kAdd;
     const IR::Reg r        = CurrentStream().AppendArith(reg_src1, reg_src2, op);
     reg_dst_of_expr_[&n]   = r;
   }

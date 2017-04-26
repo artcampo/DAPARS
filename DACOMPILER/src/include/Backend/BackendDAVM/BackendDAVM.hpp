@@ -129,6 +129,7 @@ private:
     RegMap rs2 = reg_alloc_.IRReg( inst.RegSrc2() );
     reg_alloc_.GetRegArith(rd, rs1, rs2);
     
+    //VM::IRDefinition::SubtypesArithmetic::IR_ADD;
     byte_code_.Append( VM::IRBuilder::Arith(rs1.mreg_, rs2.mreg_, rd.mreg_, int(inst.Op())));
   }
   void Visit(const IR::Inst::Comparison& inst) override{

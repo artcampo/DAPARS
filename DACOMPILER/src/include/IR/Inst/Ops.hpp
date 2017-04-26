@@ -17,9 +17,26 @@ struct Arith : public BinaryOp{
   void Accept(IRVisitor& v) override { v.Visit(*this); }
   ArithType Op() const noexcept{ return op_;}
   
-  enum Op { kAdd };
 protected:
   ArithType op_;
+};
+
+struct Logic : public BinaryOp{
+  Logic(const Reg reg_dst, const Reg src1, const Reg src2, const LogicType op)
+  : BinaryOp(reg_dst, src1, src2), op_(op){};
+  virtual ~Logic() = default;
+
+  virtual std::string str() const noexcept{
+    return std::string("%")  + std::to_string(dst_)
+         + std::string(" = %") + std::to_string(src1_) + std::string(" ")
+         + Compiler::IR::str(op_) + std::string(" %")+ std::to_string(src2_);
+  }
+  
+  void Accept(IRVisitor& v) override { v.Visit(*this); }
+  LogicType Op() const noexcept{ return op_;}
+  
+protected:
+  LogicType op_;
 };
 
 struct Comparison : public BinaryOp{
