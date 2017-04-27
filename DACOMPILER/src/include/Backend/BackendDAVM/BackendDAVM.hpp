@@ -107,7 +107,9 @@ private:
   }
   
   void Visit(const IR::Inst::JumpIncond& inst) override{
-    std::cout << inst.str() << " !!!\n";
+    std::cout << inst.str() << "\n";
+    VM::Target target_id = BackpatchId(inst.GetTarget());
+    byte_code_.Append( VM::IRBuilder::Jump(target_id));
   }
   
   void Visit(const IR::Inst::LoadI& inst) override{
@@ -312,7 +314,7 @@ private:
       VM::Target target;
       if(VM::IRBuilder::IsJump(inst, target)){
 //         std::cout << "patch " << IR::Addr(target);
-        std::cout << "patch " << IR::Addr(target) << " to: " << JumpPatch(IR::Addr(target)) << "\n";
+//         std::cout << "patch " << IR::Addr(target) << " to: " << JumpPatch(IR::Addr(target)) << "\n";
         VM::IRBuilder::PatchJump(inst, JumpPatch(IR::Addr(target)));
         
       }
