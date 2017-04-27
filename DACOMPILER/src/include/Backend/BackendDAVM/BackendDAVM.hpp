@@ -30,7 +30,7 @@ public:
               , this)
   , mem_alloc_()
   , call_backpatch_free_id_(0)
-  , jump_backpatch_free_id_(0){}
+  , ir_inst_addr_(0){}
 
   void Run(){
     ComputeMainDataSegment();
@@ -64,8 +64,8 @@ private:
   int               pushed_args_for_current_call_;
   std::map<IR::MemAddr, VM::Target> call_backpatch_ids_;
   std::map<IR::Addr, VM::Target>    jump_backpatch_ids_;
-  VM::Target call_backpatch_free_id_;
-  VM::Target jump_backpatch_free_id_;
+  VM::Target  call_backpatch_free_id_;
+  IR::Addr    ir_inst_addr_;
   
   void Visit(IR::IRStream& stream){
     is_first_arg_ = true;
@@ -80,7 +80,14 @@ private:
       
     reg_alloc_.Reset( stream.MaxRegUsed(), basic_register_usage );
     if(not is_main) FuncPrologue(stream.GetFunction());
-    for(auto& it : stream) it->Accept(*this);
+    for(auto& it : stream){
+      //Store translation of address from IR to VM's bytecode
+      VM::Addr address_of_vm_inst = byte_code_.NextAddress();
+      JumpBackPatchTranslation(ir_inst_addr_, address_of_vm_inst);
+      
+      it->Accept(*this);
+      ir_inst_addr_++;  //keep track of current IR's instruction offset
+    }
     if(not is_main) FuncEpilogue(stream.GetFunction());
   }
 
@@ -274,18 +281,15 @@ private:
     //mem_alloc_.Remap();
   }
   
-  VM::Target BackpatchId(const IR::Addr addr){
-    return addr;
-    /*
-    auto it = jump_backpatch_ids_.find(addr);
-    if(it == jump_backpatch_ids_.end()){
-      jump_backpatch_ids_[addr] = jump_backpatch_free_id_;
-      return jump_backpatch_free_id_++;
-    }
-    return it->second;
-    */
+  //Jumps refer to their IR address, and will have to be translated later
+  //to the VM address where the original instruction was placed
+  VM::Target  BackpatchId(const IR::Addr addr){return addr;}
+  void        JumpBackPatchTranslation(const IR::Addr addr, VM::Target target){
+    jump_backpatch_ids_[addr] = target;
   }
   
+  //Calls refer to MemAddr (label,offset) and thus need an intermediate
+  //identifier, which after producing the VM's function can be changed
   VM::Target BackpatchId(const IR::MemAddr addr){
     auto it = call_backpatch_ids_.find(addr);
     if(it == call_backpatch_ids_.end()){
@@ -296,7 +300,9 @@ private:
   }
   
   void BackpathCallTargets(){
-    
+    for(auto& it : byte_code_.stream){
+      
+    }
   }
   
 };

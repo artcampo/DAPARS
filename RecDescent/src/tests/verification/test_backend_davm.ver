@@ -214,8 +214,8 @@ store %2 to [LT MainDS:-1 (b)]
 %6 = %4 + %5
 %7 = LoadI(2)
 %8 = %6 < %7
-JumpCondTrue %8 to:11 !!!
-JumpCondFalse %8 to:14 !!!
+JumpCondTrue %8 to:11
+JumpCondFalse %8 to:14
 %9 = LoadI(2)
 store %9 to [LT MainDS:0 (a)]
 JumpIncond17 !!!
@@ -236,6 +236,8 @@ STORE, r2 to [@-1]
 ADD, rs1 rs2 rd3
 LOADI, r4 val: 2
 LST, rs3 rs4 rd5
+JUMPIF true to:11
+JUMPIF false to:14
 LOADI, r6 val: 2
 STORE, r6 to [@0]
 LOADI, r7 val: 1

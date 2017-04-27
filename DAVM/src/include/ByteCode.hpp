@@ -10,7 +10,7 @@ struct ByteCode{
 
   void Append(const Inst inst){ stream.push_back(inst);}
 
-  Addr NextAddress() const noexcept{ return stream.size();}
+  Target NextAddress() const noexcept{ return stream.size();}
 
   Inst  GetInst(VM::Addr addr) const { return stream[addr];}
   Inst& GetInst(VM::Addr addr){ return stream[addr];}
