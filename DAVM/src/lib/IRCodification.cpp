@@ -132,6 +132,12 @@ Word DecodeClass2Literal(const VM::Inst instruction){
   return l;
 }
 
+Word DecodeClass0Literal(const VM::Inst instruction){
+  Word l;
+  DecodeClass0(instruction, l);
+  return l;
+}
+
 SubInst Code(const Word literal){
   if(literal < 0){
     SubInst l = SubInst((-literal)) & kLiteralUnsignedMask;

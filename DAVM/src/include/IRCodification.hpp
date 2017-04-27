@@ -30,6 +30,7 @@ void DecodeClass3(const VM::Inst instruction, Reg &reg_src1
                  ,Reg &reg_src2, Reg &reg_dst, SubInst &subtype);
 
 //helpers for instruction modification
+Word    DecodeClass0Literal(const VM::Inst instruction);
 Word    DecodeClass2Literal(const VM::Inst instruction);
 SubInst DecodeClass2Subtype(const VM::Inst instruction);
 SubInst DecodeClass3Subtype(const VM::Inst instruction);

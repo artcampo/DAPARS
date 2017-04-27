@@ -163,9 +163,7 @@ Inst Stop(){
 
 bool  IsJump(const Inst inst, Target& target){
   if((inst & kClass0OpcodeBitMask) == IR_JMP){
-    Word literal;
-    DecodeClass0(inst, literal);
-    target = Target(literal);
+    target = Target(DecodeClass0Literal(inst));
     return true;
   }
   if((inst & kClass2OpcodeBitMask) == IR_JMPC){
@@ -174,7 +172,12 @@ bool  IsJump(const Inst inst, Target& target){
   }
   return false;
 }
+
 bool  IsCall(const Inst inst, Target& target){
+  if((inst & kClass0OpcodeBitMask) == IR_CALL){
+    target = Target(DecodeClass0Literal(inst));
+    return true;
+  }
   return false;
 }
 
@@ -189,7 +192,7 @@ void PatchJump(Inst& inst, const Target target){
 }
 
 void PatchCall(Inst& inst, const Target target){
-
+  inst = CodeClass0(target, IR_CALL);
 }
 
 }//namespace IRBuilder
