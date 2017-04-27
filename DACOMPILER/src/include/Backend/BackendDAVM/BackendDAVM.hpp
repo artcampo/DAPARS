@@ -63,7 +63,9 @@ private:
   bool              is_first_arg_;
   int               pushed_args_for_current_call_;
   std::map<IR::MemAddr, VM::Target> call_backpatch_ids_;
-  std::map<IR::Addr, VM::Target>    jump_backpatch_ids_;
+  std::map<VM::Target, IR::MemAddr> call_backpatch_ids_inverse_;
+  std::map<IR::MemAddr, VM::Target> call_backpatch_translation_;
+  std::map<IR::Addr, VM::Target>    jump_backpatch_translation_;
   VM::Target  call_backpatch_free_id_;
   IR::Addr    ir_inst_addr_;
   
@@ -78,6 +80,11 @@ private:
     //Account for this_ptr
     if(stream.GetFunction().IsMember()) basic_register_usage++;
       
+    //Save address to backpatch calls to this function
+    CallBackPatchTranslation( stream.EntryMemAddr()
+                            , byte_code_.NextAddress());
+    
+    //Translate
     reg_alloc_.Reset( stream.MaxRegUsed(), basic_register_usage );
     if(not is_main) FuncPrologue(stream.GetFunction());
     for(auto& it : stream){
@@ -232,6 +239,7 @@ private:
     std::cout << inst.str() << "\n";
     
     if(inst.Addr().GetLabel().IsLinkTime()){
+      std::cout << "call to: " << inst.Addr().str()<<"\n";
       VM::Target target_id = BackpatchId(inst.Addr());
       byte_code_.Append( VM::IRBuilder::Call(target_id));
     }else{
@@ -287,7 +295,7 @@ private:
   //to the VM address where the original instruction was placed
   VM::Target  BackpatchId(const IR::Addr addr){return addr;}
   void        JumpBackPatchTranslation(const IR::Addr addr, VM::Target target){
-    jump_backpatch_ids_[addr] = target;
+    jump_backpatch_translation_[addr] = target;
 //     for(const auto& it : jump_backpatch_ids_) std::cout << it.first <<":" <<it.second << " ";
 //     std::cout << "\n";
   }
@@ -295,7 +303,7 @@ private:
 //     for(const auto& it : jump_backpatch_ids_) std::cout << it.first <<":" <<it.second << " ";
 //     std::cout << "\n"; 
 //     std::cout << "ask : " << addr;
-    return jump_backpatch_ids_.at(addr);
+    return jump_backpatch_translation_.at(addr);
   }
   
   //Calls refer to MemAddr (label,offset) and thus need an intermediate
@@ -304,21 +312,27 @@ private:
     auto it = call_backpatch_ids_.find(addr);
     if(it == call_backpatch_ids_.end()){
       call_backpatch_ids_[addr] = call_backpatch_free_id_;
+      call_backpatch_ids_inverse_[call_backpatch_free_id_] = addr;
       return call_backpatch_free_id_++;
     }
     return it->second;
   }
+  void CallBackPatchTranslation(const IR::MemAddr addr, VM::Target target){
+    call_backpatch_translation_[addr] = target;
+  }
+  VM::Target CallPatch(VM::Target target){
+    const IR::MemAddr addr = call_backpatch_ids_inverse_.at(target);
+    return call_backpatch_translation_.at(addr);
+  }
+  
   
   void BackpathCallTargets(){
     for(auto& inst : byte_code_.stream){
       VM::Target target;
-      if(VM::IRBuilder::IsJump(inst, target)){
-//         std::cout << "patch " << IR::Addr(target);
-//         std::cout << "patch " << IR::Addr(target) << " to: " << JumpPatch(IR::Addr(target)) << "\n";
+      if(VM::IRBuilder::IsJump(inst, target))
         VM::IRBuilder::PatchJump(inst, JumpPatch(IR::Addr(target)));
-        
-      }
-
+      if(VM::IRBuilder::IsCall(inst, target))
+        VM::IRBuilder::PatchCall(inst, CallPatch(target));
     }
   }
   

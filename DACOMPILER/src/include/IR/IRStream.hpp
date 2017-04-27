@@ -3,6 +3,7 @@
 #include "IR/IR.hpp"
 #include "IR/IRBuilder.hpp"
 #include "IR/Label.hpp"
+#include "IR/MemAddr.hpp"
 #include "AST/Node.hpp"
 #include <vector>
 #include <memory>
@@ -20,12 +21,19 @@ using PtrIRStream = std::unique_ptr<IRStream>;
 
 struct IRStream : public IRBuilder{
   IRStream(const Label& entry_label, AST::Function& function)
-    : entry_label_(entry_label), function_(function){}
+    : entry_label_(entry_label), function_(function)
+    , entry_mem_addr_(entry_label, Offset(0)){}
 
+  MemAddr EntryMemAddr() const noexcept{ return entry_mem_addr_; }
   Addr NextAddress() const noexcept{ return stream_.size(); }
 
   Inst::Inst& GetInst(const Addr addr) const noexcept{ return *stream_[addr];}
 
+  void Print() const noexcept;
+  Reg   MaxRegUsed() const noexcept { return num_regs_used_;} 
+  const AST::Function& GetFunction()const noexcept { return function_;} 
+  
+  //TODO: put these in different sub-class
   void AppendJumpIfTrue(const Reg cond);
   void AppendJumpIfFalse(const Reg cond);
   void AppendJumpIfFalse(const Reg cond, const Addr target);
@@ -42,7 +50,6 @@ struct IRStream : public IRBuilder{
   Reg  AppendLogic(const Reg src1, const Reg src2, const LogicType op);
   Reg  AppendComparison(const Reg src1, const Reg src2, const CompType op);
   
-  
   Reg  AppendPtrElem(const MemAddr addr);
 
   Reg  AppendGetRetVal();
@@ -53,16 +60,11 @@ struct IRStream : public IRBuilder{
   void AppendReturnMain();
   void AppendCall(const MemAddr addr);
 
-
-  void Print() const noexcept;
-  
-  Reg   MaxRegUsed() const noexcept { return num_regs_used_;} 
-  
-  const AST::Function& GetFunction()const noexcept { return function_;} 
   
 private:
   std::vector<Inst::PtrInst> stream_;
   Label entry_label_;
+  MemAddr entry_mem_addr_;
   AST::Function& function_;
   Reg num_regs_used_; //computed after appending return
 
