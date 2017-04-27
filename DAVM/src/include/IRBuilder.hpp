@@ -9,7 +9,12 @@ namespace IRBuilder{
 bool        checkIRCodification();
 std::string PrintInstruction(const Inst& instruction);
 
+//if it is, return its target
+bool  IsJump(const Inst instruction, Target& target);
+bool  IsCall(const Inst instruction, Target& target);
 
+void PatchJump(Inst& inst, const Target target);
+void PatchCall(Inst& inst, const Target target);
 
 Inst Stop();
 Inst LoadI (const Reg &reg_dst, const SubInst& literal);  //TODO
@@ -31,13 +36,10 @@ Inst Comp(const Reg &reg_src1, const Reg &reg_src2,
                const Reg &reg_dst, const SubInst& op);
 
 
-
-
 Inst Jump       (const Target& target);
 Inst JumpIfTrue (const Reg& reg_src1, const Target& target);
 Inst JumpIfFalse(const Reg& reg_src1, const Target& target);
 
-void PatchJump(Inst& inst, const Target& target);
 
 //Creates new variable, reg_src1 = TypeId
 Inst NewVar(const Reg&reg_src1);

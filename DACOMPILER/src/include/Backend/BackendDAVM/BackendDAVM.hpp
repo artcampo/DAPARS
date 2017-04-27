@@ -286,6 +286,14 @@ private:
   VM::Target  BackpatchId(const IR::Addr addr){return addr;}
   void        JumpBackPatchTranslation(const IR::Addr addr, VM::Target target){
     jump_backpatch_ids_[addr] = target;
+//     for(const auto& it : jump_backpatch_ids_) std::cout << it.first <<":" <<it.second << " ";
+//     std::cout << "\n";
+  }
+  VM::Target JumpPatch(const IR::Addr addr){
+//     for(const auto& it : jump_backpatch_ids_) std::cout << it.first <<":" <<it.second << " ";
+//     std::cout << "\n"; 
+//     std::cout << "ask : " << addr;
+    return jump_backpatch_ids_.at(addr);
   }
   
   //Calls refer to MemAddr (label,offset) and thus need an intermediate
@@ -300,8 +308,15 @@ private:
   }
   
   void BackpathCallTargets(){
-    for(auto& it : byte_code_.stream){
-      
+    for(auto& inst : byte_code_.stream){
+      VM::Target target;
+      if(VM::IRBuilder::IsJump(inst, target)){
+//         std::cout << "patch " << IR::Addr(target);
+        std::cout << "patch " << IR::Addr(target) << " to: " << JumpPatch(IR::Addr(target)) << "\n";
+        VM::IRBuilder::PatchJump(inst, JumpPatch(IR::Addr(target)));
+        
+      }
+
     }
   }
   

@@ -132,16 +132,6 @@ Inst NewTypeId(const Reg&reg_src1, const Reg&reg_src2){
 
 
 
-void PatchJump(Inst& inst, const Target& target){
-  if((inst & kClass0OpcodeBitMask) == IR_JMP)
-    inst = CodeClass0(target, IR_JMP);
-
-  if((inst & kClass2OpcodeBitMask) == IR_JMPC){
-    SubInst subt = (inst >> kClass2OpcodeNumBits) & kLiteraltMask;
-    inst = CodeClass2(0, target, IR_JMPC, subt);
-  }
-}
-
 namespace IRBuilderAPI{
 using namespace SubtypesArithmetic;
 
@@ -171,8 +161,36 @@ Inst Stop(){
   return IR_STOP;
 }
 
+bool  IsJump(const Inst inst, Target& target){
+  if((inst & kClass0OpcodeBitMask) == IR_JMP){
+    Word literal;
+    DecodeClass0(inst, literal);
+    target = Target(literal);
+    return true;
+  }
+  if((inst & kClass2OpcodeBitMask) == IR_JMPC){
+    target = Target(DecodeClass2Literal(inst));
+    return true;
+  }
+  return false;
+}
+bool  IsCall(const Inst inst, Target& target){
+  return false;
+}
 
+void PatchJump(Inst& inst, const Target target){
+  if((inst & kClass0OpcodeBitMask) == IR_JMP)
+    inst = CodeClass0(target, IR_JMP);
 
+  if((inst & kClass2OpcodeBitMask) == IR_JMPC){
+    SubInst subt = DecodeClass2Subtype(inst);
+    inst = CodeClass2(0, target, IR_JMPC, subt);
+  }
+}
+
+void PatchCall(Inst& inst, const Target target){
+
+}
 
 }//namespace IRBuilder
 }//end namespace VM

@@ -1,5 +1,6 @@
 #include "IRCodification.hpp"
 #include "IRDefinition.hpp"
+#include "BasicTypes.hpp"
 #include <iostream>
 
 namespace VM{
@@ -112,6 +113,24 @@ void DecodeClass3(const VM::Inst instruction, Reg &reg_src1
            & kRegistertMask;
 }
 
+//extract subtype
+SubInst DecodeClass3Subtype(const VM::Inst instruction){
+  SubInst subtype; Reg r;
+  DecodeClass3(instruction, r, r, r, subtype);
+  return subtype;
+}
+
+SubInst DecodeClass2Subtype(const VM::Inst instruction){
+  SubInst subtype; Reg r; Word l;
+  DecodeClass2(instruction, r, l, subtype);
+  return subtype;
+}
+
+Word DecodeClass2Literal(const VM::Inst instruction){
+  SubInst subtype; Reg r; Word l;
+  DecodeClass2(instruction, r, l, subtype);
+  return l;
+}
 
 SubInst Code(const Word literal){
   if(literal < 0){

@@ -29,6 +29,12 @@ Inst CodeClass3(const Reg &reg_src1, const Reg &reg_src2
 void DecodeClass3(const VM::Inst instruction, Reg &reg_src1
                  ,Reg &reg_src2, Reg &reg_dst, SubInst &subtype);
 
+//helpers for instruction modification
+Word    DecodeClass2Literal(const VM::Inst instruction);
+SubInst DecodeClass2Subtype(const VM::Inst instruction);
+SubInst DecodeClass3Subtype(const VM::Inst instruction);
+
+
 //Codification of signed literals
 SubInst Code(const Word literal);
 Word    Decode(const SubInst literal);

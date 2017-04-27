@@ -4,12 +4,7 @@ Classes of instructions:
 -Class 2: 1 reg, literal, subtype. Bit layout: regs1, literal, subtype, type, class
 -Class 3: 3 regs, subtype. Bit layout: regs1,regs2,regd, subtype, type, class
 
-Subtypes 
-comparison: ==, !=, <, !
-arith: +,-,/,*,move
-
 The mapping of those fields to a 32 bit word is as follows:
-
 0 -----------LLLLLLLLLLLLLLLLTTTCC
 1 ----LLLLLLLLLLLLLLLLRRRRRRRRTTCC
 2 ------LLLLLLLLLLLLLLLLRRRRSSSTCC
@@ -23,4 +18,12 @@ where:
 - R, Register
 - L, Literal
 
+Complete instruction set
+C0: Jump, Call, NewVar, Return
+C1: LoadI, LoadB, Store, StoreB, Pop, Push
+C2: JumpIfTrue, JumpIfFalse, ArithI
+C3: Arith, Comp, Move
 
+Subtypes (some left unused!!)
+comparison: ==, !=, <, !
+arith: +,-,/,*,move

@@ -227,6 +227,8 @@ store %13 to [LT MainDS:-2 (c)]
 %15 = Load [LT MainDS:-1 (b)]
 store %15 to [LT MainDS:-3 (d)]
 ReturnMain
+patch 11 to: 9
+patch 14 to: 11
 ---------
 Bytecode:
 LOADI, r1 val: 1
@@ -236,8 +238,8 @@ STORE, r2 to [@-1]
 ADD, rs1 rs2 rd3
 LOADI, r4 val: 2
 LST, rs3 rs4 rd5
-JUMPIF true to:11
-JUMPIF false to:14
+JUMPIF true to:9
+JUMPIF false to:11
 LOADI, r6 val: 2
 STORE, r6 to [@0]
 LOADI, r7 val: 1
