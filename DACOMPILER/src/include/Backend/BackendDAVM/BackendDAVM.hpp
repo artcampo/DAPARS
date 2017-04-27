@@ -27,6 +27,7 @@ public:
   : Backend(unit, ir_unit, TargetDefDAVM())
   , reg_alloc_( TargetDefDAVM().NumRegisters()
               , &Backend::LoadCallBack
+              , &Backend::StoreCallBack
               , this)
   , mem_alloc_()
   , call_backpatch_free_id_(0)
@@ -52,6 +53,18 @@ public:
 //       std::cout << "loadOff: " << addr.GetOffset().GetAddr() << "\n";
     }
   }
+  
+  void StoreCallBack(const MReg reg_src, const IR::MemAddr addr) override {
+//     std::cout << "Load callback\n" << reg_dst <<"\n";
+    if(addr.GetLabel().IsRunTime()){
+      MReg reg_base;
+      if(addr.GetLabel().IsArp())     reg_base = reg_alloc_.MRegArpPtr();
+      if(addr.GetLabel().IsThisPtr()) reg_base = reg_alloc_.MRegThisPtr();
+//       std::cout << "Base: " << reg_base << addr.GetLabel().str()<<"\n";
+      byte_code_.Append( VM::IRBuilder::StoreB(reg_src, reg_base, addr.GetOffset().GetAddr()));
+//       std::cout << "loadOff: " << addr.GetOffset().GetAddr() << "\n";
+    }
+  }  
   
   VM::ByteCode& GetByteCode() noexcept { return byte_code_; }
   const VM::ByteCode& GetByteCode() const noexcept { return byte_code_; }
@@ -203,7 +216,7 @@ private:
       reg_alloc_.GetRegRead(rs);
       //If it's not already on mreg=0, move it
       if(rs.mreg_ != reg_alloc_.MRegRetValue()){
-        reg_alloc_.Flush( reg_alloc_.MRegRetValue());
+        reg_alloc_.FlushMReg( reg_alloc_.MRegRetValue());
         RegMap rd = reg_alloc_.ForceReg( reg_alloc_.MRegRetValue() );
         byte_code_.Append( VM::IRBuilder::Move(rs.mreg_, rd.mreg_));
       }
@@ -239,7 +252,7 @@ private:
     std::cout << inst.str() << "\n";
     
     if(inst.Addr().GetLabel().IsLinkTime()){
-      std::cout << "call to: " << inst.Addr().str()<<"\n";
+//       std::cout << "call to: " << inst.Addr().str()<<"\n";
       VM::Target target_id = BackpatchId(inst.Addr());
       byte_code_.Append( VM::IRBuilder::Call(target_id));
     }else{

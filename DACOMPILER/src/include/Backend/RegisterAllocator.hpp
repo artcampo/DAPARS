@@ -21,10 +21,11 @@ class RegisterAllocator{
 public:
 
   RegisterAllocator(const int max_machine_reg, IssueLoad callback_load
-  , Backend* backend)
+  , IssueStore callback_store, Backend* backend)
     : max_machine_reg_(max_machine_reg)
     , register_usage_(FirstMachRegFree())
     , callback_load_(callback_load)
+    , callback_store_(callback_store)
     , backend_(backend){
     reg_desc_.resize(max_machine_reg_);
   }
@@ -50,14 +51,27 @@ public:
     register_usage_ = FirstMachRegFree();
   }  
   
+  //If any value's memory address is outdated, update it
+  void Flush(){
+    for(auto& it : is_in_memory_)
+      if(not it.second){
+        FlushIRSymbol(it.first);
+        it.second = true;
+      }
+  }
+  
+  //Flush value of a given register
+  void FlushMReg(const MReg r){
+    for(auto& it : reg_desc_[r]) FlushIRSymbol(it);
+  }  
+
+  
   //Structure for mappjng an IR register
   RegMap IRReg(RegSym in){
     return RegMap(in);
   }  
   
-  void Flush(const MReg r){
-    
-  }
+
   
   //Actually, only the mreg=0 will be forced
   RegMap ForceReg(const MReg r){
@@ -168,6 +182,7 @@ public:
       return mem_addr_of_reg_sym_id_[rs].GetOffset().Name() + " ";            
   }
 
+
 private:
   const int   max_machine_reg_;
   int         register_usage_;
@@ -185,8 +200,9 @@ private:
   RegSym      max_ir_registers_;
   
   //Callbacks to the backed
-  IssueLoad callback_load_;
-  Backend*  backend_;
+  IssueStore  callback_store_;
+  IssueLoad   callback_load_;
+  Backend*    backend_;
   
   RegSym RegSymId(const IR::MemAddr addr){
     auto it = reg_sym_id_of_mem_addr_.find(addr);
@@ -290,11 +306,19 @@ private:
   
   //do not allow mreg to be flushed (used for registers that are
   //not available in memory (args in regs)
+  //note that this is only done for GetArg ops which are issued
+  //at the very beginning of any function
   void ReserveNoFlush(const MReg& mreg){
     if(mreg != 0) register_usage_++;
     //TODO
   }
   
+  void FlushIRSymbol(const RegSym s){
+    const MReg        rs  = *addr_desc_.at(s).begin();
+    const IR::MemAddr ma  = mem_addr_of_reg_sym_id_.at(rs);    
+    (backend_->*callback_store_)(rs, ma);
+  }
+    
   
 };
 

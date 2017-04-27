@@ -46,7 +46,6 @@ store %0 to [LT MainDS:0 (a)]
 %2 = Load [LT MainDS:0 (a)]
 SetArg( %2)
 call [LT entry_f[isTarget]:0 ()]
-call to: LT entry_f[isTarget]:0 ()
 %3 = GetRetVal()
 store %3 to [LT MainDS:0 (a)]
 ReturnMain
@@ -75,7 +74,6 @@ Backend::Davm
 SetArg( %0)
 SetArg( %1)
 call [LT entry_f[isTarget]:0 ()]
-call to: LT entry_f[isTarget]:0 ()
 %2 = GetRetVal()
 store %2 to [LT MainDS:0 (a)]
 ReturnMain
@@ -114,7 +112,6 @@ SetArg( %1)
 SetArg( %2)
 SetArg( %3)
 call [LT entry_f[isTarget]:0 ()]
-call to: LT entry_f[isTarget]:0 ()
 %4 = GetRetVal()
 store %4 to [LT MainDS:0 (a)]
 ReturnMain
@@ -157,7 +154,6 @@ Static data segment size: 1
 Parsing: "int f(){ int a; return a; }void main(){int a; a = f(); }"
 Backend::Davm
 call [LT entry_f[isTarget]:0 ()]
-call to: LT entry_f[isTarget]:0 ()
 %0 = GetRetVal()
 store %0 to [LT MainDS:0 (a)]
 ReturnMain
@@ -182,7 +178,6 @@ Static data segment size: 1
 Parsing: "int f(){ int a,b,c,d; return a + d; }void main(){int a; a = f(); }"
 Backend::Davm
 call [LT entry_f[isTarget]:0 ()]
-call to: LT entry_f[isTarget]:0 ()
 %0 = GetRetVal()
 store %0 to [LT MainDS:0 (a)]
 ReturnMain
@@ -258,10 +253,8 @@ Static data segment size: 4
 Parsing: "int f(){ return 1; }int g(){ return f() + 2; }void main(){int a; a = f() + g();}"
 Backend::Davm
 call [LT entry_f[isTarget]:0 ()]
-call to: LT entry_f[isTarget]:0 ()
 %0 = GetRetVal()
 call [LT entry_g[isTarget]:0 ()]
-call to: LT entry_g[isTarget]:0 ()
 %1 = GetRetVal()
 %2 = %0 + %1
 store %2 to [LT MainDS:0 (a)]
@@ -270,7 +263,6 @@ ReturnMain
 SetRetVal( %0)
 Return
 call [LT entry_f[isTarget]:0 ()]
-call to: LT entry_f[isTarget]:0 ()
 %0 = GetRetVal()
 %1 = LoadI(2)
 %2 = %0 + %1
