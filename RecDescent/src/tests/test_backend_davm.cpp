@@ -101,13 +101,20 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int f(){ int a,b,c,d; return a + d; }") + 
     "void main(){int a; a = f(); }"
-    , g);     
+    , g);
 
   //If/else
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "void main(){int a, b, c, d; a = 1; b = 0;") +
     "if((a+b) < 2){a = 2;} else {a=1;} c = a; d = b; }"
-    , g);      
+    , g);     
+  
+  //patching of funcalls
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "int f(){ return 1; }") +
+    "int g(){ return f() + 2; }"
+    "void main(){int a; a = f() + g();}"
+    , g);     
 
   return 0;
 }

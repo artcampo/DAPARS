@@ -249,3 +249,44 @@ STORE, r2 to [@-3]
 STOP
 Static data segment size: 4
 
+---------------------------------------------------
+Parsing: "int f(){ return 1; }int g(){ return f() + 2; }void main(){int a; a = f() + g();}"
+Backend::Davm
+call [LT entry_f[isTarget]:0 ()]
+%0 = GetRetVal()
+call [LT entry_g[isTarget]:0 ()]
+%1 = GetRetVal()
+%2 = %0 + %1
+store %2 to [LT MainDS:0 (a)]
+ReturnMain
+%0 = LoadI(1)
+SetRetVal( %0)
+Return
+call [LT entry_f[isTarget]:0 ()]
+%0 = GetRetVal()
+%1 = LoadI(2)
+%2 = %0 + %1
+SetRetVal( %2)
+Return
+---------
+Bytecode:
+CALL: @0
+MOV, rs0 rd1
+CALL: @1
+MOV, rs0 rd2
+ADD, rs1 rs2 rd3
+STORE, r3 to [@0]
+STOP
+MOV, rs15 rd14
+LOADI, r1 val: 1
+MOV, rs1 rd0
+RETURN
+MOV, rs15 rd14
+CALL: @0
+MOV, rs0 rd1
+LOADI, r2 val: 2
+ADD, rs1 rs2 rd3
+MOV, rs3 rd0
+RETURN
+Static data segment size: 1
+
