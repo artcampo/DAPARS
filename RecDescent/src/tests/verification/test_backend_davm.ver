@@ -238,13 +238,13 @@ LOADI, r4 val: 2
 LST, rs3 rs4 rd5
 JUMPIF true to:9
 JUMPIF false to:12
-LOADI, r6 val: 2
-STORE, r6 to [@0]
+LOADI, r8 val: 2
+STORE, r8 to [@0]
 JUMP: @15
-LOADI, r7 val: 1
-STORE, r7 to [@0]
+LOADI, r9 val: 1
+STORE, r9 to [@0]
 JUMP: @15
-STORE, r7 to [@-2]
+STORE, r10 to [@-2]
 STORE, r2 to [@-3]
 STOP
 Static data segment size: 4
@@ -274,8 +274,8 @@ CALL: @7
 MOV, rs0 rd1
 CALL: @11
 MOV, rs0 rd2
-ADD, rs1 rs2 rd3
-STORE, r3 to [@0]
+ADD, rs3 rs2 rd4
+STORE, r4 to [@0]
 STOP
 MOV, rs15 rd14
 LOADI, r1 val: 1

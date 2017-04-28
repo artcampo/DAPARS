@@ -28,6 +28,7 @@ public:
     , callback_store_(callback_store)
     , backend_(backend){
     reg_desc_.resize(max_machine_reg_);
+    mreg_can_be_flushed_.resize(max_machine_reg_);
   }
   
   MReg MRegRetValue() const noexcept{ return 0; }
@@ -40,7 +41,10 @@ public:
   //Initialize regAllocator for a function given its max_ir_registers
   //and the max of machine reg
   void Reset(const IR::Reg max_ir_registers, const int function_fixed_usage_machine_reg){
-    for(int i = 0; i < max_machine_reg_; ++i) reg_desc_[i].clear();
+    for(int i = 0; i < max_machine_reg_; ++i){
+      reg_desc_[i].clear();
+      mreg_can_be_flushed_[i] = true;
+    }
     is_in_memory_.clear();
     addr_desc_.clear();
     reg_sym_id_of_mem_addr_.clear();
@@ -51,7 +55,7 @@ public:
     register_usage_ = FirstMachRegFree();
   }  
   
-  //If any value's memory address is outdated, update it
+  //If any value's memory address is outdated, update it; then evit all irsymbols
   void Flush(){
     for(auto& it : is_in_memory_) // for each IrSymbol not updated in memory
       if(not it.second){
@@ -61,6 +65,7 @@ public:
         FlushIRSymbol(it.first);
         it.second = true;
       }
+    Evict();
   }
   
   //Flush value of a given register
@@ -123,7 +128,7 @@ public:
       GetReg(ms);
       md.mreg_ = ms.mreg_;
       UsageShared(ms);
-      UsageCopy(md);
+      UsageShared(md);
       Dump();
       return false;
     }
@@ -154,7 +159,7 @@ public:
   }  
   
   void Dump(){
-    return;
+    return;  //uncomment for dump at each change
     for(int i = 0; i < max_machine_reg_; ++i){
       if(not reg_desc_[i].empty()){
         std::cout << "---- ";
@@ -192,9 +197,10 @@ private:
   int         function_max_machine_reg_;  //registers reserved for: stack, arp and/or this
   
   //what has been allocated and where
-  std::vector<std::set<RegSym>>    reg_desc_;
-  std::map<RegSym, bool>           is_in_memory_;
-  std::map<RegSym, std::set<MReg>> addr_desc_;
+  std::vector<std::set<RegSym>>     reg_desc_;
+  std::map<RegSym, bool>            is_in_memory_;
+  std::map<RegSym, std::set<MReg>>  addr_desc_;
+  std::vector<bool>                 mreg_can_be_flushed_;
   
   //Identifiers for MemAddr
   std::map<IR::MemAddr, RegSym>       reg_sym_id_of_mem_addr_;
@@ -314,6 +320,7 @@ private:
   void ReserveNoFlush(const MReg& mreg){
     if(mreg != 0) register_usage_++;
     //TODO
+    mreg_can_be_flushed_[mreg] = false;
   }
   
   void FlushIRSymbol(const RegSym s){
@@ -321,7 +328,18 @@ private:
     const IR::MemAddr ma  = mem_addr_of_reg_sym_id_.at(s);    
     (backend_->*callback_store_)(rs, ma);
   }
-    
+
+  //Remove all IrSymbols (but those reserved for args in machine registers)
+  void Evict(){
+    for(int mreg_index = 0; mreg_index < function_max_machine_reg_; ++mreg_index)
+      if(mreg_can_be_flushed_[mreg_index]){
+        for(auto& irsymbol : reg_desc_[mreg_index]){
+          addr_desc_.erase(irsymbol);
+          is_in_memory_.erase(irsymbol);
+        }
+        reg_desc_[mreg_index].clear();
+      }
+  }  
   
 };
 
