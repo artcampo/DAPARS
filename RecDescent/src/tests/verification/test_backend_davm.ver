@@ -58,8 +58,8 @@ LOADI, r1 val: 1
 STORE, r1 to [@0]
 MOV, rs1 rd0
 CALL: @7
-MOV, rs0 rd2
-STORE, r2 to [@0]
+MOV, rs0 rd1
+STORE, r1 to [@0]
 STOP
 MOV, rs15 rd14
 MOV, rs0 rd0
@@ -90,8 +90,8 @@ MOV, rs1 rd0
 PUSH, r2
 CALL: @9
 ADDI, rd15 1
-MOV, rs0 rd3
-STORE, r3 to [@0]
+MOV, rs0 rd1
+STORE, r1 to [@0]
 STOP
 MOV, rs15 rd14
 LOADB, r1 <- [@ r14 + 2]
@@ -136,8 +136,8 @@ PUSH, r3
 PUSH, r4
 CALL: @13
 ADDI, rd15 3
-MOV, rs0 rd5
-STORE, r5 to [@0]
+MOV, rs0 rd1
+STORE, r1 to [@0]
 STOP
 MOV, rs15 rd14
 LOADB, r1 <- [@ r14 + 4]
@@ -238,13 +238,13 @@ LOADI, r4 val: 2
 LST, rs3 rs4 rd5
 JUMPIF true to:9
 JUMPIF false to:12
-LOADI, r8 val: 2
-STORE, r8 to [@0]
+LOADI, r2 val: 2
+STORE, r2 to [@0]
 JUMP: @15
-LOADI, r9 val: 1
-STORE, r9 to [@0]
+LOADI, r1 val: 1
+STORE, r1 to [@0]
 JUMP: @15
-STORE, r10 to [@-2]
+STORE, r1 to [@-2]
 STORE, r2 to [@-3]
 STOP
 Static data segment size: 4
@@ -273,9 +273,9 @@ Bytecode:
 CALL: @7
 MOV, rs0 rd1
 CALL: @11
-MOV, rs0 rd2
-ADD, rs3 rs2 rd4
-STORE, r4 to [@0]
+MOV, rs0 rd1
+ADD, rs2 rs1 rd3
+STORE, r3 to [@0]
 STOP
 MOV, rs15 rd14
 LOADI, r1 val: 1

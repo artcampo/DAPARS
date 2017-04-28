@@ -66,6 +66,7 @@ public:
         it.second = true;
       }
     Evict();
+    Dump();
   }
   
   //Flush value of a given register
@@ -158,30 +159,6 @@ public:
     Dump();
   }  
   
-  void Dump(){
-    return;  //uncomment for dump at each change
-    for(int i = 0; i < max_machine_reg_; ++i){
-      if(not reg_desc_[i].empty()){
-        std::cout << "---- ";
-        std::cout << "r" << i << ": ";
-        for(auto& it : reg_desc_[i]) std::cout << str(it)  << " ";
-          
-        std::cout << "\n";
-      }
-    }
-    
-    for(const auto& it : addr_desc_){
-      if(not it.second.empty()){
-        std::cout << "----";
-        std::cout << str(it.first);
-        if(IsInMemory(it.first)) std::cout <<"[m]"; else std::cout <<"[r]";
-        std::cout<< ": ";
-        for(const auto& it_rs : it.second) std::cout << "r"<< it_rs << " ";
-        std::cout << "\n";        
-      }
-    }
-    std::cout << "\n";   
-  }
   
   std::string str(const RegSym rs){
     if(rs < max_ir_registers_)  
@@ -333,13 +310,43 @@ private:
   void Evict(){
     for(int mreg_index = 0; mreg_index < function_max_machine_reg_; ++mreg_index)
       if(mreg_can_be_flushed_[mreg_index]){
+        bool was_used = false;
         for(auto& irsymbol : reg_desc_[mreg_index]){
           addr_desc_.erase(irsymbol);
           is_in_memory_.erase(irsymbol);
+          was_used = true;
         }
         reg_desc_[mreg_index].clear();
+        if(was_used) --register_usage_;
       }
   }  
+
+void Dump(){
+    return;  //uncomment for dump at each change
+    std::cout << "Usage: " <<register_usage_ << "/" << function_max_machine_reg_<<"\n";
+    for(int i = 0; i < max_machine_reg_; ++i){
+      if(not reg_desc_[i].empty()){
+        std::cout << "---- ";
+        std::cout << "r" << i << ": ";
+        for(auto& it : reg_desc_[i]) std::cout << str(it)  << " ";
+        if(not mreg_can_be_flushed_[i]) std::cout << " [dont flush]";
+        std::cout << "\n";
+      }
+    }
+    
+    for(const auto& it : addr_desc_){
+      if(not it.second.empty()){
+        std::cout << "----";
+        std::cout << str(it.first);
+        if(IsInMemory(it.first)) std::cout <<"[m]"; else std::cout <<"[r]";
+        std::cout<< ": ";
+        for(const auto& it_rs : it.second) std::cout << "r"<< it_rs << " ";
+        std::cout << "\n";        
+      }
+    }
+    std::cout << "\n";   
+  }
+    
   
 };
 

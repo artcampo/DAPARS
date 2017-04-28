@@ -147,15 +147,16 @@ private:
     RegMap rd = reg_alloc_.IRReg    (inst.RegDst());
     RegMap rs = reg_alloc_.IRMemAddr(inst.Addr());
     reg_alloc_.GetRegLoad(rd, rs);
-    //TODO:issue load if rs is not in register
-    reg_alloc_.Dump();
   }
+  
   void Visit(const IR::Inst::LoadReg& inst) override{
     std::cout << inst.str() << " !!!LoadReg\n";
   }
+  
   void Visit(const IR::Inst::LoadRegOffs& inst) override{
     std::cout << inst.str() << " !!!LoadRegOffs\n";
   }
+  
   void Visit(const IR::Inst::Store& inst) override{
     std::cout << inst.str() << "\n";
     RegMap rs = reg_alloc_.IRReg    (inst.RegSrc());
@@ -163,9 +164,11 @@ private:
     reg_alloc_.GetRegStore(rs, rd);
     byte_code_.Append( VM::IRBuilder::Store(rs.mreg_, mem_alloc_.Remap(inst.Addr())));
   }
+  
   void Visit(const IR::Inst::StoreReg& inst) override{
     std::cout << inst.str() << " !!!\n";
   }
+  
   void Visit(const IR::Inst::Arith& inst) override{
     std::cout << inst.str() << "\n";
     RegMap rd  = reg_alloc_.IRReg( inst.RegDst() );
