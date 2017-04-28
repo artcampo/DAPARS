@@ -1,14 +1,17 @@
 ---------------------------------------------------
-Parsing: "void main(){int a; a = 1+2; }"
+Parsing: "void main(){int a; a = 1; a = a + 2; }"
 Backend::Davm
 %0 = LoadI(1)
-%1 = LoadI(2)
-%2 = %0 + %1
-store %2 to [LT MainDS:0 (a)]
+store %0 to [LT MainDS:0 (a)]
+%2 = Load [LT MainDS:0 (a)]
+%3 = LoadI(2)
+%4 = %2 + %3
+store %4 to [LT MainDS:0 (a)]
 ReturnMain
 ---------
 Bytecode:
 LOADI, r1 val: 1
+STORE, r1 to [@0]
 LOADI, r2 val: 2
 ADD, rs1 rs2 rd3
 STORE, r3 to [@0]

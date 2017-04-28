@@ -67,7 +67,7 @@ int main()
 
   //basic mem access and arith
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "void main(){int a; a = 1+2; }"), g);
+    "void main(){int a; a = 1; a = a + 2; }"), g);
 
   //different offsets to main data segment
   parse<Grammar,ParserLL1RecDesc>( std::string(
