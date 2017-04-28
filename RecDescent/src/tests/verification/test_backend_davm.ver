@@ -166,11 +166,13 @@ CALL: @4
 MOV, rs0 rd1
 STORE, r1 to [@0]
 STOP
+PUSH, r14
 MOV, rs15 rd14
 SUBI, rd15 1
 LOADB, r1 <- [@ r14 + 0]
 MOV, rs1 rd0
 MOV, rs14 rd15
+POP, r14
 RETURN
 Static data segment size: 1
 
@@ -192,6 +194,7 @@ CALL: @4
 MOV, rs0 rd1
 STORE, r1 to [@0]
 STOP
+PUSH, r14
 MOV, rs15 rd14
 SUBI, rd15 4
 LOADB, r1 <- [@ r14 + 0]
@@ -199,6 +202,7 @@ LOADB, r2 <- [@ r14 + -3]
 ADD, rs1 rs2 rd3
 MOV, rs3 rd0
 MOV, rs14 rd15
+POP, r14
 RETURN
 Static data segment size: 1
 

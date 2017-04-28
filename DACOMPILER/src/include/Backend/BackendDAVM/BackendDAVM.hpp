@@ -282,8 +282,17 @@ private:
 private:  
   
   void FuncPrologue(const Function& f){
+    //Push used registers
+    if(f.IsMember())
+      byte_code_.Append( VM::IRBuilder::Push( reg_alloc_.MRegThisPtr() ));
+    if(f.HasLocals())
+      byte_code_.Append( VM::IRBuilder::Push( reg_alloc_.MRegArpPtr() ));
+    
+    //Set ARP
     byte_code_.Append( VM::IRBuilder::Move( reg_alloc_.MRegStackPtr()
                                           , reg_alloc_.MRegArpPtr() ));
+    
+    //Alloc locals in satck
     if(f.HasLocals()){
       const size_t  locals_size = f.LocalVars().Size();
       const MReg    rd = reg_alloc_.MRegStackPtr();
@@ -297,7 +306,10 @@ private:
     if(f.HasLocals()){ 
       byte_code_.Append( VM::IRBuilder::Move( reg_alloc_.MRegArpPtr()
                                             , reg_alloc_.MRegStackPtr()));
+      byte_code_.Append( VM::IRBuilder::Pop( reg_alloc_.MRegArpPtr() ));
     }
+    if(f.IsMember())
+      byte_code_.Append( VM::IRBuilder::Pop( reg_alloc_.MRegThisPtr() ));
     byte_code_.Append( VM::IRBuilder::Return());
   }
 
