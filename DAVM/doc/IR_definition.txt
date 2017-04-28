@@ -27,3 +27,7 @@ C3: Arith, Comp, Move
 Subtypes (some left unused!!)
 comparison: ==, !=, <, !
 arith: +,-,/,*,move
+logic: or, and, xor, not
+
+Arithmetic and logic operations have different opcodes, as they can have
+different implementations details in a given machine.

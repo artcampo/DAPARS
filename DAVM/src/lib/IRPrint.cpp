@@ -34,6 +34,23 @@ std::string ArithString(const Reg reg_src1, const Reg reg_src2
   return s;
 }
 
+std::string LogicOpString(const Reg reg_src1, const Reg reg_src2
+  , const Reg reg_dst, const SubInst sub_type){
+  using namespace std;
+  using namespace SubtypesLogic;
+  std::string s;
+  
+  switch(sub_type){
+    case IR_OR:  s = string("OR, rs"); break;
+    default:     s = string(" - ERROR in print decode -"); break;
+  }
+  
+  s = s + to_string(reg_src1) + string(" rs") +
+      to_string(reg_src2) + string(" rd") + to_string(reg_dst);
+  return s;
+}
+
+
 std::string ArithString(const Reg reg_dst, const SubInst literal, const SubInst sub_type){
   using namespace std;
   using namespace SubtypesArithmetic;
@@ -151,6 +168,9 @@ std::string PrintInstruction(const Inst& instruction){
       s = s + to_string(reg_src1) + string(" rs") +
           to_string(reg_src2) + string(" rd") + to_string(reg_dst);
       break;//case IR_CMP
+    case IR_LOGIC:  
+      s = LogicOpString(reg_src1, reg_src2, reg_dst, sub_type);
+      break;//case IR_LOGIC      
     default: s = string(" - ERROR in print decode -"); break;
   };
 

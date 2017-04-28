@@ -297,3 +297,34 @@ MOV, rs3 rd0
 RETURN
 Static data segment size: 1
 
+---------------------------------------------------
+Parsing: "void main(){bool a, b, c; a = true; b = false; c = a or b;c = false or true; }"
+Backend::Davm
+%0 = LoadI(1)
+store %0 to [LT MainDS:0 (a)]
+%2 = LoadI(0)
+store %2 to [LT MainDS:-1 (b)]
+%4 = Load [LT MainDS:0 (a)]
+%5 = Load [LT MainDS:-1 (b)]
+%6 = %4 or %5
+store %6 to [LT MainDS:-2 (c)]
+%8 = LoadI(0)
+%9 = LoadI(1)
+%10 = %8 or %9
+store %10 to [LT MainDS:-2 (c)]
+ReturnMain
+---------
+Bytecode:
+LOADI, r1 val: 1
+STORE, r1 to [@0]
+LOADI, r2 val: 0
+STORE, r2 to [@-1]
+OR, rs1 rs2 rd3
+STORE, r3 to [@-2]
+LOADI, r4 val: 0
+LOADI, r5 val: 1
+OR, rs4 rs5 rd6
+STORE, r6 to [@-2]
+STOP
+Static data segment size: 3
+

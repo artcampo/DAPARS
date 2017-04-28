@@ -121,6 +121,11 @@ Inst Move (const Reg &reg_src, const Reg &reg_dst){
   return CodeClass3(reg_src, IR_REG0, reg_dst, IR_ARI, SubtypesArithmetic::IR_MOV);
 }
 
+Inst Logic(const Reg &reg_src1, const Reg &reg_src2,
+               const Reg &reg_dst, const SubInst& op){
+  return CodeClass3(reg_src1, reg_src2, reg_dst, IR_LOGIC, op);
+}
+
 
 ///////////////////////////////
 //TODO

@@ -114,7 +114,13 @@ int main()
     "int f(){ return 1; }") +
     "int g(){ return f() + 2; }"
     "void main(){int a; a = f() + g();}"
-    , g);     
+    , g);    
+  
+  //bools and ors
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "void main(){bool a, b, c; a = true; b = false; c = a or b;") +
+    "c = false or true; }"
+    , g);      
 
   return 0;
 }

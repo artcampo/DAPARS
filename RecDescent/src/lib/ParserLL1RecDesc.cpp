@@ -55,10 +55,9 @@ void ParserLL1RecDesc::BuildTokenVectors(){
   set_ifelse_ = std::vector<kToken>({kToken::rcbr});
   Insert(set_ifelse_, set_stmts_);
 
-  //ARGM -> {empty}  => , {empty} = + ) ;
+  //ARGM -> {empty}  => , {empty} = < or + ) ; 
   set_argm_ = std::vector<kToken>({kToken::comma, kToken::equality
-    , kToken::plus, kToken::rpar, kToken::semicolon});
-
+    , kToken::lessthan, kToken::kwd_or, kToken::plus, kToken::rpar, kToken::semicolon});
 
 
   //E' -> or RE E'  => or 

@@ -181,7 +181,14 @@ private:
   }
   
   void Visit(const IR::Inst::Logic& inst) override{
-    std::cout << inst.str() << " !!!\n";
+    std::cout << inst.str() << "\n";
+    RegMap rd  = reg_alloc_.IRReg( inst.RegDst() );
+    RegMap rs1 = reg_alloc_.IRReg( inst.RegSrc1() );
+    RegMap rs2 = reg_alloc_.IRReg( inst.RegSrc2() );
+    reg_alloc_.GetRegArith(rd, rs1, rs2);
+    
+    int op = VM::IRDefinition::SubtypesLogic::IR_OR;
+    byte_code_.Append( VM::IRBuilder::Logic(rs1.mreg_, rs2.mreg_, rd.mreg_, op));    
   }  
   
   void Visit(const IR::Inst::Comparison& inst) override{
@@ -212,7 +219,7 @@ private:
     std::cout << inst.str() << "\n";
     RegMap rs = reg_alloc_.IRReg(inst.RegSrc());
     reg_alloc_.GetRegRead(rs);
-    byte_code_.Append( VM::IRBuilder::Move(rs.mreg_, reg_alloc_.MRegRetValue()));
+      byte_code_.Append( VM::IRBuilder::Move(rs.mreg_, reg_alloc_.MRegRetValue()));
   }  
   
   void Visit(const IR::Inst::SetArg& inst) override{

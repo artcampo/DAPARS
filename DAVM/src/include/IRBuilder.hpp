@@ -32,6 +32,9 @@ Inst Push(const Reg &reg_src);  //TODO
 Inst Arith(const Reg &reg_src1, const Reg &reg_src2,
                const Reg &reg_dst, const SubInst& op);
 
+Inst Logic(const Reg &reg_src1, const Reg &reg_src2,
+               const Reg &reg_dst, const SubInst& op);
+
 Inst Comp(const Reg &reg_src1, const Reg &reg_src2,
                const Reg &reg_dst, const SubInst& op);
 

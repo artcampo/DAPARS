@@ -39,14 +39,16 @@ enum IRClass2{
 enum IRClass3{
     IR_CID_ARI = 0
   , IR_CID_CMP = 1
+  , IR_CID_LOGIC = 2
 };
 
 
+//Sizes of all the possible fields
 const static int kClassNumBits    = 2;
   const static int kClass0InstTypeNumBits    = 3;
   const static int kClass1InstTypeNumBits    = 3;
   const static int kClass2InstTypeNumBits    = 1;
-  const static int kClass3InstTypeNumBits    = 1;
+  const static int kClass3InstTypeNumBits    = 2;
   const static int kClass0OpcodeNumBits = kClassNumBits + kClass0InstTypeNumBits;
   const static int kClass1OpcodeNumBits = kClassNumBits + kClass1InstTypeNumBits;
   const static int kClass2OpcodeNumBits = kClassNumBits + kClass2InstTypeNumBits;
@@ -55,8 +57,7 @@ const static int kRegisterNumBits = 4;
 const static int kLiteralNumBits  = 16;
 const static int kSubtypeNumBits = 3;
 
-
-
+//Masks and bit shifts based on previous field sizes
 const static int kClassBitMask =     (1 << kClassNumBits) - 1;
   const static int kClass0BitMask =  (1 << kClass0InstTypeNumBits) - 1;
   const static int kClass1BitMask =  (1 << kClass1InstTypeNumBits) - 1;
@@ -97,8 +98,9 @@ enum IRCodf {
   IR_ARII  = InstClassRegLitSub + (IR_CID_ARII << kClassNumBits),
 
   //Class 3
-  IR_ARI   = InstClassRegRegRegSub + (IR_CID_ARI << kClassNumBits),
-  IR_CMP   = InstClassRegRegRegSub + (IR_CID_CMP << kClassNumBits),
+  IR_ARI   = InstClassRegRegRegSub + (IR_CID_ARI    << kClassNumBits),
+  IR_CMP   = InstClassRegRegRegSub + (IR_CID_CMP    << kClassNumBits),
+  IR_LOGIC = InstClassRegRegRegSub + (IR_CID_LOGIC  << kClassNumBits),
 };
 // };
 
@@ -118,6 +120,12 @@ enum IRSubtypesComparison{
   IR_EQL = 1,   // ==
   IR_LST = 2,   // <
   IR_LTE = 3,   // <=
+};
+};
+
+namespace SubtypesLogic{
+enum IRSubtypesLogic{
+  IR_OR = 0,
 };
 };
 
