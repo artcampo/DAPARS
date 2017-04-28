@@ -111,12 +111,14 @@ private:
     if(not is_main) FuncEpilogue(stream.GetFunction());
   }
 
+  //TODO: delete this one
   void Visit(const IR::Inst::Inst& inst) override{
     std::cout << "Not implemented: " << inst.str() << "\n";
   }
   
   void Visit(const IR::Inst::JumpCond& inst) override{
     std::cout << inst.str() << "\n";
+    IssuePreBasicBlocEnding();
     RegMap rc = reg_alloc_.IRReg(inst.RegCond());
     reg_alloc_.GetRegRead(rc);
     VM::Target target_id = BackpatchId(inst.GetTarget());
@@ -128,6 +130,7 @@ private:
   
   void Visit(const IR::Inst::JumpIncond& inst) override{
     std::cout << inst.str() << "\n";
+    IssuePreBasicBlocEnding();
     VM::Target target_id = BackpatchId(inst.GetTarget());
     byte_code_.Append( VM::IRBuilder::Jump(target_id));
   }
@@ -240,16 +243,19 @@ private:
   
   void Visit(const IR::Inst::Return& inst) override{
     std::cout << inst.str() << "\n";
+    IssuePreBasicBlocEnding();
     //Return emitted alongside epilogue
   }  
   
   void Visit(const IR::Inst::ReturnMain& inst) override{
     std::cout << inst.str() << "\n";
+    IssuePreBasicBlocEnding();
     byte_code_.Append( VM::IRBuilder::Stop());
   }  
   
   void Visit(const IR::Inst::Call& inst) override{
     std::cout << inst.str() << "\n";
+    IssuePreBasicBlocEnding();
     
     if(inst.Addr().GetLabel().IsLinkTime()){
 //       std::cout << "call to: " << inst.Addr().str()<<"\n";
@@ -270,6 +276,7 @@ private:
     is_first_arg_ = true; 
     pushed_args_for_current_call_ = 0;
   }
+private:  
   
   void FuncPrologue(const Function& f){
     byte_code_.Append( VM::IRBuilder::Move( reg_alloc_.MRegStackPtr()
@@ -290,6 +297,10 @@ private:
     }
     byte_code_.Append( VM::IRBuilder::Return());
   }
+
+  void IssuePreBasicBlocEnding(){
+    reg_alloc_.Flush();
+  }  
   
   //Other functions that do not handle sections of IR
   void ComputeMainDataSegment(){

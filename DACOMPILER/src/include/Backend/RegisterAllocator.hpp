@@ -53,8 +53,11 @@ public:
   
   //If any value's memory address is outdated, update it
   void Flush(){
-    for(auto& it : is_in_memory_)
+    for(auto& it : is_in_memory_) // for each IrSymbol not updated in memory
       if(not it.second){
+        Dump();
+        std::cout << std::endl;
+        std::cout << "Flush: Store: " << str(it.first) << "\n";
         FlushIRSymbol(it.first);
         it.second = true;
       }
@@ -315,7 +318,7 @@ private:
   
   void FlushIRSymbol(const RegSym s){
     const MReg        rs  = *addr_desc_.at(s).begin();
-    const IR::MemAddr ma  = mem_addr_of_reg_sym_id_.at(rs);    
+    const IR::MemAddr ma  = mem_addr_of_reg_sym_id_.at(s);    
     (backend_->*callback_store_)(rs, ma);
   }
     
