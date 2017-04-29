@@ -128,5 +128,10 @@ int main()
     "int f(){int a, b, c;     a = a + 10; b = 11; c = 12;}"
     , g);
 
+  //lang_lib: test
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "void main(){int a, b; a = 1; b = 2; test(false); } ") 
+    , g);  
+  
   return 0;
 }

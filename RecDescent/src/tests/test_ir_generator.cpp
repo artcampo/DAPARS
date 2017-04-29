@@ -115,6 +115,7 @@ int main()
     "int f(){int a, b, c;     a = a + 10; b = 11; c = 12;}"
     , g);
   
+  
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "class A{int f(){return 1;}  }") +  

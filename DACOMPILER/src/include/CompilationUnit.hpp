@@ -12,6 +12,7 @@
 #include "Module/FunctionManager.hpp"
 #include "Module/ClassManager.hpp"
 #include "Module/ScopeManager.hpp"
+#include "Lang/Library.hpp"
 #include <map>
 #include <memory>
 #include <iterator>
@@ -63,6 +64,7 @@ public:
     {
       scope_by_id_[GlobalScopeId( GlobalScopeOwnerId() )] = module_scope_.get();
       current_scope_ = module_scope_.get();
+      Library::InitCompilationUnit(*this);
     }
 
 
