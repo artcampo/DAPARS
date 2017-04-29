@@ -109,6 +109,11 @@ int main()
     "void main(){G inst; int a; a = inst.fa() + inst.fb() + inst.fc() + "
     " inst.fd() + inst.fe() + inst.ff() + inst.fg();}", g);  
 
+  //LT labels VS RT labels
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "void main(){int a, b, c; a = a + 10; b = 11; c = 12;} ") +
+    "int f(){int a, b, c;     a = a + 10; b = 11; c = 12;}"
+    , g);
   
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(

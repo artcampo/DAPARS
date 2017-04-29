@@ -52,6 +52,8 @@ public:
       byte_code_.Append( VM::IRBuilder::LoadB(reg_dst, reg_base, addr.GetOffset().GetAddr()));
 //       std::cout << "loadOff: " << addr.GetOffset().GetAddr() << "\n";
     }
+    if(addr.GetLabel().IsLinkTime())
+      byte_code_.Append( VM::IRBuilder::Load(reg_dst, mem_alloc_.Remap(addr)));
   }
   
   void StoreCallBack(const MReg reg_src, const IR::MemAddr addr) override {
@@ -64,6 +66,8 @@ public:
       byte_code_.Append( VM::IRBuilder::StoreB(reg_src, reg_base, addr.GetOffset().GetAddr()));
 //       std::cout << "loadOff: " << addr.GetOffset().GetAddr() << "\n";
     }
+    if(addr.GetLabel().IsLinkTime())
+      byte_code_.Append( VM::IRBuilder::Store(reg_src, mem_alloc_.Remap(addr)));
   }  
   
   VM::ByteCode& GetByteCode() noexcept { return byte_code_; }
@@ -167,7 +171,7 @@ private:
     RegMap rs = reg_alloc_.IRReg    (inst.RegSrc());
     RegMap rd = reg_alloc_.IRMemAddr(inst.Addr());
     reg_alloc_.GetRegStore(rs, rd);
-    byte_code_.Append( VM::IRBuilder::Store(rs.mreg_, mem_alloc_.Remap(inst.Addr())));
+    StoreCallBack(rs.mreg_, inst.Addr());
   }
   
   void Visit(const IR::Inst::StoreReg& inst) override{

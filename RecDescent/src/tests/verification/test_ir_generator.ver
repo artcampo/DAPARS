@@ -42,12 +42,12 @@ LT entry_main[isTarget]
 3: %1 = LoadI(2)
 4: %2 = LoadI(3)
 5: %3 = %1 + %2
-6: store %3 to [LT MainDS:-1 (b)]
+6: store %3 to [LT MainDS:1 (b)]
 7: JumpCondFalse %0 to:0
 8: %5 = LoadI(3)
 9: %6 = LoadI(4)
 10: %7 = %5 + %6
-11: store %7 to [LT MainDS:-2 (c)]
+11: store %7 to [LT MainDS:2 (c)]
 12: ReturnMain
 
 ---------------------------------------------------
@@ -110,12 +110,12 @@ LT entry_main[isTarget]
 6: store %3 to [LT MainDS:0 (a)]
 7: JumpIncond11
 8: %5 = LoadI(4)
-9: store %5 to [LT MainDS:-2 (d)]
+9: store %5 to [LT MainDS:2 (d)]
 10: JumpIncond11
 11: %7 = LoadI(5)
 12: %8 = LoadI(6)
 13: %9 = %7 + %8
-14: store %9 to [LT MainDS:-1 (b)]
+14: store %9 to [LT MainDS:1 (b)]
 15: ReturnMain
 
 ---------------------------------------------------
@@ -158,15 +158,15 @@ Declaration Table:
 
 IR dump:
 LT entry_main[isTarget]
-0: %0 = Load [LT MainDS:-2 (p)]
+0: %0 = Load [LT MainDS:2 (p)]
 1: %1 = Load [ %0]
 2: store %1 to [LT MainDS:0 (a)]
 3: %3 = LoadI(2)
-4: store %3 to [LT MainDS:-1 (b)]
-5: %5 = PtrElem( LT MainDS:-1 (b))
-6: store %5 to [LT MainDS:-2 (p)]
-7: %7 = Load [LT MainDS:-1 (b)]
-8: %8 = Load [LT MainDS:-2 (p)]
+4: store %3 to [LT MainDS:1 (b)]
+5: %5 = PtrElem( LT MainDS:1 (b))
+6: store %5 to [LT MainDS:2 (p)]
+7: %7 = Load [LT MainDS:1 (b)]
+8: %8 = Load [LT MainDS:2 (p)]
 9: %9 = Load [ %8]
 10: %10 = %7 + %9
 11: store %10 to [LT MainDS:0 (a)]
@@ -331,7 +331,7 @@ LT entry_main[isTarget]
 4: %2 = PtrElem( LT MainDS:0 (inst))
 5: %3 = Load [ %2 + 0 (a_)]
 6: %4 = %1 + %3
-7: store %4 to [LT MainDS:-2 (a)]
+7: store %4 to [LT MainDS:2 (a)]
 8: ReturnMain
 
 ---------------------------------------------------
@@ -432,7 +432,7 @@ LT entry_main[isTarget]
 15: call [LT entry_A::fa[isTarget]:0 ()]
 16: %10 = GetRetVal()
 17: %11 = %6 + %10
-18: store %11 to [LT MainDS:-3 (a)]
+18: store %11 to [LT MainDS:3 (a)]
 19: ReturnMain
 
 ---------------------------------------------------
@@ -641,6 +641,80 @@ LT entry_main[isTarget]
 43: call [LT entry_G::fg[isTarget]:0 ()]
 44: %30 = GetRetVal()
 45: %31 = %28 + %30
-46: store %31 to [LT MainDS:-7 (a)]
+46: store %31 to [LT MainDS:7 (a)]
 47: ReturnMain
+
+---------------------------------------------------
+Parsing: "void main(){int a, b, c; a = a + 10; b = 11; c = 12;} int f(){int a, b, c;     a = a + 10; b = 11; c = 12;}"
+
+Scopes of module:
+Scope 0: {(1:main) (5:f) }
+Scope 1: {(2:a) (3:b) (4:c) }
+Scope 2: {(6:a) (7:b) (8:c) }
+
+
+AST fully decorated dump:
+[FDef] FuncDef: main
+-[VDec] int a 
+[VDec] int b 
+[VDec] int c 
+-[Assgn] 
+--[Var] a [int Lvalue Write Value Nmemb]
+--Op: +  [int Rvalue]
+---[Var] a [int Lvalue Read Value Nmemb]
+---[Lit] 10 [int Rvalue]
+-[Assgn] 
+--[Var] b [int Lvalue Write Value Nmemb]
+--[Lit] 11 [int Rvalue]
+-[Assgn] 
+--[Var] c [int Lvalue Write Value Nmemb]
+--[Lit] 12 [int Rvalue]
+[FDef] FuncDef: f
+-[VDec] int a 
+[VDec] int b 
+[VDec] int c 
+-[Assgn] 
+--[Var] a [int Lvalue Write Value Nmemb]
+--Op: +  [int Rvalue]
+---[Var] a [int Lvalue Read Value Nmemb]
+---[Lit] 10 [int Rvalue]
+-[Assgn] 
+--[Var] b [int Lvalue Write Value Nmemb]
+--[Lit] 11 [int Rvalue]
+-[Assgn] 
+--[Var] c [int Lvalue Write Value Nmemb]
+--[Lit] 12 [int Rvalue]
+
+
+Declaration Table:
+1: Symbol: [ in scope 0 main of type function: ()->void]
+2: Symbol: [ in scope 1 a of type int]
+3: Symbol: [ in scope 1 b of type int]
+4: Symbol: [ in scope 1 c of type int]
+5: Symbol: [ in scope 0 f of type function: ()->int]
+6: Symbol: [ in scope 2 a of type int]
+7: Symbol: [ in scope 2 b of type int]
+8: Symbol: [ in scope 2 c of type int]
+
+IR dump:
+LT entry_main[isTarget]
+0: %0 = Load [LT MainDS:0 (a)]
+1: %1 = LoadI(10)
+2: %2 = %0 + %1
+3: store %2 to [LT MainDS:0 (a)]
+4: %4 = LoadI(11)
+5: store %4 to [LT MainDS:1 (b)]
+6: %6 = LoadI(12)
+7: store %6 to [LT MainDS:2 (c)]
+8: ReturnMain
+LT entry_f[isTarget]
+0: %0 = Load [RT arp_f[isArp]:0 (a)]
+1: %1 = LoadI(10)
+2: %2 = %0 + %1
+3: store %2 to [RT arp_f[isArp]:0 (a)]
+4: %4 = LoadI(11)
+5: store %4 to [RT arp_f[isArp]:-1 (b)]
+6: %6 = LoadI(12)
+7: store %6 to [RT arp_f[isArp]:-2 (c)]
+8: Return
 

@@ -66,6 +66,10 @@ Inst Return(){
 
 ////////////////////////////////////////////////////////////////////////
 //CLASS 1
+Inst Load(const Reg&reg_dst, const SubInst& literal){
+  return CodeClass1(reg_dst, kIRUnusedReg, literal, IR_LOAD);
+}
+
 Inst LoadI(const Reg&reg_dst, const SubInst& literal){
   return CodeClass1(reg_dst, kIRUnusedReg, literal, IR_LOADI);
 }

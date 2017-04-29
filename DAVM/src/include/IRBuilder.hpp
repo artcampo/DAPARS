@@ -23,7 +23,9 @@ Inst Move (const Reg &reg_src, const Reg &reg_dst);       //TODO
 Inst Call(const Target& target);//TODO
 Inst Return();
 Inst LoadB(const Reg&reg_dst, const Reg&reg_base, const SubInst& literal);  //TODO
+Inst Load(const Reg&reg_dst, const SubInst& literal);  //TODO
 Inst StoreB(const Reg &reg_src, const Reg&reg_base, const SubInst& literal); //TODO
+Inst Store(const Reg &reg_src, const SubInst& literal); //TODO
 Inst ArithI(const Reg &reg_dst, const Reg& literal, const SubInst& op);
 Inst Pop (const Reg &reg_dst);  //TODO
 Inst Push(const Reg &reg_src);  //TODO

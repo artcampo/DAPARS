@@ -21,7 +21,10 @@ public:
   
   //Remap a variable
   void ComputeRemap(const IR::MemAddr addr_ir ){
-//     if(addr_ir.GetLabel().IsLinkTime()
+    if(addr_ir.GetLabel().IsRunTime()){
+      std::cout << "Trying to remap RT addr.\n";
+      exit(1);
+    }
     VM::Addr addr_vm(addr_ir.GetOffset().GetAddr());
     translation_[addr_ir] = addr_vm;
   }

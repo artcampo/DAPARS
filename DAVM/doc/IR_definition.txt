@@ -20,7 +20,7 @@ where:
 
 Complete instruction set
 C0: Jump, Call, NewVar, Return
-C1: LoadI, LoadB, Store, StoreB, Pop, Push
+C1: Load, LoadI, LoadB, Store, StoreB, Pop, Push
 C2: JumpIfTrue, JumpIfFalse, ArithI
 C3: Arith, Comp, Move
 

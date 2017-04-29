@@ -98,6 +98,8 @@ public:
 
   std::string MangledName()const noexcept{ return mangled_name_;}
   const bool IsMember() const noexcept{ return is_member_;}
+  const bool IsMain() const noexcept{ return is_main_;}
+  
   std::string Name()  const noexcept{ return name_;}
   
   const bool HasLocals() const noexcept{ return locals_offset_table_.NumVars() > 0;}
@@ -112,6 +114,7 @@ private:
   const Label       entry_label_;
   const Label       locals_label_;
   bool              is_member_;
+  bool              is_main_;
 
 
   AddressTable&      module_offset_table_;
@@ -136,7 +139,8 @@ public:
     , entry_label_(entry_label)
     , locals_label_(locals_label)
     , is_member_ (is_member)
-    , mangled_name_(mangled_name){}
+    , mangled_name_(mangled_name)
+    , is_main_(name == "main"){}
 
 };
 

@@ -56,10 +56,12 @@ public:
     Symbols::Symbol& s = func_.GetSymbolDecl(p);
 //     std::cout << s.str() << std::endl;
     auto size = s.Size();
-    func_.StoreSymbolAddress( s.Id(), IR::Offset(-offset_, s.BareName())
-                            , func_.LocalsLabel(), size, func_.LocalVars());
+    IR::Offset o;
+    if(func_.IsMain())  o = IR::Offset(offset_, s.BareName());
+    else                o = IR::Offset(-offset_, s.BareName());
+    
+    func_.StoreSymbolAddress( s.Id(), o, func_.LocalsLabel(), size, func_.LocalVars());
     offset_ += size;
-
   };
 
   virtual void Visit(IfStmt const& p){

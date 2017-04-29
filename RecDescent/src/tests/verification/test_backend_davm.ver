@@ -11,10 +11,10 @@ ReturnMain
 ---------
 Bytecode:
 0: LOADI, r1 val: 1  <- [main]
-1: STORE, r1 to [@0]
+1: STORE, r1 -> [@0]
 2: LOADI, r2 val: 2
 3: ADD, rs1 rs2 rd3
-4: STORE, r3 to [@0]
+4: STORE, r3 -> [@0]
 5: STOP
 Static data segment size: 1
 
@@ -24,20 +24,20 @@ Backend::Davm
 %0 = LoadI(4)
 store %0 to [LT MainDS:0 (a)]
 %2 = LoadI(3)
-store %2 to [LT MainDS:-1 (b)]
+store %2 to [LT MainDS:1 (b)]
 %4 = Load [LT MainDS:0 (a)]
-%5 = Load [LT MainDS:-1 (b)]
+%5 = Load [LT MainDS:1 (b)]
 %6 = %4 + %5
-store %6 to [LT MainDS:-2 (c)]
+store %6 to [LT MainDS:2 (c)]
 ReturnMain
 ---------
 Bytecode:
 0: LOADI, r1 val: 4  <- [main]
-1: STORE, r1 to [@0]
+1: STORE, r1 -> [@0]
 2: LOADI, r2 val: 3
-3: STORE, r2 to [@-1]
+3: STORE, r2 -> [@1]
 4: ADD, rs1 rs2 rd3
-5: STORE, r3 to [@-2]
+5: STORE, r3 -> [@2]
 6: STOP
 Static data segment size: 3
 
@@ -58,11 +58,11 @@ Return
 ---------
 Bytecode:
 0: LOADI, r1 val: 1  <- [main]
-1: STORE, r1 to [@0]
+1: STORE, r1 -> [@0]
 2: MOV, rs1 rd0
 3: CALL: @7
 4: MOV, rs0 rd1
-5: STORE, r1 to [@0]
+5: STORE, r1 -> [@0]
 6: STOP
 7: MOV, rs15 rd14  <- [f]
 8: MOV, rs0 rd0
@@ -94,7 +94,7 @@ Bytecode:
 4: CALL: @9
 5: ADDI, rd15 1
 6: MOV, rs0 rd1
-7: STORE, r1 to [@0]
+7: STORE, r1 -> [@0]
 8: STOP
 9: MOV, rs15 rd14  <- [f]
 10: LOADB, r1 <- [@ r14 + 2]
@@ -140,7 +140,7 @@ Bytecode:
 8: CALL: @13
 9: ADDI, rd15 3
 10: MOV, rs0 rd1
-11: STORE, r1 to [@0]
+11: STORE, r1 -> [@0]
 12: STOP
 13: MOV, rs15 rd14  <- [f]
 14: LOADB, r1 <- [@ r14 + 4]
@@ -167,7 +167,7 @@ Return
 Bytecode:
 0: CALL: @4  <- [main]
 1: MOV, rs0 rd1
-2: STORE, r1 to [@0]
+2: STORE, r1 -> [@0]
 3: STOP
 4: PUSH, r14  <- [f]
 5: MOV, rs15 rd14
@@ -195,7 +195,7 @@ Return
 Bytecode:
 0: CALL: @4  <- [main]
 1: MOV, rs0 rd1
-2: STORE, r1 to [@0]
+2: STORE, r1 -> [@0]
 3: STOP
 4: PUSH, r14  <- [f]
 5: MOV, rs15 rd14
@@ -215,9 +215,9 @@ Backend::Davm
 %0 = LoadI(1)
 store %0 to [LT MainDS:0 (a)]
 %2 = LoadI(0)
-store %2 to [LT MainDS:-1 (b)]
+store %2 to [LT MainDS:1 (b)]
 %4 = Load [LT MainDS:0 (a)]
-%5 = Load [LT MainDS:-1 (b)]
+%5 = Load [LT MainDS:1 (b)]
 %6 = %4 + %5
 %7 = LoadI(2)
 %8 = %6 < %7
@@ -230,30 +230,31 @@ JumpIncond17
 store %11 to [LT MainDS:0 (a)]
 JumpIncond17
 %13 = Load [LT MainDS:0 (a)]
-store %13 to [LT MainDS:-2 (c)]
-%15 = Load [LT MainDS:-1 (b)]
-store %15 to [LT MainDS:-3 (d)]
+store %13 to [LT MainDS:2 (c)]
+%15 = Load [LT MainDS:1 (b)]
+store %15 to [LT MainDS:3 (d)]
 ReturnMain
 ---------
 Bytecode:
 0: LOADI, r1 val: 1  <- [main]
-1: STORE, r1 to [@0]
+1: STORE, r1 -> [@0]
 2: LOADI, r2 val: 0
-3: STORE, r2 to [@-1]
+3: STORE, r2 -> [@1]
 4: ADD, rs1 rs2 rd3
 5: LOADI, r4 val: 2
 6: LST, rs3 rs4 rd5
 7: JUMPIF true to:9
 8: JUMPIF false to:12
 9: LOADI, r2 val: 2
-10: STORE, r2 to [@0]
+10: STORE, r2 -> [@0]
 11: JUMP: @15
 12: LOADI, r1 val: 1
-13: STORE, r1 to [@0]
+13: STORE, r1 -> [@0]
 14: JUMP: @15
-15: STORE, r1 to [@-2]
-16: STORE, r2 to [@-3]
-17: STOP
+15: LOAD, rd1 <- [@0]
+16: STORE, r1 -> [@2]
+17: STORE, r2 -> [@3]
+18: STOP
 Static data segment size: 4
 
 ---------------------------------------------------
@@ -282,7 +283,7 @@ Bytecode:
 2: CALL: @11
 3: MOV, rs0 rd1
 4: ADD, rs2 rs1 rd3
-5: STORE, r3 to [@0]
+5: STORE, r3 -> [@0]
 6: STOP
 7: MOV, rs15 rd14  <- [f]
 8: LOADI, r1 val: 1
@@ -303,28 +304,76 @@ Backend::Davm
 %0 = LoadI(1)
 store %0 to [LT MainDS:0 (a)]
 %2 = LoadI(0)
-store %2 to [LT MainDS:-1 (b)]
+store %2 to [LT MainDS:1 (b)]
 %4 = Load [LT MainDS:0 (a)]
-%5 = Load [LT MainDS:-1 (b)]
+%5 = Load [LT MainDS:1 (b)]
 %6 = %4 or %5
-store %6 to [LT MainDS:-2 (c)]
+store %6 to [LT MainDS:2 (c)]
 %8 = LoadI(0)
 %9 = LoadI(1)
 %10 = %8 or %9
-store %10 to [LT MainDS:-2 (c)]
+store %10 to [LT MainDS:2 (c)]
 ReturnMain
 ---------
 Bytecode:
 0: LOADI, r1 val: 1  <- [main]
-1: STORE, r1 to [@0]
+1: STORE, r1 -> [@0]
 2: LOADI, r2 val: 0
-3: STORE, r2 to [@-1]
+3: STORE, r2 -> [@1]
 4: OR, rs1 rs2 rd3
-5: STORE, r3 to [@-2]
+5: STORE, r3 -> [@2]
 6: LOADI, r4 val: 0
 7: LOADI, r5 val: 1
 8: OR, rs4 rs5 rd6
-9: STORE, r6 to [@-2]
+9: STORE, r6 -> [@2]
 10: STOP
+Static data segment size: 3
+
+---------------------------------------------------
+Parsing: "void main(){int a, b, c; a = a + 10; b = 11; c = 12;} int f(){int a, b, c;     a = a + 10; b = 11; c = 12;}"
+Backend::Davm
+%0 = Load [LT MainDS:0 (a)]
+%1 = LoadI(10)
+%2 = %0 + %1
+store %2 to [LT MainDS:0 (a)]
+%4 = LoadI(11)
+store %4 to [LT MainDS:1 (b)]
+%6 = LoadI(12)
+store %6 to [LT MainDS:2 (c)]
+ReturnMain
+%0 = Load [RT arp_f[isArp]:0 (a)]
+%1 = LoadI(10)
+%2 = %0 + %1
+store %2 to [RT arp_f[isArp]:0 (a)]
+%4 = LoadI(11)
+store %4 to [RT arp_f[isArp]:-1 (b)]
+%6 = LoadI(12)
+store %6 to [RT arp_f[isArp]:-2 (c)]
+Return
+---------
+Bytecode:
+0: LOAD, rd1 <- [@0]  <- [main]
+1: LOADI, r2 val: 10
+2: ADD, rs1 rs2 rd3
+3: STORE, r3 -> [@0]
+4: LOADI, r4 val: 11
+5: STORE, r4 -> [@1]
+6: LOADI, r5 val: 12
+7: STORE, r5 -> [@2]
+8: STOP
+9: PUSH, r14  <- [f]
+10: MOV, rs15 rd14
+11: SUBI, rd15 3
+12: LOADB, r1 <- [@ r14 + 0]
+13: LOADI, r2 val: 10
+14: ADD, rs1 rs2 rd3
+15: STORE, r3 -> [@r14 + 0]
+16: LOADI, r4 val: 11
+17: STORE, r4 -> [@r14 + -1]
+18: LOADI, r5 val: 12
+19: STORE, r5 -> [@r14 + -2]
+20: MOV, rs14 rd15
+21: POP, r14
+22: RETURN
 Static data segment size: 3
 

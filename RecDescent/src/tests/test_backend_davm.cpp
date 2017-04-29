@@ -120,7 +120,13 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "void main(){bool a, b, c; a = true; b = false; c = a or b;") +
     "c = false or true; }"
-    , g);      
+    , g);   
+  
+  //LT labels VS RT labels
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "void main(){int a, b, c; a = a + 10; b = 11; c = 12;} ") +
+    "int f(){int a, b, c;     a = a + 10; b = 11; c = 12;}"
+    , g);
 
   return 0;
 }
