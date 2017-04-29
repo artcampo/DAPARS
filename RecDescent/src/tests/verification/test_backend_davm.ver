@@ -10,12 +10,12 @@ store %4 to [LT MainDS:0 (a)]
 ReturnMain
 ---------
 Bytecode:
-LOADI, r1 val: 1
-STORE, r1 to [@0]
-LOADI, r2 val: 2
-ADD, rs1 rs2 rd3
-STORE, r3 to [@0]
-STOP
+0: LOADI, r1 val: 1  <- [main]
+1: STORE, r1 to [@0]
+2: LOADI, r2 val: 2
+3: ADD, rs1 rs2 rd3
+4: STORE, r3 to [@0]
+5: STOP
 Static data segment size: 1
 
 ---------------------------------------------------
@@ -32,13 +32,13 @@ store %6 to [LT MainDS:-2 (c)]
 ReturnMain
 ---------
 Bytecode:
-LOADI, r1 val: 4
-STORE, r1 to [@0]
-LOADI, r2 val: 3
-STORE, r2 to [@-1]
-ADD, rs1 rs2 rd3
-STORE, r3 to [@-2]
-STOP
+0: LOADI, r1 val: 4  <- [main]
+1: STORE, r1 to [@0]
+2: LOADI, r2 val: 3
+3: STORE, r2 to [@-1]
+4: ADD, rs1 rs2 rd3
+5: STORE, r3 to [@-2]
+6: STOP
 Static data segment size: 3
 
 ---------------------------------------------------
@@ -57,16 +57,16 @@ SetRetVal( %0)
 Return
 ---------
 Bytecode:
-LOADI, r1 val: 1
-STORE, r1 to [@0]
-MOV, rs1 rd0
-CALL: @7
-MOV, rs0 rd1
-STORE, r1 to [@0]
-STOP
-MOV, rs15 rd14
-MOV, rs0 rd0
-RETURN
+0: LOADI, r1 val: 1  <- [main]
+1: STORE, r1 to [@0]
+2: MOV, rs1 rd0
+3: CALL: @7
+4: MOV, rs0 rd1
+5: STORE, r1 to [@0]
+6: STOP
+7: MOV, rs15 rd14  <- [f]
+8: MOV, rs0 rd0
+9: RETURN
 Static data segment size: 1
 
 ---------------------------------------------------
@@ -87,20 +87,20 @@ SetRetVal( %2)
 Return
 ---------
 Bytecode:
-LOADI, r1 val: 9
-LOADI, r2 val: 8
-MOV, rs1 rd0
-PUSH, r2
-CALL: @9
-ADDI, rd15 1
-MOV, rs0 rd1
-STORE, r1 to [@0]
-STOP
-MOV, rs15 rd14
-LOADB, r1 <- [@ r14 + 2]
-ADD, rs0 rs1 rd2
-MOV, rs2 rd0
-RETURN
+0: LOADI, r1 val: 9  <- [main]
+1: LOADI, r2 val: 8
+2: MOV, rs1 rd0
+3: PUSH, r2
+4: CALL: @9
+5: ADDI, rd15 1
+6: MOV, rs0 rd1
+7: STORE, r1 to [@0]
+8: STOP
+9: MOV, rs15 rd14  <- [f]
+10: LOADB, r1 <- [@ r14 + 2]
+11: ADD, rs0 rs1 rd2
+12: MOV, rs2 rd0
+13: RETURN
 Static data segment size: 1
 
 ---------------------------------------------------
@@ -129,28 +129,28 @@ SetRetVal( %6)
 Return
 ---------
 Bytecode:
-LOADI, r1 val: 9
-LOADI, r2 val: 8
-LOADI, r3 val: 7
-LOADI, r4 val: 6
-MOV, rs1 rd0
-PUSH, r2
-PUSH, r3
-PUSH, r4
-CALL: @13
-ADDI, rd15 3
-MOV, rs0 rd1
-STORE, r1 to [@0]
-STOP
-MOV, rs15 rd14
-LOADB, r1 <- [@ r14 + 4]
-ADD, rs0 rs1 rd2
-LOADB, r3 <- [@ r14 + 3]
-ADD, rs2 rs3 rd4
-LOADB, r5 <- [@ r14 + 2]
-ADD, rs4 rs5 rd6
-MOV, rs6 rd0
-RETURN
+0: LOADI, r1 val: 9  <- [main]
+1: LOADI, r2 val: 8
+2: LOADI, r3 val: 7
+3: LOADI, r4 val: 6
+4: MOV, rs1 rd0
+5: PUSH, r2
+6: PUSH, r3
+7: PUSH, r4
+8: CALL: @13
+9: ADDI, rd15 3
+10: MOV, rs0 rd1
+11: STORE, r1 to [@0]
+12: STOP
+13: MOV, rs15 rd14  <- [f]
+14: LOADB, r1 <- [@ r14 + 4]
+15: ADD, rs0 rs1 rd2
+16: LOADB, r3 <- [@ r14 + 3]
+17: ADD, rs2 rs3 rd4
+18: LOADB, r5 <- [@ r14 + 2]
+19: ADD, rs4 rs5 rd6
+20: MOV, rs6 rd0
+21: RETURN
 Static data segment size: 1
 
 ---------------------------------------------------
@@ -165,18 +165,18 @@ SetRetVal( %0)
 Return
 ---------
 Bytecode:
-CALL: @4
-MOV, rs0 rd1
-STORE, r1 to [@0]
-STOP
-PUSH, r14
-MOV, rs15 rd14
-SUBI, rd15 1
-LOADB, r1 <- [@ r14 + 0]
-MOV, rs1 rd0
-MOV, rs14 rd15
-POP, r14
-RETURN
+0: CALL: @4  <- [main]
+1: MOV, rs0 rd1
+2: STORE, r1 to [@0]
+3: STOP
+4: PUSH, r14  <- [f]
+5: MOV, rs15 rd14
+6: SUBI, rd15 1
+7: LOADB, r1 <- [@ r14 + 0]
+8: MOV, rs1 rd0
+9: MOV, rs14 rd15
+10: POP, r14
+11: RETURN
 Static data segment size: 1
 
 ---------------------------------------------------
@@ -193,20 +193,20 @@ SetRetVal( %2)
 Return
 ---------
 Bytecode:
-CALL: @4
-MOV, rs0 rd1
-STORE, r1 to [@0]
-STOP
-PUSH, r14
-MOV, rs15 rd14
-SUBI, rd15 4
-LOADB, r1 <- [@ r14 + 0]
-LOADB, r2 <- [@ r14 + -3]
-ADD, rs1 rs2 rd3
-MOV, rs3 rd0
-MOV, rs14 rd15
-POP, r14
-RETURN
+0: CALL: @4  <- [main]
+1: MOV, rs0 rd1
+2: STORE, r1 to [@0]
+3: STOP
+4: PUSH, r14  <- [f]
+5: MOV, rs15 rd14
+6: SUBI, rd15 4
+7: LOADB, r1 <- [@ r14 + 0]
+8: LOADB, r2 <- [@ r14 + -3]
+9: ADD, rs1 rs2 rd3
+10: MOV, rs3 rd0
+11: MOV, rs14 rd15
+12: POP, r14
+13: RETURN
 Static data segment size: 1
 
 ---------------------------------------------------
@@ -236,24 +236,24 @@ store %15 to [LT MainDS:-3 (d)]
 ReturnMain
 ---------
 Bytecode:
-LOADI, r1 val: 1
-STORE, r1 to [@0]
-LOADI, r2 val: 0
-STORE, r2 to [@-1]
-ADD, rs1 rs2 rd3
-LOADI, r4 val: 2
-LST, rs3 rs4 rd5
-JUMPIF true to:9
-JUMPIF false to:12
-LOADI, r2 val: 2
-STORE, r2 to [@0]
-JUMP: @15
-LOADI, r1 val: 1
-STORE, r1 to [@0]
-JUMP: @15
-STORE, r1 to [@-2]
-STORE, r2 to [@-3]
-STOP
+0: LOADI, r1 val: 1  <- [main]
+1: STORE, r1 to [@0]
+2: LOADI, r2 val: 0
+3: STORE, r2 to [@-1]
+4: ADD, rs1 rs2 rd3
+5: LOADI, r4 val: 2
+6: LST, rs3 rs4 rd5
+7: JUMPIF true to:9
+8: JUMPIF false to:12
+9: LOADI, r2 val: 2
+10: STORE, r2 to [@0]
+11: JUMP: @15
+12: LOADI, r1 val: 1
+13: STORE, r1 to [@0]
+14: JUMP: @15
+15: STORE, r1 to [@-2]
+16: STORE, r2 to [@-3]
+17: STOP
 Static data segment size: 4
 
 ---------------------------------------------------
@@ -277,24 +277,24 @@ SetRetVal( %2)
 Return
 ---------
 Bytecode:
-CALL: @7
-MOV, rs0 rd1
-CALL: @11
-MOV, rs0 rd1
-ADD, rs2 rs1 rd3
-STORE, r3 to [@0]
-STOP
-MOV, rs15 rd14
-LOADI, r1 val: 1
-MOV, rs1 rd0
-RETURN
-MOV, rs15 rd14
-CALL: @7
-MOV, rs0 rd1
-LOADI, r2 val: 2
-ADD, rs1 rs2 rd3
-MOV, rs3 rd0
-RETURN
+0: CALL: @7  <- [main]
+1: MOV, rs0 rd1
+2: CALL: @11
+3: MOV, rs0 rd1
+4: ADD, rs2 rs1 rd3
+5: STORE, r3 to [@0]
+6: STOP
+7: MOV, rs15 rd14  <- [f]
+8: LOADI, r1 val: 1
+9: MOV, rs1 rd0
+10: RETURN
+11: MOV, rs15 rd14  <- [g]
+12: CALL: @7
+13: MOV, rs0 rd1
+14: LOADI, r2 val: 2
+15: ADD, rs1 rs2 rd3
+16: MOV, rs3 rd0
+17: RETURN
 Static data segment size: 1
 
 ---------------------------------------------------
@@ -315,16 +315,16 @@ store %10 to [LT MainDS:-2 (c)]
 ReturnMain
 ---------
 Bytecode:
-LOADI, r1 val: 1
-STORE, r1 to [@0]
-LOADI, r2 val: 0
-STORE, r2 to [@-1]
-OR, rs1 rs2 rd3
-STORE, r3 to [@-2]
-LOADI, r4 val: 0
-LOADI, r5 val: 1
-OR, rs4 rs5 rd6
-STORE, r6 to [@-2]
-STOP
+0: LOADI, r1 val: 1  <- [main]
+1: STORE, r1 to [@0]
+2: LOADI, r2 val: 0
+3: STORE, r2 to [@-1]
+4: OR, rs1 rs2 rd3
+5: STORE, r3 to [@-2]
+6: LOADI, r4 val: 0
+7: LOADI, r5 val: 1
+8: OR, rs4 rs5 rd6
+9: STORE, r6 to [@-2]
+10: STOP
 Static data segment size: 3
 

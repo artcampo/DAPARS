@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 //TODO: rename this file
 
@@ -12,6 +13,13 @@ using Word    = int32_t;   //a machine word (thus content of register/ram unit)
 using SubInst = uint32_t;  //sub-values of an instruction
 
 using TypeId = uint32_t;
+
+struct FuncDesc{
+  FuncDesc(const std::string& name, Addr entry) : name_(name), entry_(entry){};
+  
+  std::string name_;
+  Addr        entry_;
+};
 
 } //end namespace VM
 

@@ -50,7 +50,7 @@ public:
       , scope_owner_id, entry_label, locals_label, true));
   }
 
-  static std::string MangledName(const std::string& name
+  const static std::string MangledName(const std::string& name
     , const std::string& class_name){
     return class_name + "::" + name;
   }

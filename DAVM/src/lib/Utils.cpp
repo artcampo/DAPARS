@@ -11,14 +11,10 @@
 namespace VM{
 namespace VMUtils{
 
-void print(ByteCode const &byte_code, const bool print_num_line){
+void print(ByteCode const &byte_code, const bool extra_dump){
   using namespace IRBuilder;
-  int line = 0;
-  for ( auto const inst : byte_code.stream){
-    if(print_num_line) std::cout << line<< ": ";
-    std::cout << PrintInstruction(inst) << "\n";
-    ++line;
-  }
+  byte_code.Dump(extra_dump);
+
 }
 
 void printRaw(ByteCode const &byte_code){

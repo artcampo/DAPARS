@@ -9,7 +9,7 @@ namespace VMUtils{
 
 class ASTVisitorCodeGenerator;
 
-void print(ByteCode const &byte_code, const bool print_num_line = false);
+void print(ByteCode const &byte_code, const bool extra_dump = false);
 
 void      writeByteCode(ByteCode const &byte_code,
                           std::string const &file_name);

@@ -39,7 +39,7 @@ public:
     BackpathCallTargets();
     
     std::cout << "---------\nBytecode:\n";
-    VM::VMUtils::print(byte_code_);
+    VM::VMUtils::print(byte_code_, true);
   }
   
   void LoadCallBack(const MReg reg_dst, const IR::MemAddr addr) override {
@@ -85,7 +85,9 @@ private:
   void Visit(IR::IRStream& stream){
     is_first_arg_ = true;
     pushed_args_for_current_call_ = 0;
-    bool is_main  = stream.GetFunction().Name() == "main";
+    const std::string& name = stream.GetFunction().Name();
+    const std::string& mname = stream.GetFunction().MangledName();
+    const bool is_main = (name == "main");
     //Account for stack_ptr
     int basic_register_usage = 1;
     //Account for arp_ptr
@@ -96,6 +98,9 @@ private:
     //Save address to backpatch calls to this function
     CallBackPatchTranslation( stream.EntryMemAddr()
                             , byte_code_.NextAddress());
+    
+    //Add function desc to BC
+    byte_code_.AddFunction(mname, byte_code_.NextAddress());
     
     //Translate
     reg_alloc_.Reset( stream.MaxRegUsed(), basic_register_usage );
