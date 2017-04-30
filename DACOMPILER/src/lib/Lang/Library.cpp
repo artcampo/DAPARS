@@ -1,7 +1,9 @@
 #include "Lang/Library.hpp"
 #include "Symbol.hpp"
-#include "ASTNodeCreation.hpp"
+#include "AST/ASTNodeCreation.hpp"
 #include "Locus.hpp"
+#include "AST/Node.hpp"
+#include <vector>
 
 namespace Compiler{
 namespace Library{
@@ -21,18 +23,21 @@ void InitCompilationUnit(CompilationUnit& unit){
     */
 
   ScopeId func_scope_id;
-  const AST::Symbols::SymbolId sid = unit_.FreeSymbolId();
+  const AST::Symbols::SymbolId sid = unit.FreeSymbolId();
   func_scope_id = unit.NewFunction(name, func_id);
 
   const ScopeId global_scope_id = unit.GetGlobalLexicalScope().GetScopeId();
-  const Locus l(0);
+  const Locus l;
 //   const Node& node;
 
   const Type& ret_type = unit.GetTypeVoid();
-  const std::vector<const Type*> pars( unit.GetTypeBool() );
+  const std::vector<const Type*> pars;
+  //( &unit.GetTypeBool() );
   const Type& function_type = unit.GetFuncType(ret_type, pars);
 
-  PtrFuncDecl decl = NewFuncDecl(name, ret_type, pars, global_scope_id, l);
+  std::vector<PtrVarDecl> par_list;
+
+  PtrFuncDecl decl = std::make_unique<AST::FuncDecl>(name, ret_type, par_list, global_scope_id, l);
 
 //   func_id = unit.GetGlobalLexicalScope()
 //     .RegisterDecl( name, node, function_type

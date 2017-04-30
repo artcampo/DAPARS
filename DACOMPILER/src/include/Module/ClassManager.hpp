@@ -26,7 +26,7 @@ public:
       , label_manager_(*label_manager), function_manager_(*function_manager){}
 
   void EnterClassDefinition(const std::string& name){
-//     NewClass(name, scope_owner_id);
+//     NewClass(name);
   }
   void ExitClassDefinition(){}
 
@@ -48,8 +48,8 @@ public:
       , type_table_.GetClassType(class_name), parent_scopes);
     class_parents_[class_name] = parent_classes;
     return id;
-  }  
-  
+  }
+
   void NewClass(std::string& class_name, const AST::Symbols::SymbolId symbol_id
     , const ScopeId hscope_id, ClassDef& class_def){
 //     std::cout << "Creating class with " << class_parents_[class_name].size()<< " parents\n";
@@ -67,8 +67,8 @@ public:
     class_by_name_[class_name] = c;
     class_by_typeid_[type.GetTypeId()] = c;
     type_table_.SetClassTypeSize(class_name, c->Size());
-  }  
-  
+  }
+
 protected:
 
 private:
@@ -76,13 +76,13 @@ private:
   TypeTable&                    type_table_;
   LabelManager&                 label_manager_;
   FunctionManager&              function_manager_;
-  
+
   std::vector<AST::PtrClass>    classes_;
   std::map<std::string, Class*> class_by_name_;
   std::map<TypeId, Class*>      class_by_typeid_;
 
   std::map<std::string, std::vector<Class*>> class_parents_;
-  
+
 
 };
 

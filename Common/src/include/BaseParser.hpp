@@ -4,11 +4,11 @@
 #include <string>
 #include <fstream>
 #include "Tokenizer.hpp"
-#include "AST/AST.hpp"
 #include "CompilationUnit.hpp"
 #include "Locus.hpp"
 #include "Symbol.hpp"
-#include "ASTNodeCreation.hpp"
+#include "AST/AST.hpp"
+#include "AST/ASTNodeCreation.hpp"
 
 
 namespace Common{

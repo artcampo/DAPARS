@@ -13,7 +13,7 @@
 
 namespace Common{
 
-using namespace Tokenizer;
+// using namespace Tokenizer;
 using namespace Compiler::AST;
 using Compiler::CompilationUnit;
 using Compiler::Locus;
