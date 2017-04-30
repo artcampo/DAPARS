@@ -22,13 +22,12 @@ PtrFuncDef ParserLL1RecDesc::ParseFuncDef(const Compiler::AST::Type& ret_type_in
 
 
   //Scope for
-  scope_owner_id_.push( unit_.NewScopeOwner() );
   ScopeId func_scope_id;
   const AST::Symbols::SymbolId sid = unit_.FreeSymbolId();
   if(not inside_member_function_definition_)
-    func_scope_id = unit_.NewFunction(name_inht, sid, scope_owner_id_.top());
+    func_scope_id = unit_.NewFunction(name_inht, sid);
   else
-    func_scope_id = unit_.NewFunction(name_inht, sid, class_name_inht_, scope_owner_id_.top());
+    func_scope_id = unit_.NewFunction(name_inht, sid, class_name_inht_);
   const ScopeId id = func_scope_id;
 
   std::vector<PtrVarDecl> par_list;
@@ -60,7 +59,6 @@ PtrFuncDef ParserLL1RecDesc::ParseFuncDef(const Compiler::AST::Type& ret_type_in
   if(not stmts_synt) FatalError(kErr31);
 
   Accept(kToken::rcbr, kErr30);
-  scope_owner_id_.pop();
 
 
   PtrFuncDef func_def_synth = NewFuncDef(decl, stmts_synt, scope_inht, locus_inht);

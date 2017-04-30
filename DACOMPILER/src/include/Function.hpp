@@ -32,10 +32,9 @@ class Function{
 public:
   static PtrFunction NewFunction(const std::string& name
     , const AST::Symbols::SymbolId symbol_id , AddressTable& module_offset_table
-    , const ScopeOwnerId scope_owner_id, const Label entry_label
-    , const Label locals_label){
+    , const Label entry_label, const Label locals_label){
     return std::move( std::make_unique<Function>
-      (name, symbol_id, "", name, module_offset_table, scope_owner_id, entry_label
+      (name, symbol_id, "", name, module_offset_table, entry_label
       , locals_label, false));
   }
 
@@ -43,11 +42,11 @@ public:
     , const AST::Symbols::SymbolId symbol_id
     , const std::string& class_name
     , AddressTable& module_offset_table
-    , const ScopeOwnerId scope_owner_id, const Label entry_label
+    , const Label entry_label
     , const Label locals_label){
     return std::move( std::make_unique<Function>
       (name, symbol_id, class_name, MangledName(name, class_name), module_offset_table
-      , scope_owner_id, entry_label, locals_label, true));
+      , entry_label, locals_label, true));
   }
 
   const static std::string MangledName(const std::string& name
@@ -104,7 +103,7 @@ public:
   
   const bool HasLocals() const noexcept{ return locals_offset_table_.NumVars() > 0;}
 private:
-  ScopeOwnerId      scope_owner_id_;
+  
   std::string       name_;
   std::string       class_name_;
   std::string       mangled_name_;
@@ -128,14 +127,13 @@ public:
     , const std::string& class_name
     , const std::string& mangled_name
     , AddressTable& module_offset_table
-    , const ScopeOwnerId scope_owner_id, const Label entry_label
+    , const Label entry_label
     , const Label locals_label, const bool is_member)
   : name_(name)
     , class_name_(class_name)
     , symbol_id_(symbol_id)
     , origin_node_(nullptr)
     , module_offset_table_(module_offset_table)
-    , scope_owner_id_(scope_owner_id)
     , entry_label_(entry_label)
     , locals_label_(locals_label)
     , is_member_ (is_member)

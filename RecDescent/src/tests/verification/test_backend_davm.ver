@@ -377,3 +377,14 @@ Bytecode:
 22: RETURN
 Static data segment size: 3
 
+---------------------------------------------------
+Parsing: "void main(){int a, b; a = 1; b = 2; test(false); } "
+[err:46] function call used before declaration at: "= 2; test(" -> "false); } "
+[err:] assignment missing '=' at: "st(false);" -> " } "
+[err:3] Block not finishing in rcbr at: "st(false);" -> " } "
+[err:31] function body empty at: "st(false);" -> " } "
+[err:30] function declaration's body not closed with '}' at: "st(false);" -> " } "
+[err:33] function must start with return type at: "st(false);" -> " } "
+AST not build (no functions) at: "st(false);" -> " } "
+AST not build (fatal errors) at: "st(false);" -> " } "
+

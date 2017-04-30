@@ -41,7 +41,6 @@ using AST::PtrLexicalScope;
 using AST::Scope;
 using AST::SymbolIdOfNode;
 // using AST::AddressTable;
-using AST::ScopeOwnerId;
 using IR::Label;
 
 class CompilationUnit : public TreeDecoration, public TypeTable
@@ -62,7 +61,7 @@ public:
     , module_declaration_table_()
 
     {
-      scope_by_id_[GlobalScopeId( GlobalScopeOwnerId() )] = module_scope_.get();
+      scope_by_id_[GlobalScopeId()] = module_scope_.get();
       current_scope_ = module_scope_.get();
       Library::InitCompilationUnit(*this);
     }
@@ -70,28 +69,25 @@ public:
 
   //TODO: get rid of these
   const ScopeId NewFunction(const std::string& name
-    , const AST::Symbols::SymbolId symbol_id
-    , const ScopeOwnerId scope_owner_id){
+    , const AST::Symbols::SymbolId symbol_id){
     const Label entry = NewFunctionEntryLabel(name);
     Label local;
     if(name == "main")  local = GetLabelMainLocals();
     else                local = NewFunctionARLabel(name);
-    FunctionManager::NewFunction(name, symbol_id, ModuleAddressTable(), scope_owner_id
-      , entry, local);
-    return NewNestedScope(scope_owner_id);
+    FunctionManager::NewFunction(name, symbol_id, ModuleAddressTable(), entry, local);
+    return NewNestedScope();
   }
 
 
   const ScopeId NewFunction(const std::string& name
     , const AST::Symbols::SymbolId symbol_id
-    , const std::string& class_name
-    , const ScopeOwnerId scope_owner_id){
+    , const std::string& class_name){
     const std::string mangled_name = Function::MangledName(name, class_name);
     const Label entry = NewFunctionEntryLabel(mangled_name);
     Label local       = NewFunctionARLabel(mangled_name);
     Function& f = FunctionManager::NewFunction(name, symbol_id, class_name
-      , ModuleAddressTable(), scope_owner_id, entry, local);
-    return NewNestedScope(scope_owner_id);
+      , ModuleAddressTable(), entry, local);
+    return NewNestedScope();
   }
 
   const Type& GetType(const std::string& name, const ScopeId scope_id){
@@ -119,11 +115,8 @@ public:
     return registered;
   }
 
-  ScopeId GlobalScopeId(const ScopeOwnerId scope_owner_id){
-//     std::cout << scope_owner_id<<" "<<module_scope_->GetScopeOwnerId();
-//     assert(scope_owner_id == module_scope_->GetScopeOwnerId());
-    return module_scope_->GetScopeId();
-  }
+  //TODO: const?
+  ScopeId GlobalScopeId() { return module_scope_->GetScopeId();}
 
 private:
   AST::Symbols::SymbolId  free_symbol_id_;

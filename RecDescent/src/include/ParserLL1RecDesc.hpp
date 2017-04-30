@@ -154,9 +154,6 @@ private:
   std::string class_name_inht_; //only valid if inside_member_function_definition_ is true
   bool defer_build_call_;
 
-  //top() points to current owner
-  std::stack<ScopeOwnerId> scope_owner_id_;
-
   //const sets of accepting tokens
   void BuildTokenVectors();
   std::vector<kToken> set_types_;

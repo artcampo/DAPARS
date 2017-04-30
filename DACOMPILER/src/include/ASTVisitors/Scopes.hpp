@@ -16,7 +16,7 @@ public:
   virtual void Visit(ProgBody const& p){
     std::cout << "\nScopes of module:\n";
     std::cout << unit_.GetScope(
-        unit_.GlobalScopeId( unit_.GlobalScopeOwnerId() )
+        unit_.GlobalScopeId()
       )->str() <<"\n";
     p.GetProgInit().Accept(*this);
     for(auto& it : p.GetClassDefs() ) it->Accept(*this);

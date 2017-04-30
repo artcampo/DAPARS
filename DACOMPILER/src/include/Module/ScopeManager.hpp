@@ -13,7 +13,6 @@ namespace Compiler{
 using AST::ScopeId;
 using AST::Scope;
 using AST::SymbolIdOfNode;
-using AST::ScopeOwnerId;
 using AST::PtrLexicalScope;
 using AST::LexicalScope;
 using AST::PtrHierarchicalScope;
@@ -24,12 +23,7 @@ using AST::DeclarationTable;
 
 class ScopeManager{
 public:
-  ScopeManager() : free_scope_id_(0)
-  , free_scope_ownner_id_(0)
-  , global_scope_ownner_id_(0){}
-
-  const ScopeOwnerId NewScopeOwner() noexcept{ return FreeScopeOwnerId(); }
-  const ScopeOwnerId GlobalScopeOwnerId() const noexcept{ return global_scope_ownner_id_; }
+  ScopeManager() : free_scope_id_(0){}
 
   bool IsDeclValid(const std::string& name, const ScopeId scope_id){
     return GetScope(scope_id)->IsDeclValid(name);
@@ -46,12 +40,11 @@ public:
   }
 
   const ScopeId NewHierarchicalScope(const std::string& class_name
-    , const ScopeOwnerId scope_owner_id
     , const Type& class_type
     , std::vector<HierarchicalScope*>& parent_scopes){
     const ScopeId id = FreeScopeId();
     hier_scopes_.push_back( std::move(
-      std::make_unique<HierarchicalScope>(id, scope_owner_id, class_name, parent_scopes) ));
+      std::make_unique<HierarchicalScope>(id, class_name, parent_scopes) ));
     scope_by_id_[id] = hier_scopes_.back().get();
 //     scope_is_lexical_or_hierarchical_[id] = false;
     hscope_by_class_typeid_[class_type.GetTypeId()] = id;
@@ -64,18 +57,17 @@ public:
     , SymbolIdOfNode& symbolid_of_node){
     const ScopeId id = FreeScopeId();
     PtrLexicalScope g = std::make_unique<LexicalScope>(
-        id, nullptr, FreeScopeOwnerId(), symbol_table
-        , declaration_table, symbolid_of_node);
+        id, nullptr, symbol_table, declaration_table, symbolid_of_node);
     scope_by_id_[id] = g.get();
     current_scope_ = g.get();
     global_scope_id_ = id;
     return std::move(g);
   }
 
-  const ScopeId NewNestedScope(const ScopeOwnerId scope_owner_id){
+  const ScopeId NewNestedScope(){
     const ScopeId id = FreeScopeId();
     LexicalScope* new_scope;
-    new_scope = current_scope_->NewNestedScope(id, scope_owner_id);
+    new_scope = current_scope_->NewNestedScope(id);
     scope_by_id_[id] = new_scope;
 //     scope_is_lexical_or_hierarchical_[id] = true;
     current_scope_   = new_scope;
@@ -125,11 +117,10 @@ public:
 
 protected:
   const ScopeId FreeScopeId() noexcept{ return free_scope_id_++;}
-  const ScopeOwnerId FreeScopeOwnerId() noexcept{ return free_scope_ownner_id_++;}
+  
 // private:
   ScopeId                 free_scope_id_;
-  ScopeOwnerId            free_scope_ownner_id_;
-  ScopeOwnerId            global_scope_ownner_id_;
+  
   std::map<ScopeId,Scope*>   scope_by_id_;
   LexicalScope*     current_scope_;
   std::vector<PtrHierarchicalScope> hier_scopes_;

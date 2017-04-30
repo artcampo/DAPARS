@@ -39,7 +39,6 @@ public:
 
   Class(const std::string& name
     , const AST::Symbols::SymbolId symbol_id
-    , const ScopeOwnerId scope_owner_id
     , const ScopeId scope_id
     , HierarchicalScope& scope
     , const IR::Label this_label
@@ -48,7 +47,6 @@ public:
     , FunctionManager* func_manager)
   : name_(name)
     , symbol_id_(symbol_id)
-    , scope_owner_id_(scope_owner_id)
     , scope_(scope)
     , this_label_(this_label)
     , parents_(parents)
@@ -100,7 +98,6 @@ public:
   std::vector<Function*>  GetFuncsNotInherited() noexcept{ return functions_not_inherited_;}
   const std::vector<Function*>  GetFuncsNotInherited() const noexcept{ return functions_not_inherited_;}
 private:
-  ScopeOwnerId            scope_owner_id_;
   std::string             name_;
   AST::Symbols::SymbolId  symbol_id_;
   HierarchicalScope&      scope_;

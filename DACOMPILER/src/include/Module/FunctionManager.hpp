@@ -13,7 +13,6 @@ using AST::FuncDecl;
 using AST::PtrFunction;
 using AST::Function;
 using AST::AddressTable;
-using AST::ScopeOwnerId;
 using IR::Label;
 
 class FunctionManager{
@@ -41,13 +40,11 @@ public:
   void NewFunction(const std::string& name
     , const AST::Symbols::SymbolId symbol_id
     , AddressTable& module_offset_table
-    , const ScopeOwnerId scope_owner_id
     , const Label entry, const Label local){
     functions_.push_back( std::move(
       Function::NewFunction(name
         , symbol_id
         , module_offset_table
-        , scope_owner_id
         , entry
         , local)));
     curr_func_ = functions_.back().get();
@@ -59,14 +56,12 @@ public:
     , const AST::Symbols::SymbolId symbol_id
     , const std::string& class_name
     , AddressTable& module_offset_table
-    , const ScopeOwnerId scope_owner_id
     , const Label entry, const Label local){
     functions_.push_back( std::move(
       Function::NewMemberFunction(name
         , symbol_id
         , class_name
         , module_offset_table
-        , scope_owner_id
         , entry
         , local)));
     curr_func_ = functions_.back().get();

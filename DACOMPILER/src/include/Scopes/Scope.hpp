@@ -14,7 +14,6 @@ namespace AST{
 
 // using namespace Symbols;
 using ScopeId = size_t;
-using ScopeOwnerId = size_t;
 //pair of name and symbol that was shadowed (or -1 if none)
 using InsertedSymbol = std::pair<Symbols::SymbolString, Symbols::SymbolId>;
 using InsertedDeclarations = std::pair<Symbols::SymbolId, Symbols::Symbol&>;
@@ -28,8 +27,7 @@ using PtrHierarchicalScope = std::unique_ptr<HierarchicalScope>;
 
 class Scope {
 public:
-  Scope(const ScopeId id, const ScopeOwnerId scope_owner_id)
-  : id_(id), scope_owner_id_(scope_owner_id){}
+  Scope(const ScopeId id) : id_(id){}
   virtual ~Scope() = default;
 
   virtual const Symbols::SymbolId DeclId(const std::string& name) const = 0;
@@ -40,13 +38,13 @@ public:
   virtual std::string str() const noexcept = 0;
 
   const ScopeId GetScopeId() const noexcept{return id_;};
-  const ScopeOwnerId GetScopeOwnerId() const noexcept{ return scope_owner_id_;}
+  
 
   virtual const Type& GetType(const std::string& name) const = 0;
 
 protected:
   ScopeId       id_;
-  ScopeOwnerId  scope_owner_id_;
+
 
 };
 

@@ -19,11 +19,10 @@ namespace AST{
 class LexicalScope : public Scope {
 public:
   LexicalScope(const ScopeId id, LexicalScope* const parent
-    , const ScopeOwnerId scope_owner_id
     , SymbolTable& symbol_table
     , DeclarationTable& declaration_table
     , SymbolIdOfNode& symbolid_of_node)
-  : Scope(id, scope_owner_id), parent_(parent)
+  : Scope(id), parent_(parent)
     , symbol_table_(symbol_table), declaration_table_(declaration_table)
     , symbolid_of_node_(symbolid_of_node){}
 
@@ -39,8 +38,7 @@ public:
 //   const Type& GetType(const std::string& name) const;
   const Symbols::SymbolId DeclId(const std::string& name) const;
 
-  LexicalScope* NewNestedScope(const ScopeId id
-                              , const ScopeOwnerId scope_owner_id);
+  LexicalScope* NewNestedScope(const ScopeId id);
   LexicalScope* GetParentScope() const noexcept{return parent_;};
 
   virtual const Type& GetType(const std::string& name) const override{
