@@ -11,7 +11,7 @@ namespace Tokenizer{
 enum class kToken{ eof, numerical, name
                  , lpar, rpar, lcbr, rcbr
                  , plus, minus, astk, div
-                 , equality, lessthan
+                 , equality, lessthan, equalto
                  , dot, colon
                  , kwd_if, kwd_else, kwd_while, kwd_return
                  , kwd_int, kwd_bool, kwd_void, kwd_class

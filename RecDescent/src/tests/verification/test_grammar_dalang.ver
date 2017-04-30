@@ -59,6 +59,7 @@ E' -> or RE E'
 E' -> {empty} 
 RE -> NE RE' 
 RE' -> < NE RE' 
+RE' -> == NE RE' 
 RE' -> {empty} 
 NE -> T NE' 
 NE' -> + T NE' 
@@ -103,7 +104,7 @@ PARL => bool {empty} int ntype void
 PARLP => , {empty} 
 PROG => bool class {empty} int ntype void 
 RE => & * false ( {nam} {num}  true 
-RE' => {empty} < 
+RE' => {empty} == < 
 STMT => & * bool false if int ( {nam} ntype {num} return  true void while 
 STMTS => & * bool {empty} false if int ( {nam} ntype {num} return  true void while 
 T => & * false ( {nam} {num}  true 
@@ -113,14 +114,14 @@ TYPE' => * {empty}
 Follow Table
 ARGL => ) 
 ARGLP => ) 
-ARGM => , = < or + ) ; 
+ARGM => , == = < or + ) ; 
 CDEF => bool class {eof} int ntype void 
 DECL => ; 
 DEFL => {eof} 
 E => , = ) ; 
 E' => , = ) ; 
-F => , = < or + ) ; 
-F' => , = < or + ) ; 
+F => , == = < or + ) ; 
+F' => , == = < or + ) ; 
 FDEF => bool class {eof} int ntype void 
 IFELSE => & * bool false if int ( {nam} ntype {num} } return  true void while 
 INHT_LIST => { 
@@ -129,8 +130,8 @@ MEMBER => bool int ntype } void
 MEMBER_LIST => 
 NAME_LIST => ; 
 NAME_LIST' => ; 
-NE => , = < or ) ; 
-NE' => , = < or ) ; 
+NE => , == = < or ) ; 
+NE' => , == = < or ) ; 
 PAR => , ) 
 PARL => ) 
 PARLP => ) 
@@ -139,7 +140,7 @@ RE => , = or ) ;
 RE' => , = or ) ; 
 STMT => & * bool false if int ( {nam} ntype {num} } return  true void while 
 STMTS => } 
-T => , = < or + ) ; 
+T => , == = < or + ) ; 
 TYPE => {nam} 
 TYPE' => {nam} 
 -----------------------------
@@ -149,7 +150,7 @@ ARGL -> {empty}  => {empty} )
 ARGLP -> , E ARGLP  => , 
 ARGLP -> {empty}  => {empty} ) 
 ARGM -> . {nam} ARGM  => . 
-ARGM -> {empty}  => , {empty} = < or + ) ; 
+ARGM -> {empty}  => , {empty} == = < or + ) ; 
 ARGM -> ( ARGL )  => ( 
 CDEF -> class {nam} INHT_LIST { MEMBER }  => class 
 DECL -> TYPE NAME_LIST  => bool int ntype void 
@@ -182,7 +183,7 @@ NAME_LIST -> {nam} NAME_LIST'  => {nam}
 NAME_LIST' -> , {nam} NAME_LIST'  => , 
 NAME_LIST' -> {empty}  => {empty} ; 
 NE -> T NE'  => & * false ( {nam} {num}  true 
-NE' -> {empty}  => , {empty} = < or ) ; 
+NE' -> {empty}  => , {empty} == = < or ) ; 
 NE' -> + T NE'  => + 
 PAR -> TYPE {nam}  => bool int ntype void 
 PARL -> {empty}  => {empty} ) 
@@ -192,6 +193,7 @@ PARLP -> {empty}  => {empty} )
 PROG -> DEFL  init  => bool class {empty} int ntype void 
 RE -> NE RE'  => & * false ( {nam} {num}  true 
 RE' -> {empty}  => , {empty} = or ) ; 
+RE' -> == NE RE'  => == 
 RE' -> < NE RE'  => < 
 STMT -> DECL ;  => bool int ntype void 
 STMT -> E = E ;  => & * false ( {nam} {num}  true 

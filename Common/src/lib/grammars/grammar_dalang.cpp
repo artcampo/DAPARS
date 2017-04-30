@@ -27,6 +27,7 @@ void CreateGrammarDalang(G& g){
   const Symbol rcbr  = g.AddTerminal("RCBR", "}", Tokenizer::kToken::rcbr);
   const Symbol equl  = g.AddTerminal("EQUL", "=", Tokenizer::kToken::equality);
   const Symbol lessthan = g.AddTerminal("LEST", "<", Tokenizer::kToken::lessthan);
+  const Symbol equalto  = g.AddTerminal("EQLT", "==", Tokenizer::kToken::equalto);
   
   const Symbol amps  = g.AddTerminal("AMPS", "&", Tokenizer::kToken::ampersand);
   const Symbol dot   = g.AddTerminal("DOT", ".", Tokenizer::kToken::dot);
@@ -177,7 +178,8 @@ void CreateGrammarDalang(G& g){
   g.AddRule(Rule(EP,  {kwd_or, RE, EP}));
   g.AddRule(Rule(EP,  {empty}));
   g.AddRule(Rule(RE,  {NE, REP}));
-  g.AddRule(Rule(REP, {lessthan, NE, REP}));    
+  g.AddRule(Rule(REP, {lessthan, NE, REP}));
+  g.AddRule(Rule(REP, {equalto,  NE, REP}));    
   g.AddRule(Rule(REP, {empty}));
   g.AddRule(Rule(NE,  {T, NEP}));
   g.AddRule(Rule(NEP, {plus, T, NEP}));

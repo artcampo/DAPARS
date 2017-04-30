@@ -12,6 +12,12 @@ ParseKeyword(std::vector<char>::const_iterator& current_position
            , kToken& t) noexcept{
   int chars_left = std::distance(current_position, end_position);
 
+  //==
+  if(chars_left >= 2
+    and *(current_position + 0) == '=' and *(current_position + 1) == '='){
+    current_position += 2; t = kToken::equalto; return true;
+  }  
+  
   //if
   if(chars_left >= 2
     and *(current_position + 0) == 'i' and *(current_position + 1) == 'f'){
@@ -153,7 +159,7 @@ ParseToken(std::vector<char>::const_iterator& current_position
   if(*current_position == '*'){ ++current_position; return kToken::astk; }
   if(*current_position == ';'){ ++current_position; return kToken::semicolon; }
   if(*current_position == ','){ ++current_position; return kToken::comma; }
-  if(*current_position == '='){ ++current_position; return kToken::equality; }
+  
   if(*current_position == '<'){ ++current_position; return kToken::lessthan; }
   if(*current_position == '&'){ ++current_position; return kToken::ampersand; }
   if(*current_position == '.'){ ++current_position; return kToken::dot; }
@@ -166,6 +172,8 @@ ParseToken(std::vector<char>::const_iterator& current_position
   if(ParseKeyword(current_position, end_position, t)) return t;
   if(ParseName(current_position, end_position)) return kToken::name;
 
+  if(*current_position == '='){ ++current_position; return kToken::equality; }
+  
   return kToken::error;
 }
 
@@ -183,6 +191,7 @@ std::string str(const kToken& t){
     case kToken::semicolon: return ";";  break;
     case kToken::equality:  return "=";  break;
     case kToken::lessthan:  return "<";  break;
+    case kToken::equalto:   return "==";  break;
     case kToken::ampersand: return "&";  break;
     case kToken::dot:       return ".";  break;
     case kToken::colon:     return ":";  break;
