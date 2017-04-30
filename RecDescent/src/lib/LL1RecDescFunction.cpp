@@ -46,7 +46,7 @@ PtrFuncDef ParserLL1RecDesc::ParseFuncDef(const Compiler::AST::Type& ret_type_in
     Error(kErr32);
     return std::move(nullptr);
   }
-  
+
   PtrFuncDecl decl = NewFuncDecl(name_inht, ret_type_inht, par_list, scope_inht, locus_inht);
   unit_.EnterFunctionDefinition(decl.get());
 
