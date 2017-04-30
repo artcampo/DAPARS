@@ -41,7 +41,7 @@ private:
 // TODO: highly suspicious
 class BinaryOp : public Expr {
 public:
-  enum Op { kAdd, kLessThan, kOr };
+  enum Op { kAdd, kLessThan, kOr, kEqualTo };
   
   virtual ~BinaryOp() = default;
   int op;

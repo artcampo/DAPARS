@@ -37,7 +37,8 @@ public:
     const int op         = p.op;
     const Type& type_rhs = unit_.GetTypeOfNode(p.Rhs());
     const Type& type_lhs = unit_.GetTypeOfNode(p.Lhs());
-    if(op == BinaryOp::kAdd or op == BinaryOp::kLessThan){
+    if(op == BinaryOp::kAdd or op == BinaryOp::kLessThan or 
+      op == BinaryOp::kEqualTo){
       if(type_lhs != unit_.GetTypeInt()) unit_.Error(kErr50, p.GetLocus());      
       if(type_rhs != unit_.GetTypeInt()) unit_.Error(kErr51, p.GetLocus());      
     }

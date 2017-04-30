@@ -27,7 +27,7 @@ enum class LogicType{
 
 enum class CompType{
     kNotEqual = 0
-  , kEqual = 1
+  , kEqualTo = 1
   , kLessThan = 2
   , kLessEqualThan = 3
 };

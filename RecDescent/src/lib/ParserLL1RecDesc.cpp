@@ -55,8 +55,8 @@ void ParserLL1RecDesc::BuildTokenVectors(){
   set_ifelse_ = std::vector<kToken>({kToken::rcbr});
   Insert(set_ifelse_, set_stmts_);
 
-  //ARGM -> {empty}  => , {empty} = < or + ) ; 
-  set_argm_ = std::vector<kToken>({kToken::comma, kToken::equality
+  //ARGM -> {empty}  => , {empty} == = < or + ) ; 
+  set_argm_ = std::vector<kToken>({kToken::comma, kToken::equalto, kToken::equality
     , kToken::lessthan, kToken::kwd_or, kToken::plus, kToken::rpar, kToken::semicolon});
 
 
@@ -67,18 +67,18 @@ void ParserLL1RecDesc::BuildTokenVectors(){
     , kToken::rpar, kToken::semicolon});  
   
   //RE' -> < NE RE'  => < 
-  set_releprime_ = std::vector<kToken>({kToken::lessthan});
+  set_releprime_ = std::vector<kToken>({kToken::lessthan, kToken::equalto});
   
   //RE' -> {empty}  => , {empty} = or ) ; 
   empty_releprime_ = std::vector<kToken>({kToken::comma, kToken::equality
     , kToken::kwd_or, kToken::rpar, kToken::semicolon});  
   
 
-  //NE' -> + T NE'  => +   
+  //NE' -> + T NE'  => +  
   set_numeprime_ = std::vector<kToken>({kToken::plus});
 
-  //NE' -> {empty}  => , {empty} = < or ) ; 
-  empty_numeprime_ = std::vector<kToken>({kToken::comma, kToken::equality
+  //NE' -> {empty}  => , {empty} == = < or ) ; 
+  empty_numeprime_ = std::vector<kToken>({kToken::comma, kToken::equalto, kToken::equality
     , kToken::lessthan, kToken::kwd_or, kToken::rpar, kToken::semicolon});  
 }
 

@@ -64,13 +64,25 @@ PtrExpr ParserLL1RecDesc::RelExprPrime(PtrExpr& eprime_inht, const ScopeId scope
   PtrExpr eprime_synt(nullptr);
   Locus l = CurrentLocus();
 
+  BinaryOp::Op op;
+  bool op_accepted = false;
   if(TryAndAccept(kToken::lessthan)){
+    op = BinaryOp::kLessThan;
+    op_accepted = true;
+  }else if(TryAndAccept(kToken::equalto)){
+    op = BinaryOp::kEqualTo;
+    op_accepted = true;    
+  }
+  
+  if(op_accepted){
     PtrExpr t_synt = Term(scope_inht);
-    PtrExpr eprime1_inht = NewBinaryOp(eprime_inht, BinaryOp::kLessThan, t_synt, scope_inht, l);
+    PtrExpr eprime1_inht = NewBinaryOp(eprime_inht, op, t_synt, scope_inht, l);
 
     eprime_synt = RelExprPrime(eprime1_inht, scope_inht);
-    if(eprime_synt.get() == nullptr)
-      Error("[] operand to < missing");
+    if(eprime_synt.get() == nullptr){
+      if(op == BinaryOp::kLessThan) Error("[] operand to < missing");
+      if(op == BinaryOp::kEqualTo) Error("[] operand to == missing");
+    }
     return std::move(eprime_synt);
   }
 
