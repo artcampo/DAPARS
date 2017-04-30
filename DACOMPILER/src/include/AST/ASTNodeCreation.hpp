@@ -20,154 +20,78 @@ using Compiler::Locus;
 using namespace Compiler::AST::Ptrs;
 
 
-class ASTNodeCreation{
-
-public:
-  ASTNodeCreation() = default;
-  ~ASTNodeCreation() = default;
-
-
-protected:
-
 PtrBinaryOp
 NewBinaryOp(PtrExpr& lhs, const int op
-  , PtrExpr& rhs, const ScopeId id, const Locus& locus){
-//   if(lhs == nullptr) ErrorCritical("lhs invalid");
-//   if(rhs == nullptr) ErrorCritical("rhs invalid");
-  if(lhs.get() == nullptr or rhs.get() == nullptr)
-    return PtrBinaryOp(nullptr);
-
-  return std::make_unique<BinaryOp>(lhs, op, rhs, id, locus);
-}
+  , PtrExpr& rhs, const ScopeId id, const Locus& locus);
 
 
 PtrVar
 NewVar(const std::string& name, const Type& type
   , Compiler::AST::Symbols::SymbolId id
-  , const ScopeId scope_id, const Locus& locus){
-  return std::make_unique<Var>(name, type, id, scope_id, locus);
-}
+  , const ScopeId scope_id, const Locus& locus);
 
 PtrLiteral
 NewLiteral(const uint32_t &value, const Type& type
-  , const ScopeId id, const Locus& locus){
-  return std::make_unique<Literal>(value, type, id, locus);
-}
+  , const ScopeId id, const Locus& locus);
 
 PtrBlock
 NewBlock(std::vector<PtrStatement>& stmts_inht
-  , const ScopeId id, const Locus& locus){
-  if(stmts_inht.empty()) return PtrBlock(nullptr);
-  for(auto& stmt : stmts_inht)
-    if(stmt.get() == nullptr) return PtrBlock(nullptr);
-
-  PtrBlock new_block = std::make_unique<Block>(id, locus);
-  for(auto& stmt : stmts_inht){
-    new_block->AddStatement(stmt);
-  }
-  return new_block;
-}
+  , const ScopeId id, const Locus& locus);
 
 PtrIfStmt
 NewIfStmt(PtrExpr& condition, PtrBlock& block1
-  , const ScopeId id, const Locus& locus){
-  if(condition.get() == nullptr or block1.get() == nullptr)
-    return PtrIfStmt(nullptr);
-
-  return std::make_unique<IfStmt>(condition, block1, id, locus);
-}
+  , const ScopeId id, const Locus& locus);
 
 PtrIfStmt
 NewIfStmt(PtrExpr& condition, PtrBlock& block1
-  , PtrBlock& block2, const ScopeId id, const Locus& locus){
-
-  return std::make_unique<IfStmt>(condition, block1, block2, id, locus);
-}
+  , PtrBlock& block2, const ScopeId id, const Locus& locus);
 
 PtrDeclStmt
 NewDeclStmt(PtrVarDeclList& list, const ScopeId id
-  , const Locus& locus){
-  if(list.get() == nullptr)
-    return PtrDeclStmt(nullptr);
-
-  return std::make_unique<DeclStmt>(list, id, locus);
-}
+  , const Locus& locus);
 
 PtrVarDeclList
 NewVarDeclList(std::vector<PtrVarDecl>& list
-  , const ScopeId id, const Locus& locus){
-  if(list.empty()) return PtrVarDeclList(nullptr);
-  for(auto& dec : list) if(dec.get() == nullptr) return PtrVarDeclList(nullptr);
-
-  return std::make_unique<VarDeclList>(list, id, locus);
-}
+  , const ScopeId id, const Locus& locus);
 
 PtrVarDecl
 NewVarDecl(const std::string& name
                               , const Type& type
                               , const ScopeId id
-                               , const Locus& locus){
-  return std::make_unique<VarDecl>(name, type, id, locus);
-}
+                               , const Locus& locus);
 
 PtrAssignStmt
 NewAssignStmt(PtrExpr& lhs
                                     , PtrExpr& rhs
                                      , const ScopeId id
-                                     , const Locus& locus){
-  if(lhs.get() == nullptr or rhs.get() == nullptr)
-    return PtrAssignStmt(nullptr);
-  return std::make_unique<AssignStmt>(lhs,rhs, id, locus);
-}
+                                     , const Locus& locus);
 
 PtrWhileStmt
 NewWhileStmt(PtrExpr& condition, PtrBlock& body
-    , const ScopeId id, const Locus& locus){
-  if(condition.get() == nullptr or body.get() == nullptr){
-    std::cout << "Null NewWhileStmt\n";
-    return PtrWhileStmt(nullptr);
-  }
-
-  return std::make_unique<WhileStmt>( condition, body, id, locus);
-}
+    , const ScopeId id, const Locus& locus);
 
 PtrRefOp
-NewRefOp(PtrExpr& rhs, const ScopeId id, const Locus& locus){
-  if(rhs.get() == nullptr) return PtrRefOp(nullptr);
-  return std::make_unique<RefOp>(rhs, id, locus);
-}
+NewRefOp(PtrExpr& rhs, const ScopeId id, const Locus& locus);
 
 PtrDerefOp
-NewDerefOp(PtrExpr& rhs, const ScopeId id, const Locus& locus){
-  if(rhs.get() == nullptr) return PtrDerefOp(nullptr);
-  return std::make_unique<DerefOp>(rhs, id, locus);
-}
-
+NewDerefOp(PtrExpr& rhs, const ScopeId id, const Locus& locus);
 
 
 PtrFuncDef
 NewFuncDef(PtrFuncDecl& decl, PtrBlock& block
-            , const ScopeId id, const Locus& locus){
-  if(not block or not decl) return PtrFuncDef(nullptr);
-  return std::make_unique<FuncDef>(decl, block, id, locus);
-}
+            , const ScopeId id, const Locus& locus);
 
 PtrFuncDecl
 NewFuncDecl(const std::string& name
             , const Type& ret_type
             , std::vector<PtrVarDecl>& par_list
-            , const ScopeId id, const Locus& locus){
-  return std::make_unique<FuncDecl>(name, ret_type, par_list, id, locus);
-}
+            , const ScopeId id, const Locus& locus);
 
 PtrFuncRet
 NewFuncRet(const Type& ret_type
     , PtrFuncCall& call
     , const ScopeId id
-    , const Locus& locus){
-  if(not call) return PtrFuncRet(nullptr);
-  return std::make_unique<FuncRet>(ret_type, call, id, locus);
-}
+    , const Locus& locus);
 
 PtrFuncCall
 NewFuncCall(const std::string& name
@@ -175,40 +99,26 @@ NewFuncCall(const std::string& name
     , const FuncType& function_type
     , std::vector<PtrExpr>& arg_list
     , const ScopeId id
-    , const Locus& locus){
-  return std::make_unique<FuncCall>(name, expr_var, function_type, arg_list, id, locus);
-}
+    , const Locus& locus);
 
 PtrReturnStmt
-NewReturnStmt(PtrExpr& ret_expr, FuncDecl& func_decl, const ScopeId id, const Locus& locus){
-  if(not ret_expr)return PtrReturnStmt(nullptr);
-  return std::make_unique<ReturnStmt>(ret_expr, func_decl, id, locus);
-}
+NewReturnStmt(PtrExpr& ret_expr, FuncDecl& func_decl, const ScopeId id, const Locus& locus);
 
 PtrClassDef
 NewClassDef(const std::string& name
     , std::vector<PtrVarDecl>& var_decl
     , std::vector<PtrFuncDef>& func_def
     , const ScopeId id
-    , const Locus& locus){
-  return std::make_unique<ClassDef>(name, var_decl, func_def, id, locus);
-}
+    , const Locus& locus);
 
 PtrVarName
 NewVarName(const std::string& name
     , const ScopeId id
-    , const Locus& locus){
-  return std::make_unique<VarName>(name, id, locus);
-}
+    , const Locus& locus);
 
 PtrDotOp
 NewDotOp(PtrExprVar& lhs, PtrVarName& rhs, const ScopeId id
-  , const Locus& locus){
-  if(not lhs or not rhs) return PtrDotOp(nullptr);
-  return std::make_unique<DotOp>(lhs, rhs, id, locus);
-}
+  , const Locus& locus);
 
-
-};
 
 } //end namespace Common

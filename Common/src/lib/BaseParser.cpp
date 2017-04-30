@@ -1,5 +1,6 @@
 #include "BaseParser.hpp"
 #include "AST/Node.hpp"
+#include "AST/ASTNodeCreation.hpp"
 #include "Types.hpp"
 #include "Locus.hpp"
 #include <iterator>

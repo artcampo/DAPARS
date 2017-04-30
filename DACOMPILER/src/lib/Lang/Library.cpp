@@ -9,6 +9,8 @@ namespace Compiler{
 namespace Library{
 
 void InitCompilationUnit(CompilationUnit& unit){
+  return;
+
   AST::Symbols::SymbolId func_id;
 
   std::string name = "test";

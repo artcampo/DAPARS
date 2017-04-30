@@ -5,6 +5,7 @@ set(files
     Node.cpp
     Scopes/LexicalScope.cpp
     Module/TypeTable.cpp
+    AST/ASTNodeCreation.cpp
     ASTVisitors/Dump.cpp
     ASTVisitors/PrettyPrinter.cpp
     IR/IR.cpp

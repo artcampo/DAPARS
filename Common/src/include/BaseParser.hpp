@@ -20,7 +20,7 @@ using Compiler::Locus;
 using namespace Compiler::AST::Ptrs;
 
 
-class BaseParser : public ASTNodeCreation{
+class BaseParser{
 
 public:
   BaseParser(std::string const &file_name, CompilationUnit& unit);
