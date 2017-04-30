@@ -60,14 +60,11 @@ void DotOp::Accept       (IRGenerator& v, const Node* successor){ return v.Visit
 
 
 std::string BinaryOp::OpString() const noexcept{
-//   using namespace VM;
-//   using namespace IRDefinition;
-//   using namespace SubtypesArithmetic;
-  using namespace VM::IRDefinition::SubtypesArithmetic;
-  if (op == IR_ADD ) return " + ";
-  if (op == IR_SUB ) return " - ";
-  if (op == IR_MUL ) return " * ";
-  if (op == IR_DIV ) return " / ";
+  enum Op { kAdd, kLessThan, kOr, kEqualTo };
+  if (op == Op::kAdd )      return " + ";
+  if (op == Op::kLessThan ) return " < ";
+  if (op == Op::kOr )       return " or ";
+  if (op == Op::kEqualTo )  return " == ";
 }
 
 std::string Block::str() const{

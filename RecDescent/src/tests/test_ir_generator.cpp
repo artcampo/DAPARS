@@ -117,7 +117,7 @@ int main()
   
   //equal comparison
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "void main(){bool b; int a, c; a = 10; c = 11; b = a == b;} ")
+    "void main(){bool b; int a, c; a = 10; c = 11; b = a == c;} ")
     , g);
   
   /*

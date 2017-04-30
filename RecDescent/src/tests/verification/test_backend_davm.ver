@@ -388,3 +388,26 @@ Parsing: "void main(){int a, b; a = 1; b = 2; test(false); } "
 AST not build (no functions) at: "st(false);" -> " } "
 AST not build (fatal errors) at: "st(false);" -> " } "
 
+---------------------------------------------------
+Parsing: "void main(){bool b; int a, c; a = 10; c = 11; b = a == c;} "
+Backend::Davm
+%0 = LoadI(10)
+store %0 to [LT MainDS:1 (a)]
+%2 = LoadI(11)
+store %2 to [LT MainDS:2 (c)]
+%4 = Load [LT MainDS:1 (a)]
+%5 = Load [LT MainDS:2 (c)]
+%6 = %4 == %5
+store %6 to [LT MainDS:0 (b)]
+ReturnMain
+---------
+Bytecode:
+0: LOADI, r1 val: 10  <- [main]
+1: STORE, r1 -> [@1]
+2: LOADI, r2 val: 11
+3: STORE, r2 -> [@2]
+4: EQT, rs1 rs2 rd3
+5: STORE, r3 -> [@0]
+6: STOP
+Static data segment size: 3
+

@@ -718,3 +718,47 @@ LT entry_f[isTarget]
 7: store %6 to [RT arp_f[isArp]:-2 (c)]
 8: Return
 
+---------------------------------------------------
+Parsing: "void main(){bool b; int a, c; a = 10; c = 11; b = a == c;} "
+
+Scopes of module:
+Scope 0: {(1:main) }
+Scope 1: {(2:b) (3:a) (4:c) }
+
+
+AST fully decorated dump:
+[FDef] FuncDef: main
+-[VDec] bool b 
+-[VDec] int a 
+[VDec] int c 
+-[Assgn] 
+--[Var] a [int Lvalue Write Value Nmemb]
+--[Lit] 10 [int Rvalue]
+-[Assgn] 
+--[Var] c [int Lvalue Write Value Nmemb]
+--[Lit] 11 [int Rvalue]
+-[Assgn] 
+--[Var] b [bool Lvalue Write Value Nmemb]
+--Op: ==  [bool Rvalue]
+---[Var] a [int Lvalue Read Value Nmemb]
+---[Var] c [int Lvalue Read Value Nmemb]
+
+
+Declaration Table:
+1: Symbol: [ in scope 0 main of type function: ()->void]
+2: Symbol: [ in scope 1 b of type bool]
+3: Symbol: [ in scope 1 a of type int]
+4: Symbol: [ in scope 1 c of type int]
+
+IR dump:
+LT entry_main[isTarget]
+0: %0 = LoadI(10)
+1: store %0 to [LT MainDS:1 (a)]
+2: %2 = LoadI(11)
+3: store %2 to [LT MainDS:2 (c)]
+4: %4 = Load [LT MainDS:1 (a)]
+5: %5 = Load [LT MainDS:2 (c)]
+6: %6 = %4 == %5
+7: store %6 to [LT MainDS:0 (b)]
+8: ReturnMain
+

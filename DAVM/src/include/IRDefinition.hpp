@@ -119,7 +119,7 @@ enum IRSubtypesArithmetic{
 namespace SubtypesComparison{
 enum IRSubtypesComparison{
   IR_NOT = 0,   // !
-  IR_EQL = 1,   // ==
+  IR_EQT = 1,   // ==
   IR_LST = 2,   // <
   IR_LTE = 3,   // <=
 };

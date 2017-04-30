@@ -5,6 +5,7 @@
 #include "IRBuilder.hpp"
 #include "IRDefinition.hpp"
 #include "Function.hpp"
+#include "IR/IRSubtypes.hpp"
 #include "IR/Label.hpp"
 #include "IR/IRVisitor.hpp"
 #include "Backend/RegisterAllocator.hpp"
@@ -207,8 +208,12 @@ private:
     RegMap rs2 = reg_alloc_.IRReg( inst.RegSrc2() );
     reg_alloc_.GetRegArith(rd, rs1, rs2);
     
-    int op = VM::IRDefinition::SubtypesComparison::IR_LST;
-    //VM::IRDefinition::SubtypesArithmetic::IR_ADD;
+    int op;
+    if(inst.Op() == IR::CompType::kLessThan) 
+      op = VM::IRDefinition::SubtypesComparison::IR_LST;
+    if(inst.Op() == IR::CompType::kEqualTo ) 
+      op = VM::IRDefinition::SubtypesComparison::IR_EQT;
+    
     byte_code_.Append( VM::IRBuilder::Comp(rs1.mreg_, rs2.mreg_, rd.mreg_, op));    
   }  
   

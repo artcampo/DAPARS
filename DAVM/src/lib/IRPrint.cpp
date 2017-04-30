@@ -164,7 +164,7 @@ std::string PrintInstruction(const Inst& instruction){
       using namespace SubtypesComparison;
       switch(sub_type){
         case IR_NOT: s = string("NOT, rs"); break;
-        case IR_EQL: s = string("EQL, rs"); break;
+        case IR_EQT: s = string("EQT, rs"); break;
         case IR_LST: s = string("LST, rs"); break;
         case IR_LTE: s = string("LTE, rs"); break;
         default:     s = string(" - ERROR in print decode -"); break;

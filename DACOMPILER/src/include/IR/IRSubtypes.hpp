@@ -16,6 +16,7 @@ const static int kNumArgsInRegister = 1;
 
 enum class ArithType{
     kAdd = 0
+  //unused  
   , kSub = 1
   , kMul = 2
   , kDiv = 3
@@ -26,9 +27,10 @@ enum class LogicType{
 };
 
 enum class CompType{
-    kNotEqual = 0
-  , kEqualTo = 1
-  , kLessThan = 2
+    kEqualTo = 0
+  , kLessThan = 1
+  //unused
+  , kNotEqual = 2
   , kLessEqualThan = 3
 };
 

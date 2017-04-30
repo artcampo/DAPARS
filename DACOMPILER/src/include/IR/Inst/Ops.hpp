@@ -51,6 +51,7 @@ struct Comparison : public BinaryOp{
   }
   
   void Accept(IRVisitor& v) override { v.Visit(*this); }
+  CompType Op() const noexcept{ return op_;}
 protected:
   CompType op_;
 };

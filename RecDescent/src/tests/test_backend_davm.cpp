@@ -133,5 +133,10 @@ int main()
     "void main(){int a, b; a = 1; b = 2; test(false); } ") 
     , g);  
   
+  //equal comparison
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "void main(){bool b; int a, c; a = 10; c = 11; b = a == c;} ")
+    , g);
+  
   return 0;
 }
