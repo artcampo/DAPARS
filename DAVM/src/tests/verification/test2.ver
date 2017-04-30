@@ -1,21 +1,13 @@
-RAW bytecode:
-344225
-33795
-33803
-33811
-33819
-33799
-33807
-33815
-33823
-4
-LOADI, r5 val: 42
-ADD, rs0 rs1 rd2
-SUB, rs0 rs1 rd2
-MUL, rs0 rs1 rd2
-DIV, rs0 rs1 rd2
-NOT, rs0 rs1 rd2
-EQL, rs0 rs1 rd2
-LST, rs0 rs1 rd2
-LTE, rs0 rs1 rd2
+EXEC
+OP: LOAD R5=42
+OP: MOV R1=R5 
+OP: ADD R2=R0 op R1
+OP: SUB R2=R0 op R1
+OP: MUL R2=R0 op R1
+OP: DIV R2=R0 op R1
+OP: NOT R2= !R0
+OP: EQL R2=R0 == R1
+OP: LST R2=R0 < R1
+OP: LTE R2=R0 <= R1
 STOP
+Registers: 0, 42, 1, 0, 0, 42, 0, 0, 0, 0
