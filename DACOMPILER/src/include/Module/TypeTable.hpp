@@ -43,6 +43,7 @@ public:
   const Type& PtrToT(const Type& t);
   const Type& PointedBy(const Type& t);
 
+  //TODO: par_types, not arg(!)
   const Type& GetFuncType(const Type& return_type
                         , const std::vector<const Type*>& arg_types);
 

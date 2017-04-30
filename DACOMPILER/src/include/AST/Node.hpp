@@ -213,6 +213,8 @@ public:
 
   std::vector<PtrClassDef>& GetClassDefs() noexcept{ return classes_;}
   const std::vector<PtrClassDef>& GetClassDefs() const noexcept{ return classes_;}
+  
+  void AddFunction(PtrFuncDef& f){ functions_.push_back(std::move(f));}
 private:
   PtrProgInit               pinit_;
   PtrProgEnd                pend_;
