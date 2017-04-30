@@ -115,6 +115,10 @@ int main()
     "int f(){int a, b, c;     a = a + 10; b = 11; c = 12;}"
     , g);
   
+  //equal comparison
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "void main(){bool b; int a, c; a = 10; c = 11; b = a == b;} ")
+    , g);
   
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(

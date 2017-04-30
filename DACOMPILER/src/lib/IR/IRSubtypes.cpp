@@ -21,6 +21,7 @@ std::string str(const LogicType op) noexcept{
 
 std::string str(const CompType op) noexcept{
   if(op == CompType::kLessThan) return std::string("<");
+  if(op == CompType::kEqualTo)  return std::string("==");
   return std::string("not implemented, code 42");
 }
 

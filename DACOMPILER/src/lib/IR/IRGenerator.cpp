@@ -197,6 +197,10 @@ void IRGenerator::Visit(BinaryOp const& n, const Node* successor){
     const IR::CompType op = IR::CompType::kLessThan;
     r = CurrentStream().AppendComparison(reg_src1, reg_src2, op);
   }
+  if(op == BinaryOp::kEqualTo){
+    const IR::CompType op = IR::CompType::kEqualTo;
+    r = CurrentStream().AppendComparison(reg_src1, reg_src2, op);
+  }  
   
   reg_dst_of_expr_[&n]   = r;
 //   std::cout << "OP: " << op << "\n";
