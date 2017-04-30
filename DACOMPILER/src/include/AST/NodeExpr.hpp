@@ -41,8 +41,8 @@ private:
 // TODO: highly suspicious
 class BinaryOp : public Expr {
 public:
-  enum Op { kAdd, kLessThan, kOr, kEqualTo };
-  
+  enum Op { kAdd, kLessThan, kOr, kAnd, kEqualTo };
+
   virtual ~BinaryOp() = default;
   int op;
   //TODO change op to own type
@@ -119,7 +119,7 @@ public:
     : ExprVar(scope_id, locus), NamedNode(name), TypedNode(type), SymbolNode(id){}
 
   std::string str() const noexcept{return name_;}
-  
+
   virtual void Accept(ASTVisitor& v);
   virtual void Accept(IRGenerator& v, const Node* successor);
 

@@ -49,23 +49,22 @@ class CompilationUnit : public TreeDecoration, public TypeTable
   {
 public:
 
-  CompilationUnit(): 
+  CompilationUnit():
       TypeTable(error_log_)
     , ScopeManager()
     , FunctionManager()
     , ClassManager(this, this, this, this)
+    , lang_lib_(*this)
     , ast_()
     , free_symbol_id_(AST::Symbols::Symbol::InitialFreeId())
     , module_scope_(std::move(GlobalLexicalScope(symbol_table_
         , module_declaration_table_, symbolid_of_node_)))
     , module_declaration_table_()
-
     {
       scope_by_id_[GlobalScopeId()] = module_scope_.get();
       current_scope_ = module_scope_.get();
-      Library::InitCompilationUnit(*this);
+      lang_lib_.InitCompilationUnit();
     }
-
 
   //TODO: get rid of these
   const ScopeId NewFunction(const std::string& name
@@ -97,7 +96,7 @@ public:
   const Type& GetType(const TypeId id) const{ return TypeTable::GetType(id);}
 
   const AST::Symbols::SymbolId FreeSymbolId() noexcept{return free_symbol_id_++;}
-  
+
   bool RegisterDecl(const std::string& name, const Type& type, const Node& n
     , const ScopeId scope_id, const AST::Symbols::SymbolId symbol_id){
     bool registered = GetScope(scope_id)->RegisterDecl(name, type, n, symbol_id);
@@ -123,6 +122,7 @@ private:
   SymbolTable       symbol_table_;
   DeclarationTable  module_declaration_table_;
   ErrorLog          error_log_;
+  Library::LangLib  lang_lib_;
   Ast               ast_;
   PtrLexicalScope   module_scope_;
 
