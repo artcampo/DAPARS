@@ -72,34 +72,34 @@ int main()
   //different offsets to main data segment
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "void main(){int a, b, c; a = 4; b = 3; c = a + b; }"), g);
-  
+
   //return value
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int f(int p){ return p; }") + 
+    "int f(int p){ return p; }") +
     "void main(){int a; a = 1; a = f(a); }"
-    , g);  
-  
+    , g);
+
   //args mixed: reg and stack
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int f(int p0, int p1){ return p0 + p1; }") + 
+    "int f(int p0, int p1){ return p0 + p1; }") +
     "void main(){int a; a = f(9,8); }"
-    , g);    
-  
+    , g);
+
   //3 args in stack
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int f(int p0, int p1, int p2, int p3){ return p0 + p1 + p2 + p3; }") + 
+    "int f(int p0, int p1, int p2, int p3){ return p0 + p1 + p2 + p3; }") +
     "void main(){int a; a = f(9,8,7,6); }"
-    , g);   
-  
+    , g);
+
   //locals alloc, size = 1
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int f(){ int a; return a; }") + 
+    "int f(){ int a; return a; }") +
     "void main(){int a; a = f(); }"
     , g);
 
   //locals alloc, size = 4
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "int f(){ int a,b,c,d; return a + d; }") + 
+    "int f(){ int a,b,c,d; return a + d; }") +
     "void main(){int a; a = f(); }"
     , g);
 
@@ -107,36 +107,37 @@ int main()
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "void main(){int a, b, c, d; a = 1; b = 0;") +
     "if((a+b) < 2){a = 2;} else {a=1;} c = a; d = b; }"
-    , g);     
-  
+    , g);
+
   //patching of funcalls
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "int f(){ return 1; }") +
     "int g(){ return f() + 2; }"
     "void main(){int a; a = f() + g();}"
-    , g);    
-  
+    , g);
+
   //bools and ors
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "void main(){bool a, b, c; a = true; b = false; c = a or b;") +
     "c = false or true; }"
-    , g);   
-  
+    , g);
+
   //LT labels VS RT labels
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "void main(){int a, b, c; a = a + 10; b = 11; c = 12;} ") +
     "int f(){int a, b, c;     a = a + 10; b = 11; c = 12;}"
     , g);
 
-  //lang_lib: test
-  parse<Grammar,ParserLL1RecDesc>( std::string(
-    "void main(){int a, b; a = 1; b = 2; test(false); } ") 
-    , g);  
-  
+
   //equal comparison
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "void main(){bool b; int a, c; a = 10; c = 11; b = a == c;} ")
     , g);
-  
+
+//lang_lib: test
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "bool main(){int a, b; a = 1; b = 2; return __test(false); } ")
+    , g);
+
   return 0;
 }

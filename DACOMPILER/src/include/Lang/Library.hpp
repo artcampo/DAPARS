@@ -32,7 +32,9 @@ private:
   AST::PtrExpr op_lhs_;
   AST::PtrExpr op_rhs_;
   AST::PtrExpr rhs_;
-  AST::PtrStatement stmt_;
+  AST::PtrExpr ret_;
+  AST::PtrStatement stmt_a_;
+  AST::PtrStatement stmt_r_;
 
   void InitRTVars();
   void InitRTFunctionTest();

@@ -21,7 +21,7 @@ void LangLib::InitRTFunctionTest(){
 
   std::string name      = "__test";
   std::string name_par  = "__test_condition_par";
-  const Type& ret_type = unit_.GetTypeVoid();
+  const Type& ret_type = unit_.GetTypeBool();
   const Type& par_type = unit_.GetTypeBool();
 
   const ScopeId global_scope_id = unit_.GetGlobalLexicalScope().GetScopeId();
@@ -47,9 +47,12 @@ void LangLib::InitRTFunctionTest(){
   op_lhs_  = NewVar(name_cond_, unit_.GetTypeBool(), cond_sid_, func_scope_id, l_);
   op_rhs_  = NewVar(name_par,   unit_.GetTypeBool(), cond_sid_, func_scope_id, l_);
   rhs_     = NewBinaryOp(op_lhs_, BinaryOp::kOr, op_rhs_, func_scope_id, l_);
-  stmt_    = NewAssignStmt(lhs_, rhs_, func_scope_id, l_ );
+  stmt_a_  = NewAssignStmt(lhs_, rhs_, func_scope_id, l_ );
+  ret_     = NewVar(name_cond_, unit_.GetTypeBool(), cond_sid_, func_scope_id, l_);
+  stmt_r_  = NewReturnStmt(ret_, *decl_, func_scope_id, l_);
 
-  stmts_.push_back(std::move(stmt_));
+  stmts_.push_back(std::move(stmt_a_));
+  stmts_.push_back(std::move(stmt_r_));
   block_  = NewBlock(stmts_, func_scope_id, l_ );
 
   func_def_ = NewFuncDef(decl_, block_, global_scope_id, l_);
