@@ -15,6 +15,11 @@ void LangLib::InitCompilationUnit(){
   InitRTFunctionTest();
 }
 
+void LangLib::UpdateCompilationUnitPrePasses(){
+  (unit_.GetAstProg())->AddFunction(func_def_);
+}
+
+
 void LangLib::InitRTFunctionTest(){
 
   AST::Symbols::SymbolId func_id;
@@ -62,6 +67,8 @@ void LangLib::InitRTFunctionTest(){
   unit_.RestoreScope();
   unit_.RegisterDecl(name, function_type, *decl_, global_scope_id, sid_func);
 //   std::cout << "func: " << func_def->str() << "\n";
+
+
 }
 
 void LangLib::InitRTVars(){

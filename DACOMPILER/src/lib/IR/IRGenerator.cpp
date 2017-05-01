@@ -179,11 +179,11 @@ void IRGenerator::Visit(BinaryOp const& n, const Node* successor){
   n.Rhs().Accept(*this, successor);
 
   const IR::Reg reg_src1 = reg_dst_of_expr_[&n.Lhs()];
-  const IR::Reg reg_src2 = reg_dst_of_expr_[&n.Rhs()];  
+  const IR::Reg reg_src2 = reg_dst_of_expr_[&n.Rhs()];
   const int op           = n.op;
   IR::Reg r;
-  
-  
+
+
   //TODO: worth the switch?
   if(op == BinaryOp::kAdd){
     const IR::ArithType op = IR::ArithType::kAdd;
@@ -192,7 +192,7 @@ void IRGenerator::Visit(BinaryOp const& n, const Node* successor){
   if(op == BinaryOp::kOr){
     const IR::LogicType op = IR::LogicType::kOr;
     r = CurrentStream().AppendLogic(reg_src1, reg_src2, op);
-  }  
+  }
   if(op == BinaryOp::kLessThan){
     const IR::CompType op = IR::CompType::kLessThan;
     r = CurrentStream().AppendComparison(reg_src1, reg_src2, op);
@@ -200,8 +200,8 @@ void IRGenerator::Visit(BinaryOp const& n, const Node* successor){
   if(op == BinaryOp::kEqualTo){
     const IR::CompType op = IR::CompType::kEqualTo;
     r = CurrentStream().AppendComparison(reg_src1, reg_src2, op);
-  }  
-  
+  }
+
   reg_dst_of_expr_[&n]   = r;
 //   std::cout << "OP: " << op << "\n";
 
@@ -249,10 +249,10 @@ void IRGenerator::Visit(Var const& p, const Node* successor){
   //Load to an argument which is in a register
   if(a.GetLabel() == unit_.GetLabelArgumentInReg()){
     const IR::Reg r_dst   = CurrentStream().AppendGetArg(a.GetOffset().GetAddr());
-    reg_dst_of_expr_[&p]  = r_dst;    
+    reg_dst_of_expr_[&p]  = r_dst;
     return;
   }
-  
+
   //regular memory access
   if(unit_.IsRead(p)){
     //Var, Read
@@ -275,14 +275,14 @@ void IRGenerator::Visit(Var const& p, const Node* successor){
 
 /////////////////////////////////////////////////////////////////////////////
 void IRGenerator::Visit(FuncCall& p, const Node* successor){
-  
+
   if(inside_member_func_def_ and is_member_call_inht_){
     //TODO: adjust offset to parent's objects
     MemAddr a = MemAddr(class_label_inht_, 0);
     const IR::Reg r  = CurrentStream().AppendLoad(a);
     CurrentStream().AppendSetArg(r);
   }
-  
+
   //generate arguments
   for(const auto& it : p) it->Accept(*this, successor);
   //generate set prior to call
@@ -316,11 +316,11 @@ void IRGenerator::Visit(FuncRet& p, const Node* successor){
 /////////////////////////////////////////////////////////////////////////////
 void IRGenerator::Visit(ReturnStmt const& p, const Node* successor){
    p.RetExpr().Accept(*this, successor);
-   
+
    if( unit_.GetTypeOfNode(p.RetExpr()) != unit_.GetTypeVoid() ){
     const IR::Reg r_src = reg_dst_of_expr_[&p.RetExpr()];
-    CurrentStream().AppendSetRetVal(r_src); 
-   }     
+    CurrentStream().AppendSetRetVal(r_src);
+   }
 }
 
 
@@ -347,7 +347,7 @@ void IRGenerator::Visit(DotOp const& p, const Node* successor){
     //pass pointer this
     IR::Reg r_src  = reg_dst_of_expr_[&p.Lhs()];
     reg_dst_of_expr_[&p] = r_src;
-    
+
     //adjust this if needed
     if(c.IsCallToParent(fname)){
       const IR::Offset o    = c.FuncPtrThisAdjust(fname);
@@ -356,7 +356,7 @@ void IRGenerator::Visit(DotOp const& p, const Node* successor){
       reg_dst_of_expr_[&p] = r_dst;
       r_src = r_dst;
     }
-    
+
     //load this as first argument
     CurrentStream().AppendSetArg(r_src);
 

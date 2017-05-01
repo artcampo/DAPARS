@@ -14,6 +14,7 @@ class LangLib{
 public:
   LangLib(CompilationUnit& unit) : unit_(unit), name_cond_("__test_result"){}
   void InitCompilationUnit();
+  void UpdateCompilationUnitPrePasses();
 
 private:
   CompilationUnit&  unit_;

@@ -114,6 +114,10 @@ public:
     return registered;
   }
 
+  void UpdatePrePasses(){
+    lang_lib_.UpdateCompilationUnitPrePasses();
+  }
+
   //TODO: const?
   ScopeId GlobalScopeId() { return module_scope_->GetScopeId();}
 

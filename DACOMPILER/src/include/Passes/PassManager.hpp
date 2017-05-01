@@ -42,7 +42,10 @@ public:
               , &type_check_
               , &var_is_member_
               , &compute_local_var_offsets_}
-  { defined_[CompUnitInfo::kAstIncomplete1] = true;};
+  {
+    defined_[CompUnitInfo::kAstIncomplete1] = true;
+    unit_.UpdatePrePasses();
+  };
 
   void Run(){
     for(auto& pass: passes_){
@@ -77,7 +80,7 @@ private:
 //     std::cout << "Run pass: " << p.str() << "\n";
     if(unit_.HasErrors()) std::cout << p.str() << " failed. \n";
     for(const auto& info : p.Defines()) defined_[info] = true;
-    
+
     if(dump_ast_after_each_pass_){
       Dump visitor_dump(unit_, false, false);
       visitor_dump.Visit(*unit_.GetAstProg());
