@@ -49,6 +49,8 @@ public:
 
   Symbol& operator= ( const Symbol &s ) = delete;
   Symbol( const Symbol &s ) = delete;
+
+  bool  IsCompilerPrivate() const{ return name_.compare(0, 2, "__") == 0; }
   /*
   Symbol& operator= ( const Symbol &s ){
     name_     = s.name_;

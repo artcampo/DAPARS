@@ -19,11 +19,11 @@ void Dump::Visit(FuncDef const& p){
 
 void Dump::Visit(ClassDef const& p){
   if(not ast_has_type_info_)
-    std::cout << "[CDef] " << p.str(); 
+    std::cout << "[CDef] " << p.str();
   else
     std::cout << "[CDef] " << unit_.GetClass(
       dynamic_cast<const ClassType&>(unit_.GetTypeOfNode(p)) ).str();
-  DisplayAttributes(p); std::cout <<"\n";    
+  DisplayAttributes(p); std::cout <<"\n";
   bool first = true;
   for(auto& it : p.GetVarDecl()) {
     if(not first) std::cout << "\n";
@@ -220,9 +220,10 @@ void Dump::DumpSymbolTable(){
   */
 
   std::cout << "\n\nDeclaration Table:\n";
-  for(auto& it : unit_.module_declaration_table_){
-    std::cout << it.first << ": " <<it.second->str()<<"\n";
-  }
+  for(auto& it : unit_.module_declaration_table_)
+    if(not it.second->IsCompilerPrivate())
+      std::cout << it.first << ": " <<it.second->str()<<"\n";
+
 }
 
 }//end namespace AST

@@ -51,9 +51,10 @@ public:
   std::string str() const noexcept{
     std::string s = std::string("Scope ") + std::to_string(id_)
                   + std::string(": {");
-    for(int i = 0; i < declarations_.size(); ++i){
-      s+= "(" + std::to_string(declarations_[i].first) + ":";
-      s+= symbols_[i].first + ") ";
+    for(int i = 0; i < declarations_.size(); ++i)
+      if(not declarations_[i].second.IsCompilerPrivate()){
+        s+= "(" + std::to_string(declarations_[i].first) + ":";
+        s+= symbols_[i].first + ") ";
     }
     s += std::string("}");
     return s;
@@ -63,8 +64,8 @@ public:
   virtual const Type& PostGetType(const std::string& name) const{
     const Symbols::SymbolId sid = PostDeclId(name);
     return post_parse_declaration_table_.at(sid)->GetType();
-  }  
-  
+  }
+
   const Symbols::SymbolId PostDeclId(const std::string& name) const {
     auto it = post_parse_symbol_table_.find(name);
     return it->second;
@@ -82,7 +83,7 @@ private:
   SymbolTable&      symbol_table_;
   DeclarationTable& declaration_table_;
   SymbolIdOfNode&   symbolid_of_node_;
-  
+
   //these are local copies to consult when parsing is done
   SymbolTable       post_parse_symbol_table_;
   DeclarationTable  post_parse_declaration_table_;

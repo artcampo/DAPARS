@@ -60,10 +60,10 @@ void DotOp::Accept       (IRGenerator& v, const Node* successor){ return v.Visit
 
 
 std::string BinaryOp::OpString() const noexcept{
-  enum Op { kAdd, kLessThan, kOr, kEqualTo };
   if (op == Op::kAdd )      return " + ";
   if (op == Op::kLessThan ) return " < ";
   if (op == Op::kOr )       return " or ";
+  if (op == Op::kAnd)       return " or ";
   if (op == Op::kEqualTo )  return " == ";
 }
 

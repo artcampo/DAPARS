@@ -71,13 +71,13 @@ public:
     origin_node_ = const_cast<FuncDef*>(&n);
   }
 
-  
+
   AddressTable& LocalVars() { return locals_offset_table_; }
   const AddressTable& LocalVars() const { return locals_offset_table_; }
   AddressTable& Params() { return params_offset_table_; }
-  const AddressTable& Params() const { return params_offset_table_; }  
-  
-  
+  const AddressTable& Params() const { return params_offset_table_; }
+
+
   void StoreSymbolAddress(Symbols::SymbolId id, const IR::Offset o
                         , const Label l, const size_t size, AddressTable& table){
 //     std::cout << "Store: " << id << " o: " << o.str() << std::endl;
@@ -88,7 +88,7 @@ public:
   IR::MemAddr LocalVarMemAddr(Symbols::SymbolId id) const{
     return locals_offset_table_.GetMemAddr(id);
   }
-  
+
 
   const Label      EntryLabel() const noexcept{ return entry_label_;}
   const Label      LocalsLabel() const noexcept{ return locals_label_;}
@@ -98,17 +98,17 @@ public:
   std::string MangledName()const noexcept{ return mangled_name_;}
   const bool IsMember() const noexcept{ return is_member_;}
   const bool IsMain() const noexcept{ return is_main_;}
-  
+
   std::string Name()  const noexcept{ return name_;}
-  
+
   const bool HasLocals() const noexcept{ return locals_offset_table_.NumVars() > 0;}
 private:
-  
+
   std::string       name_;
   std::string       class_name_;
   std::string       mangled_name_;
   AST::Symbols::SymbolId symbol_id_;
-  
+
   FuncDef*          origin_node_;
   const Label       entry_label_;
   const Label       locals_label_;

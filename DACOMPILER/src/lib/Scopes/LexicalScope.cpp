@@ -32,7 +32,7 @@ bool LexicalScope::RegisterDecl(const std::string& name, const Type& type
 
   post_parse_symbol_table_[name] = symbol_id;
   post_parse_declaration_table_[symbol_id] = std::make_unique<Symbols::Symbol>
-                              (name, type, GetScopeId(), symbol_id);  
+                              (name, type, GetScopeId(), symbol_id);
   /*
   std::cout << "symbol table:";
   for(const auto& it : symbol_table_)
@@ -117,8 +117,9 @@ void LexicalScope::UndoTables(){
 
 namespace DumpScope{
 void Dump(const std::map<Symbols::SymbolId, std::unique_ptr<Symbols::Symbol>>& dec){
-  for(const auto& it : dec) 
-    std::cout << it.first << ": " << it.second->str() << "\n";  
+  for(const auto& it : dec)
+    if(not it.second->IsCompilerPrivate())
+      std::cout << it.first << ": " << it.second->str() << "\n";
 }
 }//end namespace DumpScope
 

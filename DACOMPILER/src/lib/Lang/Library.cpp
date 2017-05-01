@@ -19,8 +19,8 @@ void LangLib::InitRTFunctionTest(){
 
   AST::Symbols::SymbolId func_id;
 
-  std::string name      = "test";
-  std::string name_par  = "condition";
+  std::string name      = "__test";
+  std::string name_par  = "__test_condition_par";
   const Type& ret_type = unit_.GetTypeVoid();
   const Type& par_type = unit_.GetTypeBool();
 
@@ -32,29 +32,33 @@ void LangLib::InitRTFunctionTest(){
   const Type& function_type = unit_.GetFuncType(ret_type, pars);
 
   ScopeId func_scope_id;
-  const AST::Symbols::SymbolId sid = unit_.FreeSymbolId();
+  const AST::Symbols::SymbolId sid_func = unit_.FreeSymbolId();
   func_scope_id = unit_.NewFunction(name, func_id);
 
-  std::vector<PtrVarDecl> par_decl;
-  par_decl.push_back(std::move(NewVarDecl(name_par, par_type, global_scope_id, l_)));
-  PtrFuncDecl decl = NewFuncDecl(name, ret_type, par_decl, global_scope_id, l_);
 
-  unit_.EnterFunctionDefinition(decl.get());
+  par_decl_.push_back(std::move(NewVarDecl(name_par, par_type, func_scope_id, l_)));
+  const AST::Symbols::SymbolId sid_par = unit_.FreeSymbolId();
+  unit_.RegisterDecl(name_par, par_type, *par_decl_[0], func_scope_id, sid_par);
+  decl_ = NewFuncDecl(name, ret_type, par_decl_, global_scope_id, l_);
 
-  PtrExpr lhs     = NewVar(name_cond_, unit_.GetTypeBool(), cond_sid_, func_scope_id, l_);
-  PtrExpr op_lhs  = NewVar(name_cond_, unit_.GetTypeBool(), cond_sid_, func_scope_id, l_);
-  PtrExpr op_rhs  = NewVar(name_par,   unit_.GetTypeBool(), cond_sid_, func_scope_id, l_);
-  PtrExpr rhs     = NewBinaryOp(op_lhs, BinaryOp::kAnd, op_rhs, func_scope_id, l_);
-  PtrStatement a  = NewAssignStmt(lhs, rhs, func_scope_id, l_ );
-  std::vector<PtrStatement> stmts; stmts.push_back(std::move(a));
-  PtrBlock block  = NewBlock(stmts, func_scope_id, l_ );
+  unit_.EnterFunctionDefinition(decl_.get());
 
-  PtrFuncDef func_def = NewFuncDef(decl, block, global_scope_id, l_);
+  lhs_     = NewVar(name_cond_, unit_.GetTypeBool(), cond_sid_, func_scope_id, l_);
+  op_lhs_  = NewVar(name_cond_, unit_.GetTypeBool(), cond_sid_, func_scope_id, l_);
+  op_rhs_  = NewVar(name_par,   unit_.GetTypeBool(), cond_sid_, func_scope_id, l_);
+  rhs_     = NewBinaryOp(op_lhs_, BinaryOp::kOr, op_rhs_, func_scope_id, l_);
+  stmt_    = NewAssignStmt(lhs_, rhs_, func_scope_id, l_ );
 
-  unit_.SetFuncOriginNode(*func_def);
+  stmts_.push_back(std::move(stmt_));
+  block_  = NewBlock(stmts_, func_scope_id, l_ );
+
+  func_def_ = NewFuncDef(decl_, block_, global_scope_id, l_);
+
+  unit_.SetFuncOriginNode(*func_def_);
   unit_.ExitFunctionDefinition();
   unit_.RestoreScope();
-  unit_.RegisterDecl(name, function_type, *decl, global_scope_id, sid);
+  unit_.RegisterDecl(name, function_type, *decl_, global_scope_id, sid_func);
+//   std::cout << "func: " << func_def->str() << "\n";
 }
 
 void LangLib::InitRTVars(){

@@ -57,28 +57,5 @@ private:
 };
 
 
-/*
-
-
-class StructType : public Type{
-public:
-  virtual ~PtrcType(){}
-
-
-  virtual size_t  Size() const noexcept{ return 1;};
-  virtual std::string str() const noexcept{
-    return std::string("BasicType not implemented.");
-  }
-
-  virtual bool IsBool() const noexcept{ return false;}
-  virtual bool IsPtr() const noexcept{ return false;}
-
-private:
-
-};
-
- */
-
-
 }//end namespace AST
 }//end namespace Compiler
