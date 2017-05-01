@@ -24,11 +24,11 @@ public:
   virtual void Visit(FuncDef const& p){
 //     std::cout << "Local offset\n";
     p.GetBody().Accept(*this);
-    
+
     IR::AddrOffset k            = p.NumPars() - 1;
     IR::AddrOffset arg_position = 0;
     IR::AddrOffset args_base    = 2;  //offset from ARP to to beginning of args in stack
-    
+
     if(func_.HasLocals()) args_base += 1;
     if(func_.IsMember())  args_base += 1;
 
@@ -43,12 +43,12 @@ public:
         IR::AddrOffset offset    =  (k - arg_position) + args_base;
         func_.StoreSymbolAddress( s.Id(), IR::Offset(offset, s.BareName())
                                 , func_.LocalsLabel(), size, func_.Params());
-        //std::cout << s.str() << " to offset: " << offset << std::endl;
+        std::cout << s.str() << " to offset: " << offset << std::endl;
       }
       ++arg_position;
     }
-    
-    
+
+
   }
 
   virtual void Visit(VarDecl const& p){
@@ -59,7 +59,7 @@ public:
     IR::Offset o;
     if(func_.IsMain())  o = IR::Offset(offset_, s.BareName());
     else                o = IR::Offset(-offset_, s.BareName());
-    
+
     func_.StoreSymbolAddress( s.Id(), o, func_.LocalsLabel(), size, func_.LocalVars());
     offset_ += size;
   };

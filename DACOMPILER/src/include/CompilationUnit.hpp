@@ -74,7 +74,7 @@ public:
     if(name == "main")  local = GetLabelMainLocals();
     else                local = NewFunctionARLabel(name);
     FunctionManager::NewFunction(name, symbol_id, ModuleAddressTable(), entry, local);
-    return NewNestedScope();
+    return NewNestedScopeFunction(name);
   }
 
 
@@ -86,7 +86,7 @@ public:
     Label local       = NewFunctionARLabel(mangled_name);
     Function& f = FunctionManager::NewFunction(name, symbol_id, class_name
       , ModuleAddressTable(), entry, local);
-    return NewNestedScope();
+    return NewNestedScopeFunction(name);
   }
 
   const Type& GetType(const std::string& name, const ScopeId scope_id){

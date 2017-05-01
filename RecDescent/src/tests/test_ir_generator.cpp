@@ -73,6 +73,8 @@ int main()
   CreateGrammarExpr(g);
 //   std::cout << g;
 
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "void main(){int a;}"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "void main(){int a,b,c; while(true){b=2+3;} c=3+4; }"), g);
@@ -90,14 +92,14 @@ int main()
     "int f(int p1){int a; a=p1; return a;} void main(){int a; a=f(2);}"), g);
 
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "class O1{int a_; int b_; int f(){return a_ + g();} int g(){return b_;} }") +  
+    "class O1{int a_; int b_; int f(){return a_ + g();} int g(){return b_;} }") +
     "void main(){O1 inst; int a; a = inst.f() + inst.a_;}", g);
-  
+
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "class A{int a; int fa(){return 1;}} class B{int b; int fb(){return 1;}}") +
     "class C: A, B{int c; int fc(){return 1;}}" +
-    "void main(){C inst; int a; a = inst.fc() + inst.fb() + inst.fa();}", g);  
-  
+    "void main(){C inst; int a; a = inst.fc() + inst.fb() + inst.fa();}", g);
+
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "class A        {int a; int fa(){return 1;}} ") +
     "class B : A    {int b; int fb(){return 1;}} " +
@@ -107,24 +109,24 @@ int main()
     "class F : E    {int f; int ff(){return 1;}} " +
     "class G : C,F  {int g; int fg(){return 1;}} " +
     "void main(){G inst; int a; a = inst.fa() + inst.fb() + inst.fc() + "
-    " inst.fd() + inst.fe() + inst.ff() + inst.fg();}", g);  
+    " inst.fd() + inst.fe() + inst.ff() + inst.fg();}", g);
 
   //LT labels VS RT labels
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "void main(){int a, b, c; a = a + 10; b = 11; c = 12;} ") +
     "int f(){int a, b, c;     a = a + 10; b = 11; c = 12;}"
     , g);
-  
+
   //equal comparison
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "void main(){bool b; int a, c; a = 10; c = 11; b = a == c;} ")
     , g);
-  
+
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(
-    "class A{int f(){return 1;}  }") +  
+    "class A{int f(){return 1;}  }") +
     "void main(){A inst; A* pi; int a; pi = &inst; a = (*p).f(); }", g);
-    
+
   //Causes sigsev (hahah)
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "void main(){int a; a= *&a;}"), g);

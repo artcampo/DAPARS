@@ -36,8 +36,11 @@ private:
   AST::PtrExpr ret_;
   AST::PtrStatement stmt_a_;
   AST::PtrStatement stmt_r_;
+  AST::PtrVarDeclList decl_list_;
+  AST::PtrStatement decl_stmt_;
 
-  void InitRTVars();
+  void InitRTVarsDecl();
+  void InitRTVarsDef();
   void InitRTFunctionTest();
 };
 

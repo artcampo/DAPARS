@@ -11,11 +11,12 @@ using namespace Common;
 namespace Library{
 
 void LangLib::InitCompilationUnit(){
-  InitRTVars();
+  InitRTVarsDecl();
   InitRTFunctionTest();
 }
 
 void LangLib::UpdateCompilationUnitPrePasses(){
+  InitRTVarsDef();
   (unit_.GetAstProg())->AddFunction(func_def_);
 }
 
@@ -54,10 +55,10 @@ void LangLib::InitRTFunctionTest(){
   rhs_     = NewBinaryOp(op_lhs_, BinaryOp::kOr, op_rhs_, func_scope_id, l_);
   stmt_a_  = NewAssignStmt(lhs_, rhs_, func_scope_id, l_ );
   ret_     = NewVar(name_cond_, unit_.GetTypeBool(), cond_sid_, func_scope_id, l_);
-  stmt_r_  = NewReturnStmt(ret_, *decl_, func_scope_id, l_);
+//   stmt_r_  = NewReturnStmt(ret_, *decl_, func_scope_id, l_);
 
   stmts_.push_back(std::move(stmt_a_));
-  stmts_.push_back(std::move(stmt_r_));
+//   stmts_.push_back(std::move(stmt_r_));
   block_  = NewBlock(stmts_, func_scope_id, l_ );
 
   func_def_ = NewFuncDef(decl_, block_, global_scope_id, l_);
@@ -71,14 +72,24 @@ void LangLib::InitRTFunctionTest(){
 
 }
 
-void LangLib::InitRTVars(){
-
+void LangLib::InitRTVarsDecl(){
   const Type& type                  = unit_.GetTypeBool();
-  const ScopeId global_scope_id     = unit_.GetGlobalLexicalScope().GetScopeId();
   cond_sid_  = unit_.FreeSymbolId();
+}
 
-  cond_test_var_decl_ = NewVarDecl(name_cond_, type, global_scope_id, l_);
+void LangLib::InitRTVarsDef(){
+  const ScopeId main_scope_id = unit_.GetLScope("main").GetScopeId();
+  const Type& type                  = unit_.GetTypeBool();
+  cond_test_var_decl_ = NewVarDecl(name_cond_, type, main_scope_id, l_);
   unit_.GetGlobalLexicalScope().RegisterDecl(name_cond_, type, *cond_test_var_decl_, cond_sid_);
+
+  std::vector<PtrVarDecl> l;
+  l.push_back(std::move(cond_test_var_decl_));
+  decl_list_ = NewVarDeclList(l, main_scope_id, l_);
+  decl_stmt_ = NewDeclStmt(decl_list_, main_scope_id, l_);
+  Block& b = unit_.GetFunc("main").GetFuncDefNode().GetBody();
+  b.AddStatement(decl_stmt_);
+  //
 }
 
 }//end namespace Library

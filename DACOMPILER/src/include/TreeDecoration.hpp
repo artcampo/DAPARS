@@ -49,20 +49,21 @@ public:
   void SetLScopeOfNode(const Node& n, const LexicalScope& s){
 //     std::cout << "Set: " << n->str() << ": " << t.str() << "\n";
     lscope_of_node_[&n]=&s;
-  }  
-  
+  }
+
 
   const Type& GetTypeOfNode(const Node& n){
 //     std::cout << "Get: " << n->str() << ": " << type_of_node_[n]->str() << "\n";
     return *type_of_node_[&n];
   }
-  
+
   const LexicalScope& GetLScopeOfNode(const Node& n){
 //     std::cout << "Get: " << n->str() << ": " << type_of_node_[n]->str() << "\n";
     return *lscope_of_node_[&n];
-  }    
+  }
 
   IR::MemAddr LocalVarMemAddr(const Var& n) const{
+    std::cout << "LocalVarMemAddr " << n.Id() << "\n";
     return module_offset_table_.GetMemAddr(n.Id());
   }
 
@@ -109,7 +110,7 @@ protected:
 
   std::map<const Node*, const LexicalScope*>  lscope_of_node_;
   std::map<const Node*, const Type*>  type_of_node_;
-  
+
   //This table contains offsets of vars of all the functions, and is meant
   //as a faster and more appropiate accesss to them
   AddressTable       module_offset_table_;

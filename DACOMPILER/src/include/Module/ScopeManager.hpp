@@ -64,6 +64,13 @@ public:
     return std::move(g);
   }
 
+
+  const ScopeId NewNestedScopeFunction(const std::string& func_name){
+    const ScopeId id = NewNestedScope();
+    lscope_by_function_name_[func_name] = id;
+    return id;
+  }
+
   const ScopeId NewNestedScope(){
     const ScopeId id = FreeScopeId();
     LexicalScope* new_scope;
@@ -108,6 +115,12 @@ public:
   }
 
 
+  LexicalScope& GetLScope(const std::string& func_name) const{
+    const ScopeId id = lscope_by_function_name_.at(func_name);
+    return dynamic_cast<LexicalScope&>(*scope_by_id_.at(id));
+  }
+
+
 //   LexicalScope& Scope() noexcept{return *current_scope_;}
 //   const LexicalScope& Scope() const noexcept{return *current_scope_;}
 
@@ -117,16 +130,17 @@ public:
 
 protected:
   const ScopeId FreeScopeId() noexcept{ return free_scope_id_++;}
-  
+
 // private:
   ScopeId                 free_scope_id_;
-  
+
   std::map<ScopeId,Scope*>   scope_by_id_;
   LexicalScope*     current_scope_;
   std::vector<PtrHierarchicalScope> hier_scopes_;
   std::map<std::string, ScopeId>    hscope_by_class_name_;
   std::map<TypeId, ScopeId>         hscope_by_class_typeid_;
   std::map<ScopeId,bool>            scope_is_lexical_or_hierarchical_;
+  std::map<std::string, ScopeId>    lscope_by_function_name_;
 
   ScopeId global_scope_id_;
 
