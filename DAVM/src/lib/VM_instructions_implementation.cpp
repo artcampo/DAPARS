@@ -78,7 +78,7 @@ bool VirtualMachine::InstTypeComparison (const Reg &reg_src1,
   using namespace SubtypesComparison;
   switch(sub_type){
     case IR_NOT:  InstNot(reg_src1, reg_src2, reg_dst); break;
-    case IR_EQL:  InstEql(reg_src1, reg_src2, reg_dst); break;
+    case IR_EQT:  InstEql(reg_src1, reg_src2, reg_dst); break;
     case IR_LST:  InstLst(reg_src1, reg_src2, reg_dst); break;
     case IR_LTE:  InstLte(reg_src1, reg_src2, reg_dst); break;
     default:      error_log_->errors.push_back("ari :: subtype not found");
