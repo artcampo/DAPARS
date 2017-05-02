@@ -28,6 +28,7 @@ bool VirtualMachine::InstTypeArihmetic (const Reg &reg_src1,
     case IR_SUB:  InstSub(reg_src1, reg_src2, reg_dst); break;
     case IR_MUL:  InstMul(reg_src1, reg_src2, reg_dst); break;
     case IR_DIV:  InstDiv(reg_src1, reg_src2, reg_dst); break;
+    case IR_MOV:  InstMov(reg_src1, reg_src2, reg_dst); break;
     default:      error_log_->errors.push_back("ari :: subtype not found");
                   error = true;                          break;
   }
@@ -115,6 +116,13 @@ void VirtualMachine::InstLte (const Reg &reg_src1,
   process_->execution_context_.registers_.registers[reg_dst] =
       process_->execution_context_.registers_.registers[reg_src1]
    <= process_->execution_context_.registers_.registers[reg_src2];
+}
+
+void VirtualMachine::InstMov (const Reg &reg_src1,
+  const Reg &reg_src2, const Reg &reg_dst){
+  std::cout << "MOV R"<<reg_dst<<"=R"<<reg_src1<<" \n";
+  process_->execution_context_.registers_.registers[reg_dst] =
+      process_->execution_context_.registers_.registers[reg_src1];
 }
 
 }//end namespace VM

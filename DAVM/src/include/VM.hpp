@@ -61,6 +61,9 @@ private:
   void InstLte (const Reg &reg_src1, const Reg &reg_src2, 
                        const Reg &reg_dst);  
   
+  void InstMov (const Reg &reg_src1, const Reg &reg_src2,
+                       const Reg &reg_dst);
+
 };
 
 }//end namespace VM

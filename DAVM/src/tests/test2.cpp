@@ -18,6 +18,7 @@ int main(){
   
   bc->stream = std::vector<uint32_t> {
     LoadI( IR_REG5, 42),
+    Move ( IR_REG5, IR_REG1),
     Add  ( IR_REG0, IR_REG1, IR_REG2),
     Sub  ( IR_REG0, IR_REG1, IR_REG2),
     Mul  ( IR_REG0, IR_REG1, IR_REG2),
