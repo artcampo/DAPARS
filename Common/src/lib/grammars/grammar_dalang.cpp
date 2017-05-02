@@ -1,6 +1,6 @@
 /*
  * Grammar for DAlang
- * 
+ *
  * Terminals are written in lowercase and non-terminals in uppercase.
  */
 
@@ -28,7 +28,7 @@ void CreateGrammarDalang(G& g){
   const Symbol equl  = g.AddTerminal("EQUL", "=", Tokenizer::kToken::equality);
   const Symbol lessthan = g.AddTerminal("LEST", "<", Tokenizer::kToken::lessthan);
   const Symbol equalto  = g.AddTerminal("EQLT", "==", Tokenizer::kToken::equalto);
-  
+
   const Symbol amps  = g.AddTerminal("AMPS", "&", Tokenizer::kToken::ampersand);
   const Symbol dot   = g.AddTerminal("DOT", ".", Tokenizer::kToken::dot);
   const Symbol colon = g.AddTerminal("COLON", ":", Tokenizer::kToken::colon);
@@ -51,7 +51,8 @@ void CreateGrammarDalang(G& g){
   const Symbol kwd_false = g.AddTerminalKeyword("FALSE", "false", Tokenizer::kToken::kwd_false);
 
   const Symbol kwd_or    = g.AddTerminalKeyword("OR", "or", Tokenizer::kToken::kwd_or);
-  
+  const Symbol kwd_and   = g.AddTerminalKeyword("AND", "and", Tokenizer::kToken::kwd_and);
+
 
 
   //Prog
@@ -87,10 +88,12 @@ void CreateGrammarDalang(G& g){
   //Expr
   const Symbol E      = g.AddNonTerminal("E");
   const Symbol EP     = g.AddNonTerminal("E'");
+  const Symbol AE     = g.AddNonTerminal("AE");
+  const Symbol AEP    = g.AddNonTerminal("AE''");
   const Symbol RE     = g.AddNonTerminal("RE");
   const Symbol REP    = g.AddNonTerminal("RE'");
   const Symbol NE     = g.AddNonTerminal("NE");
-  const Symbol NEP    = g.AddNonTerminal("NE'");  
+  const Symbol NEP    = g.AddNonTerminal("NE'");
   const Symbol T      = g.AddNonTerminal("T");
   const Symbol TP     = g.AddNonTerminal("T''");
   const Symbol F      = g.AddNonTerminal("F");
@@ -117,7 +120,7 @@ void CreateGrammarDalang(G& g){
   g.AddRule(Rule(DEFL,  {empty}));
 
   //TODO: use same style for two-word non-terminals
-  
+
   //Classes
   g.AddRule(Rule(CDEF,  {kwd_class, name, INHT_LIST, lcbr, MEMBER, rcbr}));
   g.AddRule(Rule(MEMBER_LIST, {TYPE, name, MEMBER, MEMBER_LIST}));
@@ -128,8 +131,8 @@ void CreateGrammarDalang(G& g){
   g.AddRule(Rule(INHT_LIST,  {colon, name_type, INHT_LISTP}));
   g.AddRule(Rule(INHT_LIST,  {empty}));
   g.AddRule(Rule(INHT_LISTP, {comma, name_type, INHT_LISTP}));
-  g.AddRule(Rule(INHT_LISTP, {empty}));  
-  
+  g.AddRule(Rule(INHT_LISTP, {empty}));
+
 
   //Functions
   g.AddRule(Rule(FDEF,   {TYPE, name, lpar, PARL, rpar, lcbr, STMTS, rcbr}));
@@ -174,18 +177,24 @@ void CreateGrammarDalang(G& g){
   g.AddRule(Rule(NAME_LISTP, {empty}));
 
   //Expr
-  g.AddRule(Rule(E,   {RE, EP}));
-  g.AddRule(Rule(EP,  {kwd_or, RE, EP}));
+  g.AddRule(Rule(E,   {AE, EP}));
+  g.AddRule(Rule(EP,  {kwd_or, AE, EP}));
   g.AddRule(Rule(EP,  {empty}));
+
+  g.AddRule(Rule(AE,   {RE, AEP}));
+  g.AddRule(Rule(AEP,  {kwd_and, RE, AEP}));
+  g.AddRule(Rule(AEP,  {empty}));
+
   g.AddRule(Rule(RE,  {NE, REP}));
   g.AddRule(Rule(REP, {lessthan, NE, REP}));
-  g.AddRule(Rule(REP, {equalto,  NE, REP}));    
+  g.AddRule(Rule(REP, {equalto,  NE, REP}));
   g.AddRule(Rule(REP, {empty}));
+
   g.AddRule(Rule(NE,  {T, NEP}));
   g.AddRule(Rule(NEP, {plus, T, NEP}));
   g.AddRule(Rule(NEP, {empty}));
 //   g.AddRule(Rule(NEP, {minu, T, NEP}));
-  
+
   g.AddRule(Rule(T,   {F}));
 
   g.AddRule(Rule(F,  {amps, FP}));

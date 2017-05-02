@@ -16,8 +16,8 @@ ParseKeyword(std::vector<char>::const_iterator& current_position
   if(chars_left >= 2
     and *(current_position + 0) == '=' and *(current_position + 1) == '='){
     current_position += 2; t = kToken::equalto; return true;
-  }  
-  
+  }
+
   //if
   if(chars_left >= 2
     and *(current_position + 0) == 'i' and *(current_position + 1) == 'f'){
@@ -94,8 +94,14 @@ ParseKeyword(std::vector<char>::const_iterator& current_position
   if(chars_left >= 2
     and *(current_position + 0) == 'o' and *(current_position + 1) == 'r'){
     current_position += 2; t = kToken::kwd_or; return true;
-  }  
-  
+  }
+
+  if( chars_left >= 3
+     and *(current_position) == 'a'  and *(current_position + 1) == 'n'
+     and *(current_position + 2) == 'd'){
+    current_position += 3; t = kToken::kwd_and; return true;
+  }
+
   //TODO: delete these
   //For dragon test grammar
   if(chars_left >= 2){
@@ -150,7 +156,7 @@ ParseNumerical(std::vector<char>::const_iterator& current_position
 kToken
 ParseToken(std::vector<char>::const_iterator& current_position
              , std::vector<char>::const_iterator end_position) noexcept{
-  //TODO:OPT: use switch             
+  //TODO:OPT: use switch
   if(*current_position == '('){ ++current_position; return kToken::lpar; }
   if(*current_position == ')'){ ++current_position; return kToken::rpar; }
   if(*current_position == '{'){ ++current_position; return kToken::lcbr; }
@@ -159,7 +165,7 @@ ParseToken(std::vector<char>::const_iterator& current_position
   if(*current_position == '*'){ ++current_position; return kToken::astk; }
   if(*current_position == ';'){ ++current_position; return kToken::semicolon; }
   if(*current_position == ','){ ++current_position; return kToken::comma; }
-  
+
   if(*current_position == '<'){ ++current_position; return kToken::lessthan; }
   if(*current_position == '&'){ ++current_position; return kToken::ampersand; }
   if(*current_position == '.'){ ++current_position; return kToken::dot; }
@@ -173,7 +179,7 @@ ParseToken(std::vector<char>::const_iterator& current_position
   if(ParseName(current_position, end_position)) return kToken::name;
 
   if(*current_position == '='){ ++current_position; return kToken::equality; }
-  
+
   return kToken::error;
 }
 
@@ -208,9 +214,10 @@ std::string str(const kToken& t){
 
     case kToken::kwd_true:  return "true";  break;
     case kToken::kwd_false: return "false";  break;
-    
+
     case kToken::kwd_or:    return "or";  break;
-    
+    case kToken::kwd_and:   return "and";  break;
+
     case kToken::numerical: return "num";  break;
     case kToken::name:      return "name";  break;
 

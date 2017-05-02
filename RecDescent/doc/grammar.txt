@@ -26,7 +26,7 @@ INHT_LIST := : ntype INHT_LIST'
           |  empty
 INHT_LIST':= , ntype INHT_LIST'
           |  empty
-        
+
 ---------------------------------------------
 
 PARL    := empty
@@ -51,11 +51,14 @@ IFELSE:= else{STMTS}
 
 ---------------------------------------------
 
-Expr    := RelExpr Expr'
-Expr'   := or RelExpr
+Expr    := AndExpr Expr'
+Expr'   := or AndExpr Expr'
+        |  empty
+AndExpr := RelExpr AndExpr'
+AndExpr':= and RelExpr AndExpr'
         |  empty
 RelExpr := NumExpr RelExpr'
-RelExpr':= < NumExpr 
+RelExpr':= < NumExpr RelExpr'
         |  empty
 NE    := T NE'
 NE'   := + T NE'
