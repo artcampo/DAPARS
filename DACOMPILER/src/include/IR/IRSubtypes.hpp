@@ -10,20 +10,21 @@ using Addr        = size_t; //for @ to code
 using Reg         = size_t;
 
 //0 can only point to start of main, which is not referenced
-const static Addr kAddrUninitialized = 0; 
+const static Addr kAddrUninitialized = 0;
 
 const static int kNumArgsInRegister = 1;
 
 enum class ArithType{
     kAdd = 0
-  //unused  
+  //unused
   , kSub = 1
   , kMul = 2
   , kDiv = 3
 };
 
 enum class LogicType{
-    kOr = 0
+    kOr   = 0
+  , kAnd  = 1
 };
 
 enum class CompType{

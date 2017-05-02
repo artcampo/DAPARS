@@ -805,3 +805,47 @@ LT entry_main[isTarget]
 8: ReturnMain
 LT entry___test[isTarget]
 
+---------------------------------------------------
+Parsing: "void main(){bool a,b; a = true; b = false; a = a and b;} "
+
+Scopes of module:
+Scope 0: {(4:main) }
+Scope 2: {(5:a) (6:b) }
+
+
+AST fully decorated dump:
+[FDef] FuncDef: main
+-[VDec] bool a 
+[VDec] bool b 
+-[Assgn] 
+--[Var] a [bool Lvalue Write Value Nmemb]
+--[Lit] 1 [bool Rvalue]
+-[Assgn] 
+--[Var] b [bool Lvalue Write Value Nmemb]
+--[Lit] 0 [bool Rvalue]
+-[Assgn] 
+--[Var] a [bool Lvalue Write Value Nmemb]
+--Op: and  [bool Rvalue]
+---[Var] a [bool Lvalue Read Value Nmemb]
+---[Var] b [bool Lvalue Read Value Nmemb]
+- 
+
+
+Declaration Table:
+4: Symbol: [ in scope 0 main of type function: ()->void]
+5: Symbol: [ in scope 2 a of type bool]
+6: Symbol: [ in scope 2 b of type bool]
+
+IR dump:
+LT entry_main[isTarget]
+0: %0 = LoadI(1)
+1: store %0 to [LT MainDS:0 (a)]
+2: %2 = LoadI(0)
+3: store %2 to [LT MainDS:1 (b)]
+4: %4 = Load [LT MainDS:0 (a)]
+5: %5 = Load [LT MainDS:1 (b)]
+6: %6 = %4 and %5
+7: store %6 to [LT MainDS:0 (a)]
+8: ReturnMain
+LT entry___test[isTarget]
+

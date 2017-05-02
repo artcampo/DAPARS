@@ -193,6 +193,10 @@ void IRGenerator::Visit(BinaryOp const& n, const Node* successor){
     const IR::LogicType op = IR::LogicType::kOr;
     r = CurrentStream().AppendLogic(reg_src1, reg_src2, op);
   }
+  if(op == BinaryOp::kAnd){
+    const IR::LogicType op = IR::LogicType::kAnd;
+    r = CurrentStream().AppendLogic(reg_src1, reg_src2, op);
+  }
   if(op == BinaryOp::kLessThan){
     const IR::CompType op = IR::CompType::kLessThan;
     r = CurrentStream().AppendComparison(reg_src1, reg_src2, op);

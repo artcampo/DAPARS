@@ -63,7 +63,7 @@ std::string BinaryOp::OpString() const noexcept{
   if (op == Op::kAdd )      return " + ";
   if (op == Op::kLessThan ) return " < ";
   if (op == Op::kOr )       return " or ";
-  if (op == Op::kAnd)       return " or ";
+  if (op == Op::kAnd)       return " and ";
   if (op == Op::kEqualTo )  return " == ";
 }
 

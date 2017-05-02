@@ -29,11 +29,11 @@ public:
     p.Rhs().Accept(*this);
     const int op = p.op;
     if(op == BinaryOp::kAdd)      unit_.SetTypeOfNode(p, unit_.GetTypeOfNode(p.Lhs()));
-    if(op == BinaryOp::kOr)       unit_.SetTypeOfNode(p, unit_.GetTypeBool());
-    if(op == BinaryOp::kLessThan) unit_.SetTypeOfNode(p, unit_.GetTypeBool());
-    if(op == BinaryOp::kEqualTo)  unit_.SetTypeOfNode(p, unit_.GetTypeBool());
+    if(op == BinaryOp::kOr or op == BinaryOp::kAnd or op == BinaryOp::kLessThan
+      or op == BinaryOp::kEqualTo)
+      unit_.SetTypeOfNode(p, unit_.GetTypeBool());
   }
-  
+
   virtual void Visit(AssignStmt const& p){
     p.Lhs().Accept(*this);
     p.Rhs().Accept(*this);
@@ -93,13 +93,13 @@ public:
     unit_.SetTypeOfNode(p, dotop_type);
   };
 
-  virtual void Visit(ClassDef const& p){ 
-    for(const auto& it : p) it->Accept(*this); 
+  virtual void Visit(ClassDef const& p){
+    for(const auto& it : p) it->Accept(*this);
     const LexicalScope& lscope = unit_.GetLScopeOfNode(p);
     const Type& type = lscope.PostGetType(p.Name());
     unit_.SetTypeOfNode(p, type);
-  }  
-  
+  }
+
   //Traversal
   virtual void Visit(ProgBody const& p){
     p.GetProgInit().Accept(*this);

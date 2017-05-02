@@ -15,7 +15,8 @@ std::string str(const ArithType op) noexcept{
 }
 
 std::string str(const LogicType op) noexcept{
-  if(op == LogicType::kOr) return std::string("or");
+  if(op == LogicType::kOr)  return std::string("or");
+  if(op == LogicType::kAnd) return std::string("and");
   return std::string("not implemented, code 42");
 }
 

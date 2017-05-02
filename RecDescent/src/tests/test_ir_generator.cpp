@@ -122,6 +122,11 @@ int main()
     "void main(){bool b; int a, c; a = 10; c = 11; b = a == c;} ")
     , g);
 
+  //and
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "void main(){bool a,b; a = true; b = false; a = a and b;} ")
+    , g);
+
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "class A{int f(){return 1;}  }") +
