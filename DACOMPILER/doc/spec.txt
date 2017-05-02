@@ -27,17 +27,24 @@ Parameter list can be empty.
 Argument list can be empty.
 Return statement is mandatory if return type is not void.
 
+Only pass by value is supported, though you can use pointers
+to any type, so you can pass by reference.
+
 -- Objects
-No inheritance (to be soon changed).
+Multiple inheritance.
 Closed class structure.
 
 -- Operators
 The order of preference is as follows:
 1) &, *
 2) +
-3) <
+3) <, ==
+4) and
+5) or
 
 ------------------------------------
+
+Proposal for pointer syntax
 
 ptr<int>
 ptr<void (int, int)>
