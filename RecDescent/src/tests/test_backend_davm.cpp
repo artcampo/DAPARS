@@ -134,9 +134,14 @@ int main()
     "void main(){bool b; int a, c; a = 10; c = 11; b = a == c;} ")
     , g);
 
-//lang_lib: test
+  //lang_lib: test
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "bool main(){int a, b; a = 1; b = 2; return __test(false); } ")
+    , g);
+
+  //and
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "void main(){bool a,b; a = true; b = false; a = a and b;} ")
     , g);
 
   return 0;

@@ -91,10 +91,10 @@ enum IRCodf {
   IR_LOADI  = InstClassRegLit + (IR_CID_LOADI  << kClassNumBits),
   IR_STORE  = InstClassRegLit + (IR_CID_STORE  << kClassNumBits),
   IR_LOADB  = InstClassRegLit + (IR_CID_LOADB  << kClassNumBits),
-  IR_STOREB = InstClassRegLit + (IR_CID_STOREB << kClassNumBits),  
+  IR_STOREB = InstClassRegLit + (IR_CID_STOREB << kClassNumBits),
   IR_PUSH   = InstClassRegLit + (IR_CID_PUSH   << kClassNumBits),
   IR_POP    = InstClassRegLit + (IR_CID_POP    << kClassNumBits),
-  
+
   //Class 2
   IR_JMPC  = InstClassRegLitSub + (IR_CID_JMPC << kClassNumBits),
   IR_ARII  = InstClassRegLitSub + (IR_CID_ARII << kClassNumBits),
@@ -127,7 +127,8 @@ enum IRSubtypesComparison{
 
 namespace SubtypesLogic{
 enum IRSubtypesLogic{
-  IR_OR = 0,
+  IR_OR  = 0,
+  IR_AND = 1,
 };
 };
 

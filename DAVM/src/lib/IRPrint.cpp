@@ -30,7 +30,7 @@ std::string ArithString(const Reg reg_src1, const Reg reg_src2
     s = s + to_string(reg_src1) + string(" rs") +
         to_string(reg_src2) + string(" rd") + to_string(reg_dst);
   else
-    s = s + to_string(reg_src1) + string(" rd") + to_string(reg_dst);  
+    s = s + to_string(reg_src1) + string(" rd") + to_string(reg_dst);
   return s;
 }
 
@@ -39,12 +39,13 @@ std::string LogicOpString(const Reg reg_src1, const Reg reg_src2
   using namespace std;
   using namespace SubtypesLogic;
   std::string s;
-  
+
   switch(sub_type){
     case IR_OR:  s = string("OR, rs"); break;
+    case IR_AND: s = string("AND, rs"); break;
     default:     s = string(" - ERROR in print decode -"); break;
   }
-  
+
   s = s + to_string(reg_src1) + string(" rs") +
       to_string(reg_src2) + string(" rd") + to_string(reg_dst);
   return s;
@@ -64,7 +65,7 @@ std::string ArithString(const Reg reg_dst, const SubInst literal, const SubInst 
     case IR_MOV: s = string("MOVI, rd"); three_regs = false; break;
     default:     s = string(" - ERROR in print decode -"); break;
   }
-  s += to_string(reg_dst) + string(" ") + to_string(literal);  
+  s += to_string(reg_dst) + string(" ") + to_string(literal);
   return s;
 }
 
@@ -72,7 +73,7 @@ std::string PrintInstruction(const Inst& instruction){
   const SubInst current_class   = DecodeClass(instruction);
   const SubInst current_type    = DecodeType(instruction, current_class);
   const SubInst current_op_code = DecodeOpCode(current_class, current_type);
-  
+
   Reg     reg_src1, reg_src2, reg_dst, reg_base;
   SubInst sub_type, op_offset;
   Word    literal;
@@ -109,24 +110,24 @@ std::string PrintInstruction(const Inst& instruction){
       break;
     case IR_CALL:
       s = string("CALL: @") + to_string(literal);
-      break;      
+      break;
     case IR_NEW_VAR:
       s = string("NEWVAR: TypeId") + to_string(literal);
       break;
     case IR_RET:
       s = string("RETURN");
-      break;      
-      
+      break;
+
     //Class 1
     case IR_LOAD:
       s = string("LOAD, rd") + to_string(reg_dst) + " <- [@" +
           to_string(literal) + "]";
-      break;      
+      break;
     case IR_LOADI:
       s = string("LOADI, r") + to_string(reg_dst) + " val: " +
           to_string(literal);
       break;
-    case IR_STORE:  
+    case IR_STORE:
       s = string("STORE, r") + to_string(reg_dst) + " -> [@" +
           to_string(literal) + "]";
       break;
@@ -134,17 +135,17 @@ std::string PrintInstruction(const Inst& instruction){
       s = string("LOADB, r") + to_string(reg_dst) + " <- [@ " +
           "r" + to_string(reg_base) + " + " + to_string(literal) + "]";
       break;
-    case IR_STOREB:  
+    case IR_STOREB:
       s = string("STORE, r") + to_string(reg_dst) + " -> [@" +
           "r" + to_string(reg_base) + " + " + to_string(literal) + "]";
       break;
-    case IR_POP:  
-      s = string("POP, r") + to_string(reg_dst);      
+    case IR_POP:
+      s = string("POP, r") + to_string(reg_dst);
       break;
-    case IR_PUSH:  
+    case IR_PUSH:
       s = string("PUSH, r") + to_string(reg_dst);
-      break;      
-      
+      break;
+
     //Class 2
     case IR_JMPC:
       s = string("JUMPIF ");
@@ -154,7 +155,7 @@ std::string PrintInstruction(const Inst& instruction){
       break;
     case IR_ARII:
       s = ArithString(reg_dst, literal, sub_type);
-      break;      
+      break;
 
     //Class 3
     case IR_ARI:
@@ -172,9 +173,9 @@ std::string PrintInstruction(const Inst& instruction){
       s = s + to_string(reg_src1) + string(" rs") +
           to_string(reg_src2) + string(" rd") + to_string(reg_dst);
       break;//case IR_CMP
-    case IR_LOGIC:  
+    case IR_LOGIC:
       s = LogicOpString(reg_src1, reg_src2, reg_dst, sub_type);
-      break;//case IR_LOGIC      
+      break;//case IR_LOGIC
     default: s = string(" - ERROR in print decode -"); break;
   };
 

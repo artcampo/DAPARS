@@ -38,11 +38,11 @@ public:
     ComputeMainDataSegment();
     for(auto& it : ir_unit_.streams_) Visit(*it);
     BackpathCallTargets();
-    
+
     std::cout << "---------\nBytecode:\n";
     VM::VMUtils::print(byte_code_, true);
   }
-  
+
   void LoadCallBack(const MReg reg_dst, const IR::MemAddr addr) override {
 //     std::cout << "Load callback\n" << reg_dst <<"\n";
     if(addr.GetLabel().IsRunTime()){
@@ -56,7 +56,7 @@ public:
     if(addr.GetLabel().IsLinkTime())
       byte_code_.Append( VM::IRBuilder::Load(reg_dst, mem_alloc_.Remap(addr)));
   }
-  
+
   void StoreCallBack(const MReg reg_src, const IR::MemAddr addr) override {
 //     std::cout << "Load callback\n" << reg_dst <<"\n";
     if(addr.GetLabel().IsRunTime()){
@@ -69,14 +69,14 @@ public:
     }
     if(addr.GetLabel().IsLinkTime())
       byte_code_.Append( VM::IRBuilder::Store(reg_src, mem_alloc_.Remap(addr)));
-  }  
-  
+  }
+
   VM::ByteCode& GetByteCode() noexcept { return byte_code_; }
   const VM::ByteCode& GetByteCode() const noexcept { return byte_code_; }
-  
+
 private:
   VM::ByteCode      byte_code_;
-  RegisterAllocator reg_alloc_;  
+  RegisterAllocator reg_alloc_;
   MemAllocator      mem_alloc_;
   bool              is_first_arg_;
   int               pushed_args_for_current_call_;
@@ -86,7 +86,7 @@ private:
   std::map<IR::Addr, VM::Target>    jump_backpatch_translation_;
   VM::Target  call_backpatch_free_id_;
   IR::Addr    ir_inst_addr_;
-  
+
   void Visit(IR::IRStream& stream){
     is_first_arg_ = true;
     pushed_args_for_current_call_ = 0;
@@ -99,14 +99,14 @@ private:
     if(not is_main) basic_register_usage++;
     //Account for this_ptr
     if(stream.GetFunction().IsMember()) basic_register_usage++;
-      
+
     //Save address to backpatch calls to this function
     CallBackPatchTranslation( stream.EntryMemAddr()
                             , byte_code_.NextAddress());
-    
+
     //Add function desc to BC
     byte_code_.AddFunction(mname, byte_code_.NextAddress());
-    
+
     //Translate
     reg_alloc_.Reset( stream.MaxRegUsed(), basic_register_usage );
     if(not is_main) FuncPrologue(stream.GetFunction());
@@ -114,7 +114,7 @@ private:
       //Store translation of address from IR to VM's bytecode
       VM::Addr address_of_vm_inst = byte_code_.NextAddress();
       JumpBackPatchTranslation(ir_inst_addr_, address_of_vm_inst);
-      
+
       it->Accept(*this);
       ir_inst_addr_++;  //keep track of current IR's instruction offset
     }
@@ -125,7 +125,7 @@ private:
   void Visit(const IR::Inst::Inst& inst) override{
     std::cout << "Not implemented: " << inst.str() << "\n";
   }
-  
+
   void Visit(const IR::Inst::JumpCond& inst) override{
     std::cout << inst.str() << "\n";
     IssuePreBasicBlocEnding();
@@ -137,36 +137,36 @@ private:
     else
       byte_code_.Append( VM::IRBuilder::JumpIfFalse(rc.mreg_, target_id));
   }
-  
+
   void Visit(const IR::Inst::JumpIncond& inst) override{
     std::cout << inst.str() << "\n";
     IssuePreBasicBlocEnding();
     VM::Target target_id = BackpatchId(inst.GetTarget());
     byte_code_.Append( VM::IRBuilder::Jump(target_id));
   }
-  
+
   void Visit(const IR::Inst::LoadI& inst) override{
     std::cout << inst.str() << "\n";
     RegMap rd = reg_alloc_.IRReg( inst.RegDst() );
     reg_alloc_.GetRegLoadI(rd);
     byte_code_.Append( VM::IRBuilder::LoadI(rd.mreg_, inst.Value()));
   }
-  
+
   void Visit(const IR::Inst::Load& inst) override{
     std::cout << inst.str() << "\n";
     RegMap rd = reg_alloc_.IRReg    (inst.RegDst());
     RegMap rs = reg_alloc_.IRMemAddr(inst.Addr());
     reg_alloc_.GetRegLoad(rd, rs);
   }
-  
+
   void Visit(const IR::Inst::LoadReg& inst) override{
     std::cout << inst.str() << " !!!LoadReg\n";
   }
-  
+
   void Visit(const IR::Inst::LoadRegOffs& inst) override{
     std::cout << inst.str() << " !!!LoadRegOffs\n";
   }
-  
+
   void Visit(const IR::Inst::Store& inst) override{
     std::cout << inst.str() << "\n";
     RegMap rs = reg_alloc_.IRReg    (inst.RegSrc());
@@ -174,68 +174,69 @@ private:
     reg_alloc_.GetRegStore(rs, rd);
     StoreCallBack(rs.mreg_, inst.Addr());
   }
-  
+
   void Visit(const IR::Inst::StoreReg& inst) override{
     std::cout << inst.str() << " !!!\n";
   }
-  
+
   void Visit(const IR::Inst::Arith& inst) override{
     std::cout << inst.str() << "\n";
     RegMap rd  = reg_alloc_.IRReg( inst.RegDst() );
     RegMap rs1 = reg_alloc_.IRReg( inst.RegSrc1() );
     RegMap rs2 = reg_alloc_.IRReg( inst.RegSrc2() );
     reg_alloc_.GetRegArith(rd, rs1, rs2);
-    
+
     int op = VM::IRDefinition::SubtypesArithmetic::IR_ADD;
     byte_code_.Append( VM::IRBuilder::Arith(rs1.mreg_, rs2.mreg_, rd.mreg_, op));
   }
-  
+
   void Visit(const IR::Inst::Logic& inst) override{
     std::cout << inst.str() << "\n";
     RegMap rd  = reg_alloc_.IRReg( inst.RegDst() );
     RegMap rs1 = reg_alloc_.IRReg( inst.RegSrc1() );
     RegMap rs2 = reg_alloc_.IRReg( inst.RegSrc2() );
     reg_alloc_.GetRegArith(rd, rs1, rs2);
-    
-    int op = VM::IRDefinition::SubtypesLogic::IR_OR;
-    byte_code_.Append( VM::IRBuilder::Logic(rs1.mreg_, rs2.mreg_, rd.mreg_, op));    
-  }  
-  
+
+    int op;
+    if(inst.Op() == IR::LogicType::kOr)  op = VM::IRDefinition::SubtypesLogic::IR_OR;
+    if(inst.Op() == IR::LogicType::kAnd) op = VM::IRDefinition::SubtypesLogic::IR_AND;
+
+    byte_code_.Append( VM::IRBuilder::Logic(rs1.mreg_, rs2.mreg_, rd.mreg_, op));
+  }
+
   void Visit(const IR::Inst::Comparison& inst) override{
     std::cout << inst.str() << "\n";
     RegMap rd  = reg_alloc_.IRReg( inst.RegDst() );
     RegMap rs1 = reg_alloc_.IRReg( inst.RegSrc1() );
     RegMap rs2 = reg_alloc_.IRReg( inst.RegSrc2() );
     reg_alloc_.GetRegArith(rd, rs1, rs2);
-    
+
     int op;
-    if(inst.Op() == IR::CompType::kLessThan) 
-      op = VM::IRDefinition::SubtypesComparison::IR_LST;
-    if(inst.Op() == IR::CompType::kEqualTo ) 
-      op = VM::IRDefinition::SubtypesComparison::IR_EQT;
-    
-    byte_code_.Append( VM::IRBuilder::Comp(rs1.mreg_, rs2.mreg_, rd.mreg_, op));    
-  }  
-  
+    if(inst.Op() == IR::CompType::kLessThan) op = VM::IRDefinition::SubtypesComparison::IR_LST;
+    if(inst.Op() == IR::CompType::kEqualTo ) op = VM::IRDefinition::SubtypesComparison::IR_EQT;
+
+    byte_code_.Append( VM::IRBuilder::Comp(rs1.mreg_, rs2.mreg_, rd.mreg_, op));
+  }
+
   void Visit(const IR::Inst::PtrElem& inst) override{
     std::cout << inst.str() << " !!!\n";
-  }  
-  
+  }
+
   void Visit(const IR::Inst::GetRetVal& inst) override{
     std::cout << inst.str() << "\n";
     RegMap rd     = reg_alloc_.IRReg( inst.RegDst() );
     MReg rs_mreg  = reg_alloc_.MRegRetValue();
     reg_alloc_.GetRegGetRetVal(rd);
-    byte_code_.Append( VM::IRBuilder::Move(rs_mreg, rd.mreg_));    
-  }  
-  
+    byte_code_.Append( VM::IRBuilder::Move(rs_mreg, rd.mreg_));
+  }
+
   void Visit(const IR::Inst::SetRetVal& inst) override{
     std::cout << inst.str() << "\n";
     RegMap rs = reg_alloc_.IRReg(inst.RegSrc());
     reg_alloc_.GetRegRead(rs);
       byte_code_.Append( VM::IRBuilder::Move(rs.mreg_, reg_alloc_.MRegRetValue()));
-  }  
-  
+  }
+
   void Visit(const IR::Inst::SetArg& inst) override{
     std::cout << inst.str() << "\n";
     if(is_first_arg_){
@@ -247,7 +248,7 @@ private:
         RegMap rd = reg_alloc_.ForceReg( reg_alloc_.MRegRetValue() );
         byte_code_.Append( VM::IRBuilder::Move(rs.mreg_, rd.mreg_));
       }
-    
+
     }else{
       //push arg to the stack
       RegMap rs = reg_alloc_.IRReg(inst.RegSrc());
@@ -256,31 +257,31 @@ private:
       ++pushed_args_for_current_call_;
     }
     is_first_arg_ = false;
-  }  
-  
+  }
+
   void Visit(const IR::Inst::GetArg& inst) override{
     std::cout << inst.str() << "\n";
     RegMap rd = reg_alloc_.IRReg( inst.RegDst() );
     rd.mreg_  = inst.Value ();
     reg_alloc_.SetRegGetArg(rd);
-  }    
-  
+  }
+
   void Visit(const IR::Inst::Return& inst) override{
     std::cout << inst.str() << "\n";
     IssuePreBasicBlocEnding();
     //Return emitted alongside epilogue
-  }  
-  
+  }
+
   void Visit(const IR::Inst::ReturnMain& inst) override{
     std::cout << inst.str() << "\n";
     IssuePreBasicBlocEnding();
     byte_code_.Append( VM::IRBuilder::Stop());
-  }  
-  
+  }
+
   void Visit(const IR::Inst::Call& inst) override{
     std::cout << inst.str() << "\n";
     IssuePreBasicBlocEnding();
-    
+
     if(inst.Addr().GetLabel().IsLinkTime()){
 //       std::cout << "call to: " << inst.Addr().str()<<"\n";
       VM::Target target_id = BackpatchId(inst.Addr());
@@ -288,31 +289,31 @@ private:
     }else{
       //TODO: call through computed register
     }
-    
+
     if(pushed_args_for_current_call_ > 0){
       //effectively pop all pushed args at once
       byte_code_.Append( VM::IRBuilder::ArithI(reg_alloc_.MRegStackPtr()
                                 , pushed_args_for_current_call_
-                                , VM::IRDefinition::SubtypesArithmetic::IR_ADD));      
+                                , VM::IRDefinition::SubtypesArithmetic::IR_ADD));
     }
-    
+
     //prepare for next call
-    is_first_arg_ = true; 
+    is_first_arg_ = true;
     pushed_args_for_current_call_ = 0;
   }
-private:  
-  
+private:
+
   void FuncPrologue(const Function& f){
     //Push used registers
     if(f.IsMember())
       byte_code_.Append( VM::IRBuilder::Push( reg_alloc_.MRegThisPtr() ));
     if(f.HasLocals())
       byte_code_.Append( VM::IRBuilder::Push( reg_alloc_.MRegArpPtr() ));
-    
+
     //Set ARP
     byte_code_.Append( VM::IRBuilder::Move( reg_alloc_.MRegStackPtr()
                                           , reg_alloc_.MRegArpPtr() ));
-    
+
     //Alloc locals in satck
     if(f.HasLocals()){
       const size_t  locals_size = f.LocalVars().Size();
@@ -322,9 +323,9 @@ private:
                                 , VM::IRDefinition::SubtypesArithmetic::IR_SUB));
     }
   }
-  
+
   void FuncEpilogue(const Function& f){
-    if(f.HasLocals()){ 
+    if(f.HasLocals()){
       byte_code_.Append( VM::IRBuilder::Move( reg_alloc_.MRegArpPtr()
                                             , reg_alloc_.MRegStackPtr()));
       byte_code_.Append( VM::IRBuilder::Pop( reg_alloc_.MRegArpPtr() ));
@@ -336,8 +337,8 @@ private:
 
   void IssuePreBasicBlocEnding(){
     reg_alloc_.Flush();
-  }  
-  
+  }
+
   //Other functions that do not handle sections of IR
   void ComputeMainDataSegment(){
     auto main = unit_.GetFunc("main");
@@ -350,7 +351,7 @@ private:
     }
     //mem_alloc_.Remap();
   }
-  
+
   //Jumps refer to their IR address, and will have to be translated later
   //to the VM address where the original instruction was placed
   VM::Target  BackpatchId(const IR::Addr addr){return addr;}
@@ -361,11 +362,11 @@ private:
   }
   VM::Target JumpPatch(const IR::Addr addr){
 //     for(const auto& it : jump_backpatch_ids_) std::cout << it.first <<":" <<it.second << " ";
-//     std::cout << "\n"; 
+//     std::cout << "\n";
 //     std::cout << "ask : " << addr;
     return jump_backpatch_translation_.at(addr);
   }
-  
+
   //Calls refer to MemAddr (label,offset) and thus need an intermediate
   //identifier, which after producing the VM's function can be changed
   VM::Target BackpatchId(const IR::MemAddr addr){
@@ -384,8 +385,8 @@ private:
     const IR::MemAddr addr = call_backpatch_ids_inverse_.at(target);
     return call_backpatch_translation_.at(addr);
   }
-  
-  
+
+
   void BackpathCallTargets(){
     for(auto& inst : byte_code_.stream){
       VM::Target target;
@@ -395,7 +396,7 @@ private:
         VM::IRBuilder::PatchCall(inst, CallPatch(target));
     }
   }
-  
+
 };
 
 

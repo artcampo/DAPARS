@@ -53,7 +53,7 @@ void LangLib::InitRTFunctionTest(){
   lhs_     = NewVar(name_cond_, unit_.GetTypeBool(), cond_sid_, func_scope_id, l_);
   op_lhs_  = NewVar(name_cond_, unit_.GetTypeBool(), cond_sid_, func_scope_id, l_);
   op_rhs_  = NewVar(name_par,   unit_.GetTypeBool(), cond_sid_, func_scope_id, l_);
-  rhs_     = NewBinaryOp(op_lhs_, BinaryOp::kOr, op_rhs_, func_scope_id, l_);
+  rhs_     = NewBinaryOp(op_lhs_, BinaryOp::kAnd, op_rhs_, func_scope_id, l_);
   stmt_a_  = NewAssignStmt(lhs_, rhs_, func_scope_id, l_ );
   ret_     = NewVar(name_cond_, unit_.GetTypeBool(), cond_sid_, func_scope_id, l_);
 //   stmt_r_  = NewReturnStmt(ret_, *decl_, func_scope_id, l_);
