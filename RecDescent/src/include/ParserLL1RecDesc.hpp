@@ -38,13 +38,16 @@ private:
   //Expr
   PtrExpr Expr(const ScopeId scope_inht);
   PtrExpr ExprPrime(PtrExpr& eprime_inht, const ScopeId scope_inht);
-  
+
+  PtrExpr AndExpr(const ScopeId scope_inht);
+  PtrExpr AndExprPrime(PtrExpr& eprime_inht, const ScopeId scope_inht);
+
   PtrExpr RelExpr(const ScopeId scope_inht);
-  PtrExpr RelExprPrime(PtrExpr& eprime_inht, const ScopeId scope_inht); // make it const
-  
+  PtrExpr RelExprPrime(PtrExpr& eprime_inht, const ScopeId scope_inht);
+
   PtrExpr NumExpr(const ScopeId scope_inht);
-  PtrExpr NumExprPrime(PtrExpr& eprime_inht, const ScopeId scope_inht); // make it const
-  
+  PtrExpr NumExprPrime(PtrExpr& eprime_inht, const ScopeId scope_inht);
+
   PtrExpr Term(const ScopeId scope_inht);
   PtrExpr Factor(const ScopeId scope_inht);
   PtrExpr FactorPrime(const ScopeId scope_inht);
@@ -99,7 +102,7 @@ private:
     , std::vector<PtrFuncDef>& func_def_inht
     , const Locus& locus_inht
     , const ScopeId scope_inht );
-  
+
   void InhtList(std::vector<ClassType*>& parents_inht);
   void InhtListPrime(std::vector<ClassType*>& parents_inht);
 
@@ -144,7 +147,7 @@ private:
     , const ScopeId scope_inht);
 
   void BuildParent(std::vector<ClassType*>& parents_inht);
-  
+
 private:
   std::string undeclared_name_;
 
@@ -164,10 +167,12 @@ private:
 
   std::vector<kToken> set_eprime_;
   std::vector<kToken> empty_eprime_;
+  std::vector<kToken> set_andeprime_;
+  std::vector<kToken> empty_andeprime_;
   std::vector<kToken> set_releprime_;
   std::vector<kToken> empty_releprime_;
   std::vector<kToken> set_numeprime_;
-  std::vector<kToken> empty_numeprime_;  
+  std::vector<kToken> empty_numeprime_;
 
 };
 

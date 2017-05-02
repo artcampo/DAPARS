@@ -2,9 +2,11 @@
 
 namespace RecDescent{
 
+////////////////////////////////////////////////////////////////////////////
+
 PtrExpr ParserLL1RecDesc::Expr(const ScopeId scope_inht){
 
-  PtrExpr term_synth  = RelExpr(scope_inht);
+  PtrExpr term_synth = AndExpr(scope_inht);
 
   if(not term_synth) return std::move(nullptr);
 
@@ -25,19 +27,58 @@ PtrExpr ParserLL1RecDesc::ExprPrime(PtrExpr& eprime_inht, const ScopeId scope_in
   Locus l = CurrentLocus();
 
   if(TryAndAccept(kToken::kwd_or)){
-    PtrExpr t_synt = RelExpr(scope_inht);
+    PtrExpr t_synt = AndExpr(scope_inht);
     PtrExpr eprime1_inht = NewBinaryOp(eprime_inht, BinaryOp::kOr, t_synt, scope_inht, l);
-    
+
     //A new E' will op against current op+
     eprime_synt = ExprPrime(eprime1_inht, scope_inht);
-    if(eprime_synt.get() == nullptr) Error("[err:12] operand to or missing");
+    if(eprime_synt.get() == nullptr) Error("[err:?] operand to or missing");
     return std::move(eprime_synt);
   }
 
-  //E' -> {empty}  => , {empty} = ) ;
   if(AcceptEmpty(empty_eprime_, "Expecting expression delimiter"))
     eprime_synt = std::move(eprime_inht);
-  
+
+  return std::move(eprime_synt);
+}
+
+////////////////////////////////////////////////////////////////////////////
+
+PtrExpr ParserLL1RecDesc::AndExpr(const ScopeId scope_inht){
+
+  PtrExpr term_synth  = RelExpr(scope_inht);
+
+  if(not term_synth) return std::move(nullptr);
+
+  if(not Check(set_andeprime_))
+    return std::move(term_synth);
+
+  PtrExpr eprime_synt = AndExprPrime(term_synth, scope_inht);
+  return std::move(eprime_synt);
+}
+
+
+// E'    := + T E'     ** E'1.inht = new Node(+, E'.inht, T.node)
+//                        E'.synt  = E'1.synt
+//       |  empty      ** E'.synt  = E'1.synt
+PtrExpr ParserLL1RecDesc::AndExprPrime(PtrExpr& eprime_inht, const ScopeId scope_inht){
+//   std::cout << "Exp'\n";
+  PtrExpr eprime_synt(nullptr);
+  Locus l = CurrentLocus();
+
+  if(TryAndAccept(kToken::kwd_and)){
+    PtrExpr t_synt = RelExpr(scope_inht);
+    PtrExpr eprime1_inht = NewBinaryOp(eprime_inht, BinaryOp::kAnd, t_synt, scope_inht, l);
+
+    //A new E' will op against current op+
+    eprime_synt = AndExprPrime(eprime1_inht, scope_inht);
+    if(eprime_synt.get() == nullptr) Error("[err:?] operand to and missing");
+    return std::move(eprime_synt);
+  }
+
+  if(AcceptEmpty(empty_andeprime_, "Expecting expression delimiter"))
+    eprime_synt = std::move(eprime_inht);
+
   return std::move(eprime_synt);
 }
 
@@ -71,9 +112,9 @@ PtrExpr ParserLL1RecDesc::RelExprPrime(PtrExpr& eprime_inht, const ScopeId scope
     op_accepted = true;
   }else if(TryAndAccept(kToken::equalto)){
     op = BinaryOp::kEqualTo;
-    op_accepted = true;    
+    op_accepted = true;
   }
-  
+
   if(op_accepted){
     PtrExpr t_synt = Term(scope_inht);
     PtrExpr eprime1_inht = NewBinaryOp(eprime_inht, op, t_synt, scope_inht, l);
@@ -88,7 +129,7 @@ PtrExpr ParserLL1RecDesc::RelExprPrime(PtrExpr& eprime_inht, const ScopeId scope
 
   if(AcceptEmpty(empty_releprime_,"Expecting expression delimiter"))
     eprime_synt = std::move(eprime_inht);
-  
+
   return std::move(eprime_synt);
 }
 
@@ -122,7 +163,7 @@ PtrExpr ParserLL1RecDesc::NumExprPrime(PtrExpr& eprime_inht, const ScopeId scope
     PtrExpr t_synt = Term(scope_inht);
     PtrExpr eprime1_inht = NewBinaryOp(eprime_inht, BinaryOp::kAdd, t_synt, scope_inht, l);
     //TODO: do not use VM's definition IR_ADD
-    
+
     //A new E' will op against current op+
     eprime_synt = NumExprPrime(eprime1_inht, scope_inht);
     if(eprime_synt.get() == nullptr)

@@ -40,7 +40,7 @@ void ParserLL1RecDesc::BuildTokenVectors(){
   set_types_ =  std::vector<kToken>({
     kToken::kwd_void, kToken::kwd_int, kToken::kwd_bool, kToken::name_type});
 
-  //E -> T E'  => & * false ( {nam} {num}  true
+  //E -> AE E'  => & * false ( {nam} {num}  true
   set_expr_  = std::vector<kToken>({
     kToken::ampersand, kToken::astk, kToken::kwd_false, kToken::lpar
   , kToken::name, kToken::numerical, kToken::kwd_true});
@@ -55,31 +55,37 @@ void ParserLL1RecDesc::BuildTokenVectors(){
   set_ifelse_ = std::vector<kToken>({kToken::rcbr});
   Insert(set_ifelse_, set_stmts_);
 
-  //ARGM -> {empty}  => , {empty} == = < or + ) ; 
-  set_argm_ = std::vector<kToken>({kToken::comma, kToken::equalto, kToken::equality
+  //ARGM -> {empty}  => and , {empty} == = < or + ) ;
+  set_argm_ = std::vector<kToken>({kToken::kwd_and, kToken::comma, kToken::equalto, kToken::equality
     , kToken::lessthan, kToken::kwd_or, kToken::plus, kToken::rpar, kToken::semicolon});
 
 
-  //E' -> or RE E'  => or 
+  //E' -> or AE E'  => or
   set_eprime_   = std::vector<kToken>({kToken::kwd_or});
-  //E' -> {empty}  => , {empty} = ) ; 
+  //E' -> {empty}  => , {empty} = ) ;
   empty_eprime_ = std::vector<kToken>({kToken::comma, kToken::equality
-    , kToken::rpar, kToken::semicolon});  
-  
-  //RE' -> < NE RE'  => < 
-  set_releprime_ = std::vector<kToken>({kToken::lessthan, kToken::equalto});
-  
-  //RE' -> {empty}  => , {empty} = or ) ; 
-  empty_releprime_ = std::vector<kToken>({kToken::comma, kToken::equality
-    , kToken::kwd_or, kToken::rpar, kToken::semicolon});  
-  
+    , kToken::rpar, kToken::semicolon});
 
-  //NE' -> + T NE'  => +  
+  //AE' -> and RE AE'
+  set_andeprime_   = std::vector<kToken>({kToken::kwd_and});
+  //AE' -> {empty}  => , {empty} = or ) ;
+  empty_andeprime_ = std::vector<kToken>({kToken::comma, kToken::equality
+    , kToken::kwd_or, kToken::rpar, kToken::semicolon});
+
+  //RE' -> < NE RE'  => <
+  set_releprime_ = std::vector<kToken>({kToken::lessthan, kToken::equalto});
+
+  //RE' -> {empty}  => and , {empty} = or ) ;
+  empty_releprime_ = std::vector<kToken>({kToken::kwd_and, kToken::comma, kToken::equality
+    , kToken::kwd_or, kToken::rpar, kToken::semicolon});
+
+
+  //NE' -> + T NE'  => +
   set_numeprime_ = std::vector<kToken>({kToken::plus});
 
-  //NE' -> {empty}  => , {empty} == = < or ) ; 
-  empty_numeprime_ = std::vector<kToken>({kToken::comma, kToken::equalto, kToken::equality
-    , kToken::lessthan, kToken::kwd_or, kToken::rpar, kToken::semicolon});  
+  //NE' -> {empty}  => and , {empty} == = < or ) ;
+  empty_numeprime_ = std::vector<kToken>({kToken::kwd_and, kToken::comma, kToken::equalto, kToken::equality
+    , kToken::lessthan, kToken::kwd_or, kToken::rpar, kToken::semicolon});
 }
 
 PtrBlock ParserLL1RecDesc::ParseSubBlock(const ScopeId scope, const std::string& error){
