@@ -1,4 +1,27 @@
 ---------------------------------------------------
+Parsing: "void main(){int a;}"
+
+Scopes of module:
+Scope 0: {(4:main) }
+Scope 2: {(5:a) }
+
+
+AST fully decorated dump:
+[FDef] FuncDef: main
+-[VDec] int a 
+- 
+
+
+Declaration Table:
+4: Symbol: [ in scope 0 main of type function: ()->void]
+5: Symbol: [ in scope 2 a of type int]
+
+IR dump:
+LT entry_main[isTarget]
+0: ReturnMain
+LT entry___test[isTarget]
+
+---------------------------------------------------
 Parsing: "void main(){int a,b,c; while(true){b=2+3;} c=3+4; }"
 
 Scopes of module:
@@ -26,7 +49,8 @@ AST fully decorated dump:
 ---Op: +  [int Rvalue]
 ----[Lit] 3 [int Rvalue]
 ----[Lit] 4 [int Rvalue]
-
+-- 
+-
 
 Declaration Table:
 4: Symbol: [ in scope 0 main of type function: ()->void]
@@ -49,6 +73,7 @@ LT entry_main[isTarget]
 10: %7 = %5 + %6
 11: store %7 to [LT MainDS:2 (c)]
 12: ReturnMain
+LT entry___test[isTarget]
 
 ---------------------------------------------------
 Parsing: "void main(){ int a, b; if(true){int c; a=2+3;} else{ int d, e,f; d = 4; } int g; b=5+6; }"
@@ -87,6 +112,7 @@ AST fully decorated dump:
 --Op: +  [int Rvalue]
 ---[Lit] 5 [int Rvalue]
 ---[Lit] 6 [int Rvalue]
+- 
 
 
 Declaration Table:
@@ -117,6 +143,7 @@ LT entry_main[isTarget]
 13: %9 = %7 + %8
 14: store %9 to [LT MainDS:1 (b)]
 15: ReturnMain
+LT entry___test[isTarget]
 
 ---------------------------------------------------
 Parsing: "void main(){int a,b; int* p; a=*p; b=2; p = &b; a = b + *p;}"
@@ -148,6 +175,7 @@ AST fully decorated dump:
 ---[Var] b [int Lvalue Read Value Nmemb]
 ---[Derop] * [int Lvalue Read]
 ----[Var] p [int* Lvalue Read Value Nmemb]
+- 
 
 
 Declaration Table:
@@ -171,6 +199,7 @@ LT entry_main[isTarget]
 10: %10 = %7 + %9
 11: store %10 to [LT MainDS:0 (a)]
 12: ReturnMain
+LT entry___test[isTarget]
 
 ---------------------------------------------------
 Parsing: "void main(){int a; a= 2;} void f(int p1){int a; a=p1;}"
@@ -187,6 +216,7 @@ AST fully decorated dump:
 -[Assgn] 
 --[Var] a [int Lvalue Write Value Nmemb]
 --[Lit] 2 [int Rvalue]
+- 
 [FDef] FuncDef: f
 -[VDec] int a 
 -[Assgn] 
@@ -210,6 +240,7 @@ LT entry_f[isTarget]
 0: %0 = GetArg( arg0 )
 1: store %0 to [RT arp_f[isArp]:0 (a)]
 2: Return
+LT entry___test[isTarget]
 
 ---------------------------------------------------
 Parsing: "int f(int p1){int a; a=p1; return a;} void main(){int a; a=f(2);}"
@@ -236,6 +267,7 @@ AST fully decorated dump:
 ---[Fcal] FuncCall: f [function: (int)->int]
 ----[Var] f [function: (int)->int Read Value Nmemb]
 ----[Lit] 2 [int]
+- 
 
 
 Declaration Table:
@@ -259,6 +291,7 @@ LT entry_f[isTarget]
 2: %2 = Load [RT arp_f[isArp]:0 (a)]
 3: SetRetVal( %2)
 4: Return
+LT entry___test[isTarget]
 
 ---------------------------------------------------
 Parsing: "class O1{int a_; int b_; int f(){return a_ + g();} int g(){return b_;} }void main(){O1 inst; int a; a = inst.f() + inst.a_;}"
@@ -301,6 +334,7 @@ AST fully decorated dump:
 ---[Dotop] inst.a_ [int Lvalue Memb]
 ----[Var] inst [O1 Lvalue Read Address Nmemb]
 ----[Vnam] a_
+- 
 
 
 Declaration Table:
@@ -333,6 +367,7 @@ LT entry_main[isTarget]
 6: %4 = %1 + %3
 7: store %4 to [LT MainDS:2 (a)]
 8: ReturnMain
+LT entry___test[isTarget]
 
 ---------------------------------------------------
 Parsing: "class A{int a; int fa(){return 1;}} class B{int b; int fb(){return 1;}}class C: A, B{int c; int fc(){return 1;}}void main(){C inst; int a; a = inst.fc() + inst.fb() + inst.fa();}"
@@ -390,6 +425,7 @@ AST fully decorated dump:
 -----[Dotop] inst.fa [function: ()->int Memb]
 ------[Var] inst [C Read Address Nmemb]
 ------[Vnam] fa
+- 
 
 
 Declaration Table:
@@ -434,6 +470,7 @@ LT entry_main[isTarget]
 17: %11 = %6 + %10
 18: store %11 to [LT MainDS:3 (a)]
 19: ReturnMain
+LT entry___test[isTarget]
 
 ---------------------------------------------------
 Parsing: "class A        {int a; int fa(){return 1;}} class B : A    {int b; int fb(){return 1;}} class C : B    {int c; int fc(){return 1;}} class D        {int d; int fd(){return 1;}} class E : D    {int e; int fe(){return 1;}} class F : E    {int f; int ff(){return 1;}} class G : C,F  {int g; int fg(){return 1;}} void main(){G inst; int a; a = inst.fa() + inst.fb() + inst.fc() +  inst.fd() + inst.fe() + inst.ff() + inst.fg();}"
@@ -551,6 +588,7 @@ AST fully decorated dump:
 -----[Dotop] inst.fg [function: ()->int Memb]
 ------[Var] inst [G Read Address Nmemb]
 ------[Vnam] fg
+- 
 
 
 Declaration Table:
@@ -643,6 +681,7 @@ LT entry_main[isTarget]
 45: %31 = %28 + %30
 46: store %31 to [LT MainDS:7 (a)]
 47: ReturnMain
+LT entry___test[isTarget]
 
 ---------------------------------------------------
 Parsing: "void main(){int a, b, c; a = a + 10; b = 11; c = 12;} int f(){int a, b, c;     a = a + 10; b = 11; c = 12;}"
@@ -669,6 +708,7 @@ AST fully decorated dump:
 -[Assgn] 
 --[Var] c [int Lvalue Write Value Nmemb]
 --[Lit] 12 [int Rvalue]
+- 
 [FDef] FuncDef: f
 -[VDec] int a 
 [VDec] int b 
@@ -717,6 +757,7 @@ LT entry_f[isTarget]
 6: %6 = LoadI(12)
 7: store %6 to [RT arp_f[isArp]:-2 (c)]
 8: Return
+LT entry___test[isTarget]
 
 ---------------------------------------------------
 Parsing: "void main(){bool b; int a, c; a = 10; c = 11; b = a == c;} "
@@ -742,6 +783,7 @@ AST fully decorated dump:
 --Op: ==  [bool Rvalue]
 ---[Var] a [int Lvalue Read Value Nmemb]
 ---[Var] c [int Lvalue Read Value Nmemb]
+- 
 
 
 Declaration Table:
@@ -761,4 +803,5 @@ LT entry_main[isTarget]
 6: %6 = %4 == %5
 7: store %6 to [LT MainDS:0 (b)]
 8: ReturnMain
+LT entry___test[isTarget]
 

@@ -8,6 +8,11 @@ store %0 to [LT MainDS:0 (a)]
 %4 = %2 + %3
 store %4 to [LT MainDS:0 (a)]
 ReturnMain
+%0 = Load [LT MainDS:1 (__test_result)]
+%1 = Load [LT MainDS:1 (__test_result)]
+%2 = %0 or %1
+store %2 to [LT MainDS:1 (__test_result)]
+Return
 ---------
 Bytecode:
 0: LOADI, r1 val: 1  <- [main]
@@ -16,7 +21,12 @@ Bytecode:
 3: ADD, rs1 rs2 rd3
 4: STORE, r3 -> [@0]
 5: STOP
-Static data segment size: 1
+6: MOV, rs15 rd14  <- [__test]
+7: LOAD, rd1 <- [@1]
+8: OR, rs1 rs1 rd2
+9: STORE, r2 -> [@1]
+10: RETURN
+Static data segment size: 2
 
 ---------------------------------------------------
 Parsing: "void main(){int a, b, c; a = 4; b = 3; c = a + b; }"
@@ -30,6 +40,11 @@ store %2 to [LT MainDS:1 (b)]
 %6 = %4 + %5
 store %6 to [LT MainDS:2 (c)]
 ReturnMain
+%0 = Load [LT MainDS:3 (__test_result)]
+%1 = Load [LT MainDS:3 (__test_result)]
+%2 = %0 or %1
+store %2 to [LT MainDS:3 (__test_result)]
+Return
 ---------
 Bytecode:
 0: LOADI, r1 val: 4  <- [main]
@@ -39,7 +54,12 @@ Bytecode:
 4: ADD, rs1 rs2 rd3
 5: STORE, r3 -> [@2]
 6: STOP
-Static data segment size: 3
+7: MOV, rs15 rd14  <- [__test]
+8: LOAD, rd1 <- [@3]
+9: OR, rs1 rs1 rd2
+10: STORE, r2 -> [@3]
+11: RETURN
+Static data segment size: 4
 
 ---------------------------------------------------
 Parsing: "int f(int p){ return p; }void main(){int a; a = 1; a = f(a); }"
@@ -55,6 +75,11 @@ ReturnMain
 %0 = GetArg( arg0 )
 SetRetVal( %0)
 Return
+%0 = Load [LT MainDS:1 (__test_result)]
+%1 = Load [LT MainDS:1 (__test_result)]
+%2 = %0 or %1
+store %2 to [LT MainDS:1 (__test_result)]
+Return
 ---------
 Bytecode:
 0: LOADI, r1 val: 1  <- [main]
@@ -67,10 +92,16 @@ Bytecode:
 7: MOV, rs15 rd14  <- [f]
 8: MOV, rs0 rd0
 9: RETURN
-Static data segment size: 1
+10: MOV, rs15 rd14  <- [__test]
+11: LOAD, rd1 <- [@1]
+12: OR, rs1 rs1 rd2
+13: STORE, r2 -> [@1]
+14: RETURN
+Static data segment size: 2
 
 ---------------------------------------------------
 Parsing: "int f(int p0, int p1){ return p0 + p1; }void main(){int a; a = f(9,8); }"
+Symbol: [ in scope 2 p1 of type int] to offset: 2
 Backend::Davm
 %0 = LoadI(9)
 %1 = LoadI(8)
@@ -84,6 +115,11 @@ ReturnMain
 %1 = Load [RT arp_f[isArp]:2 (p1)]
 %2 = %0 + %1
 SetRetVal( %2)
+Return
+%0 = Load [LT MainDS:1 (__test_result)]
+%1 = Load [LT MainDS:1 (__test_result)]
+%2 = %0 or %1
+store %2 to [LT MainDS:1 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -101,10 +137,18 @@ Bytecode:
 11: ADD, rs0 rs1 rd2
 12: MOV, rs2 rd0
 13: RETURN
-Static data segment size: 1
+14: MOV, rs15 rd14  <- [__test]
+15: LOAD, rd1 <- [@1]
+16: OR, rs1 rs1 rd2
+17: STORE, r2 -> [@1]
+18: RETURN
+Static data segment size: 2
 
 ---------------------------------------------------
 Parsing: "int f(int p0, int p1, int p2, int p3){ return p0 + p1 + p2 + p3; }void main(){int a; a = f(9,8,7,6); }"
+Symbol: [ in scope 2 p1 of type int] to offset: 4
+Symbol: [ in scope 2 p2 of type int] to offset: 3
+Symbol: [ in scope 2 p3 of type int] to offset: 2
 Backend::Davm
 %0 = LoadI(9)
 %1 = LoadI(8)
@@ -126,6 +170,11 @@ ReturnMain
 %5 = Load [RT arp_f[isArp]:2 (p3)]
 %6 = %4 + %5
 SetRetVal( %6)
+Return
+%0 = Load [LT MainDS:1 (__test_result)]
+%1 = Load [LT MainDS:1 (__test_result)]
+%2 = %0 or %1
+store %2 to [LT MainDS:1 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -151,7 +200,12 @@ Bytecode:
 19: ADD, rs4 rs5 rd6
 20: MOV, rs6 rd0
 21: RETURN
-Static data segment size: 1
+22: MOV, rs15 rd14  <- [__test]
+23: LOAD, rd1 <- [@1]
+24: OR, rs1 rs1 rd2
+25: STORE, r2 -> [@1]
+26: RETURN
+Static data segment size: 2
 
 ---------------------------------------------------
 Parsing: "int f(){ int a; return a; }void main(){int a; a = f(); }"
@@ -162,6 +216,11 @@ store %0 to [LT MainDS:0 (a)]
 ReturnMain
 %0 = Load [RT arp_f[isArp]:0 (a)]
 SetRetVal( %0)
+Return
+%0 = Load [LT MainDS:1 (__test_result)]
+%1 = Load [LT MainDS:1 (__test_result)]
+%2 = %0 or %1
+store %2 to [LT MainDS:1 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -177,7 +236,12 @@ Bytecode:
 9: MOV, rs14 rd15
 10: POP, r14
 11: RETURN
-Static data segment size: 1
+12: MOV, rs15 rd14  <- [__test]
+13: LOAD, rd1 <- [@1]
+14: OR, rs1 rs1 rd2
+15: STORE, r2 -> [@1]
+16: RETURN
+Static data segment size: 2
 
 ---------------------------------------------------
 Parsing: "int f(){ int a,b,c,d; return a + d; }void main(){int a; a = f(); }"
@@ -190,6 +254,11 @@ ReturnMain
 %1 = Load [RT arp_f[isArp]:-3 (d)]
 %2 = %0 + %1
 SetRetVal( %2)
+Return
+%0 = Load [LT MainDS:1 (__test_result)]
+%1 = Load [LT MainDS:1 (__test_result)]
+%2 = %0 or %1
+store %2 to [LT MainDS:1 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -207,7 +276,12 @@ Bytecode:
 11: MOV, rs14 rd15
 12: POP, r14
 13: RETURN
-Static data segment size: 1
+14: MOV, rs15 rd14  <- [__test]
+15: LOAD, rd1 <- [@1]
+16: OR, rs1 rs1 rd2
+17: STORE, r2 -> [@1]
+18: RETURN
+Static data segment size: 2
 
 ---------------------------------------------------
 Parsing: "void main(){int a, b, c, d; a = 1; b = 0;if((a+b) < 2){a = 2;} else {a=1;} c = a; d = b; }"
@@ -234,6 +308,11 @@ store %13 to [LT MainDS:2 (c)]
 %15 = Load [LT MainDS:1 (b)]
 store %15 to [LT MainDS:3 (d)]
 ReturnMain
+%0 = Load [LT MainDS:4 (__test_result)]
+%1 = Load [LT MainDS:4 (__test_result)]
+%2 = %0 or %1
+store %2 to [LT MainDS:4 (__test_result)]
+Return
 ---------
 Bytecode:
 0: LOADI, r1 val: 1  <- [main]
@@ -255,7 +334,12 @@ Bytecode:
 16: STORE, r1 -> [@2]
 17: STORE, r2 -> [@3]
 18: STOP
-Static data segment size: 4
+19: MOV, rs15 rd14  <- [__test]
+20: LOAD, rd1 <- [@4]
+21: OR, rs1 rs1 rd2
+22: STORE, r2 -> [@4]
+23: RETURN
+Static data segment size: 5
 
 ---------------------------------------------------
 Parsing: "int f(){ return 1; }int g(){ return f() + 2; }void main(){int a; a = f() + g();}"
@@ -275,6 +359,11 @@ call [LT entry_f[isTarget]:0 ()]
 %1 = LoadI(2)
 %2 = %0 + %1
 SetRetVal( %2)
+Return
+%0 = Load [LT MainDS:1 (__test_result)]
+%1 = Load [LT MainDS:1 (__test_result)]
+%2 = %0 or %1
+store %2 to [LT MainDS:1 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -296,7 +385,12 @@ Bytecode:
 15: ADD, rs1 rs2 rd3
 16: MOV, rs3 rd0
 17: RETURN
-Static data segment size: 1
+18: MOV, rs15 rd14  <- [__test]
+19: LOAD, rd1 <- [@1]
+20: OR, rs1 rs1 rd2
+21: STORE, r2 -> [@1]
+22: RETURN
+Static data segment size: 2
 
 ---------------------------------------------------
 Parsing: "void main(){bool a, b, c; a = true; b = false; c = a or b;c = false or true; }"
@@ -314,6 +408,11 @@ store %6 to [LT MainDS:2 (c)]
 %10 = %8 or %9
 store %10 to [LT MainDS:2 (c)]
 ReturnMain
+%0 = Load [LT MainDS:3 (__test_result)]
+%1 = Load [LT MainDS:3 (__test_result)]
+%2 = %0 or %1
+store %2 to [LT MainDS:3 (__test_result)]
+Return
 ---------
 Bytecode:
 0: LOADI, r1 val: 1  <- [main]
@@ -327,7 +426,12 @@ Bytecode:
 8: OR, rs4 rs5 rd6
 9: STORE, r6 -> [@2]
 10: STOP
-Static data segment size: 3
+11: MOV, rs15 rd14  <- [__test]
+12: LOAD, rd1 <- [@3]
+13: OR, rs1 rs1 rd2
+14: STORE, r2 -> [@3]
+15: RETURN
+Static data segment size: 4
 
 ---------------------------------------------------
 Parsing: "void main(){int a, b, c; a = a + 10; b = 11; c = 12;} int f(){int a, b, c;     a = a + 10; b = 11; c = 12;}"
@@ -349,6 +453,11 @@ store %2 to [RT arp_f[isArp]:0 (a)]
 store %4 to [RT arp_f[isArp]:-1 (b)]
 %6 = LoadI(12)
 store %6 to [RT arp_f[isArp]:-2 (c)]
+Return
+%0 = Load [LT MainDS:3 (__test_result)]
+%1 = Load [LT MainDS:3 (__test_result)]
+%2 = %0 or %1
+store %2 to [LT MainDS:3 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -375,18 +484,12 @@ Bytecode:
 20: MOV, rs14 rd15
 21: POP, r14
 22: RETURN
-Static data segment size: 3
-
----------------------------------------------------
-Parsing: "void main(){int a, b; a = 1; b = 2; test(false); } "
-[err:46] function call used before declaration at: "= 2; test(" -> "false); } "
-[err:] assignment missing '=' at: "st(false);" -> " } "
-[err:3] Block not finishing in rcbr at: "st(false);" -> " } "
-[err:31] function body empty at: "st(false);" -> " } "
-[err:30] function declaration's body not closed with '}' at: "st(false);" -> " } "
-[err:33] function must start with return type at: "st(false);" -> " } "
-AST not build (no functions) at: "st(false);" -> " } "
-AST not build (fatal errors) at: "st(false);" -> " } "
+23: MOV, rs15 rd14  <- [__test]
+24: LOAD, rd1 <- [@3]
+25: OR, rs1 rs1 rd2
+26: STORE, r2 -> [@3]
+27: RETURN
+Static data segment size: 4
 
 ---------------------------------------------------
 Parsing: "void main(){bool b; int a, c; a = 10; c = 11; b = a == c;} "
@@ -400,6 +503,11 @@ store %2 to [LT MainDS:2 (c)]
 %6 = %4 == %5
 store %6 to [LT MainDS:0 (b)]
 ReturnMain
+%0 = Load [LT MainDS:3 (__test_result)]
+%1 = Load [LT MainDS:3 (__test_result)]
+%2 = %0 or %1
+store %2 to [LT MainDS:3 (__test_result)]
+Return
 ---------
 Bytecode:
 0: LOADI, r1 val: 10  <- [main]
@@ -409,5 +517,47 @@ Bytecode:
 4: EQT, rs1 rs2 rd3
 5: STORE, r3 -> [@0]
 6: STOP
+7: MOV, rs15 rd14  <- [__test]
+8: LOAD, rd1 <- [@3]
+9: OR, rs1 rs1 rd2
+10: STORE, r2 -> [@3]
+11: RETURN
+Static data segment size: 4
+
+---------------------------------------------------
+Parsing: "bool main(){int a, b; a = 1; b = 2; return __test(false); } "
+Backend::Davm
+%0 = LoadI(1)
+store %0 to [LT MainDS:0 (a)]
+%2 = LoadI(2)
+store %2 to [LT MainDS:1 (b)]
+%4 = LoadI(0)
+SetArg( %4)
+call [LT entry___test[isTarget]:0 ()]
+%5 = GetRetVal()
+SetRetVal( %5)
+ReturnMain
+%0 = Load [LT MainDS:2 (__test_result)]
+%1 = Load [LT MainDS:2 (__test_result)]
+%2 = %0 or %1
+store %2 to [LT MainDS:2 (__test_result)]
+Return
+---------
+Bytecode:
+0: LOADI, r1 val: 1  <- [main]
+1: STORE, r1 -> [@0]
+2: LOADI, r2 val: 2
+3: STORE, r2 -> [@1]
+4: LOADI, r3 val: 0
+5: MOV, rs3 rd0
+6: CALL: @10
+7: MOV, rs0 rd1
+8: MOV, rs1 rd0
+9: STOP
+10: MOV, rs15 rd14  <- [__test]
+11: LOAD, rd1 <- [@2]
+12: OR, rs1 rs1 rd2
+13: STORE, r2 -> [@2]
+14: RETURN
 Static data segment size: 3
 

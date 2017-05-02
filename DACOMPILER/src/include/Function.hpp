@@ -102,6 +102,8 @@ public:
   std::string Name()  const noexcept{ return name_;}
 
   const bool HasLocals() const noexcept{ return locals_offset_table_.NumVars() > 0;}
+
+  bool  IsCompilerPrivate() const{ return name_.compare(0, 2, "__") == 0; }
 private:
 
   std::string       name_;

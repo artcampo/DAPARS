@@ -16,6 +16,7 @@ void LangLib::InitCompilationUnit(){
 }
 
 void LangLib::UpdateCompilationUnitPrePasses(){
+  if(unit_.HasErrors()) return;
   InitRTVarsDef();
   (unit_.GetAstProg())->AddFunction(func_def_);
 }
@@ -81,7 +82,8 @@ void LangLib::InitRTVarsDef(){
   const ScopeId main_scope_id = unit_.GetLScope("main").GetScopeId();
   const Type& type                  = unit_.GetTypeBool();
   cond_test_var_decl_ = NewVarDecl(name_cond_, type, main_scope_id, l_);
-  unit_.GetGlobalLexicalScope().RegisterDecl(name_cond_, type, *cond_test_var_decl_, cond_sid_);
+  //unit_.GetGlobalLexicalScope().ForceRegisterDecl("main", name_cond_, type, *cond_test_var_decl_, cond_sid_);
+  unit_.ForceRegisterDecl("main", name_cond_, type, *cond_test_var_decl_, main_scope_id, cond_sid_);
 
   std::vector<PtrVarDecl> l;
   l.push_back(std::move(cond_test_var_decl_));

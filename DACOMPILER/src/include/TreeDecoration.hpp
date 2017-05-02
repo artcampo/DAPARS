@@ -63,7 +63,7 @@ public:
   }
 
   IR::MemAddr LocalVarMemAddr(const Var& n) const{
-    std::cout << "LocalVarMemAddr " << n.Id() << "\n";
+//     std::cout << "LocalVarMemAddr " << n.Id() << "\n";
     return module_offset_table_.GetMemAddr(n.Id());
   }
 

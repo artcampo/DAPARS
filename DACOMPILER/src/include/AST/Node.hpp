@@ -122,6 +122,7 @@ private:
 struct NamedNode{
   NamedNode(const std::string& name) : name_(name){}
   const std::string&  Name() const noexcept{ return name_;}
+  bool  IsCompilerPrivate() const{ return name_.compare(0, 2, "__") == 0; }
 protected:
   const std::string name_;
 };
@@ -137,7 +138,7 @@ protected:
 struct BaseSymbolNode{
   BaseSymbolNode(){}
   BaseSymbolNode(AST::Symbols::SymbolId id): id_(id){}
-  
+
   AST::Symbols::SymbolId Id() const noexcept{return id_;}
   void SetId(const AST::Symbols::SymbolId& sid) noexcept{id_ = sid;}
 protected:
@@ -213,7 +214,7 @@ public:
 
   std::vector<PtrClassDef>& GetClassDefs() noexcept{ return classes_;}
   const std::vector<PtrClassDef>& GetClassDefs() const noexcept{ return classes_;}
-  
+
   void AddFunction(PtrFuncDef& f){ functions_.push_back(std::move(f));}
 private:
   PtrProgInit               pinit_;

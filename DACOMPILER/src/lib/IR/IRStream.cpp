@@ -84,18 +84,18 @@ void IRStream::AppendSetRetVal(const Reg src){
 void IRStream::AppendSetArg(const Reg src)    { Append( SetArg(src) );}
 void IRStream::AppendCall(const MemAddr addr) { Append( Call(addr) );  };
 
-Reg IRStream::AppendGetArg(const NodeValue position){ 
-  Append( GetArg(position) );   
+Reg IRStream::AppendGetArg(const NodeValue position){
+  Append( GetArg(position) );
   return RegAssignedToPreviousInst();
 }
 
-void IRStream::AppendReturn(){ 
-  Append( Return() ); 
+void IRStream::AppendReturn(){
+  Append( Return() );
   num_regs_used_ = UsedRegs();
 }
 
-void IRStream::AppendReturnMain(){ 
-  Append( ReturnMain() );  
+void IRStream::AppendReturnMain(){
+  Append( ReturnMain() );
   num_regs_used_ = UsedRegs();
 }
 
@@ -107,7 +107,11 @@ Reg IRStream::RegAssignedToPreviousInst() const{
 void IRStream::Print() const noexcept{
  Addr a = 0;
  std::cout << entry_label_.str() << "\n";
- for(auto& it : stream_){ std::cout << a << ": "<< it->str() << "\n"; ++a;}
+ for(auto& it : stream_){
+   if(not function_.IsCompilerPrivate()){
+    std::cout << a << ": "<< it->str() << "\n"; ++a;
+   }
+  }
 }
 
 }//end namespace IR

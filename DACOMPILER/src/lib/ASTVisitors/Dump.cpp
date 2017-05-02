@@ -11,6 +11,8 @@ void Dump::Visit(ProgBody const& p){
 }
 
 void Dump::Visit(FuncDef const& p){
+  //if(unit_.GetFunc(p.Name()).IsCompilerPrivate()) return;
+  if(p.IsCompilerPrivate()) return;
   std::cout << "[FDef] " << p.str()<<"\n";
   IncreaseIndent(); //Indent();
   p.GetBody().Accept(*this);
@@ -115,6 +117,7 @@ void Dump::Visit(VarDeclList const& p){
   }
 }
 void Dump::Visit(VarDecl const& p){
+  if(p.IsCompilerPrivate()) return;
   std::cout << "[VDec] " << p.str();
 }
 

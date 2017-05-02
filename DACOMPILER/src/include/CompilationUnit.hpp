@@ -97,6 +97,7 @@ public:
 
   const AST::Symbols::SymbolId FreeSymbolId() noexcept{return free_symbol_id_++;}
 
+  //Used while parsing
   bool RegisterDecl(const std::string& name, const Type& type, const Node& n
     , const ScopeId scope_id, const AST::Symbols::SymbolId symbol_id){
     bool registered = GetScope(scope_id)->RegisterDecl(name, type, n, symbol_id);
@@ -110,6 +111,19 @@ public:
 //         << " " << n.str()
 //         << std::endl;
       }
+    }
+    return registered;
+  }
+
+  //TODO: should StoreDecl instead be called from the given scope,
+  //or forbid direct calls to scope's register
+  //Used outside of parsing, when we want to force variables into a given function
+  bool ForceRegisterDecl(const std::string& function_name, const std::string& name, const Type& type, const Node& n
+    , const ScopeId scope_id, const AST::Symbols::SymbolId symbol_id){
+    bool registered = GetScope(scope_id)->RegisterDecl(name, type, n, symbol_id);
+    if(registered){
+      symbolid_of_node_[&n] = symbol_id;
+      GetFunc(function_name).StoreDecl( *module_declaration_table_[symbol_id], n);
     }
     return registered;
   }

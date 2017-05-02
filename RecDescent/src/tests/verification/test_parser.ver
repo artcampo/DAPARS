@@ -27,6 +27,7 @@ AST dump:
 -[Assgn] 
 --[Var] a [int Lvalue Write Value Nmemb]
 --[Lit] 3 [int Rvalue]
+- 
 
 
 Declaration Table:
@@ -36,6 +37,7 @@ Declaration Table:
 Scopes of module:
 Scope 0: {(4:main) }
 Scope 2: {(5:a) }
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=2+3+4; }"
@@ -50,6 +52,7 @@ AST dump:
 ----[Lit] 2 [int Rvalue]
 ----[Lit] 3 [int Rvalue]
 ---[Lit] 4 [int Rvalue]
+- 
 
 
 Declaration Table:
@@ -59,6 +62,7 @@ Declaration Table:
 Scopes of module:
 Scope 0: {(4:main) }
 Scope 2: {(5:a) }
+Scope 1: {}
 
 
 ---------------------------------------------------
@@ -103,6 +107,7 @@ AST dump:
 --Op: +  [int Rvalue]
 ---[Lit] 3 [int Rvalue]
 ---[Lit] 4 [int Rvalue]
+- 
 
 
 Declaration Table:
@@ -112,6 +117,7 @@ Declaration Table:
 Scopes of module:
 Scope 0: {(4:main) }
 Scope 2: {(5:a) }
+Scope 1: {}
 
 
 ---------------------------------------------------
@@ -135,6 +141,7 @@ AST dump:
 --Op: +  [int Rvalue]
 ---[Lit] 5 [int Rvalue]
 ---[Lit] 6 [int Rvalue]
+- 
 
 
 Declaration Table:
@@ -144,6 +151,7 @@ Declaration Table:
 Scopes of module:
 Scope 0: {(4:main) }
 Scope 2: {(5:a) }
+Scope 1: {}
 
 
 Grammar:
@@ -178,6 +186,7 @@ AST dump:
 ----[Var] a [int Lvalue Write Value]
 ----[Lit] 3 [int Rvalue]
 
+- 
 
 
 Declaration Table:
@@ -188,6 +197,7 @@ Scopes of module:
 Scope 0: {(4:main) }
 Scope 2: {(5:a) }
 Scope 3: {}
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3;} a=4; }"
@@ -210,6 +220,7 @@ AST dump:
 -[Assgn] 
 --[Var] a [int Lvalue Write Value]
 --[Lit] 4 [int Rvalue]
+- 
 
 
 Declaration Table:
@@ -220,6 +231,7 @@ Scopes of module:
 Scope 0: {(4:main) }
 Scope 2: {(5:a) }
 Scope 3: {}
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3+4+5;} }"
@@ -243,6 +255,7 @@ AST dump:
 ------[Lit] 4 [int Rvalue]
 -----[Lit] 5 [int Rvalue]
 
+- 
 
 
 Declaration Table:
@@ -253,6 +266,7 @@ Scopes of module:
 Scope 0: {(4:main) }
 Scope 2: {(5:a) }
 Scope 3: {}
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3+4+5;} a=6; }"
@@ -279,6 +293,7 @@ AST dump:
 -[Assgn] 
 --[Var] a [int Lvalue Write Value]
 --[Lit] 6 [int Rvalue]
+- 
 
 
 Declaration Table:
@@ -289,6 +304,7 @@ Scopes of module:
 Scope 0: {(4:main) }
 Scope 2: {(5:a) }
 Scope 3: {}
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){if(3){a=4;if(5){a=6;}}} }"
@@ -321,6 +337,7 @@ AST dump:
 
 
 
+- 
 
 
 Declaration Table:
@@ -333,6 +350,7 @@ Scope 2: {(5:a) }
 Scope 3: {}
 Scope 4: {}
 Scope 5: {}
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){if(3){a=4+5;if(6){a=7+8;}}} }"
@@ -369,6 +387,7 @@ AST dump:
 
 
 
+- 
 
 
 Declaration Table:
@@ -381,6 +400,7 @@ Scope 2: {(5:a) }
 Scope 3: {}
 Scope 4: {}
 Scope 5: {}
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a;a=1; if(2){a=3;}if(4){a=5;}else{a=6;} }"
@@ -412,6 +432,7 @@ AST dump:
 ----[Var] a [int Lvalue Write Value]
 ----[Lit] 6 [int Rvalue]
 
+- 
 
 
 Declaration Table:
@@ -424,6 +445,7 @@ Scope 2: {(5:a) }
 Scope 3: {}
 Scope 4: {}
 Scope 5: {}
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a; int b; bool c; }"
@@ -433,6 +455,7 @@ AST dump:
 -[VDec] int a 
 -[VDec] int b 
 -[VDec] bool c 
+- 
 
 
 Declaration Table:
@@ -444,6 +467,7 @@ Declaration Table:
 Scopes of module:
 Scope 0: {(4:main) }
 Scope 2: {(5:a) (6:b) (7:c) }
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int b, c, d; bool e f; }"
@@ -480,6 +504,7 @@ AST dump:
 -[Assgn] 
 --[Var] a [int Lvalue Write Value Nmemb]
 --[Lit] 1 [int Rvalue]
+- 
 
 
 Declaration Table:
@@ -489,6 +514,7 @@ Declaration Table:
 Scopes of module:
 Scope 0: {(4:main) }
 Scope 2: {(5:a) }
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a; a=(1+2+3); }"
@@ -503,6 +529,7 @@ AST dump:
 ----[Lit] 1 [int Rvalue]
 ----[Lit] 2 [int Rvalue]
 ---[Lit] 3 [int Rvalue]
+- 
 
 
 Declaration Table:
@@ -512,6 +539,7 @@ Declaration Table:
 Scopes of module:
 Scope 0: {(4:main) }
 Scope 2: {(5:a) }
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a b c; b=1; c=2; a=(1+b+c); }"
@@ -569,6 +597,7 @@ AST dump:
 --Then:
 ---[VDec] int b 
 
+- 
 
 
 Declaration Table:
@@ -580,6 +609,7 @@ Scopes of module:
 Scope 0: {(4:main) }
 Scope 2: {(5:a) }
 Scope 3: {(6:b) }
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "void main(){ int a; if(1){int b;}else{int c;} }"
@@ -596,6 +626,7 @@ AST dump:
 --Else:
 ---[VDec] int c 
 
+- 
 
 
 Declaration Table:
@@ -609,6 +640,7 @@ Scope 0: {(4:main) }
 Scope 2: {(5:a) }
 Scope 3: {(6:b) }
 Scope 4: {(7:c) }
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "void main(){ int a; while(1 + 2){ int c; c = 1+2; } }"
@@ -630,7 +662,8 @@ AST dump:
 -----[Lit] 1 [int Rvalue]
 -----[Lit] 2 [int Rvalue]
 
-
+-- 
+-
 
 Declaration Table:
 4: Symbol: [ in scope 0 main of type function: ()->void]
@@ -641,6 +674,7 @@ Scopes of module:
 Scope 0: {(4:main) }
 Scope 2: {(5:a) }
 Scope 3: {(6:c) }
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "void main(){ bool a, b; a = true; b = false; }"
@@ -655,6 +689,7 @@ AST dump:
 -[Assgn] 
 --[Var] b [bool Lvalue Write Value Nmemb]
 --[Lit] 0 [bool Rvalue]
+- 
 
 
 Declaration Table:
@@ -665,6 +700,7 @@ Declaration Table:
 Scopes of module:
 Scope 0: {(4:main) }
 Scope 2: {(5:a) (6:b) }
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "void main(){ int* a; int* b; }"
@@ -673,6 +709,7 @@ AST dump:
 [FDef] FuncDef: main
 -[VDec] int* a 
 -[VDec] int* b 
+- 
 
 
 Declaration Table:
@@ -683,6 +720,7 @@ Declaration Table:
 Scopes of module:
 Scope 0: {(4:main) }
 Scope 2: {(5:a) (6:b) }
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "void main(){ int* a; int b, c; b = 2; a = &b; c = *a; }"
@@ -703,6 +741,7 @@ AST dump:
 --[Var] c [int Lvalue Write Value Nmemb]
 --[Derop] * [int Lvalue Read]
 ---[Var] a [int* Lvalue Read Value Nmemb]
+- 
 
 
 Declaration Table:
@@ -714,6 +753,7 @@ Declaration Table:
 Scopes of module:
 Scope 0: {(4:main) }
 Scope 2: {(5:a) (6:b) (7:c) }
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "void main(){int a; a= 2;} void f(){bool a; a=3;}"
@@ -726,6 +766,7 @@ AST dump:
 -[Assgn] 
 --[Var] a [int Lvalue Write Value]
 --[Lit] 2 [int Rvalue]
+- 
 [FDef] FuncDef: f
 -[VDec] bool a 
 -[Assgn] 
@@ -743,6 +784,7 @@ Scopes of module:
 Scope 0: {(4:main) (6:f) }
 Scope 2: {(5:a) }
 Scope 3: {(7:a) }
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "class O1{} void main(){ O1 a;}"
@@ -751,6 +793,7 @@ AST dump:
 [CDef] O1 [O1]
 [FDef] FuncDef: main
 -[VDec] O1 a 
+- 
 
 
 Declaration Table:
@@ -762,6 +805,7 @@ Scopes of module:
 Scope 0: {(4:O1) (5:main) }
 HScope of O1 2: {}
 Scope 3: {(6:a) }
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "class O1{int a;} void main(){ O1 inst; int b; b = inst.a;}"
@@ -777,6 +821,7 @@ AST dump:
 --[Dotop] inst.a [int Lvalue Memb]
 ---[Var] inst [O1 Lvalue Read Address Nmemb]
 ---[Vnam] a
+- 
 
 
 Declaration Table:
@@ -789,6 +834,7 @@ Scopes of module:
 Scope 0: {(5:O1) (6:main) }
 HScope of O1 2: {(4:a) }
 Scope 3: {(7:inst) (8:b) }
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "class O1{int a;} class O2{ O1 o1;} void main(){ O2 inst; int b; b = inst.o1.a;}"
@@ -808,6 +854,7 @@ AST dump:
 ----[Var] inst [O2 Lvalue Read Address Nmemb]
 ----[Vnam] o1
 ---[Vnam] a
+- 
 
 
 Declaration Table:
@@ -822,9 +869,12 @@ Scope 0: {(5:O1) (7:O2) (8:main) }
 HScope of O1 2: {(4:a) }
 HScope of O2 3: {(6:o1) }
 Scope 4: {(9:inst) (10:b) }
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "class O1{int f(int a, int b){int c; c = a+b; return c;}} void main(){ O1 inst; int b; b = inst.f(1,2);}"
+Symbol: [ in scope 3 b of type int] to offset: 4
+Symbol: [ in scope 3 b of type int] to offset: 4
 
 AST dump:
 [CDef] O1 [O1]
@@ -850,6 +900,7 @@ AST dump:
 -----[Vnam] f
 ----[Lit] 1 [int]
 ----[Lit] 2 [int]
+- 
 
 
 Declaration Table:
@@ -866,6 +917,7 @@ Scope 0: {(8:O1) (9:main) }
 HScope of O1 2: {(4:f) }
 Scope 3: {(5:a) (6:b) (7:c) }
 Scope 4: {(10:inst) (11:b) }
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "class O1{int f(int a){return a + a_;} int a_;} void main(){ O1 inst; }"
@@ -881,6 +933,7 @@ AST dump:
 
 [FDef] FuncDef: main
 -[VDec] O1 inst 
+- 
 
 
 Declaration Table:
@@ -894,6 +947,7 @@ Scope 0: {(7:O1) (8:main) }
 HScope of O1 2: {(4:f) (6:a_) }
 Scope 3: {(5:a) }
 Scope 4: {(9:inst) }
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "class O1{int f(){return 1;} } class O2{int g(){return inst_.f() + 1;} O1 inst_; } void main(){ O2 inst; }"
@@ -918,6 +972,7 @@ AST dump:
 
 [FDef] FuncDef: main
 -[VDec] O2 inst 
+- 
 
 
 Declaration Table:
@@ -933,6 +988,7 @@ Scope 3: {}
 HScope of O2 4: {(6:g) (7:inst_) }
 Scope 5: {}
 Scope 6: {(10:inst) }
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "class O1{int f(){return g();} int g(){return 1;} } void main(){ O1 inst;}"
@@ -951,6 +1007,7 @@ AST dump:
 
 [FDef] FuncDef: main
 -[VDec] O1 inst 
+- 
 
 
 Declaration Table:
@@ -964,6 +1021,7 @@ HScope of O1 2: {(4:f) (5:g) }
 Scope 3: {}
 Scope 4: {}
 Scope 5: {(8:inst) }
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "class A{int a;} class B : A{int b;} void main(){ B inst;}"
@@ -976,6 +1034,7 @@ AST dump:
 -[VDec] int b
 [FDef] FuncDef: main
 -[VDec] B inst 
+- 
 
 
 Declaration Table:
@@ -989,6 +1048,7 @@ Scope 0: {(5:A) (7:B) (8:main) }
 HScope of A 2: {(4:a) }
 HScope of B 3: {(6:b) }
 Scope 4: {(9:inst) }
+Scope 1: {}
 
 ---------------------------------------------------
 Parsing: "class A{int a;} class B : A{int b;} void main(){ B inst; inst.a = 2;}"
@@ -1006,6 +1066,7 @@ AST dump:
 ---[Var] inst [B Lvalue Read Address Nmemb]
 ---[Vnam] a
 --[Lit] 2 [int Rvalue]
+- 
 
 
 Declaration Table:
@@ -1019,4 +1080,5 @@ Scope 0: {(5:A) (7:B) (8:main) }
 HScope of A 2: {(4:a) }
 HScope of B 3: {(6:b) }
 Scope 4: {(9:inst) }
+Scope 1: {}
 
