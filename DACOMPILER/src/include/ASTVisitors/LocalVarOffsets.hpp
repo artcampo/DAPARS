@@ -13,11 +13,13 @@ namespace AST{
 
 //This visitor is only instantiated on functions, not on Prog
 
+// static const size_t kMaxAddress = 0xFFFF;
+
 class LocalVarOffsets : public ASTVisitor{
 public:
 
   LocalVarOffsets(CompilationUnit& unit, Function& func)
-    : unit_(unit), func_(func), offset_(0){};
+    : unit_(unit), func_(func), offset_(0), comp_private_offset_(0){};
 
 
 
@@ -52,13 +54,24 @@ public:
   }
 
   virtual void Visit(VarDecl const& p){
-//     std::cout << p.str() << " to offset: " << offset_ << std::endl;
     Symbols::Symbol& s = func_.GetSymbolDecl(p);
-//     std::cout << s.str() << std::endl;
     auto size = s.Size();
     IR::Offset o;
+
+    //Offset for a compiler private local var
+    if(p.IsCompilerPrivate()){
+      o = IR::Offset(comp_private_offset_ - size, s.BareName());
+      comp_private_offset_ -= size;
+      func_.StoreSymbolAddress( s.Id(), o, func_.LocalsLabel(), size, func_.LocalVars());
+      return;
+    }
+
+    //Offset for a regular private local var
     if(func_.IsMain())  o = IR::Offset(offset_, s.BareName());
     else                o = IR::Offset(-offset_, s.BareName());
+
+//     std::cout << p.str() << " to offset: " << offset_ << std::endl;
+//     std::cout << s.str() << std::endl;
 
     func_.StoreSymbolAddress( s.Id(), o, func_.LocalsLabel(), size, func_.LocalVars());
     offset_ += size;
@@ -115,6 +128,8 @@ private:
   CompilationUnit&  unit_;
   Function&         func_;
   IR::AddrOffset    offset_;
+  IR::AddrOffset    comp_private_offset_;
+
 };
 
 

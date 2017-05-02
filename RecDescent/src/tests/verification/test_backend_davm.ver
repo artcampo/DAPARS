@@ -8,10 +8,10 @@ store %0 to [LT MainDS:0 (a)]
 %4 = %2 + %3
 store %4 to [LT MainDS:0 (a)]
 ReturnMain
-%0 = Load [LT MainDS:1 (__test_result)]
-%1 = Load [LT MainDS:1 (__test_result)]
+%0 = Load [LT MainDS:-1 (__test_result)]
+%1 = Load [LT MainDS:-1 (__test_result)]
 %2 = %0 or %1
-store %2 to [LT MainDS:1 (__test_result)]
+store %2 to [LT MainDS:-1 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -22,9 +22,9 @@ Bytecode:
 4: STORE, r3 -> [@0]
 5: STOP
 6: MOV, rs15 rd14  <- [__test]
-7: LOAD, rd1 <- [@1]
+7: LOAD, rd1 <- [@-1]
 8: OR, rs1 rs1 rd2
-9: STORE, r2 -> [@1]
+9: STORE, r2 -> [@-1]
 10: RETURN
 Static data segment size: 2
 
@@ -40,10 +40,10 @@ store %2 to [LT MainDS:1 (b)]
 %6 = %4 + %5
 store %6 to [LT MainDS:2 (c)]
 ReturnMain
-%0 = Load [LT MainDS:3 (__test_result)]
-%1 = Load [LT MainDS:3 (__test_result)]
+%0 = Load [LT MainDS:-1 (__test_result)]
+%1 = Load [LT MainDS:-1 (__test_result)]
 %2 = %0 or %1
-store %2 to [LT MainDS:3 (__test_result)]
+store %2 to [LT MainDS:-1 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -55,9 +55,9 @@ Bytecode:
 5: STORE, r3 -> [@2]
 6: STOP
 7: MOV, rs15 rd14  <- [__test]
-8: LOAD, rd1 <- [@3]
+8: LOAD, rd1 <- [@-1]
 9: OR, rs1 rs1 rd2
-10: STORE, r2 -> [@3]
+10: STORE, r2 -> [@-1]
 11: RETURN
 Static data segment size: 4
 
@@ -75,10 +75,10 @@ ReturnMain
 %0 = GetArg( arg0 )
 SetRetVal( %0)
 Return
-%0 = Load [LT MainDS:1 (__test_result)]
-%1 = Load [LT MainDS:1 (__test_result)]
+%0 = Load [LT MainDS:-1 (__test_result)]
+%1 = Load [LT MainDS:-1 (__test_result)]
 %2 = %0 or %1
-store %2 to [LT MainDS:1 (__test_result)]
+store %2 to [LT MainDS:-1 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -93,9 +93,9 @@ Bytecode:
 8: MOV, rs0 rd0
 9: RETURN
 10: MOV, rs15 rd14  <- [__test]
-11: LOAD, rd1 <- [@1]
+11: LOAD, rd1 <- [@-1]
 12: OR, rs1 rs1 rd2
-13: STORE, r2 -> [@1]
+13: STORE, r2 -> [@-1]
 14: RETURN
 Static data segment size: 2
 
@@ -116,10 +116,10 @@ ReturnMain
 %2 = %0 + %1
 SetRetVal( %2)
 Return
-%0 = Load [LT MainDS:1 (__test_result)]
-%1 = Load [LT MainDS:1 (__test_result)]
+%0 = Load [LT MainDS:-1 (__test_result)]
+%1 = Load [LT MainDS:-1 (__test_result)]
 %2 = %0 or %1
-store %2 to [LT MainDS:1 (__test_result)]
+store %2 to [LT MainDS:-1 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -138,9 +138,9 @@ Bytecode:
 12: MOV, rs2 rd0
 13: RETURN
 14: MOV, rs15 rd14  <- [__test]
-15: LOAD, rd1 <- [@1]
+15: LOAD, rd1 <- [@-1]
 16: OR, rs1 rs1 rd2
-17: STORE, r2 -> [@1]
+17: STORE, r2 -> [@-1]
 18: RETURN
 Static data segment size: 2
 
@@ -171,10 +171,10 @@ ReturnMain
 %6 = %4 + %5
 SetRetVal( %6)
 Return
-%0 = Load [LT MainDS:1 (__test_result)]
-%1 = Load [LT MainDS:1 (__test_result)]
+%0 = Load [LT MainDS:-1 (__test_result)]
+%1 = Load [LT MainDS:-1 (__test_result)]
 %2 = %0 or %1
-store %2 to [LT MainDS:1 (__test_result)]
+store %2 to [LT MainDS:-1 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -201,9 +201,9 @@ Bytecode:
 20: MOV, rs6 rd0
 21: RETURN
 22: MOV, rs15 rd14  <- [__test]
-23: LOAD, rd1 <- [@1]
+23: LOAD, rd1 <- [@-1]
 24: OR, rs1 rs1 rd2
-25: STORE, r2 -> [@1]
+25: STORE, r2 -> [@-1]
 26: RETURN
 Static data segment size: 2
 
@@ -217,10 +217,10 @@ ReturnMain
 %0 = Load [RT arp_f[isArp]:0 (a)]
 SetRetVal( %0)
 Return
-%0 = Load [LT MainDS:1 (__test_result)]
-%1 = Load [LT MainDS:1 (__test_result)]
+%0 = Load [LT MainDS:-1 (__test_result)]
+%1 = Load [LT MainDS:-1 (__test_result)]
 %2 = %0 or %1
-store %2 to [LT MainDS:1 (__test_result)]
+store %2 to [LT MainDS:-1 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -237,9 +237,9 @@ Bytecode:
 10: POP, r14
 11: RETURN
 12: MOV, rs15 rd14  <- [__test]
-13: LOAD, rd1 <- [@1]
+13: LOAD, rd1 <- [@-1]
 14: OR, rs1 rs1 rd2
-15: STORE, r2 -> [@1]
+15: STORE, r2 -> [@-1]
 16: RETURN
 Static data segment size: 2
 
@@ -255,10 +255,10 @@ ReturnMain
 %2 = %0 + %1
 SetRetVal( %2)
 Return
-%0 = Load [LT MainDS:1 (__test_result)]
-%1 = Load [LT MainDS:1 (__test_result)]
+%0 = Load [LT MainDS:-1 (__test_result)]
+%1 = Load [LT MainDS:-1 (__test_result)]
 %2 = %0 or %1
-store %2 to [LT MainDS:1 (__test_result)]
+store %2 to [LT MainDS:-1 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -277,9 +277,9 @@ Bytecode:
 12: POP, r14
 13: RETURN
 14: MOV, rs15 rd14  <- [__test]
-15: LOAD, rd1 <- [@1]
+15: LOAD, rd1 <- [@-1]
 16: OR, rs1 rs1 rd2
-17: STORE, r2 -> [@1]
+17: STORE, r2 -> [@-1]
 18: RETURN
 Static data segment size: 2
 
@@ -308,10 +308,10 @@ store %13 to [LT MainDS:2 (c)]
 %15 = Load [LT MainDS:1 (b)]
 store %15 to [LT MainDS:3 (d)]
 ReturnMain
-%0 = Load [LT MainDS:4 (__test_result)]
-%1 = Load [LT MainDS:4 (__test_result)]
+%0 = Load [LT MainDS:-1 (__test_result)]
+%1 = Load [LT MainDS:-1 (__test_result)]
 %2 = %0 or %1
-store %2 to [LT MainDS:4 (__test_result)]
+store %2 to [LT MainDS:-1 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -335,9 +335,9 @@ Bytecode:
 17: STORE, r2 -> [@3]
 18: STOP
 19: MOV, rs15 rd14  <- [__test]
-20: LOAD, rd1 <- [@4]
+20: LOAD, rd1 <- [@-1]
 21: OR, rs1 rs1 rd2
-22: STORE, r2 -> [@4]
+22: STORE, r2 -> [@-1]
 23: RETURN
 Static data segment size: 5
 
@@ -360,10 +360,10 @@ call [LT entry_f[isTarget]:0 ()]
 %2 = %0 + %1
 SetRetVal( %2)
 Return
-%0 = Load [LT MainDS:1 (__test_result)]
-%1 = Load [LT MainDS:1 (__test_result)]
+%0 = Load [LT MainDS:-1 (__test_result)]
+%1 = Load [LT MainDS:-1 (__test_result)]
 %2 = %0 or %1
-store %2 to [LT MainDS:1 (__test_result)]
+store %2 to [LT MainDS:-1 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -386,9 +386,9 @@ Bytecode:
 16: MOV, rs3 rd0
 17: RETURN
 18: MOV, rs15 rd14  <- [__test]
-19: LOAD, rd1 <- [@1]
+19: LOAD, rd1 <- [@-1]
 20: OR, rs1 rs1 rd2
-21: STORE, r2 -> [@1]
+21: STORE, r2 -> [@-1]
 22: RETURN
 Static data segment size: 2
 
@@ -408,10 +408,10 @@ store %6 to [LT MainDS:2 (c)]
 %10 = %8 or %9
 store %10 to [LT MainDS:2 (c)]
 ReturnMain
-%0 = Load [LT MainDS:3 (__test_result)]
-%1 = Load [LT MainDS:3 (__test_result)]
+%0 = Load [LT MainDS:-1 (__test_result)]
+%1 = Load [LT MainDS:-1 (__test_result)]
 %2 = %0 or %1
-store %2 to [LT MainDS:3 (__test_result)]
+store %2 to [LT MainDS:-1 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -427,9 +427,9 @@ Bytecode:
 9: STORE, r6 -> [@2]
 10: STOP
 11: MOV, rs15 rd14  <- [__test]
-12: LOAD, rd1 <- [@3]
+12: LOAD, rd1 <- [@-1]
 13: OR, rs1 rs1 rd2
-14: STORE, r2 -> [@3]
+14: STORE, r2 -> [@-1]
 15: RETURN
 Static data segment size: 4
 
@@ -454,10 +454,10 @@ store %4 to [RT arp_f[isArp]:-1 (b)]
 %6 = LoadI(12)
 store %6 to [RT arp_f[isArp]:-2 (c)]
 Return
-%0 = Load [LT MainDS:3 (__test_result)]
-%1 = Load [LT MainDS:3 (__test_result)]
+%0 = Load [LT MainDS:-1 (__test_result)]
+%1 = Load [LT MainDS:-1 (__test_result)]
 %2 = %0 or %1
-store %2 to [LT MainDS:3 (__test_result)]
+store %2 to [LT MainDS:-1 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -485,9 +485,9 @@ Bytecode:
 21: POP, r14
 22: RETURN
 23: MOV, rs15 rd14  <- [__test]
-24: LOAD, rd1 <- [@3]
+24: LOAD, rd1 <- [@-1]
 25: OR, rs1 rs1 rd2
-26: STORE, r2 -> [@3]
+26: STORE, r2 -> [@-1]
 27: RETURN
 Static data segment size: 4
 
@@ -503,10 +503,10 @@ store %2 to [LT MainDS:2 (c)]
 %6 = %4 == %5
 store %6 to [LT MainDS:0 (b)]
 ReturnMain
-%0 = Load [LT MainDS:3 (__test_result)]
-%1 = Load [LT MainDS:3 (__test_result)]
+%0 = Load [LT MainDS:-1 (__test_result)]
+%1 = Load [LT MainDS:-1 (__test_result)]
 %2 = %0 or %1
-store %2 to [LT MainDS:3 (__test_result)]
+store %2 to [LT MainDS:-1 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -518,9 +518,9 @@ Bytecode:
 5: STORE, r3 -> [@0]
 6: STOP
 7: MOV, rs15 rd14  <- [__test]
-8: LOAD, rd1 <- [@3]
+8: LOAD, rd1 <- [@-1]
 9: OR, rs1 rs1 rd2
-10: STORE, r2 -> [@3]
+10: STORE, r2 -> [@-1]
 11: RETURN
 Static data segment size: 4
 
@@ -537,10 +537,10 @@ call [LT entry___test[isTarget]:0 ()]
 %5 = GetRetVal()
 SetRetVal( %5)
 ReturnMain
-%0 = Load [LT MainDS:2 (__test_result)]
-%1 = Load [LT MainDS:2 (__test_result)]
+%0 = Load [LT MainDS:-1 (__test_result)]
+%1 = Load [LT MainDS:-1 (__test_result)]
 %2 = %0 or %1
-store %2 to [LT MainDS:2 (__test_result)]
+store %2 to [LT MainDS:-1 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -555,9 +555,9 @@ Bytecode:
 8: MOV, rs1 rd0
 9: STOP
 10: MOV, rs15 rd14  <- [__test]
-11: LOAD, rd1 <- [@2]
+11: LOAD, rd1 <- [@-1]
 12: OR, rs1 rs1 rd2
-13: STORE, r2 -> [@2]
+13: STORE, r2 -> [@-1]
 14: RETURN
 Static data segment size: 3
 
