@@ -5,6 +5,10 @@
 
 namespace VM{
 
+namespace Spec{
+const static int kNumberRegisters = 16;
+}//end namespace VM
+
 using Addr    = uint32_t;  //regular memory address
 using Target  = uint32_t;  //address to code
 using Inst    = uint32_t;  //a single instruction
@@ -16,7 +20,7 @@ using TypeId = uint32_t;
 
 struct FuncDesc{
   FuncDesc(const std::string& name, Addr entry) : name_(name), entry_(entry){};
-  
+
   std::string name_;
   Addr        entry_;
 };

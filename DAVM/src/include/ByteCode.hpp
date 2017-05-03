@@ -4,7 +4,7 @@
 #include <cstddef>
 #include <map>
 #include <iostream>
-#include "BasicTypes.hpp"
+#include "VMBasicTypes.hpp"
 #include "IRPrint.hpp"
 
 namespace VM{
@@ -22,19 +22,19 @@ struct ByteCode{
     func_index_by_addr_[entry] = functions_.size();
     functions_.push_back(FuncDesc(name, entry));
   }
-  
+
   //TODO:make private
   std::vector<Inst> stream;
-  
+
   size_t static_data_segment_size_;
-  
+
   void SetStaticDataSegment(const size_t size){
     static_data_segment_size_ = size;
   }
-  
+
   std::vector<FuncDesc>       functions_;
   std::map<VM::Addr, size_t>  func_index_by_addr_;
-  
+
   void Dump(const bool extra_dump) const{
     int line = 0;
     for ( auto const inst : stream){
@@ -43,14 +43,14 @@ struct ByteCode{
       if(extra_dump and IsFuncEntry(line) ) std::cout << "  <- ["<< Func(line).name_ << "]";
       std::cout << "\n";
       ++line;
-    }    
+    }
   }
-  
+
   bool  IsFuncEntry(const VM::Addr addr) const{
     auto it = func_index_by_addr_.find(addr);
     return it != func_index_by_addr_.end();
   }
-  
+
   //addr must be the entry point for any function
   FuncDesc& Func(const VM::Addr addr){
     auto index = func_index_by_addr_.at(addr);
@@ -60,8 +60,8 @@ struct ByteCode{
   const FuncDesc& Func(const VM::Addr addr) const{
     auto index = func_index_by_addr_.at(addr);
     return functions_.at(index);
-  }  
-    
+  }
+
 };
 
 }//end namespace VM

@@ -1,16 +1,15 @@
 #pragma once
 #include <stdint.h>
 #include "RegisterBank.hpp"
-#include "BasicTypes.hpp"
+#include "VMBasicTypes.hpp"
 
 namespace VM{
 
-struct ExecutionContext{
-  
-  Target             instruction_pointer_;
-  RegisterBank<Word> registers_;
+struct ExecutionContext : public RegisterBank<Word>{
 
-  ExecutionContext():instruction_pointer_(0), registers_(){};
+  ExecutionContext() : instruction_pointer_(0){};
+
+  Target             instruction_pointer_;
 };
 
 }//end namespace VM

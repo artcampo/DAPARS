@@ -1,7 +1,7 @@
 #pragma once
 #include "IRCodification.hpp"
 //TODO: change name/path
-#include "BasicTypes.hpp"
+#include "VMBasicTypes.hpp"
 namespace VM{
 namespace IRBuilder{
 

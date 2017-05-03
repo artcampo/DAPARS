@@ -1,7 +1,7 @@
 #pragma once
 #include <map
 #include <stdint.h>
-#include "BasicTypes.hpp"
+#include "VMBasicTypes.hpp"
 #include "MMU.hpp"
 
 namespace VM{

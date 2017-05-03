@@ -13,7 +13,7 @@ using namespace IRBuilder;
 
 void VirtualMachine::InstLoad(const Reg &reg_dst, const SubInst &literal){
   std::cout << "LOAD R"<< reg_dst <<"="<<literal<<"\n";
-  process_->execution_context_.registers_.registers[reg_dst] = literal;
+  process_->registers_[reg_dst] = literal;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -38,33 +38,33 @@ bool VirtualMachine::InstTypeArihmetic (const Reg &reg_src1,
 void VirtualMachine::InstAdd (const Reg &reg_src1,
   const Reg &reg_src2, const Reg &reg_dst){
   std::cout << "ADD R"<<reg_dst<<"=R"<<reg_src1<<" op R"<< reg_src2 <<"\n";
-  process_->execution_context_.registers_.registers[reg_dst] =
-      process_->execution_context_.registers_.registers[reg_src1]
-    + process_->execution_context_.registers_.registers[reg_src2];
+  process_->registers_[reg_dst] =
+      process_->registers_[reg_src1]
+    + process_->registers_[reg_src2];
 }
 
 void VirtualMachine::InstSub (const Reg &reg_src1,
   const Reg &reg_src2, const Reg &reg_dst){
   std::cout << "SUB R"<<reg_dst<<"=R"<<reg_src1<<" op R"<< reg_src2 <<"\n";
-  process_->execution_context_.registers_.registers[reg_dst] =
-      process_->execution_context_.registers_.registers[reg_src1]
-    - process_->execution_context_.registers_.registers[reg_src2];
+  process_->registers_[reg_dst] =
+      process_->registers_[reg_src1]
+    - process_->registers_[reg_src2];
 }
 
 void VirtualMachine::InstMul (const Reg &reg_src1,
   const Reg &reg_src2, const Reg &reg_dst){
   std::cout << "MUL R"<<reg_dst<<"=R"<<reg_src1<<" op R"<< reg_src2 <<"\n";
-  process_->execution_context_.registers_.registers[reg_dst] =
-      process_->execution_context_.registers_.registers[reg_src1]
-    * process_->execution_context_.registers_.registers[reg_src2];
+  process_->registers_[reg_dst] =
+      process_->registers_[reg_src1]
+    * process_->registers_[reg_src2];
 }
 
 void VirtualMachine::InstDiv (const Reg &reg_src1,
   const Reg &reg_src2, const Reg &reg_dst){
   std::cout << "DIV R"<<reg_dst<<"=R"<<reg_src1<<" op R"<< reg_src2 <<"\n";
-  process_->execution_context_.registers_.registers[reg_dst] =
-      process_->execution_context_.registers_.registers[reg_src1]
-    / process_->execution_context_.registers_.registers[reg_src2];
+  process_->registers_[reg_dst] =
+      process_->registers_[reg_src1]
+    / process_->registers_[reg_src2];
 }
 
 
@@ -90,39 +90,39 @@ bool VirtualMachine::InstTypeComparison (const Reg &reg_src1,
 void VirtualMachine::InstNot (const Reg &reg_src1,
   const Reg &reg_src2, const Reg &reg_dst){
   std::cout << "NOT R"<<reg_dst<<"= !R"<<reg_src1<<"\n";
-  process_->execution_context_.registers_.registers[reg_dst] =
-      not process_->execution_context_.registers_.registers[reg_src1];
+  process_->registers_[reg_dst] =
+      not process_->registers_[reg_src1];
 }
 
 void VirtualMachine::InstEql (const Reg &reg_src1,
   const Reg &reg_src2, const Reg &reg_dst){
   std::cout << "EQL R"<<reg_dst<<"=R"<<reg_src1<<" == R"<< reg_src2 <<"\n";
-  process_->execution_context_.registers_.registers[reg_dst] =
-      process_->execution_context_.registers_.registers[reg_src1]
-   == process_->execution_context_.registers_.registers[reg_src2];
+  process_->registers_[reg_dst] =
+      process_->registers_[reg_src1]
+   == process_->registers_[reg_src2];
 }
 
 void VirtualMachine::InstLst (const Reg &reg_src1,
   const Reg &reg_src2, const Reg &reg_dst){
   std::cout << "LST R"<<reg_dst<<"=R"<<reg_src1<<" < R"<< reg_src2 <<"\n";
-  process_->execution_context_.registers_.registers[reg_dst] =
-      process_->execution_context_.registers_.registers[reg_src1]
-    < process_->execution_context_.registers_.registers[reg_src2];
+  process_->registers_[reg_dst] =
+      process_->registers_[reg_src1]
+    < process_->registers_[reg_src2];
 }
 
 void VirtualMachine::InstLte (const Reg &reg_src1,
   const Reg &reg_src2, const Reg &reg_dst){
   std::cout << "LTE R"<<reg_dst<<"=R"<<reg_src1<<" <= R"<< reg_src2 <<"\n";
-  process_->execution_context_.registers_.registers[reg_dst] =
-      process_->execution_context_.registers_.registers[reg_src1]
-   <= process_->execution_context_.registers_.registers[reg_src2];
+  process_->registers_[reg_dst] =
+      process_->registers_[reg_src1]
+   <= process_->registers_[reg_src2];
 }
 
 void VirtualMachine::InstMov (const Reg &reg_src1,
   const Reg &reg_src2, const Reg &reg_dst){
   std::cout << "MOV R"<<reg_dst<<"=R"<<reg_src1<<" \n";
-  process_->execution_context_.registers_.registers[reg_dst] =
-      process_->execution_context_.registers_.registers[reg_src1];
+  process_->registers_[reg_dst] =
+      process_->registers_[reg_src1];
 }
 
 }//end namespace VM

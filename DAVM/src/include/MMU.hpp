@@ -1,7 +1,7 @@
 #pragma once
 #include <map>
 #include <stdint.h>
-#include "BasicTypes.hpp"
+#include "VMBasicTypes.hpp"
 
 namespace VM{
 namespace Process{

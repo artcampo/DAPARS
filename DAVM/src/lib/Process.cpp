@@ -4,28 +4,28 @@
 namespace VM{
 
 void Process::NextOpCode(){
-  execution_context_.instruction_pointer_++;
+  instruction_pointer_++;
 }
 
 bool Process::NextOpCodeIsValid() const{
-  return (execution_context_.instruction_pointer_ >= 0 and
-          execution_context_.instruction_pointer_ < byte_code_.stream.size() );
+  return (instruction_pointer_ >= 0 and
+          instruction_pointer_ < byte_code_.stream.size() );
 }
 
 // PRE: NextOpCodeIsValid() is true
 Inst Process::GetCurrentOpCode() const{
-  return byte_code_.stream[execution_context_.instruction_pointer_];
+  return byte_code_.stream[instruction_pointer_];
 }
 
 void Process::ModifyIP(const Target &offset){
-  execution_context_.instruction_pointer_++;
-  execution_context_.instruction_pointer_ += offset;
+  instruction_pointer_++;
+  instruction_pointer_ += offset;
 }
 
 void Process::DumpExecutionContext(const int registers_num) const{
   std::cout << "Registers: ";
   for( int i = 0; i < registers_num ; ++i){
-    std::cout << execution_context_.registers_.registers[i];
+    std::cout << registers_[i];
     if ( i != (registers_num - 1) ) std::cout << ", ";
   }
   std::cout << "\n";

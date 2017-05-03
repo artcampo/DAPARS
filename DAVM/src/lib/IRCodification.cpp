@@ -1,6 +1,6 @@
 #include "IRCodification.hpp"
 #include "IRDefinition.hpp"
-#include "BasicTypes.hpp"
+#include "VMBasicTypes.hpp"
 #include <iostream>
 
 namespace VM{
@@ -76,7 +76,7 @@ void DecodeClass1(const VM::Inst instruction, Reg&reg_dst,
   reg_dst = (instruction >> kClass1OpcodeNumBits)
             & kRegistertMask;
   reg_base = (instruction >> (kClass1OpcodeNumBits + kRegisterNumBits))
-            & kRegistertMask;         
+            & kRegistertMask;
   literal = Decode(
               (instruction >> (kClass1OpcodeNumBits + kRegisterNumBits*2))
               & kLiteraltMask);
@@ -141,7 +141,7 @@ Word DecodeClass0Literal(const VM::Inst instruction){
 SubInst Code(const Word literal){
   if(literal < 0){
     SubInst l = SubInst((-literal)) & kLiteralUnsignedMask;
-    l += 1 << kLiteralSignPosition; 
+    l += 1 << kLiteralSignPosition;
     return l;
   }else{
     SubInst l = SubInst(literal & kLiteralUnsignedMask);

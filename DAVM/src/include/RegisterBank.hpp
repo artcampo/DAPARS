@@ -1,17 +1,17 @@
 #pragma once
 #include <vector>
+#include "VMBasicTypes.hpp"
 
 namespace VM{
 
 template <typename T>
 struct RegisterBank{
-  
-  std::vector<T>  registers;
+
+  std::vector<T>  registers_;
 
   RegisterBank(){
-    registers.resize(10);
-    for(auto &it : registers)
-      it = 0;
+    registers_.resize(Spec::kNumberRegisters);
+    for(auto &it : registers_) it = 0;
   }
 };
 

@@ -3,7 +3,7 @@
 #include "IRCodification.hpp"
 #include <string>
 #include <iostream>
-#include "BasicTypes.hpp"
+#include "VMBasicTypes.hpp"
 
 namespace VM{
 
