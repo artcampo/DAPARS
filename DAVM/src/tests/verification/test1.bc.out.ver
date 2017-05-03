@@ -1,3 +1,4 @@
 EXEC
+OP: LOAD R0=0
 OP: Errors in execution:
 op not found (c1)

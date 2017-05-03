@@ -1,21 +1,23 @@
 RAW bytecode:
-344225
-33795
-33803
-33811
-33819
-33799
-33807
-33815
-33823
+344229
+33475
+67587
+67603
+67619
+67635
+67591
+67607
+67623
+67639
 4
 LOADI, r5 val: 42
+MOV, rs5 rd1
 ADD, rs0 rs1 rd2
 SUB, rs0 rs1 rd2
 MUL, rs0 rs1 rd2
 DIV, rs0 rs1 rd2
 NOT, rs0 rs1 rd2
-EQL, rs0 rs1 rd2
+EQT, rs0 rs1 rd2
 LST, rs0 rs1 rd2
 LTE, rs0 rs1 rd2
 STOP
