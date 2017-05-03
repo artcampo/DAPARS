@@ -23,6 +23,7 @@ regenerate_test_standalone(){
 regenerate_test_standalone test1
 regenerate_test_standalone test2
 regenerate_test_standalone test3
+regenerate_test_standalone test_mem
 
 #end
 echo "Tests regenerated. You need to reinstall before running tests again."

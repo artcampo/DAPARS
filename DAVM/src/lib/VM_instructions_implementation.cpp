@@ -11,7 +11,7 @@ namespace VM{
 using namespace IRCodification;
 using namespace IRBuilder;
 
-void VirtualMachine::InstLoad(const Reg &reg_dst, const SubInst &literal){
+void VirtualMachine::InstLoadI(const Reg &reg_dst, const SubInst &literal){
   std::cout << "LOAD R"<< reg_dst <<"="<<literal<<"\n";
   process_->registers_[reg_dst] = literal;
 }
@@ -123,6 +123,12 @@ void VirtualMachine::InstMov (const Reg &reg_src1,
   std::cout << "MOV R"<<reg_dst<<"=R"<<reg_src1<<" \n";
   process_->registers_[reg_dst] =
       process_->registers_[reg_src1];
+}
+
+void VirtualMachine::InstLoad (const Reg&reg_dst, const SubInst& literal){
+  std::cout << "LOAD R"<<reg_dst<<"=[@"<<literal <<"]";
+  process_->registers_[reg_dst] = process_->Load(literal);
+  std::cout << ", val = "<< process_->registers_[reg_dst] <<" \n";
 }
 
 }//end namespace VM

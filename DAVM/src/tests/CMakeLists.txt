@@ -12,6 +12,9 @@ target_link_libraries(test2 VM)
 add_executable(test3 test3.cpp)
 target_link_libraries(test3 VM)
 
+add_executable(test_mem test_mem.cpp)
+target_link_libraries(test_mem VM)
+
 add_executable(davm main.cpp)
 target_link_libraries(davm VM)
 
@@ -23,6 +26,7 @@ INSTALL(TARGETS
         test1
         test2
         test3
+        test_mem
         davm
         unit_test
         DESTINATION tests)

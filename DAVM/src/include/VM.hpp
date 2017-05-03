@@ -30,6 +30,8 @@ private:
   ByteCode* ReadByteCode(const std::string &file_name);
 
 
+  //Class 1: Mem
+  void InstLoadI(const Reg &reg_dst, uint32_t const &literal);
   void InstLoad(const Reg &reg_dst, uint32_t const &literal);
 
   //Class 3: Type Ari

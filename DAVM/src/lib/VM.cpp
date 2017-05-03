@@ -55,7 +55,8 @@ bool VirtualMachine::ExecProcess(){
           case InstClassRegLit:
             DecodeClass1(current_instruction, reg_dst, reg_base, literal);
             switch(current_op_code){
-              case IR_LOADI:  InstLoad(reg_dst, literal); break;
+              case IR_LOADI:  InstLoadI(reg_dst, literal); break;
+              case IR_LOAD:   InstLoad (reg_dst, literal); break;
               default:        error_log_->errors.push_back(
                                           "op not found (c1)");
                               error = true; break;

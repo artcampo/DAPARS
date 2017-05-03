@@ -2,6 +2,7 @@
 #include "ByteCode.hpp"
 #include "ExecutionContext.hpp"
 #include "Memory.hpp"
+#include "Policies/MemoryTesting.hpp"
 #include <memory>
 #include <stdint.h>
 
@@ -9,9 +10,12 @@ namespace VM{
 
 class VirtualMachine;
 
+
 namespace Internal{
 
-class Process : public Internal::ExecutionContext, public Internal::Memory{
+
+class Process : public Internal::ExecutionContext
+  , public Internal::Memory<Internal::BasicPatternTestingPolicy>{
 
 public:
   Process(const ByteCode &byte_code) : byte_code_(byte_code){};
@@ -27,6 +31,7 @@ public:
 private:
   const ByteCode    &byte_code_;
   friend class VirtualMachine;
+
 };
 
 }//end namespace Internal

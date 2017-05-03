@@ -6,17 +6,18 @@
 namespace VM{
 namespace Internal{
 
-class Memory : public MMU {
+template <class TestingPolicy>
+class Memory : public MMU<TestingPolicy> {
 
 public:
 
   void Store(const Addr addr, const Word word){
-    Word *const physical_addr = LogicalToPhysical(addr);
+    Word *const physical_addr = this->LogicalToPhysical(addr);
     *physical_addr = word;
   }
 
   Word Load(const Addr addr){
-    Word *const physical_addr = LogicalToPhysical(addr);
+    Word *const physical_addr = this->LogicalToPhysical(addr);
     return *physical_addr;
   }
 

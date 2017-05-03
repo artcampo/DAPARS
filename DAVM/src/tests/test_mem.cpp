@@ -3,6 +3,7 @@
 #include "IRCodification.hpp"
 #include "IRBuilder.hpp"
 #include "IRDefinition.hpp"
+#include "VMSpec.hpp"
 #include <iostream>
 
 int main(){
@@ -14,10 +15,13 @@ int main(){
   using namespace IRBuilder;
   using namespace IRDefinition;
   using namespace IRBuilderAPI;
+  using namespace Spec;
+
   bc->stream = std::vector<uint32_t> {
-    LoadI( IR_REG0, 12),
-    LoadI( IR_REG1, 15),
-    Add  ( IR_REG0, IR_REG1, IR_REG2),
+    Load( IR_REG0, 0),
+    Load( IR_REG1, 3),
+    Load( IR_REG0, 0 + (1 << (kPageNumBits - kWordNumBits)) ),
+    Load( IR_REG1, 3 + (1 << (kPageNumBits - kWordNumBits)) ),
     Stop ()
   };
 
