@@ -2,10 +2,10 @@
 #include <string>
 #include <stdint.h>
 
-//TODO: rename this file
-
 namespace VM{
 
+
+//TODO: move this
 namespace Spec{
 const static int kNumberRegisters     = 16;
 const static int kPageNumBits         = 12;   //bits that make addresses within page
