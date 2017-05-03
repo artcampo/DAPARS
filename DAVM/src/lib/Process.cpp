@@ -2,6 +2,7 @@
 #include <iostream>
 
 namespace VM{
+namespace Internal{
 
 void Process::NextOpCode(){
   instruction_pointer_++;
@@ -31,4 +32,5 @@ void Process::DumpExecutionContext(const int registers_num) const{
   std::cout << "\n";
 }
 
+}//end namespace Internal
 }//end namespace VM

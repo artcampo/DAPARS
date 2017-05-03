@@ -1,6 +1,7 @@
 #pragma once
 #include "ByteCode.hpp"
 #include "ExecutionContext.hpp"
+#include "Memory.hpp"
 #include <memory>
 #include <stdint.h>
 
@@ -8,7 +9,9 @@ namespace VM{
 
 class VirtualMachine;
 
-class Process : public ExecutionContext{
+namespace Internal{
+
+class Process : public Internal::ExecutionContext, public Internal::Memory{
 
 public:
   Process(const ByteCode &byte_code) : byte_code_(byte_code){};
@@ -26,4 +29,5 @@ private:
   friend class VirtualMachine;
 };
 
+}//end namespace Internal
 }//end namespace VM

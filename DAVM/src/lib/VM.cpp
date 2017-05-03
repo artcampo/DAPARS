@@ -27,7 +27,7 @@ bool VirtualMachine::ExecProcess(){
       const SubInst current_class        = DecodeClass(current_instruction);
       const SubInst current_type         = DecodeType(current_instruction, current_class);
       const SubInst current_op_code      = DecodeOpCode(current_class, current_type);
-      
+
       Reg     reg_src1, reg_src2, reg_dst,reg_base;
       SubInst sub_type, op_offset;
       Word    literal;
@@ -116,7 +116,7 @@ bool VirtualMachine::ExecProcess(){
 
 VirtualMachine::VirtualMachine(ByteCode const &byte_code)
   : byte_code_(byte_code)
-  , process_(new Process(byte_code_))
+  , process_(new Internal::Process(byte_code_))
   , error_log_( new ErrorLog()){
 }
 

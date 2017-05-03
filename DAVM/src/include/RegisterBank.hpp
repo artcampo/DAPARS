@@ -3,6 +3,7 @@
 #include "VMBasicTypes.hpp"
 
 namespace VM{
+namespace Internal{
 
 template <typename T>
 struct RegisterBank{
@@ -15,4 +16,5 @@ struct RegisterBank{
   }
 };
 
+}//end namespace Internal
 }//end namespace VM

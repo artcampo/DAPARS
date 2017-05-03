@@ -4,6 +4,7 @@
 #include "VMBasicTypes.hpp"
 
 namespace VM{
+namespace Internal{
 
 struct ExecutionContext : public RegisterBank<Word>{
 
@@ -12,4 +13,5 @@ struct ExecutionContext : public RegisterBank<Word>{
   Target             instruction_pointer_;
 };
 
+}//end namespace Internal
 }//end namespace VM
