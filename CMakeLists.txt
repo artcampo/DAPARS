@@ -4,6 +4,7 @@ project(DAPARS)
 
 #repos which are dependencies
 add_subdirectory(DACOMPILER)
+add_subdirectory(DAVM)
 
 #base code
 add_subdirectory(GrammarAnalysis)
