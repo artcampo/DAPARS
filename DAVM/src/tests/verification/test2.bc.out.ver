@@ -1,4 +1,6 @@
 EXEC
 OP: LOAD R0=0
+OP: OP: ADD R0=R4 op R8
+OP: OP: LOAD R10=0
 OP: Errors in execution:
-op not found (c1)
+ari :: subtype not found

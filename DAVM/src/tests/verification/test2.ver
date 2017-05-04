@@ -21,3 +21,16 @@ EQT, rs0 rs1 rd2
 LST, rs0 rs1 rd2
 LTE, rs0 rs1 rd2
 STOP
+EXEC
+OP: LOAD R5=42
+OP: MOV R1=R5 
+OP: ADD R2=R0 op R1
+OP: SUB R2=R0 op R1
+OP: MUL R2=R0 op R1
+OP: DIV R2=R0 op R1
+OP: NOT R2= !R0
+OP: EQL R2=R0 == R1
+OP: LST R2=R0 < R1
+OP: LTE R2=R0 <= R1
+STOP
+Registers: 0, 42, 1, 0, 0, 42, 0, 0, 0, 0

@@ -38,13 +38,11 @@ int main(){
 
   VMUtils::printRaw(*bc);
   VMUtils::print(*bc);
-//   std::cout << "test1 - started" << std::endl;
-//   for(auto it : bc->stream)
-//     std::cout << it <<", ";
 
-//   std::unique_ptr<VirtualMachine> vm(new VirtualMachine(*bc) );
-//   vm->ExecProcess();
-//   vm->DumpExecutionContext();
+  //Execute bytecode
+  std::unique_ptr<VirtualMachine> vm(new VirtualMachine(*bc) );
+  vm->ExecProcess();
+  vm->DumpExecutionContext();
 
   return 0;
 }
