@@ -18,7 +18,7 @@ bool VirtualMachine::ExecProcess(){
     if( not process_->NextOpCodeIsValid() ){
       error     = true;
       executing = false;
-      error_log_->errors.push_back("Next opcode invalid");
+      error_log_->Log("Next opcode invalid");
     }else{
       using namespace IRCodification;
       using namespace IRDefinition;
@@ -49,7 +49,7 @@ bool VirtualMachine::ExecProcess(){
               case IR_JMP:  Jump(Target(literal));  break;
               case IR_CALL: Call(Target(literal));  break;
               case IR_RET:  Return();               break;
-              default:      error_log_->errors.push_back("op not found (c0)");
+              default:      error_log_->Log("op not found (c0)");
                             error = true; break;
             }
             break;
@@ -65,7 +65,7 @@ bool VirtualMachine::ExecProcess(){
               case IR_STOREB:StoreB(reg_dst, reg_base, literal);  break;
               case IR_PUSH:  Push  (reg_dst);                     break;
               case IR_POP:   Pop   (reg_dst);                     break;
-              default:       error_log_->errors.push_back("op not found (c1)");
+              default:       error_log_->Log("op not found (c1)");
                               error = true; break;
             }
             break;
@@ -76,7 +76,7 @@ bool VirtualMachine::ExecProcess(){
             switch(current_op_code){
               case IR_JMPC: JumpC (reg_dst, Target(literal), sub_type); break;
               case IR_ARII: ArithI(reg_dst, literal, sub_type);         break;
-              default:      error_log_->errors.push_back("op not found (c2)");
+              default:      error_log_->Log("op not found (c2)");
                             error = true; break;
             }
             break;
@@ -88,13 +88,13 @@ bool VirtualMachine::ExecProcess(){
               case IR_ARI:  error = InstTypeArihmetic (reg_src1, reg_src2, reg_dst, sub_type); break;
               case IR_CMP:  error = InstTypeComparison(reg_src1, reg_src2, reg_dst, sub_type); break;
               case IR_LOGIC:error = InstTypeLogic     (reg_src1, reg_src2, reg_dst, sub_type); break;
-              default:      error_log_->errors.push_back("op not found (c3)");
+              default:      error_log_->Log("op not found (c3)");
                             error = true; break;
             }
             break;
 
           ////////////////////////////////////////////////////////////
-          default:      error_log_->errors.push_back("class not found");
+          default:      error_log_->Log("class not found");
                         error = true; break;
 
         }
@@ -128,12 +128,11 @@ ByteCode* VirtualMachine::ReadByteCode(const std::string &file_name){
 
 
 void VirtualMachine::DumpExecutionContext(int const registers_num) const{
-  if(error_log_->errors.size() == 0)
+  if(error_log_->HasErrors())
     process_->DumpExecutionContext(registers_num);
   else{
     std::cout << "Errors in execution:" << std::endl;
-    for(auto it : error_log_->errors)
-      std::cout << it << "\n";
+    error_log_->Dump();
   }
 }
 

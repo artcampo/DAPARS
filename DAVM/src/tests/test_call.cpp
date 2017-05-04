@@ -26,7 +26,7 @@ int main(){
     Call  (Target(6)),
     Return(),
     ///////////////////////
-    Move  (IR_REG2, 4), //f2, ip = 6
+    LoadI (IR_REG2, 4), //f2, ip = 6
     Return()
   };
 
