@@ -8,6 +8,12 @@
 namespace VM{
 namespace Internal{
 
+/*
+  With the current specs, pages are 4k and the machine word is 4 bytes.
+  Thus a 32 bit address is splitted in two parts (31 being MSB):
+  1) 31-10: page of the address
+  2)  9- 0: offset within the page
+*/
 
 template <class TestingPolicy>
 class MMU{

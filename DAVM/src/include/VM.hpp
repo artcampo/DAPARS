@@ -29,39 +29,33 @@ private:
 
   ByteCode* ReadByteCode(const std::string &file_name);
 
-
-  //Class 1: Mem
-  void InstLoadI(const Reg &reg_dst, uint32_t const &literal);
-  void InstLoad(const Reg &reg_dst, uint32_t const &literal);
-
-  //Class 3: Type Ari
+  //Functions that handle a set of subtypes of instructions
   bool InstTypeArihmetic(const Reg &reg_src1, const Reg &reg_src2,
                             const Reg &reg_dst, uint32_t const &sub_type);
-
-  void InstAdd (const Reg &reg_src1, const Reg &reg_src2,
-                       const Reg &reg_dst);
-  void InstSub (const Reg &reg_src1, const Reg &reg_src2,
-                       const Reg &reg_dst);
-  void InstMul (const Reg &reg_src1, const Reg &reg_src2,
-                       const Reg &reg_dst);
-  void InstDiv (const Reg &reg_src1, const Reg &reg_src2,
-                       const Reg &reg_dst);
-
-  //Class 3: Type Cmp
-
   bool InstTypeComparison(const Reg &reg_src1, const Reg &reg_src2,
                             const Reg &reg_dst, uint32_t const &sub_type);
 
-  void InstNot (const Reg &reg_src1, const Reg &reg_src2,
+  //Class 1: Mem
+  void LoadI(const Reg &reg_dst, uint32_t const &literal);
+  void Load(const Reg &reg_dst, uint32_t const &literal);
+
+  //Class 3: Type Ari
+  void Add (const Reg &reg_src1, const Reg &reg_src2, const Reg &reg_dst);
+  void Sub (const Reg &reg_src1, const Reg &reg_src2, const Reg &reg_dst);
+  void Mul (const Reg &reg_src1, const Reg &reg_src2, const Reg &reg_dst);
+  void Div (const Reg &reg_src1, const Reg &reg_src2, const Reg &reg_dst);
+
+  //Class 3: Type Cmp
+  void Not (const Reg &reg_src1, const Reg &reg_src2,
                        const Reg &reg_dst);
-  void InstEql (const Reg &reg_src1, const Reg &reg_src2,
+  void Eqt (const Reg &reg_src1, const Reg &reg_src2,
                        const Reg &reg_dst);
-  void InstLst (const Reg &reg_src1, const Reg &reg_src2,
+  void Lst (const Reg &reg_src1, const Reg &reg_src2,
                        const Reg &reg_dst);
-  void InstLte (const Reg &reg_src1, const Reg &reg_src2,
+  void Lte (const Reg &reg_src1, const Reg &reg_src2,
                        const Reg &reg_dst);
 
-  void InstMov (const Reg &reg_src1, const Reg &reg_src2,
+  void Move (const Reg &reg_src1, const Reg &reg_src2,
                        const Reg &reg_dst);
 
 };
