@@ -16,19 +16,35 @@ bool  IsCall(const Inst instruction, Target& target);
 void PatchJump(Inst& inst, const Target target);
 void PatchCall(Inst& inst, const Target target);
 
-Inst Stop();
-Inst LoadI (const Reg reg_dst, const SubInst literal);  //TODO
-Inst Store(const Reg reg_src, const SubInst literal);  //TODO
-Inst Move (const Reg reg_src, const Reg reg_dst);       //TODO
-Inst Call(const Target target);//TODO
+///////////////////////////////////////////////////////
+// Class 0
 Inst Return();
-Inst LoadB(const Reg reg_dst, const Reg reg_base, const SubInst literal);  //TODO
-Inst Load(const Reg reg_dst, const SubInst literal);  //TODO
-Inst StoreB(const Reg reg_src, const Reg reg_base, const SubInst literal); //TODO
-Inst Store(const Reg reg_src, const SubInst literal); //TODO
+Inst Call(const Target target);
+Inst Jump(const Target target);
+Inst Stop();
+
+///////////////////////////////////////////////////////
+// Class 1
+Inst LoadI (const Reg reg_dst, const SubInst literal);
+Inst Store(const Reg reg_src, const SubInst literal);
+Inst LoadB(const Reg reg_dst, const Reg reg_base, const SubInst literal);
+Inst Load(const Reg reg_dst, const SubInst literal);
+Inst StoreB(const Reg reg_src, const Reg reg_base, const SubInst literal);
+Inst Store(const Reg reg_src, const SubInst literal);
+Inst Pop (const Reg reg_dst);
+Inst Push(const Reg reg_src);
+
+
+///////////////////////////////////////////////////////
+// Class 2
+
+///////////////////////////////////////////////////////
+// Class 3
+
+
+
+Inst Move (const Reg reg_src, const Reg reg_dst);       //TODO
 Inst ArithI(const Reg reg_dst, const SubInst literal, const SubInst op);
-Inst Pop (const Reg reg_dst);  //TODO
-Inst Push(const Reg reg_src);  //TODO
 
 //
 Inst Arith(const Reg reg_src1, const Reg reg_src2,
@@ -41,7 +57,7 @@ Inst Comp(const Reg reg_src1, const Reg reg_src2,
                const Reg reg_dst, const SubInst op);
 
 
-Inst Jump       (const Target target);
+
 Inst JumpIfTrue (const Reg reg_src1, const Target target);
 Inst JumpIfFalse(const Reg reg_src1, const Target target);
 

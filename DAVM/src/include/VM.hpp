@@ -35,22 +35,33 @@ private:
   bool InstTypeComparison(const Reg reg_src1, const Reg reg_src2,
                             const Reg reg_dst, const SubInst sub_type);
 
-  //Class 1: Mem
-  void LoadI(const Reg reg_dst, const Word literal);
-  void Load (const Reg reg_dst, const Word literal);
+  //Class 0
+  void Return();
+  void Call(const Target target);
+  void Jump(const Target target);
+
+  //Class 1
+  void Load  (const Reg reg_dst, const Word literal);
+  void LoadB (const Reg reg_dst, const Reg reg_base, const Word literal);
+  void LoadI (const Reg reg_dst, const Word literal);
+  void Store (const Reg reg_src, const Word literal);
+  void StoreB(const Reg reg_src, const Reg reg_base, const Word literal);
+  void Pop   (const Reg reg_dst);
+  void Push  (const Reg reg_src);
 
   //Class 3: Type Ari
   void Add (const Reg reg_src1, const Reg reg_src2, const Reg reg_dst);
   void Sub (const Reg reg_src1, const Reg reg_src2, const Reg reg_dst);
   void Mul (const Reg reg_src1, const Reg reg_src2, const Reg reg_dst);
   void Div (const Reg reg_src1, const Reg reg_src2, const Reg reg_dst);
+  void Move(const Reg reg_src1, const Reg reg_src2, const Reg reg_dst);
 
   //Class 3: Type Cmp
   void Not (const Reg reg_src1, const Reg reg_src2, const Reg reg_dst);
   void Eqt (const Reg reg_src1, const Reg reg_src2, const Reg reg_dst);
   void Lst (const Reg reg_src1, const Reg reg_src2, const Reg reg_dst);
   void Lte (const Reg reg_src1, const Reg reg_src2, const Reg reg_dst);
-  void Move(const Reg reg_src1, const Reg reg_src2, const Reg reg_dst);
+
 
 };
 

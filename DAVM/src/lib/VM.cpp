@@ -20,7 +20,6 @@ bool VirtualMachine::ExecProcess(){
       error_log_->errors.push_back("Next opcode invalid");
     }else{
       using namespace IRCodification;
-      using namespace IRBuilder;
       using namespace IRDefinition;
 
       const Inst    current_instruction  = process_->GetCurrentOpCode();
@@ -33,6 +32,7 @@ bool VirtualMachine::ExecProcess(){
       Word    literal;
 
       if (current_op_code == IR_STOP){
+        //TODO: put within main switches (switchii? :))
         std::cout << "STOP\n";
         executing = false;
       }else{
@@ -45,8 +45,10 @@ bool VirtualMachine::ExecProcess(){
           case InstClassLit:
             DecodeClass0(current_instruction, literal);
             switch(current_op_code){
-              default:      error_log_->errors.push_back(
-                                          "op not found (c0)");
+              case IR_JMP:  Jump(Target(literal));  break;
+              case IR_CALL: Call(Target(literal));  break;
+              case IR_RET:  Return();               break;
+              default:      error_log_->errors.push_back("op not found (c0)");
                             error = true; break;
             }
             break;
@@ -55,10 +57,14 @@ bool VirtualMachine::ExecProcess(){
           case InstClassRegLit:
             DecodeClass1(current_instruction, reg_dst, reg_base, literal);
             switch(current_op_code){
-              case IR_LOADI:  LoadI(reg_dst, literal); break;
-              case IR_LOAD:   Load (reg_dst, literal); break;
-              default:        error_log_->errors.push_back(
-                                          "op not found (c1)");
+              case IR_LOADI: LoadI (reg_dst, literal);            break;
+              case IR_LOAD:  Load  (reg_dst, literal);            break;
+              case IR_LOADB: LoadB (reg_dst, reg_base, literal);  break;
+              case IR_STORE: Store (reg_dst, literal);            break;
+              case IR_STOREB:StoreB(reg_dst, reg_base, literal);  break;
+              case IR_PUSH:  Pop   (reg_dst);                     break;
+              case IR_POP:   Push  (reg_dst);                     break;
+              default:       error_log_->errors.push_back("op not found (c1)");
                               error = true; break;
             }
             break;
@@ -66,32 +72,24 @@ bool VirtualMachine::ExecProcess(){
           ////////////////////////////////////////////////////////////
           case InstClassRegLitSub:
             switch(current_op_code){
-              default:      error_log_->errors.push_back(
-                                          "op not found (c2)");
+              default:      error_log_->errors.push_back("op not found (c2)");
                             error = true; break;
             }
             break;
 
           ////////////////////////////////////////////////////////////
           case InstClassRegRegRegSub:
-            DecodeClass3(current_instruction, reg_src1, reg_src2, reg_dst,
-                         sub_type);
+            DecodeClass3(current_instruction, reg_src1, reg_src2, reg_dst, sub_type);
             switch(current_op_code){
-              case IR_ARI:  error = InstTypeArihmetic(reg_src1, reg_src2,
-                                              reg_dst, sub_type);
-                            break;
-              case IR_CMP:  error = InstTypeComparison(reg_src1, reg_src2,
-                                              reg_dst, sub_type);
-                            break;
-              default:      error_log_->errors.push_back(
-                                          "op not found (c3)");
+              case IR_ARI:  error = InstTypeArihmetic(reg_src1, reg_src2, reg_dst, sub_type); break;
+              case IR_CMP:  error = InstTypeComparison(reg_src1, reg_src2, reg_dst, sub_type); break;
+              default:      error_log_->errors.push_back("op not found (c3)");
                             error = true; break;
             }
             break;
 
           ////////////////////////////////////////////////////////////
-          default:      error_log_->errors.push_back(
-                                          "class not found");
+          default:      error_log_->errors.push_back("class not found");
                         error = true; break;
 
         }

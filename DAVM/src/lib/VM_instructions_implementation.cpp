@@ -12,6 +12,20 @@ using namespace IRCodification;
 using namespace IRBuilder;
 
 /////////////////////////////////////////////////////////////////////////////
+//  Class 0
+void VirtualMachine::Return(){
+
+}
+
+void VirtualMachine::Call(const Target target){
+
+}
+
+void VirtualMachine::Jump(const Target target){
+
+}
+
+/////////////////////////////////////////////////////////////////////////////
 //  Class 1
 void VirtualMachine::LoadI(const Reg reg_dst, const Word literal){
   std::cout << "LOAD R"<< reg_dst <<"="<<literal<<"\n";
@@ -23,6 +37,24 @@ void VirtualMachine::Load (const Reg reg_dst, const Word literal){
   process_->registers_[reg_dst] = process_->Load(literal);
   std::cout << ", val = "<< process_->registers_[reg_dst] <<" \n";
 }
+
+void VirtualMachine::LoadB(const Reg reg_dst, const Reg reg_base, const Word literal){
+}
+
+
+void VirtualMachine::Store(const Reg reg_src, const Word literal){
+}
+
+void VirtualMachine::StoreB(const Reg reg_src, const Reg reg_base, const Word literal){
+}
+
+
+void VirtualMachine::Pop(const Reg reg_dst){
+}
+
+void VirtualMachine::Push(const Reg reg_src){
+}
+
 
 /////////////////////////////////////////////////////////////////////////////
 //  Class 3: type ARI
