@@ -37,31 +37,19 @@ Inst Push(const Reg reg_src);
 
 ///////////////////////////////////////////////////////
 // Class 2
+Inst ArithI(const Reg reg_dst, const SubInst literal, const SubInst op);
+Inst JumpIfTrue (const Reg reg_src, const Target target);
+Inst JumpIfFalse(const Reg reg_src, const Target target);
 
 ///////////////////////////////////////////////////////
 // Class 3
+Inst Move (const Reg reg_src,  const Reg reg_dst);
+Inst Arith(const Reg reg_src1, const Reg reg_src2, const Reg reg_dst, const SubInst op);
+Inst Logic(const Reg reg_src1, const Reg reg_src2, const Reg reg_dst, const SubInst op);
+Inst Comp (const Reg reg_src1, const Reg reg_src2, const Reg reg_dst, const SubInst op);
 
 
-
-Inst Move (const Reg reg_src, const Reg reg_dst);       //TODO
-Inst ArithI(const Reg reg_dst, const SubInst literal, const SubInst op);
-
-//
-Inst Arith(const Reg reg_src1, const Reg reg_src2,
-               const Reg reg_dst, const SubInst op);
-
-Inst Logic(const Reg reg_src1, const Reg reg_src2,
-               const Reg reg_dst, const SubInst op);
-
-Inst Comp(const Reg reg_src1, const Reg reg_src2,
-               const Reg reg_dst, const SubInst op);
-
-
-
-Inst JumpIfTrue (const Reg reg_src1, const Target target);
-Inst JumpIfFalse(const Reg reg_src1, const Target target);
-
-
+/*
 //Creates new variable, reg_src1 = TypeId
 Inst NewVar(const Reg reg_src1);
 
@@ -69,8 +57,9 @@ Inst NewVar(const Reg reg_src1);
 // reg_src1, typeId
 // reg_src2, size of type
 Inst NewTypeId(const Reg reg_src1, const Reg reg_src2);
+*/
 
-
+//TODO: move to another file
 namespace IRBuilderAPI{
 // These should not be used by compiler, only direct API
 Inst Add(const Reg reg_src1, const Reg reg_src2,

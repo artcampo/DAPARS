@@ -71,7 +71,10 @@ bool VirtualMachine::ExecProcess(){
 
           ////////////////////////////////////////////////////////////
           case InstClassRegLitSub:
+            DecodeClass2(current_instruction, reg_dst, literal, sub_type);
             switch(current_op_code){
+              case IR_JMPC: JumpC (reg_dst, Target(literal), sub_type); break;
+              case IR_ARII: ArithI(reg_dst, literal, sub_type);         break;
               default:      error_log_->errors.push_back("op not found (c2)");
                             error = true; break;
             }
@@ -81,8 +84,9 @@ bool VirtualMachine::ExecProcess(){
           case InstClassRegRegRegSub:
             DecodeClass3(current_instruction, reg_src1, reg_src2, reg_dst, sub_type);
             switch(current_op_code){
-              case IR_ARI:  error = InstTypeArihmetic(reg_src1, reg_src2, reg_dst, sub_type); break;
+              case IR_ARI:  error = InstTypeArihmetic (reg_src1, reg_src2, reg_dst, sub_type); break;
               case IR_CMP:  error = InstTypeComparison(reg_src1, reg_src2, reg_dst, sub_type); break;
+              case IR_LOGIC:error = InstTypeLogic     (reg_src1, reg_src2, reg_dst, sub_type); break;
               default:      error_log_->errors.push_back("op not found (c3)");
                             error = true; break;
             }

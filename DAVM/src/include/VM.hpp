@@ -30,10 +30,13 @@ private:
   ByteCode* ReadByteCode(const std::string &file_name);
 
   //Functions that handle a set of subtypes of instructions
-  bool InstTypeArihmetic(const Reg reg_src1, const Reg reg_src2,
-                            const Reg reg_dst, const SubInst sub_type);
+  bool InstTypeArihmetic( const Reg reg_src1, const Reg reg_src2,
+                          const Reg reg_dst,  const SubInst sub_type);
   bool InstTypeComparison(const Reg reg_src1, const Reg reg_src2,
-                            const Reg reg_dst, const SubInst sub_type);
+                          const Reg reg_dst,  const SubInst sub_type);
+  bool InstTypeLogic     (const Reg reg_src1, const Reg reg_src2,
+                          const Reg reg_dst,  const SubInst sub_type);
+
 
   //Class 0
   void Return();
@@ -49,6 +52,10 @@ private:
   void Pop   (const Reg reg_dst);
   void Push  (const Reg reg_src);
 
+  //Class 2
+  void ArithI(const Reg reg_dst, const Word literal,  const SubInst op);
+  void JumpC (const Reg reg_src, const Target target, const SubInst op);
+
   //Class 3: Type Ari
   void Add (const Reg reg_src1, const Reg reg_src2, const Reg reg_dst);
   void Sub (const Reg reg_src1, const Reg reg_src2, const Reg reg_dst);
@@ -62,6 +69,9 @@ private:
   void Lst (const Reg reg_src1, const Reg reg_src2, const Reg reg_dst);
   void Lte (const Reg reg_src1, const Reg reg_src2, const Reg reg_dst);
 
+  //Class 3: Type Logic
+  void Or  (const Reg reg_src1, const Reg reg_src2, const Reg reg_dst);
+  void And (const Reg reg_src1, const Reg reg_src2, const Reg reg_dst);
 
 };
 

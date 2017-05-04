@@ -55,6 +55,15 @@ void VirtualMachine::Pop(const Reg reg_dst){
 void VirtualMachine::Push(const Reg reg_src){
 }
 
+/////////////////////////////////////////////////////////////////////////////
+//  Class 2
+void VirtualMachine::ArithI(const Reg reg_dst, const Word literal, const SubInst op){
+
+}
+
+void VirtualMachine::JumpC (const Reg reg_src, const Target target, const SubInst op){
+
+}
 
 /////////////////////////////////////////////////////////////////////////////
 //  Class 3: type ARI
@@ -107,7 +116,12 @@ void VirtualMachine::Div (const Reg reg_src1,
     / process_->registers_[reg_src2];
 }
 
-
+void VirtualMachine::Move(const Reg reg_src1,
+  const Reg reg_src2, const Reg reg_dst){
+  std::cout << "MOV R"<<reg_dst<<"=R"<<reg_src1<<" \n";
+  process_->registers_[reg_dst] =
+      process_->registers_[reg_src1];
+}
 
 /////////////////////////////////////////////////////////////////////////////
 //  Class 3: type CMP
@@ -121,7 +135,7 @@ bool VirtualMachine::InstTypeComparison (const Reg reg_src1,
     case IR_EQT:  Eqt(reg_src1, reg_src2, reg_dst); break;
     case IR_LST:  Lst(reg_src1, reg_src2, reg_dst); break;
     case IR_LTE:  Lte(reg_src1, reg_src2, reg_dst); break;
-    default:      error_log_->errors.push_back("ari :: subtype not found");
+    default:      error_log_->errors.push_back("cmp :: subtype not found");
                   error = true;                          break;
   }
   return error;
@@ -158,12 +172,30 @@ void VirtualMachine::Lte (const Reg reg_src1,
    <= process_->registers_[reg_src2];
 }
 
-void VirtualMachine::Move(const Reg reg_src1,
-  const Reg reg_src2, const Reg reg_dst){
-  std::cout << "MOV R"<<reg_dst<<"=R"<<reg_src1<<" \n";
-  process_->registers_[reg_dst] =
-      process_->registers_[reg_src1];
+/////////////////////////////////////////////////////////////////////////////
+//  Class 3: type Logic
+bool VirtualMachine::InstTypeLogic(const Reg reg_src1,
+  const Reg reg_src2, const Reg reg_dst, const SubInst sub_type){
+  bool error = false;
+  using namespace IRDefinition;
+  using namespace SubtypesLogic;
+  switch(sub_type){
+    case IR_OR:   Or (reg_src1, reg_src2, reg_dst); break;
+    case IR_AND:  And(reg_src1, reg_src2, reg_dst); break;
+    default:      error_log_->errors.push_back("logic :: subtype not found");
+                  error = true; break;
+  }
+  return error;
 }
+
+void VirtualMachine::Or(const Reg reg_src1, const Reg reg_src2, const Reg reg_dst){
+
+}
+
+void VirtualMachine::And(const Reg reg_src1, const Reg reg_src2, const Reg reg_dst){
+
+}
+
 
 
 

@@ -132,11 +132,13 @@ Inst Logic(const Reg reg_src1, const Reg reg_src2,
 
 
 ///////////////////////////////
+/*
 //TODO
 Inst NewTypeId(const Reg reg_src1, const Reg reg_src2){
   return IR_NOT_IMPL;
 }
 //end TODO
+*/
 ///////////////////////////////
 
 
