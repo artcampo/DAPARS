@@ -9,7 +9,7 @@ regenerate_test_from_dacomp(){
   cp $1.bc.out.ver ../../src/tests/verification/.
 }
 
-# regenerate_test_from_dacomp test1
+regenerate_test_from_dacomp test1
 # regenerate_test_from_dacomp test2
 # regenerate_test_from_dacomp test3
 # regenerate_test_from_dacomp test4

@@ -37,4 +37,4 @@ INSTALL(TARGETS
         test_call
         davm
         unit_test
-        DESTINATION tests)
+        DESTINATION tests/davm_tests)

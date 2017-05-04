@@ -1,5 +1,5 @@
 /*
- * Multiple tests for: Backend-DAVM
+ * RecDesc parser with Backend-DAVM
  */
 
 #include "ParserLL1RecDesc.hpp"
