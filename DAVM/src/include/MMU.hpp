@@ -29,15 +29,19 @@ protected:
 
   Word *const LogicalToPhysical(const Addr addr){
     Addr page = PageOfAddr(addr);
-    auto it = page_mapping_.find(addr);
+    auto it = page_mapping_.find(page);
     if(it == page_mapping_.end()){
       PageDesc desc;
       desc.vector_  = new std::vector<Word>(page_size_in_words_);
       desc.address_ = &(*desc.vector_)[0];
       page_mapping_[page] = desc;
       testing_.WritePage(*desc.vector_, page);
+//       std::cout << "** Mem " << addr<< " page " << page << " offset: " << (addr & address_mask_)
+//         << " physical " << PointerOfAddr(addr, desc)  <<"\n";
       return PointerOfAddr(addr, desc);
     }
+//     std::cout << "** Mem " << addr<< " page " << page << " offset: " << (addr & address_mask_)
+//       << " physical " << PointerOfAddr(addr, it->second) <<"\n";
     return PointerOfAddr(addr, it->second);
   }
 

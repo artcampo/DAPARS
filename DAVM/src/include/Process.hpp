@@ -27,7 +27,7 @@ public:
 
   void      ModifyIP(Target const &offset);
 
-  void DumpExecutionContext(int const registers_num = 5) const;
+  void      DumpExecutionContext(int const registers_num = 5) const;
 private:
   const ByteCode    &byte_code_;
   friend class VirtualMachine;

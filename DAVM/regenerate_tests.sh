@@ -9,9 +9,9 @@ regenerate_test_from_dacomp(){
   cp $1.bc.out.ver ../../src/tests/verification/.
 }
 
-regenerate_test_from_dacomp test1
-regenerate_test_from_dacomp test2
-regenerate_test_from_dacomp test3
+# regenerate_test_from_dacomp test1
+# regenerate_test_from_dacomp test2
+# regenerate_test_from_dacomp test3
 # regenerate_test_from_dacomp test4
 
 ###################################################################
@@ -24,6 +24,7 @@ regenerate_test_standalone test1
 regenerate_test_standalone test2
 regenerate_test_standalone test3
 regenerate_test_standalone test_mem
+regenerate_test_standalone test_stack
 
 #end
 echo "Tests regenerated. You need to reinstall before running tests again."

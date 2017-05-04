@@ -18,10 +18,13 @@ int main(){
   using namespace Spec;
 
   bc->stream = std::vector<uint32_t> {
-    Load( IR_REG0, 0),
-    Load( IR_REG1, 3),
-    Load( IR_REG0, 0 + (1 << (kPageNumBits - kWordNumBits)) ),
-    Load( IR_REG1, 3 + (1 << (kPageNumBits - kWordNumBits)) ),
+    LoadI(IR_REG0, 3),
+    Push (IR_REG0 ),
+    LoadI(IR_REG0, 4),
+    Push (IR_REG0 ),
+    LoadI(IR_REG0, 5),
+    Pop  (IR_REG1),
+    Pop  (IR_REG2),
     Stop ()
   };
 

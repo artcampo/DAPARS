@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include "VMBasicTypes.hpp"
 #include "MMU.hpp"
+#include "VMSpec.hpp"
 
 namespace VM{
 namespace Internal{
@@ -19,6 +20,10 @@ public:
   Word Load(const Addr addr){
     Word *const physical_addr = this->LogicalToPhysical(addr);
     return *physical_addr;
+  }
+
+  Word StackRegisterInitAddress() const noexcept{
+    return Word((uint64_t(1) << Spec::kWordBits) - 1);
   }
 
 private:

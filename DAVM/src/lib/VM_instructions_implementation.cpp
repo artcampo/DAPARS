@@ -33,7 +33,7 @@ void VirtualMachine::LoadI(const Reg reg_dst, const Word literal){
 }
 
 void VirtualMachine::Load (const Reg reg_dst, const Word literal){
-  std::cout << "LOAD R"<<reg_dst<<"=[@"<<literal <<"]";
+  std::cout << "LOADI R"<<reg_dst<<"=[@"<<literal <<"]";
   process_->registers_[reg_dst] = process_->Load(literal);
   std::cout << ", val = "<< process_->registers_[reg_dst] <<" \n";
 }
@@ -43,16 +43,30 @@ void VirtualMachine::LoadB(const Reg reg_dst, const Reg reg_base, const Word lit
 
 
 void VirtualMachine::Store(const Reg reg_src, const Word literal){
+  std::cout << "STORE [@" <<literal << "] = " << reg_src <<"\n";
+  process_->Store(Addr(literal), process_->registers_[reg_src]);
 }
 
 void VirtualMachine::StoreB(const Reg reg_src, const Reg reg_base, const Word literal){
+  std::cout << "STOREB [@" <<literal <<"+"
+            << process_->registers_[reg_base]
+            <<  "] = " << process_->registers_[reg_src] <<"\n";
+  process_->Store(Addr(literal + process_->registers_[reg_base]), process_->registers_[reg_src]);
 }
 
 
 void VirtualMachine::Pop(const Reg reg_dst){
+  std::cout << "POP R"<<reg_dst<<" -> [@"<<Addr(process_->StackReg() + 1) <<"]\n";
+  process_->StackReg() += 1;
+  process_->registers_[reg_dst] = process_->Load( Addr(process_->StackReg()));
 }
 
 void VirtualMachine::Push(const Reg reg_src){
+  std::cout << "PUSH [@" <<Addr(process_->StackReg())
+            <<  "] <- R" << reg_src <<"\n";
+  process_->Store( Addr(process_->StackReg())
+                 , process_->registers_[reg_src]);
+  process_->StackReg() -= 1;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -144,8 +158,7 @@ bool VirtualMachine::InstTypeComparison (const Reg reg_src1,
 void VirtualMachine::Not (const Reg reg_src1,
   const Reg reg_src2, const Reg reg_dst){
   std::cout << "NOT R"<<reg_dst<<"= !R"<<reg_src1<<"\n";
-  process_->registers_[reg_dst] =
-      not process_->registers_[reg_src1];
+  process_->registers_[reg_dst] = not process_->registers_[reg_src1];
 }
 
 void VirtualMachine::Eqt (const Reg reg_src1,

@@ -21,6 +21,7 @@ public:
   void    DumpExecutionContext(int const registers_num = 10) const;
 
 private:
+  void    ColdBoot();
   int     LoadProcess(const std::string &file_name);
 
   ByteCode const            &byte_code_;

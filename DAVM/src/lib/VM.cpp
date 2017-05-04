@@ -9,6 +9,7 @@
 namespace VM{
 
 bool VirtualMachine::ExecProcess(){
+  ColdBoot();
   bool executing  = true;
   bool error      = false;
 
@@ -62,8 +63,8 @@ bool VirtualMachine::ExecProcess(){
               case IR_LOADB: LoadB (reg_dst, reg_base, literal);  break;
               case IR_STORE: Store (reg_dst, literal);            break;
               case IR_STOREB:StoreB(reg_dst, reg_base, literal);  break;
-              case IR_PUSH:  Pop   (reg_dst);                     break;
-              case IR_POP:   Push  (reg_dst);                     break;
+              case IR_PUSH:  Push  (reg_dst);                     break;
+              case IR_POP:   Pop   (reg_dst);                     break;
               default:       error_log_->errors.push_back("op not found (c1)");
                               error = true; break;
             }
@@ -142,5 +143,12 @@ void VirtualMachine::DumpExecutionContext(int const registers_num) const{
 int VirtualMachine::LoadProcess(const std::string &file_name){
   std::unique_ptr<ByteCode> byte_code(ReadByteCode(file_name));
 }
+
+//inits the machine to a blank state
+void VirtualMachine::ColdBoot(){
+  process_->StackReg() = process_->StackRegisterInitAddress();
+}
+
+
 
 }//end namespace VM
