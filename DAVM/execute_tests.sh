@@ -8,9 +8,9 @@ test_from_dacomp(){
   rm $1.out
 }
 
-test_from_dacomp test1
-test_from_dacomp test2
-test_from_dacomp test3
+# test_from_dacomp test1
+# test_from_dacomp test2
+# test_from_dacomp test3
 # test_from_dacomp test4
 
 test_standalone(){
