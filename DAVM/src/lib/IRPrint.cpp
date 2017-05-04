@@ -69,7 +69,7 @@ std::string ArithString(const Reg reg_dst, const SubInst literal, const SubInst 
   return s;
 }
 
-std::string PrintInstruction(const Inst& instruction){
+std::string PrintInstruction(const Inst instruction){
   const SubInst current_class   = DecodeClass(instruction);
   const SubInst current_type    = DecodeType(instruction, current_class);
   const SubInst current_op_code = DecodeOpCode(current_class, current_type);

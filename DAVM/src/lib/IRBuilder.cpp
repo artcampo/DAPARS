@@ -47,15 +47,15 @@ bool checkIRCodification(){
 
 ////////////////////////////////////////////////////////////////////////
 //CLASS 0
-Inst Jump(const Target& target){
+Inst Jump(const Target target){
   return CodeClass0(target, IR_JMP);
 }
 
-Inst Call(const Target& target){
+Inst Call(const Target target){
   return CodeClass0(target, IR_CALL);
 }
 
-Inst NewVar(const TypeId &type_literal){
+Inst NewVar(const TypeId type_literal){
   return CodeClass0(type_literal, IR_NEW_VAR);
 }
 
@@ -66,74 +66,74 @@ Inst Return(){
 
 ////////////////////////////////////////////////////////////////////////
 //CLASS 1
-Inst Load(const Reg&reg_dst, const SubInst& literal){
+Inst Load(const Reg reg_dst, const SubInst literal){
   return CodeClass1(reg_dst, kIRUnusedReg, literal, IR_LOAD);
 }
 
-Inst LoadI(const Reg&reg_dst, const SubInst& literal){
+Inst LoadI(const Reg reg_dst, const SubInst literal){
   return CodeClass1(reg_dst, kIRUnusedReg, literal, IR_LOADI);
 }
 
-Inst LoadB(const Reg&reg_dst, const Reg&reg_base, const SubInst& literal){
+Inst LoadB(const Reg reg_dst, const Reg reg_base, const SubInst literal){
   return CodeClass1(reg_dst, reg_base, literal, IR_LOADB);
 }
 
-Inst Store(const Reg &reg_src, const SubInst& literal){
+Inst Store(const Reg reg_src, const SubInst literal){
   return CodeClass1(reg_src, kIRUnusedReg, literal, IR_STORE);
 }
 
-Inst StoreB(const Reg &reg_src, const Reg&reg_base, const SubInst& literal){
+Inst StoreB(const Reg reg_src, const Reg reg_base, const SubInst literal){
   return CodeClass1(reg_src, reg_base, literal, IR_STOREB);
 }
 
-Inst Pop (const Reg &reg_dst){
+Inst Pop (const Reg reg_dst){
   return CodeClass1(reg_dst, kIRUnusedReg, kIrUnusedLit, IR_POP);
 }
 
-Inst Push(const Reg &reg_src){
+Inst Push(const Reg reg_src){
   return CodeClass1(reg_src, kIRUnusedReg, kIrUnusedLit, IR_PUSH);
 }
 
 
 ////////////////////////////////////////////////////////////////////////
 //CLASS 2
-Inst JumpIfTrue (const Reg&reg_src1, const Target& target){
+Inst JumpIfTrue (const Reg reg_src1, const Target target){
   return CodeClass2(0, target, IR_JMPC, SubtypesJMPC::IR_TRUE);
 }
 
-Inst JumpIfFalse (const Reg&reg_src1, const Target& target){
+Inst JumpIfFalse (const Reg reg_src1, const Target target){
   return CodeClass2(0, target, IR_JMPC, SubtypesJMPC::IR_FALSE);
 }
 
-Inst ArithI(const Reg &reg_dst, const SubInst& literal, const SubInst& op){
+Inst ArithI(const Reg reg_dst, const SubInst literal, const SubInst op){
   return CodeClass2(reg_dst, literal, IR_ARII, op);
 }
 
 ////////////////////////////////////////////////////////////////////////
 //CLASS 3
-Inst Arith(const Reg&reg_src1, const Reg&reg_src2,
-               const Reg&reg_dst, const SubInst&op){
+Inst Arith(const Reg reg_src1, const Reg reg_src2,
+               const Reg reg_dst, const SubInst op){
   return CodeClass3(reg_src1, reg_src2, reg_dst, IR_ARI, op);
 }
 
-Inst Comp(const Reg&reg_src1, const Reg&reg_src2,
-               const Reg&reg_dst, const SubInst&op){
+Inst Comp(const Reg reg_src1, const Reg reg_src2,
+               const Reg reg_dst, const SubInst op){
   return CodeClass3(reg_src1, reg_src2, reg_dst, IR_CMP, op);
 }
 
-Inst Move (const Reg &reg_src, const Reg &reg_dst){
+Inst Move (const Reg reg_src, const Reg reg_dst){
   return CodeClass3(reg_src, IR_REG0, reg_dst, IR_ARI, SubtypesArithmetic::IR_MOV);
 }
 
-Inst Logic(const Reg &reg_src1, const Reg &reg_src2,
-               const Reg &reg_dst, const SubInst& op){
+Inst Logic(const Reg reg_src1, const Reg reg_src2,
+               const Reg reg_dst, const SubInst op){
   return CodeClass3(reg_src1, reg_src2, reg_dst, IR_LOGIC, op);
 }
 
 
 ///////////////////////////////
 //TODO
-Inst NewTypeId(const Reg&reg_src1, const Reg&reg_src2){
+Inst NewTypeId(const Reg reg_src1, const Reg reg_src2){
   return IR_NOT_IMPL;
 }
 //end TODO
@@ -144,24 +144,24 @@ Inst NewTypeId(const Reg&reg_src1, const Reg&reg_src2){
 namespace IRBuilderAPI{
 using namespace SubtypesArithmetic;
 
-Inst Add(const Reg&reg_src1, const Reg&reg_src2,
-             const Reg&reg_dst){
+Inst Add(const Reg reg_src1, const Reg reg_src2,
+             const Reg reg_dst){
   return CodeClass3(reg_src1, reg_src2, reg_dst, IR_ARI, IR_ADD);
 }
 
-Inst Sub(const Reg&reg_src1, const Reg&reg_src2,
-             const Reg&reg_dst){
+Inst Sub(const Reg reg_src1, const Reg reg_src2,
+             const Reg reg_dst){
   return CodeClass3(reg_src1, reg_src2, reg_dst, IR_ARI, IR_SUB);
 }
 
-Inst Mul(const Reg&reg_src1, const Reg&reg_src2,
-             const Reg&reg_dst){
+Inst Mul(const Reg reg_src1, const Reg reg_src2,
+             const Reg reg_dst){
   return CodeClass3(reg_src1, reg_src2, reg_dst, IR_ARI, IR_MUL);
 }
 
 
-Inst Div(const Reg&reg_src1, const Reg&reg_src2,
-             const Reg&reg_dst){
+Inst Div(const Reg reg_src1, const Reg reg_src2,
+             const Reg reg_dst){
   return CodeClass3(reg_src1, reg_src2, reg_dst, IR_ARI, IR_DIV);
 }
 }; //namespace IRBuilderAPI

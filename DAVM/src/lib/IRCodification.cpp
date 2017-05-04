@@ -11,12 +11,12 @@ using namespace IRDefinition;
 using namespace VM;
 
 //TODO: change const order!!
-SubInst  DecodeClass (Inst const &instruction){
+SubInst  DecodeClass (const Inst instruction){
   return instruction & kClassBitMask;
 }
 
 
-SubInst  DecodeType (Inst const &instruction, SubInst const &inst_class){
+SubInst  DecodeType (const Inst instruction, const SubInst inst_class){
   if( inst_class == InstClassLit )
     return (instruction >> kClassNumBits) & kClass0BitMask;
   else if( inst_class == InstClassRegLit )
@@ -28,34 +28,34 @@ SubInst  DecodeType (Inst const &instruction, SubInst const &inst_class){
 }
 
 
-SubInst  DecodeOpCode(SubInst const &inst_class, SubInst const &inst_type){
+SubInst  DecodeOpCode(const SubInst inst_class, const SubInst inst_type){
   return inst_class + (inst_type << kClassNumBits);
 }
 
-VM::Inst CodeClass0(const Word& literal, const SubInst &type){
+VM::Inst CodeClass0(const Word literal, const SubInst type){
   return type
     + (Code(literal) << kClass0OpcodeNumBits);
 }
 
-VM::Inst CodeClass1(Reg const &reg_dst, const Reg&reg_base,
-                    const Word& literal, SubInst const &type){
+VM::Inst CodeClass1(const Reg reg_dst, const Reg reg_base,
+                    const Word literal, const SubInst type){
   return type
     + (reg_dst  << (kClass1OpcodeNumBits))
     + (reg_base << (kClass1OpcodeNumBits + kRegisterNumBits))
     + (Code(literal)  << (kClass1OpcodeNumBits + kRegisterNumBits*2));
 }
 
-VM::Inst CodeClass2(Reg const &reg_dst, const Word& literal,
-                    SubInst const &type, SubInst const &subtype){
+VM::Inst CodeClass2(const Reg reg_dst, const Word literal,
+                    const SubInst type, const SubInst subtype){
   return type
     + (subtype  << (kClass2OpcodeNumBits))
     + (reg_dst <<  (kClass2OpcodeNumBits + kSubtypeNumBits))
     + (Code(literal) <<  (kClass2OpcodeNumBits + kSubtypeNumBits + kRegisterNumBits));
 }
 
-VM::Inst CodeClass3(Reg const &reg_src1, Reg const &reg_src2
-                   ,Reg const &reg_dst, SubInst const &type
-                   ,const SubInst& subtype){
+VM::Inst CodeClass3(const Reg reg_src1, const Reg reg_src2
+                   ,const Reg reg_dst, const SubInst type
+                   ,const SubInst subtype){
   return type
     + (subtype  << (kClass3OpcodeNumBits))
     + (reg_src1 << (kClass3OpcodeNumBits + kSubtypeNumBits))

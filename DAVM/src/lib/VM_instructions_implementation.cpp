@@ -11,15 +11,23 @@ namespace VM{
 using namespace IRCodification;
 using namespace IRBuilder;
 
-void VirtualMachine::LoadI(const Reg &reg_dst, const SubInst &literal){
+/////////////////////////////////////////////////////////////////////////////
+//  Class 1
+void VirtualMachine::LoadI(const Reg reg_dst, const Word literal){
   std::cout << "LOAD R"<< reg_dst <<"="<<literal<<"\n";
   process_->registers_[reg_dst] = literal;
 }
 
+void VirtualMachine::Load (const Reg reg_dst, const Word literal){
+  std::cout << "LOAD R"<<reg_dst<<"=[@"<<literal <<"]";
+  process_->registers_[reg_dst] = process_->Load(literal);
+  std::cout << ", val = "<< process_->registers_[reg_dst] <<" \n";
+}
+
 /////////////////////////////////////////////////////////////////////////////
 //  Class 3: type ARI
-bool VirtualMachine::InstTypeArihmetic (const Reg &reg_src1,
-  const Reg &reg_src2, const Reg &reg_dst, const SubInst &sub_type){
+bool VirtualMachine::InstTypeArihmetic (const Reg reg_src1,
+  const Reg reg_src2, const Reg reg_dst, const SubInst sub_type){
   bool error = false;
   using namespace IRDefinition;
   using namespace SubtypesArithmetic;
@@ -35,32 +43,32 @@ bool VirtualMachine::InstTypeArihmetic (const Reg &reg_src1,
   return error;
 }
 
-void VirtualMachine::Add (const Reg &reg_src1,
-  const Reg &reg_src2, const Reg &reg_dst){
+void VirtualMachine::Add (const Reg reg_src1,
+  const Reg reg_src2, const Reg reg_dst){
   std::cout << "ADD R"<<reg_dst<<"=R"<<reg_src1<<" op R"<< reg_src2 <<"\n";
   process_->registers_[reg_dst] =
       process_->registers_[reg_src1]
     + process_->registers_[reg_src2];
 }
 
-void VirtualMachine::Sub (const Reg &reg_src1,
-  const Reg &reg_src2, const Reg &reg_dst){
+void VirtualMachine::Sub (const Reg reg_src1,
+  const Reg reg_src2, const Reg reg_dst){
   std::cout << "SUB R"<<reg_dst<<"=R"<<reg_src1<<" op R"<< reg_src2 <<"\n";
   process_->registers_[reg_dst] =
       process_->registers_[reg_src1]
     - process_->registers_[reg_src2];
 }
 
-void VirtualMachine::Mul (const Reg &reg_src1,
-  const Reg &reg_src2, const Reg &reg_dst){
+void VirtualMachine::Mul (const Reg reg_src1,
+  const Reg reg_src2, const Reg reg_dst){
   std::cout << "MUL R"<<reg_dst<<"=R"<<reg_src1<<" op R"<< reg_src2 <<"\n";
   process_->registers_[reg_dst] =
       process_->registers_[reg_src1]
     * process_->registers_[reg_src2];
 }
 
-void VirtualMachine::Div (const Reg &reg_src1,
-  const Reg &reg_src2, const Reg &reg_dst){
+void VirtualMachine::Div (const Reg reg_src1,
+  const Reg reg_src2, const Reg reg_dst){
   std::cout << "DIV R"<<reg_dst<<"=R"<<reg_src1<<" op R"<< reg_src2 <<"\n";
   process_->registers_[reg_dst] =
       process_->registers_[reg_src1]
@@ -71,8 +79,8 @@ void VirtualMachine::Div (const Reg &reg_src1,
 
 /////////////////////////////////////////////////////////////////////////////
 //  Class 3: type CMP
-bool VirtualMachine::InstTypeComparison (const Reg &reg_src1,
-  const Reg &reg_src2, const Reg &reg_dst, const SubInst &sub_type){
+bool VirtualMachine::InstTypeComparison (const Reg reg_src1,
+  const Reg reg_src2, const Reg reg_dst, const SubInst sub_type){
   bool error = false;
   using namespace IRDefinition;
   using namespace SubtypesComparison;
@@ -87,48 +95,44 @@ bool VirtualMachine::InstTypeComparison (const Reg &reg_src1,
   return error;
 }
 
-void VirtualMachine::Not (const Reg &reg_src1,
-  const Reg &reg_src2, const Reg &reg_dst){
+void VirtualMachine::Not (const Reg reg_src1,
+  const Reg reg_src2, const Reg reg_dst){
   std::cout << "NOT R"<<reg_dst<<"= !R"<<reg_src1<<"\n";
   process_->registers_[reg_dst] =
       not process_->registers_[reg_src1];
 }
 
-void VirtualMachine::Eqt (const Reg &reg_src1,
-  const Reg &reg_src2, const Reg &reg_dst){
+void VirtualMachine::Eqt (const Reg reg_src1,
+  const Reg reg_src2, const Reg reg_dst){
   std::cout << "EQL R"<<reg_dst<<"=R"<<reg_src1<<" == R"<< reg_src2 <<"\n";
   process_->registers_[reg_dst] =
       process_->registers_[reg_src1]
    == process_->registers_[reg_src2];
 }
 
-void VirtualMachine::Lst (const Reg &reg_src1,
-  const Reg &reg_src2, const Reg &reg_dst){
+void VirtualMachine::Lst (const Reg reg_src1,
+  const Reg reg_src2, const Reg reg_dst){
   std::cout << "LST R"<<reg_dst<<"=R"<<reg_src1<<" < R"<< reg_src2 <<"\n";
   process_->registers_[reg_dst] =
       process_->registers_[reg_src1]
     < process_->registers_[reg_src2];
 }
 
-void VirtualMachine::Lte (const Reg &reg_src1,
-  const Reg &reg_src2, const Reg &reg_dst){
+void VirtualMachine::Lte (const Reg reg_src1,
+  const Reg reg_src2, const Reg reg_dst){
   std::cout << "LTE R"<<reg_dst<<"=R"<<reg_src1<<" <= R"<< reg_src2 <<"\n";
   process_->registers_[reg_dst] =
       process_->registers_[reg_src1]
    <= process_->registers_[reg_src2];
 }
 
-void VirtualMachine::Move(const Reg &reg_src1,
-  const Reg &reg_src2, const Reg &reg_dst){
+void VirtualMachine::Move(const Reg reg_src1,
+  const Reg reg_src2, const Reg reg_dst){
   std::cout << "MOV R"<<reg_dst<<"=R"<<reg_src1<<" \n";
   process_->registers_[reg_dst] =
       process_->registers_[reg_src1];
 }
 
-void VirtualMachine::Load (const Reg&reg_dst, const SubInst& literal){
-  std::cout << "LOAD R"<<reg_dst<<"=[@"<<literal <<"]";
-  process_->registers_[reg_dst] = process_->Load(literal);
-  std::cout << ", val = "<< process_->registers_[reg_dst] <<" \n";
-}
+
 
 }//end namespace VM
