@@ -27,6 +27,7 @@ private:
   ByteCode const            &byte_code_;
   std::unique_ptr<Internal::Process>  process_;
   std::unique_ptr<ErrorLog> error_log_;
+  bool  ip_modified_;
 
   ByteCode* ReadByteCode(const std::string &file_name);
 
@@ -38,6 +39,8 @@ private:
   bool InstTypeLogic     (const Reg reg_src1, const Reg reg_src2,
                           const Reg reg_dst,  const SubInst sub_type);
 
+  Word PopWord();
+  void PushWord(const Word word);
 
   //Class 0
   void Return();

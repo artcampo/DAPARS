@@ -1,0 +1,10 @@
+EXEC
+OP: LOADI R0<-2
+OP: Call 3
+OP: LOADI R1<-3
+OP: Call 6
+OP: MOV R4=R2 
+OP: Return 5
+OP: Return 2
+STOP
+Registers: 2, 3, 0, 0, 0, 0, 0, 0, 0, 0

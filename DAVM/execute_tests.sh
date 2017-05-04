@@ -25,6 +25,7 @@ test_standalone test2
 test_standalone test3
 test_standalone test_mem
 test_standalone test_stack
+test_standalone test_call
 
 #unit test, should give message only on error
 ./unit_test

@@ -1,7 +1,7 @@
 EXEC
-OP: LOAD R0=[@0], val = 0 
-OP: LOAD R1=[@3], val = 3 
-OP: LOAD R0=[@1024], val = 1 
-OP: LOAD R1=[@1027], val = 4 
+OP: LOAD R0<-[@0], val = 0 
+OP: LOAD R1<-[@3], val = 3 
+OP: LOAD R0<-[@1024], val = 1 
+OP: LOAD R1<-[@1027], val = 4 
 STOP
 Registers: 1, 4, 0, 0, 0, 0, 0, 0, 0, 0

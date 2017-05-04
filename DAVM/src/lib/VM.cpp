@@ -39,7 +39,7 @@ bool VirtualMachine::ExecProcess(){
       }else{
 
         std::cout << "OP: ";
-        bool instructionHasJump = false;
+        ip_modified_ = false;
 
         switch(current_class){
           ////////////////////////////////////////////////////////////
@@ -100,10 +100,7 @@ bool VirtualMachine::ExecProcess(){
         }
 
 
-        if (not instructionHasJump )
-          process_->NextOpCode();
-        else
-          process_->ModifyIP(op_offset);
+        if(not ip_modified_ ) process_->NextOpCode();
       }// end of if (current_op_code == IR_STOP){
 
       //Dump registers after every instruction

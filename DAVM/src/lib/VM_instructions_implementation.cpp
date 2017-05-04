@@ -12,33 +12,55 @@ using namespace IRCodification;
 using namespace IRBuilder;
 
 /////////////////////////////////////////////////////////////////////////////
+//  Helpers
+Word VirtualMachine::PopWord(){
+  process_->StackReg() += 1;
+  return process_->Load( Addr(process_->StackReg()));
+}
+
+void VirtualMachine::PushWord(const Word word){
+  process_->Store( Addr(process_->StackReg()), word);
+  process_->StackReg() -= 1;
+}
+
+/////////////////////////////////////////////////////////////////////////////
 //  Class 0
 void VirtualMachine::Return(){
-
+  process_->ModifyIP(PopWord());
+  ip_modified_ = true;
+  std::cout << "Return "<< process_->GetIP()<<"\n";
 }
 
 void VirtualMachine::Call(const Target target){
-
+  std::cout << "Call "<< target<<"\n";
+  PushWord(process_->GetIP() + 1);
+  process_->ModifyIP(target);
+  ip_modified_ = true;
 }
 
 void VirtualMachine::Jump(const Target target){
-
+  std::cout << "JUMP "<< target<<"\n";
+  process_->ModifyIP(target);
+  ip_modified_ = true;
 }
 
 /////////////////////////////////////////////////////////////////////////////
 //  Class 1
 void VirtualMachine::LoadI(const Reg reg_dst, const Word literal){
-  std::cout << "LOAD R"<< reg_dst <<"="<<literal<<"\n";
+  std::cout << "LOADI R"<< reg_dst <<"<-"<<literal<<"\n";
   process_->registers_[reg_dst] = literal;
 }
 
 void VirtualMachine::Load (const Reg reg_dst, const Word literal){
-  std::cout << "LOADI R"<<reg_dst<<"=[@"<<literal <<"]";
+  std::cout << "LOAD R"<<reg_dst<<"<-[@"<<literal <<"]";
   process_->registers_[reg_dst] = process_->Load(literal);
   std::cout << ", val = "<< process_->registers_[reg_dst] <<" \n";
 }
 
 void VirtualMachine::LoadB(const Reg reg_dst, const Reg reg_base, const Word literal){
+  std::cout << "LOADB R"<< reg_dst <<"<-[@"<<literal <<"+ R"<<reg_base<<"]";
+  process_->registers_[reg_dst] =
+    process_->Load(Addr(literal + process_->registers_[reg_base]));
 }
 
 
@@ -57,17 +79,19 @@ void VirtualMachine::StoreB(const Reg reg_src, const Reg reg_base, const Word li
 
 void VirtualMachine::Pop(const Reg reg_dst){
   std::cout << "POP R"<<reg_dst<<" -> [@"<<Addr(process_->StackReg() + 1) <<"]\n";
-  process_->StackReg() += 1;
-  process_->registers_[reg_dst] = process_->Load( Addr(process_->StackReg()));
+  process_->registers_[reg_dst] = PopWord();
 }
+
+
+
 
 void VirtualMachine::Push(const Reg reg_src){
   std::cout << "PUSH [@" <<Addr(process_->StackReg())
             <<  "] <- R" << reg_src <<"\n";
-  process_->Store( Addr(process_->StackReg())
-                 , process_->registers_[reg_src]);
-  process_->StackReg() -= 1;
+  PushWord(process_->registers_[reg_src]);
 }
+
+
 
 /////////////////////////////////////////////////////////////////////////////
 //  Class 2
@@ -76,7 +100,12 @@ void VirtualMachine::ArithI(const Reg reg_dst, const Word literal, const SubInst
 }
 
 void VirtualMachine::JumpC (const Reg reg_src, const Target target, const SubInst op){
-
+  using namespace IRDefinition::SubtypesJMPC;
+  if(  (op == IR_TRUE  and     process_->registers_[reg_src])
+    or (op == IR_FALSE and not process_->registers_[reg_src]) ){
+    process_->ModifyIP(target);
+    ip_modified_ = true;
+  }
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -84,8 +113,7 @@ void VirtualMachine::JumpC (const Reg reg_src, const Target target, const SubIns
 bool VirtualMachine::InstTypeArihmetic (const Reg reg_src1,
   const Reg reg_src2, const Reg reg_dst, const SubInst sub_type){
   bool error = false;
-  using namespace IRDefinition;
-  using namespace SubtypesArithmetic;
+  using namespace IRDefinition::SubtypesArithmetic;
   switch(sub_type){
     case IR_ADD:  Add(reg_src1, reg_src2, reg_dst); break;
     case IR_SUB:  Sub(reg_src1, reg_src2, reg_dst); break;

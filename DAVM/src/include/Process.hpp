@@ -25,7 +25,7 @@ public:
   bool      NextOpCodeIsValid() const;
   Inst      GetCurrentOpCode() const;
 
-  void      ModifyIP(Target const &offset);
+  void      ModifyIP(const Target new_ip);
 
   void      DumpExecutionContext(int const registers_num = 5) const;
 private:

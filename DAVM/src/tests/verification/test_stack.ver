@@ -1,5 +1,10 @@
 EXEC
-OP: LOAD R0=3
-OP: OP: LOAD R0=4
-OP: OP: OP: STOP
-Registers: 1, 0, 0, 0, 0, 0, 0, 0, 0, 0
+OP: LOADI R0<-3
+OP: PUSH [@4294967295] <- R0
+OP: LOADI R0<-4
+OP: PUSH [@4294967294] <- R0
+OP: LOADI R0<-5
+OP: POP R1 -> [@4294967294]
+OP: POP R2 -> [@4294967295]
+STOP
+Registers: 5, 4, 3, 0, 0, 0, 0, 0, 0, 0

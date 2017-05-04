@@ -18,9 +18,8 @@ Inst Process::GetCurrentOpCode() const{
   return byte_code_.stream[instruction_pointer_];
 }
 
-void Process::ModifyIP(const Target &offset){
-  instruction_pointer_++;
-  instruction_pointer_ += offset;
+void Process::ModifyIP(const Target new_ip){
+  instruction_pointer_ = new_ip;
 }
 
 void Process::DumpExecutionContext(const int registers_num) const{

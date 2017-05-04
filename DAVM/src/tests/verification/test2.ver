@@ -22,7 +22,7 @@ LST, rs0 rs1 rd2
 LTE, rs0 rs1 rd2
 STOP
 EXEC
-OP: LOAD R5=42
+OP: LOADI R5<-42
 OP: MOV R1=R5 
 OP: ADD R2=R0 op R1
 OP: SUB R2=R0 op R1
