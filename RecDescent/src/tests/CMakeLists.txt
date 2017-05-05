@@ -4,6 +4,7 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../../Common/src/include")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../../DAVM/src/include")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../../DACOMPILER/src/include")
 add_subdirectory(verification)
+add_subdirectory(verification_davm)
 
 add_definitions( -std=c++14 -g)
 
@@ -41,9 +42,7 @@ target_link_libraries(test_backend_davm ${lib_parser_comp})
 add_executable(test_parser_compiler_davm test_parser_compiler_davm.cpp)
 target_link_libraries(test_parser_compiler_davm ${lib_parser_comp})
 
-add_executable(test_dapars_davm test_dapars_davm.cpp)
-target_link_libraries(test_dapars_davm ${lib_parser_comp})
-
+#Tests of the parser/compiler itself
 INSTALL(TARGETS test_grammar DESTINATION tests/ll1)
 INSTALL(TARGETS test_grammar2 DESTINATION tests/ll1)
 INSTALL(TARGETS test_grammar_dalang DESTINATION tests/ll1)
@@ -52,6 +51,6 @@ INSTALL(TARGETS test_errors_parser DESTINATION tests/ll1)
 INSTALL(TARGETS test_parser_compiler DESTINATION tests/ll1)
 INSTALL(TARGETS test_ir_generator DESTINATION tests/ll1)
 INSTALL(TARGETS test_backend_davm DESTINATION tests/ll1)
-INSTALL(TARGETS test_parser_compiler_davm DESTINATION tests/davm_tests)
-INSTALL(TARGETS test_dapars_davm DESTINATION tests/davm_tests)
 
+#Tests for compiler-vm integration
+INSTALL(TARGETS test_parser_compiler_davm DESTINATION tests/davm_tests)

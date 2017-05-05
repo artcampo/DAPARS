@@ -43,6 +43,11 @@ public:
     VM::VMUtils::print(byte_code_, true);
   }
 
+  void WriteBytecode(const std::string& file_name){
+    VM::VMUtils::writeByteCode(byte_code_, file_name);
+  }
+
+
   void LoadCallBack(const MReg reg_dst, const IR::MemAddr addr) override {
 //     std::cout << "Load callback\n" << reg_dst <<"\n";
     if(addr.GetLabel().IsRunTime()){

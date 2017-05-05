@@ -1,0 +1,8 @@
+DAVM specifications
+
+- Interpreted bytecode, 3 address instructions
+- 16 registers, signed 32 bits. Reg #15 is stack pointer.
+- Memory: 2^32 addressable bytes in 4k pages. Unit of memory accesses is 32 bit words.
+Mem operations work only on 4 bytes words aligned to 4.
+-Code and data reside in different memory spaces. Thus memory access depends on if
+we want to access data or code.
