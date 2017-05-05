@@ -23,6 +23,8 @@ test_with_input(){
     rm $2.out
 }
 
+cd ../da_vm
+test_with_input test_dapars_davm test_parse1
 # test_with_input test_parser_compiler test_parse1
 # test_with_input test_parser_compiler test_parse2
 # test_with_input test_parser_compiler test_parse3
