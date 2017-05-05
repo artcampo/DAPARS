@@ -1,5 +1,6 @@
 cd ../install/tests/ll1
 
+###################################################################
 test_standalone(){
     echo "Test: $1"
     ./$1 > $1.out
@@ -15,18 +16,16 @@ test_standalone test_errors_parser
 test_standalone test_ir_generator
 test_standalone test_backend_davm
 
+###################################################################
+cd ../davm_tests/
 
-test_with_input(){
-    echo "Test: $1"
-    ./$1 $2.input > $2.out
-    diff $2.out $2.ver
-    rm $2.out
+test_comp_davm(){
+    echo "Test-comp-davm $1"
+    #backend has lots of logging, redirect its stdout so it doesn't bother
+    ./test_parser_compiler_davm $1.lang $1.bc > comp.out
+    ./davm $1.bc > $1.vm.out
+    diff $1.vm.out $1.vm.ver
+    rm $1.bc $1.vm.out comp.out
 }
 
-cd ../da_vm
-test_with_input test_dapars_davm test_parse1
-# test_with_input test_parser_compiler test_parse1
-# test_with_input test_parser_compiler test_parse2
-# test_with_input test_parser_compiler test_parse3
-# test_with_input test_parser_compiler test_parse4
-
+test_comp_davm functions

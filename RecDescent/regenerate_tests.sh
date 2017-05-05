@@ -15,6 +15,30 @@ regenerate_test_standalone test_ir_generator
 regenerate_test_standalone test_backend_davm
 
 ###################################################################
+
+cd ../davm_tests/
+regenerate_test_comp_davm(){
+    ./test_parser_compiler_davm $1.lang $1.bc > comp.out
+    ./davm $1.bc > $1.vm.out
+    cp $1.vm.out ../../../RecDescent/src/tests/verification_davm/$1.vm.ver
+    rm $1.bc $1.vm.out comp.out
+}
+
+regenerate_test_comp_davm functions
+
+
+###################################################################
+#end
+echo "Tests regenerated. You need to reinstall before running tests again."
+
+
+
+
+
+###################################################################
+#unused
+
+###################################################################
 regenerate_test_with_input(){
   ./$1 $2.input > $2.ver
   cp $2.ver ../../../RecDescent/src/tests/verification/.
@@ -24,7 +48,3 @@ regenerate_test_with_input(){
 # regenerate_test_with_input test_parser_compiler test_parse2
 # regenerate_test_with_input test_parser_compiler test_parse3
 # regenerate_test_with_input test_parser_compiler test_parse4
-
-
-#end
-echo "Tests regenerated. You need to reinstall before running tests again."
