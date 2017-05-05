@@ -309,15 +309,17 @@ private:
 private:
 
   void FuncPrologue(const Function& f){
+    bool uses_arp = f.HasLocals() or f.HasArguments();
     //Push used registers
     if(f.IsMember())
       byte_code_.Append( VM::IRBuilder::Push( reg_alloc_.MRegThisPtr() ));
-    if(f.HasLocals())
-      byte_code_.Append( VM::IRBuilder::Push( reg_alloc_.MRegArpPtr() ));
 
     //Set ARP
-    byte_code_.Append( VM::IRBuilder::Move( reg_alloc_.MRegStackPtr()
-                                          , reg_alloc_.MRegArpPtr() ));
+    if(uses_arp){
+      byte_code_.Append( VM::IRBuilder::Push( reg_alloc_.MRegArpPtr() ));
+      byte_code_.Append( VM::IRBuilder::Move( reg_alloc_.MRegStackPtr()
+                                            , reg_alloc_.MRegArpPtr() ));
+    }
 
     //Alloc locals in satck
     if(f.HasLocals()){
@@ -330,7 +332,8 @@ private:
   }
 
   void FuncEpilogue(const Function& f){
-    if(f.HasLocals()){
+    bool uses_arp = f.HasLocals() or f.HasArguments();
+    if(uses_arp){
       byte_code_.Append( VM::IRBuilder::Move( reg_alloc_.MRegArpPtr()
                                             , reg_alloc_.MRegStackPtr()));
       byte_code_.Append( VM::IRBuilder::Pop( reg_alloc_.MRegArpPtr() ));

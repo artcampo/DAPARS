@@ -14,11 +14,15 @@ using namespace IRBuilder;
 /////////////////////////////////////////////////////////////////////////////
 //  Helpers
 Word VirtualMachine::PopWord(){
+  std::cout << "  -- pop @"<< Addr(process_->StackReg() + 1)<< " val: "
+            << process_->Load( Addr(process_->StackReg() + 1)) << "\n";
   process_->StackReg() += 1;
   return process_->Load( Addr(process_->StackReg()));
 }
 
 void VirtualMachine::PushWord(const Word word){
+  std::cout << "  -- push @"<< Addr(process_->StackReg())<< " val: "
+            << word << "\n";
   process_->Store( Addr(process_->StackReg()), word);
   process_->StackReg() -= 1;
 }
@@ -32,7 +36,7 @@ void VirtualMachine::Return(){
 }
 
 void VirtualMachine::Call(const Target target){
-  std::cout << "Call "<< target<<"\n";
+  std::cout << "Call "<< target<< " ret@: " << process_->GetIP() + 1 << "\n";
   PushWord(process_->GetIP() + 1);
   process_->ModifyIP(target);
   ip_modified_ = true;
@@ -78,7 +82,7 @@ void VirtualMachine::StoreB(const Reg reg_src, const Reg reg_base, const Word li
 
 
 void VirtualMachine::Pop(const Reg reg_dst){
-  std::cout << "POP R"<<reg_dst<<" -> [@"<<Addr(process_->StackReg() + 1) <<"]\n";
+  std::cout << "POP R"<<reg_dst<<" <- [@"<<Addr(process_->StackReg() + 1) <<"]\n";
   process_->registers_[reg_dst] = PopWord();
 }
 
