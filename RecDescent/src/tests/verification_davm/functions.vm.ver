@@ -1,12 +1,12 @@
 EXEC
-OP: LOADI R1<-1
-OP: STORE [@0] = 1
-OP: MOV R0=R1 
+OP: LOADI R1 <- 1
+OP: STORE [@0] <- R1 val: 1
+OP: MOVE R0 <- R1 
 OP: Call 7
-OP: MOV R14=R15 
-OP: MOV R0=R0 
+OP: MOVE R14 <- R15 
+OP: MOVE R0 <- R0 
 OP: Return 4
-OP: MOV R1=R0 
-OP: STORE [@0] = 1
+OP: MOVE R1 <- R0 
+OP: STORE [@0] <- R1 val: 1
 STOP
-Errors in execution:
+Registers: 1, 1, 0, 0, 0, 0, 0, 0, 0, 0

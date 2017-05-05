@@ -47,32 +47,32 @@ void VirtualMachine::Jump(const Target target){
 /////////////////////////////////////////////////////////////////////////////
 //  Class 1
 void VirtualMachine::LoadI(const Reg reg_dst, const Word literal){
-  std::cout << "LOADI R"<< reg_dst <<"<-"<<literal<<"\n";
+  std::cout << "LOADI R"<< reg_dst <<" <- "<<literal<<"\n";
   process_->registers_[reg_dst] = literal;
 }
 
 void VirtualMachine::Load (const Reg reg_dst, const Word literal){
-  std::cout << "LOAD R"<<reg_dst<<"<-[@"<<literal <<"]";
+  std::cout << "LOAD R"<<reg_dst<<" <- [@"<<literal <<"]";
   process_->registers_[reg_dst] = process_->Load(literal);
   std::cout << ", val = "<< process_->registers_[reg_dst] <<" \n";
 }
 
 void VirtualMachine::LoadB(const Reg reg_dst, const Reg reg_base, const Word literal){
-  std::cout << "LOADB R"<< reg_dst <<"<-[@"<<literal <<"+ R"<<reg_base<<"]";
+  std::cout << "LOADB R"<< reg_dst <<" <- [@"<<literal <<"+ R"<<reg_base<<"]";
   process_->registers_[reg_dst] =
     process_->Load(Addr(literal + process_->registers_[reg_base]));
 }
 
 
 void VirtualMachine::Store(const Reg reg_src, const Word literal){
-  std::cout << "STORE [@" <<literal << "] = " << reg_src <<"\n";
+  std::cout << "STORE [@" <<literal << "] <- R" << reg_src << " val: " << process_->registers_[reg_src] <<"\n";
   process_->Store(Addr(literal), process_->registers_[reg_src]);
 }
 
 void VirtualMachine::StoreB(const Reg reg_src, const Reg reg_base, const Word literal){
   std::cout << "STOREB [@" <<literal <<"+"
             << process_->registers_[reg_base]
-            <<  "] = " << process_->registers_[reg_src] <<"\n";
+            <<  "] <- " << process_->registers_[reg_src] <<"\n";
   process_->Store(Addr(literal + process_->registers_[reg_base]), process_->registers_[reg_src]);
 }
 
@@ -128,7 +128,7 @@ bool VirtualMachine::InstTypeArihmetic (const Reg reg_src1,
 
 void VirtualMachine::Add (const Reg reg_src1,
   const Reg reg_src2, const Reg reg_dst){
-  std::cout << "ADD R"<<reg_dst<<"=R"<<reg_src1<<" op R"<< reg_src2 <<"\n";
+  std::cout << "ADD R"<<reg_dst<<" <- R"<<reg_src1<<" + R"<< reg_src2 <<"\n";
   process_->registers_[reg_dst] =
       process_->registers_[reg_src1]
     + process_->registers_[reg_src2];
@@ -136,7 +136,7 @@ void VirtualMachine::Add (const Reg reg_src1,
 
 void VirtualMachine::Sub (const Reg reg_src1,
   const Reg reg_src2, const Reg reg_dst){
-  std::cout << "SUB R"<<reg_dst<<"=R"<<reg_src1<<" op R"<< reg_src2 <<"\n";
+  std::cout << "SUB R"<<reg_dst<<" <- R"<<reg_src1<<" - R"<< reg_src2 <<"\n";
   process_->registers_[reg_dst] =
       process_->registers_[reg_src1]
     - process_->registers_[reg_src2];
@@ -144,7 +144,7 @@ void VirtualMachine::Sub (const Reg reg_src1,
 
 void VirtualMachine::Mul (const Reg reg_src1,
   const Reg reg_src2, const Reg reg_dst){
-  std::cout << "MUL R"<<reg_dst<<"=R"<<reg_src1<<" op R"<< reg_src2 <<"\n";
+  std::cout << "MUL R"<<reg_dst<<" <- R"<<reg_src1<<" * R"<< reg_src2 <<"\n";
   process_->registers_[reg_dst] =
       process_->registers_[reg_src1]
     * process_->registers_[reg_src2];
@@ -152,7 +152,7 @@ void VirtualMachine::Mul (const Reg reg_src1,
 
 void VirtualMachine::Div (const Reg reg_src1,
   const Reg reg_src2, const Reg reg_dst){
-  std::cout << "DIV R"<<reg_dst<<"=R"<<reg_src1<<" op R"<< reg_src2 <<"\n";
+  std::cout << "DIV R"<<reg_dst<<" <- R"<<reg_src1<<" / R"<< reg_src2 <<"\n";
   process_->registers_[reg_dst] =
       process_->registers_[reg_src1]
     / process_->registers_[reg_src2];
@@ -160,7 +160,7 @@ void VirtualMachine::Div (const Reg reg_src1,
 
 void VirtualMachine::Move(const Reg reg_src1,
   const Reg reg_src2, const Reg reg_dst){
-  std::cout << "MOV R"<<reg_dst<<"=R"<<reg_src1<<" \n";
+  std::cout << "MOVE R"<<reg_dst<<" <- R"<<reg_src1<<" \n";
   process_->registers_[reg_dst] =
       process_->registers_[reg_src1];
 }
@@ -185,13 +185,13 @@ bool VirtualMachine::InstTypeComparison (const Reg reg_src1,
 
 void VirtualMachine::Not (const Reg reg_src1,
   const Reg reg_src2, const Reg reg_dst){
-  std::cout << "NOT R"<<reg_dst<<"= !R"<<reg_src1<<"\n";
+  std::cout << "NOT R"<<reg_dst<<" <-  !R"<<reg_src1<<"\n";
   process_->registers_[reg_dst] = not process_->registers_[reg_src1];
 }
 
 void VirtualMachine::Eqt (const Reg reg_src1,
   const Reg reg_src2, const Reg reg_dst){
-  std::cout << "EQL R"<<reg_dst<<"=R"<<reg_src1<<" == R"<< reg_src2 <<"\n";
+  std::cout << "EQL R"<<reg_dst<<" <- R"<<reg_src1<<" == R"<< reg_src2 <<"\n";
   process_->registers_[reg_dst] =
       process_->registers_[reg_src1]
    == process_->registers_[reg_src2];
@@ -199,7 +199,7 @@ void VirtualMachine::Eqt (const Reg reg_src1,
 
 void VirtualMachine::Lst (const Reg reg_src1,
   const Reg reg_src2, const Reg reg_dst){
-  std::cout << "LST R"<<reg_dst<<"=R"<<reg_src1<<" < R"<< reg_src2 <<"\n";
+  std::cout << "LST R"<<reg_dst<<" <- R"<<reg_src1<<" < R"<< reg_src2 <<"\n";
   process_->registers_[reg_dst] =
       process_->registers_[reg_src1]
     < process_->registers_[reg_src2];
@@ -207,7 +207,7 @@ void VirtualMachine::Lst (const Reg reg_src1,
 
 void VirtualMachine::Lte (const Reg reg_src1,
   const Reg reg_src2, const Reg reg_dst){
-  std::cout << "LTE R"<<reg_dst<<"=R"<<reg_src1<<" <= R"<< reg_src2 <<"\n";
+  std::cout << "LTE R"<<reg_dst<<" <- R"<<reg_src1<<" <= R"<< reg_src2 <<"\n";
   process_->registers_[reg_dst] =
       process_->registers_[reg_src1]
    <= process_->registers_[reg_src2];

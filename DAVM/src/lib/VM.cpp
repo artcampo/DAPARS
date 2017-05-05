@@ -128,7 +128,7 @@ ByteCode* VirtualMachine::ReadByteCode(const std::string &file_name){
 
 
 void VirtualMachine::DumpExecutionContext(int const registers_num) const{
-  if(error_log_->HasErrors())
+  if(not error_log_->HasErrors())
     process_->DumpExecutionContext(registers_num);
   else{
     std::cout << "Errors in execution:" << std::endl;
