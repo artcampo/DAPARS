@@ -9,8 +9,14 @@
  */
 
 namespace Compiler{
-namespace AST{
 
+namespace TypesSize{
+//Basic includes: int, bool, pointer
+const static int kBasic = 4;
+
+}//end namespace TypesSize
+
+namespace AST{
 
 enum class kBasicTypeId : size_t{
     kVoid = 0

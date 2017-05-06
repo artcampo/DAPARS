@@ -8,10 +8,10 @@ store %0 to [LT MainDS:0 (a)]
 %4 = %2 + %3
 store %4 to [LT MainDS:0 (a)]
 ReturnMain
-%0 = Load [LT MainDS:-1 (__test_result)]
+%0 = Load [LT MainDS:-4 (__test_result)]
 %1 = GetArg( arg0 )
 %2 = %0 and %1
-store %2 to [LT MainDS:-1 (__test_result)]
+store %2 to [LT MainDS:-4 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -23,13 +23,13 @@ Bytecode:
 5: STOP
 6: PUSH, r14  <- [__test]
 7: MOV, rs15 rd14
-8: LOAD, rd1 <- [@-1]
+8: LOAD, rd1 <- [@-4]
 9: AND, rs1 rs0 rd2
-10: STORE, r2 -> [@-1]
+10: STORE, r2 -> [@-4]
 11: MOV, rs14 rd15
 12: POP, r14
 13: RETURN
-Static data segment size: 2
+Static data segment size: 8
 
 ---------------------------------------------------
 Parsing: "void main(){int a, b, c; a = 4; b = 3; c = a + b; }"
@@ -37,35 +37,35 @@ Backend::Davm
 %0 = LoadI(4)
 store %0 to [LT MainDS:0 (a)]
 %2 = LoadI(3)
-store %2 to [LT MainDS:1 (b)]
+store %2 to [LT MainDS:4 (b)]
 %4 = Load [LT MainDS:0 (a)]
-%5 = Load [LT MainDS:1 (b)]
+%5 = Load [LT MainDS:4 (b)]
 %6 = %4 + %5
-store %6 to [LT MainDS:2 (c)]
+store %6 to [LT MainDS:8 (c)]
 ReturnMain
-%0 = Load [LT MainDS:-1 (__test_result)]
+%0 = Load [LT MainDS:-4 (__test_result)]
 %1 = GetArg( arg0 )
 %2 = %0 and %1
-store %2 to [LT MainDS:-1 (__test_result)]
+store %2 to [LT MainDS:-4 (__test_result)]
 Return
 ---------
 Bytecode:
 0: LOADI, r1 val: 4  <- [main]
 1: STORE, r1 -> [@0]
 2: LOADI, r2 val: 3
-3: STORE, r2 -> [@1]
+3: STORE, r2 -> [@4]
 4: ADD, rs1 rs2 rd3
-5: STORE, r3 -> [@2]
+5: STORE, r3 -> [@8]
 6: STOP
 7: PUSH, r14  <- [__test]
 8: MOV, rs15 rd14
-9: LOAD, rd1 <- [@-1]
+9: LOAD, rd1 <- [@-4]
 10: AND, rs1 rs0 rd2
-11: STORE, r2 -> [@-1]
+11: STORE, r2 -> [@-4]
 12: MOV, rs14 rd15
 13: POP, r14
 14: RETURN
-Static data segment size: 4
+Static data segment size: 16
 
 ---------------------------------------------------
 Parsing: "int f(int p){ return p; }void main(){int a; a = 1; a = f(a); }"
@@ -81,10 +81,10 @@ ReturnMain
 %0 = GetArg( arg0 )
 SetRetVal( %0)
 Return
-%0 = Load [LT MainDS:-1 (__test_result)]
+%0 = Load [LT MainDS:-4 (__test_result)]
 %1 = GetArg( arg0 )
 %2 = %0 and %1
-store %2 to [LT MainDS:-1 (__test_result)]
+store %2 to [LT MainDS:-4 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -103,13 +103,13 @@ Bytecode:
 12: RETURN
 13: PUSH, r14  <- [__test]
 14: MOV, rs15 rd14
-15: LOAD, rd1 <- [@-1]
+15: LOAD, rd1 <- [@-4]
 16: AND, rs1 rs0 rd2
-17: STORE, r2 -> [@-1]
+17: STORE, r2 -> [@-4]
 18: MOV, rs14 rd15
 19: POP, r14
 20: RETURN
-Static data segment size: 2
+Static data segment size: 8
 
 ---------------------------------------------------
 Parsing: "int f(int p0, int p1){ return p0 + p1; }void main(){int a; a = f(9,8); }"
@@ -128,10 +128,10 @@ ReturnMain
 %2 = %0 + %1
 SetRetVal( %2)
 Return
-%0 = Load [LT MainDS:-1 (__test_result)]
+%0 = Load [LT MainDS:-4 (__test_result)]
 %1 = GetArg( arg0 )
 %2 = %0 and %1
-store %2 to [LT MainDS:-1 (__test_result)]
+store %2 to [LT MainDS:-4 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -154,13 +154,13 @@ Bytecode:
 16: RETURN
 17: PUSH, r14  <- [__test]
 18: MOV, rs15 rd14
-19: LOAD, rd1 <- [@-1]
+19: LOAD, rd1 <- [@-4]
 20: AND, rs1 rs0 rd2
-21: STORE, r2 -> [@-1]
+21: STORE, r2 -> [@-4]
 22: MOV, rs14 rd15
 23: POP, r14
 24: RETURN
-Static data segment size: 2
+Static data segment size: 8
 
 ---------------------------------------------------
 Parsing: "int f(int p0, int p1, int p2, int p3){ return p0 + p1 + p2 + p3; }void main(){int a; a = f(9,8,7,6); }"
@@ -189,10 +189,10 @@ ReturnMain
 %6 = %4 + %5
 SetRetVal( %6)
 Return
-%0 = Load [LT MainDS:-1 (__test_result)]
+%0 = Load [LT MainDS:-4 (__test_result)]
 %1 = GetArg( arg0 )
 %2 = %0 and %1
-store %2 to [LT MainDS:-1 (__test_result)]
+store %2 to [LT MainDS:-4 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -223,13 +223,13 @@ Bytecode:
 24: RETURN
 25: PUSH, r14  <- [__test]
 26: MOV, rs15 rd14
-27: LOAD, rd1 <- [@-1]
+27: LOAD, rd1 <- [@-4]
 28: AND, rs1 rs0 rd2
-29: STORE, r2 -> [@-1]
+29: STORE, r2 -> [@-4]
 30: MOV, rs14 rd15
 31: POP, r14
 32: RETURN
-Static data segment size: 2
+Static data segment size: 8
 
 ---------------------------------------------------
 Parsing: "int f(){ int a; return a; }void main(){int a; a = f(); }"
@@ -241,51 +241,10 @@ ReturnMain
 %0 = Load [RT arp_f[isArp]:0 (a)]
 SetRetVal( %0)
 Return
-%0 = Load [LT MainDS:-1 (__test_result)]
+%0 = Load [LT MainDS:-4 (__test_result)]
 %1 = GetArg( arg0 )
 %2 = %0 and %1
-store %2 to [LT MainDS:-1 (__test_result)]
-Return
----------
-Bytecode:
-0: CALL: @4  <- [main]
-1: MOV, rs0 rd1
-2: STORE, r1 -> [@0]
-3: STOP
-4: PUSH, r14  <- [f]
-5: MOV, rs15 rd14
-6: SUBI, rd15 1
-7: LOADB, r1 <- [@ r14 + 0]
-8: MOV, rs1 rd0
-9: MOV, rs14 rd15
-10: POP, r14
-11: RETURN
-12: PUSH, r14  <- [__test]
-13: MOV, rs15 rd14
-14: LOAD, rd1 <- [@-1]
-15: AND, rs1 rs0 rd2
-16: STORE, r2 -> [@-1]
-17: MOV, rs14 rd15
-18: POP, r14
-19: RETURN
-Static data segment size: 2
-
----------------------------------------------------
-Parsing: "int f(){ int a,b,c,d; return a + d; }void main(){int a; a = f(); }"
-Backend::Davm
-call [LT entry_f[isTarget]:0 ()]
-%0 = GetRetVal()
-store %0 to [LT MainDS:0 (a)]
-ReturnMain
-%0 = Load [RT arp_f[isArp]:0 (a)]
-%1 = Load [RT arp_f[isArp]:-3 (d)]
-%2 = %0 + %1
-SetRetVal( %2)
-Return
-%0 = Load [LT MainDS:-1 (__test_result)]
-%1 = GetArg( arg0 )
-%2 = %0 and %1
-store %2 to [LT MainDS:-1 (__test_result)]
+store %2 to [LT MainDS:-4 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -297,7 +256,48 @@ Bytecode:
 5: MOV, rs15 rd14
 6: SUBI, rd15 4
 7: LOADB, r1 <- [@ r14 + 0]
-8: LOADB, r2 <- [@ r14 + -3]
+8: MOV, rs1 rd0
+9: MOV, rs14 rd15
+10: POP, r14
+11: RETURN
+12: PUSH, r14  <- [__test]
+13: MOV, rs15 rd14
+14: LOAD, rd1 <- [@-4]
+15: AND, rs1 rs0 rd2
+16: STORE, r2 -> [@-4]
+17: MOV, rs14 rd15
+18: POP, r14
+19: RETURN
+Static data segment size: 8
+
+---------------------------------------------------
+Parsing: "int f(){ int a,b,c,d; return a + d; }void main(){int a; a = f(); }"
+Backend::Davm
+call [LT entry_f[isTarget]:0 ()]
+%0 = GetRetVal()
+store %0 to [LT MainDS:0 (a)]
+ReturnMain
+%0 = Load [RT arp_f[isArp]:0 (a)]
+%1 = Load [RT arp_f[isArp]:-12 (d)]
+%2 = %0 + %1
+SetRetVal( %2)
+Return
+%0 = Load [LT MainDS:-4 (__test_result)]
+%1 = GetArg( arg0 )
+%2 = %0 and %1
+store %2 to [LT MainDS:-4 (__test_result)]
+Return
+---------
+Bytecode:
+0: CALL: @4  <- [main]
+1: MOV, rs0 rd1
+2: STORE, r1 -> [@0]
+3: STOP
+4: PUSH, r14  <- [f]
+5: MOV, rs15 rd14
+6: SUBI, rd15 16
+7: LOADB, r1 <- [@ r14 + 0]
+8: LOADB, r2 <- [@ r14 + -12]
 9: ADD, rs1 rs2 rd3
 10: MOV, rs3 rd0
 11: MOV, rs14 rd15
@@ -305,13 +305,13 @@ Bytecode:
 13: RETURN
 14: PUSH, r14  <- [__test]
 15: MOV, rs15 rd14
-16: LOAD, rd1 <- [@-1]
+16: LOAD, rd1 <- [@-4]
 17: AND, rs1 rs0 rd2
-18: STORE, r2 -> [@-1]
+18: STORE, r2 -> [@-4]
 19: MOV, rs14 rd15
 20: POP, r14
 21: RETURN
-Static data segment size: 2
+Static data segment size: 8
 
 ---------------------------------------------------
 Parsing: "void main(){int a, b, c, d; a = 1; b = 0;if((a+b) < 2){a = 2;} else {a=1;} c = a; d = b; }"
@@ -319,9 +319,9 @@ Backend::Davm
 %0 = LoadI(1)
 store %0 to [LT MainDS:0 (a)]
 %2 = LoadI(0)
-store %2 to [LT MainDS:1 (b)]
+store %2 to [LT MainDS:4 (b)]
 %4 = Load [LT MainDS:0 (a)]
-%5 = Load [LT MainDS:1 (b)]
+%5 = Load [LT MainDS:4 (b)]
 %6 = %4 + %5
 %7 = LoadI(2)
 %8 = %6 < %7
@@ -334,21 +334,21 @@ JumpIncond17
 store %11 to [LT MainDS:0 (a)]
 JumpIncond17
 %13 = Load [LT MainDS:0 (a)]
-store %13 to [LT MainDS:2 (c)]
-%15 = Load [LT MainDS:1 (b)]
-store %15 to [LT MainDS:3 (d)]
+store %13 to [LT MainDS:8 (c)]
+%15 = Load [LT MainDS:4 (b)]
+store %15 to [LT MainDS:12 (d)]
 ReturnMain
-%0 = Load [LT MainDS:-1 (__test_result)]
+%0 = Load [LT MainDS:-4 (__test_result)]
 %1 = GetArg( arg0 )
 %2 = %0 and %1
-store %2 to [LT MainDS:-1 (__test_result)]
+store %2 to [LT MainDS:-4 (__test_result)]
 Return
 ---------
 Bytecode:
 0: LOADI, r1 val: 1  <- [main]
 1: STORE, r1 -> [@0]
 2: LOADI, r2 val: 0
-3: STORE, r2 -> [@1]
+3: STORE, r2 -> [@4]
 4: ADD, rs1 rs2 rd3
 5: LOADI, r4 val: 2
 6: LST, rs3 rs4 rd5
@@ -361,18 +361,18 @@ Bytecode:
 13: STORE, r1 -> [@0]
 14: JUMP: @15
 15: LOAD, rd1 <- [@0]
-16: STORE, r1 -> [@2]
-17: STORE, r2 -> [@3]
+16: STORE, r1 -> [@8]
+17: STORE, r2 -> [@12]
 18: STOP
 19: PUSH, r14  <- [__test]
 20: MOV, rs15 rd14
-21: LOAD, rd1 <- [@-1]
+21: LOAD, rd1 <- [@-4]
 22: AND, rs1 rs0 rd2
-23: STORE, r2 -> [@-1]
+23: STORE, r2 -> [@-4]
 24: MOV, rs14 rd15
 25: POP, r14
 26: RETURN
-Static data segment size: 5
+Static data segment size: 20
 
 ---------------------------------------------------
 Parsing: "int f(){ return 1; }int g(){ return f() + 2; }void main(){int a; a = f() + g();}"
@@ -393,10 +393,10 @@ call [LT entry_f[isTarget]:0 ()]
 %2 = %0 + %1
 SetRetVal( %2)
 Return
-%0 = Load [LT MainDS:-1 (__test_result)]
+%0 = Load [LT MainDS:-4 (__test_result)]
 %1 = GetArg( arg0 )
 %2 = %0 and %1
-store %2 to [LT MainDS:-1 (__test_result)]
+store %2 to [LT MainDS:-4 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -418,13 +418,13 @@ Bytecode:
 15: RETURN
 16: PUSH, r14  <- [__test]
 17: MOV, rs15 rd14
-18: LOAD, rd1 <- [@-1]
+18: LOAD, rd1 <- [@-4]
 19: AND, rs1 rs0 rd2
-20: STORE, r2 -> [@-1]
+20: STORE, r2 -> [@-4]
 21: MOV, rs14 rd15
 22: POP, r14
 23: RETURN
-Static data segment size: 2
+Static data segment size: 8
 
 ---------------------------------------------------
 Parsing: "void main(){bool a, b, c; a = true; b = false; c = a or b;c = false or true; }"
@@ -432,43 +432,43 @@ Backend::Davm
 %0 = LoadI(1)
 store %0 to [LT MainDS:0 (a)]
 %2 = LoadI(0)
-store %2 to [LT MainDS:1 (b)]
+store %2 to [LT MainDS:4 (b)]
 %4 = Load [LT MainDS:0 (a)]
-%5 = Load [LT MainDS:1 (b)]
+%5 = Load [LT MainDS:4 (b)]
 %6 = %4 or %5
-store %6 to [LT MainDS:2 (c)]
+store %6 to [LT MainDS:8 (c)]
 %8 = LoadI(0)
 %9 = LoadI(1)
 %10 = %8 or %9
-store %10 to [LT MainDS:2 (c)]
+store %10 to [LT MainDS:8 (c)]
 ReturnMain
-%0 = Load [LT MainDS:-1 (__test_result)]
+%0 = Load [LT MainDS:-4 (__test_result)]
 %1 = GetArg( arg0 )
 %2 = %0 and %1
-store %2 to [LT MainDS:-1 (__test_result)]
+store %2 to [LT MainDS:-4 (__test_result)]
 Return
 ---------
 Bytecode:
 0: LOADI, r1 val: 1  <- [main]
 1: STORE, r1 -> [@0]
 2: LOADI, r2 val: 0
-3: STORE, r2 -> [@1]
+3: STORE, r2 -> [@4]
 4: OR, rs1 rs2 rd3
-5: STORE, r3 -> [@2]
+5: STORE, r3 -> [@8]
 6: LOADI, r4 val: 0
 7: LOADI, r5 val: 1
 8: OR, rs4 rs5 rd6
-9: STORE, r6 -> [@2]
+9: STORE, r6 -> [@8]
 10: STOP
 11: PUSH, r14  <- [__test]
 12: MOV, rs15 rd14
-13: LOAD, rd1 <- [@-1]
+13: LOAD, rd1 <- [@-4]
 14: AND, rs1 rs0 rd2
-15: STORE, r2 -> [@-1]
+15: STORE, r2 -> [@-4]
 16: MOV, rs14 rd15
 17: POP, r14
 18: RETURN
-Static data segment size: 4
+Static data segment size: 16
 
 ---------------------------------------------------
 Parsing: "void main(){int a, b, c; a = a + 10; b = 11; c = 12;} int f(){int a, b, c;     a = a + 10; b = 11; c = 12;}"
@@ -478,23 +478,23 @@ Backend::Davm
 %2 = %0 + %1
 store %2 to [LT MainDS:0 (a)]
 %4 = LoadI(11)
-store %4 to [LT MainDS:1 (b)]
+store %4 to [LT MainDS:4 (b)]
 %6 = LoadI(12)
-store %6 to [LT MainDS:2 (c)]
+store %6 to [LT MainDS:8 (c)]
 ReturnMain
 %0 = Load [RT arp_f[isArp]:0 (a)]
 %1 = LoadI(10)
 %2 = %0 + %1
 store %2 to [RT arp_f[isArp]:0 (a)]
 %4 = LoadI(11)
-store %4 to [RT arp_f[isArp]:-1 (b)]
+store %4 to [RT arp_f[isArp]:-4 (b)]
 %6 = LoadI(12)
-store %6 to [RT arp_f[isArp]:-2 (c)]
+store %6 to [RT arp_f[isArp]:-8 (c)]
 Return
-%0 = Load [LT MainDS:-1 (__test_result)]
+%0 = Load [LT MainDS:-4 (__test_result)]
 %1 = GetArg( arg0 )
 %2 = %0 and %1
-store %2 to [LT MainDS:-1 (__test_result)]
+store %2 to [LT MainDS:-4 (__test_result)]
 Return
 ---------
 Bytecode:
@@ -503,69 +503,69 @@ Bytecode:
 2: ADD, rs1 rs2 rd3
 3: STORE, r3 -> [@0]
 4: LOADI, r4 val: 11
-5: STORE, r4 -> [@1]
+5: STORE, r4 -> [@4]
 6: LOADI, r5 val: 12
-7: STORE, r5 -> [@2]
+7: STORE, r5 -> [@8]
 8: STOP
 9: PUSH, r14  <- [f]
 10: MOV, rs15 rd14
-11: SUBI, rd15 3
+11: SUBI, rd15 12
 12: LOADB, r1 <- [@ r14 + 0]
 13: LOADI, r2 val: 10
 14: ADD, rs1 rs2 rd3
 15: STORE, r3 -> [@r14 + 0]
 16: LOADI, r4 val: 11
-17: STORE, r4 -> [@r14 + -1]
+17: STORE, r4 -> [@r14 + -4]
 18: LOADI, r5 val: 12
-19: STORE, r5 -> [@r14 + -2]
+19: STORE, r5 -> [@r14 + -8]
 20: MOV, rs14 rd15
 21: POP, r14
 22: RETURN
 23: PUSH, r14  <- [__test]
 24: MOV, rs15 rd14
-25: LOAD, rd1 <- [@-1]
+25: LOAD, rd1 <- [@-4]
 26: AND, rs1 rs0 rd2
-27: STORE, r2 -> [@-1]
+27: STORE, r2 -> [@-4]
 28: MOV, rs14 rd15
 29: POP, r14
 30: RETURN
-Static data segment size: 4
+Static data segment size: 16
 
 ---------------------------------------------------
 Parsing: "void main(){bool b; int a, c; a = 10; c = 11; b = a == c;} "
 Backend::Davm
 %0 = LoadI(10)
-store %0 to [LT MainDS:1 (a)]
+store %0 to [LT MainDS:4 (a)]
 %2 = LoadI(11)
-store %2 to [LT MainDS:2 (c)]
-%4 = Load [LT MainDS:1 (a)]
-%5 = Load [LT MainDS:2 (c)]
+store %2 to [LT MainDS:8 (c)]
+%4 = Load [LT MainDS:4 (a)]
+%5 = Load [LT MainDS:8 (c)]
 %6 = %4 == %5
 store %6 to [LT MainDS:0 (b)]
 ReturnMain
-%0 = Load [LT MainDS:-1 (__test_result)]
+%0 = Load [LT MainDS:-4 (__test_result)]
 %1 = GetArg( arg0 )
 %2 = %0 and %1
-store %2 to [LT MainDS:-1 (__test_result)]
+store %2 to [LT MainDS:-4 (__test_result)]
 Return
 ---------
 Bytecode:
 0: LOADI, r1 val: 10  <- [main]
-1: STORE, r1 -> [@1]
+1: STORE, r1 -> [@4]
 2: LOADI, r2 val: 11
-3: STORE, r2 -> [@2]
+3: STORE, r2 -> [@8]
 4: EQT, rs1 rs2 rd3
 5: STORE, r3 -> [@0]
 6: STOP
 7: PUSH, r14  <- [__test]
 8: MOV, rs15 rd14
-9: LOAD, rd1 <- [@-1]
+9: LOAD, rd1 <- [@-4]
 10: AND, rs1 rs0 rd2
-11: STORE, r2 -> [@-1]
+11: STORE, r2 -> [@-4]
 12: MOV, rs14 rd15
 13: POP, r14
 14: RETURN
-Static data segment size: 4
+Static data segment size: 16
 
 ---------------------------------------------------
 Parsing: "bool main(){int a, b; a = 1; b = 2; return __test(false); } "
@@ -573,24 +573,24 @@ Backend::Davm
 %0 = LoadI(1)
 store %0 to [LT MainDS:0 (a)]
 %2 = LoadI(2)
-store %2 to [LT MainDS:1 (b)]
+store %2 to [LT MainDS:4 (b)]
 %4 = LoadI(0)
 SetArg( %4)
 call [LT entry___test[isTarget]:0 ()]
 %5 = GetRetVal()
 SetRetVal( %5)
 ReturnMain
-%0 = Load [LT MainDS:-1 (__test_result)]
+%0 = Load [LT MainDS:-4 (__test_result)]
 %1 = GetArg( arg0 )
 %2 = %0 and %1
-store %2 to [LT MainDS:-1 (__test_result)]
+store %2 to [LT MainDS:-4 (__test_result)]
 Return
 ---------
 Bytecode:
 0: LOADI, r1 val: 1  <- [main]
 1: STORE, r1 -> [@0]
 2: LOADI, r2 val: 2
-3: STORE, r2 -> [@1]
+3: STORE, r2 -> [@4]
 4: LOADI, r3 val: 0
 5: MOV, rs3 rd0
 6: CALL: @10
@@ -599,13 +599,13 @@ Bytecode:
 9: STOP
 10: PUSH, r14  <- [__test]
 11: MOV, rs15 rd14
-12: LOAD, rd1 <- [@-1]
+12: LOAD, rd1 <- [@-4]
 13: AND, rs1 rs0 rd2
-14: STORE, r2 -> [@-1]
+14: STORE, r2 -> [@-4]
 15: MOV, rs14 rd15
 16: POP, r14
 17: RETURN
-Static data segment size: 3
+Static data segment size: 12
 
 ---------------------------------------------------
 Parsing: "void main(){bool a,b; a = true; b = false; a = a and b;} "
@@ -613,33 +613,33 @@ Backend::Davm
 %0 = LoadI(1)
 store %0 to [LT MainDS:0 (a)]
 %2 = LoadI(0)
-store %2 to [LT MainDS:1 (b)]
+store %2 to [LT MainDS:4 (b)]
 %4 = Load [LT MainDS:0 (a)]
-%5 = Load [LT MainDS:1 (b)]
+%5 = Load [LT MainDS:4 (b)]
 %6 = %4 and %5
 store %6 to [LT MainDS:0 (a)]
 ReturnMain
-%0 = Load [LT MainDS:-1 (__test_result)]
+%0 = Load [LT MainDS:-4 (__test_result)]
 %1 = GetArg( arg0 )
 %2 = %0 and %1
-store %2 to [LT MainDS:-1 (__test_result)]
+store %2 to [LT MainDS:-4 (__test_result)]
 Return
 ---------
 Bytecode:
 0: LOADI, r1 val: 1  <- [main]
 1: STORE, r1 -> [@0]
 2: LOADI, r2 val: 0
-3: STORE, r2 -> [@1]
+3: STORE, r2 -> [@4]
 4: AND, rs1 rs2 rd3
 5: STORE, r3 -> [@0]
 6: STOP
 7: PUSH, r14  <- [__test]
 8: MOV, rs15 rd14
-9: LOAD, rd1 <- [@-1]
+9: LOAD, rd1 <- [@-4]
 10: AND, rs1 rs0 rd2
-11: STORE, r2 -> [@-1]
+11: STORE, r2 -> [@-4]
 12: MOV, rs14 rd15
 13: POP, r14
 14: RETURN
-Static data segment size: 3
+Static data segment size: 12
 

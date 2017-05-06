@@ -4,6 +4,8 @@
 namespace Compiler{
 namespace AST{
 
+//TODO: is size of FuncType needed? At this point it isn't used
+
 //Provides range-for iteration over its par types
 class FuncType : public Type{
 public:

@@ -66,12 +66,12 @@ LT entry_main[isTarget]
 3: %1 = LoadI(2)
 4: %2 = LoadI(3)
 5: %3 = %1 + %2
-6: store %3 to [LT MainDS:1 (b)]
+6: store %3 to [LT MainDS:4 (b)]
 7: JumpCondFalse %0 to:0
 8: %5 = LoadI(3)
 9: %6 = LoadI(4)
 10: %7 = %5 + %6
-11: store %7 to [LT MainDS:2 (c)]
+11: store %7 to [LT MainDS:8 (c)]
 12: ReturnMain
 LT entry___test[isTarget]
 
@@ -136,12 +136,12 @@ LT entry_main[isTarget]
 6: store %3 to [LT MainDS:0 (a)]
 7: JumpIncond11
 8: %5 = LoadI(4)
-9: store %5 to [LT MainDS:2 (d)]
+9: store %5 to [LT MainDS:8 (d)]
 10: JumpIncond11
 11: %7 = LoadI(5)
 12: %8 = LoadI(6)
 13: %9 = %7 + %8
-14: store %9 to [LT MainDS:1 (b)]
+14: store %9 to [LT MainDS:4 (b)]
 15: ReturnMain
 LT entry___test[isTarget]
 
@@ -186,15 +186,15 @@ Declaration Table:
 
 IR dump:
 LT entry_main[isTarget]
-0: %0 = Load [LT MainDS:2 (p)]
+0: %0 = Load [LT MainDS:8 (p)]
 1: %1 = Load [ %0]
 2: store %1 to [LT MainDS:0 (a)]
 3: %3 = LoadI(2)
-4: store %3 to [LT MainDS:1 (b)]
-5: %5 = PtrElem( LT MainDS:1 (b))
-6: store %5 to [LT MainDS:2 (p)]
-7: %7 = Load [LT MainDS:1 (b)]
-8: %8 = Load [LT MainDS:2 (p)]
+4: store %3 to [LT MainDS:4 (b)]
+5: %5 = PtrElem( LT MainDS:4 (b))
+6: store %5 to [LT MainDS:8 (p)]
+7: %7 = Load [LT MainDS:4 (b)]
+8: %8 = Load [LT MainDS:8 (p)]
 9: %9 = Load [ %8]
 10: %10 = %7 + %9
 11: store %10 to [LT MainDS:0 (a)]
@@ -354,7 +354,7 @@ LT entry_O1::f[isTarget]
 6: SetRetVal( %3)
 7: Return
 LT entry_O1::g[isTarget]
-0: %0 = Load [RT this_O1[isThisPtr]:1 (b_)]
+0: %0 = Load [RT this_O1[isThisPtr]:4 (b_)]
 1: SetRetVal( %0)
 2: Return
 LT entry_main[isTarget]
@@ -365,13 +365,13 @@ LT entry_main[isTarget]
 4: %2 = PtrElem( LT MainDS:0 (inst))
 5: %3 = Load [ %2 + 0 (a_)]
 6: %4 = %1 + %3
-7: store %4 to [LT MainDS:2 (a)]
+7: store %4 to [LT MainDS:8 (a)]
 8: ReturnMain
 LT entry___test[isTarget]
 
 ---------------------------------------------------
 Parsing: "class A{int a; int fa(){return 1;}} class B{int b; int fb(){return 1;}}class C: A, B{int c; int fc(){return 1;}}void main(){C inst; int a; a = inst.fc() + inst.fb() + inst.fa();}"
-ObjRec for C:AB -> (fa, 0) (a, 0) (fb, 1) (b, 1) 
+ObjRec for C:AB -> (fa, 0) (a, 0) (fb, 4) (b, 4) 
 
 Scopes of module:
 Scope 0: {(6:A) (9:B) (12:C) (13:main) }
@@ -455,7 +455,7 @@ LT entry_main[isTarget]
 2: call [LT entry_C::fc[isTarget]:0 ()]
 3: %1 = GetRetVal()
 4: %2 = PtrElem( LT MainDS:0 (inst))
-5: %3 = LoadI(1)
+5: %3 = LoadI(4)
 6: %4 = %2 + %3
 7: SetArg( %4)
 8: call [LT entry_B::fb[isTarget]:0 ()]
@@ -468,17 +468,17 @@ LT entry_main[isTarget]
 15: call [LT entry_A::fa[isTarget]:0 ()]
 16: %10 = GetRetVal()
 17: %11 = %6 + %10
-18: store %11 to [LT MainDS:3 (a)]
+18: store %11 to [LT MainDS:12 (a)]
 19: ReturnMain
 LT entry___test[isTarget]
 
 ---------------------------------------------------
 Parsing: "class A        {int a; int fa(){return 1;}} class B : A    {int b; int fb(){return 1;}} class C : B    {int c; int fc(){return 1;}} class D        {int d; int fd(){return 1;}} class E : D    {int e; int fe(){return 1;}} class F : E    {int f; int ff(){return 1;}} class G : C,F  {int g; int fg(){return 1;}} void main(){G inst; int a; a = inst.fa() + inst.fb() + inst.fc() +  inst.fd() + inst.fe() + inst.ff() + inst.fg();}"
 ObjRec for B:A -> (fa, 0) (a, 0) 
-ObjRec for C:B:A -> (fa, 0) (fb, 0) (a, 0) (b, 1) 
+ObjRec for C:B:A -> (fa, 0) (fb, 0) (a, 0) (b, 4) 
 ObjRec for E:D -> (fd, 0) (d, 0) 
-ObjRec for F:E:D -> (fd, 0) (fe, 0) (d, 0) (e, 1) 
-ObjRec for G:C:B:AF:E:D -> (fa, 0) (fb, 0) (fc, 0) (a, 0) (b, 1) (c, 2) (fd, 3) (fe, 3) (ff, 3) (d, 3) (e, 4) (f, 5) 
+ObjRec for F:E:D -> (fd, 0) (fe, 0) (d, 0) (e, 4) 
+ObjRec for G:C:B:AF:E:D -> (fa, 0) (fb, 0) (fc, 0) (a, 0) (b, 4) (c, 8) (fd, 12) (fe, 12) (ff, 12) (d, 12) (e, 16) (f, 20) 
 
 Scopes of module:
 Scope 0: {(6:A) (9:B) (12:C) (15:D) (18:E) (21:F) (24:G) (25:main) }
@@ -654,21 +654,21 @@ LT entry_main[isTarget]
 18: %12 = GetRetVal()
 19: %13 = %8 + %12
 20: %14 = PtrElem( LT MainDS:0 (inst))
-21: %15 = LoadI(3)
+21: %15 = LoadI(12)
 22: %16 = %14 + %15
 23: SetArg( %16)
 24: call [LT entry_D::fd[isTarget]:0 ()]
 25: %17 = GetRetVal()
 26: %18 = %13 + %17
 27: %19 = PtrElem( LT MainDS:0 (inst))
-28: %20 = LoadI(3)
+28: %20 = LoadI(12)
 29: %21 = %19 + %20
 30: SetArg( %21)
 31: call [LT entry_E::fe[isTarget]:0 ()]
 32: %22 = GetRetVal()
 33: %23 = %18 + %22
 34: %24 = PtrElem( LT MainDS:0 (inst))
-35: %25 = LoadI(3)
+35: %25 = LoadI(12)
 36: %26 = %24 + %25
 37: SetArg( %26)
 38: call [LT entry_F::ff[isTarget]:0 ()]
@@ -679,7 +679,7 @@ LT entry_main[isTarget]
 43: call [LT entry_G::fg[isTarget]:0 ()]
 44: %30 = GetRetVal()
 45: %31 = %28 + %30
-46: store %31 to [LT MainDS:7 (a)]
+46: store %31 to [LT MainDS:28 (a)]
 47: ReturnMain
 LT entry___test[isTarget]
 
@@ -743,9 +743,9 @@ LT entry_main[isTarget]
 2: %2 = %0 + %1
 3: store %2 to [LT MainDS:0 (a)]
 4: %4 = LoadI(11)
-5: store %4 to [LT MainDS:1 (b)]
+5: store %4 to [LT MainDS:4 (b)]
 6: %6 = LoadI(12)
-7: store %6 to [LT MainDS:2 (c)]
+7: store %6 to [LT MainDS:8 (c)]
 8: ReturnMain
 LT entry_f[isTarget]
 0: %0 = Load [RT arp_f[isArp]:0 (a)]
@@ -753,9 +753,9 @@ LT entry_f[isTarget]
 2: %2 = %0 + %1
 3: store %2 to [RT arp_f[isArp]:0 (a)]
 4: %4 = LoadI(11)
-5: store %4 to [RT arp_f[isArp]:-1 (b)]
+5: store %4 to [RT arp_f[isArp]:-4 (b)]
 6: %6 = LoadI(12)
-7: store %6 to [RT arp_f[isArp]:-2 (c)]
+7: store %6 to [RT arp_f[isArp]:-8 (c)]
 8: Return
 LT entry___test[isTarget]
 
@@ -795,11 +795,11 @@ Declaration Table:
 IR dump:
 LT entry_main[isTarget]
 0: %0 = LoadI(10)
-1: store %0 to [LT MainDS:1 (a)]
+1: store %0 to [LT MainDS:4 (a)]
 2: %2 = LoadI(11)
-3: store %2 to [LT MainDS:2 (c)]
-4: %4 = Load [LT MainDS:1 (a)]
-5: %5 = Load [LT MainDS:2 (c)]
+3: store %2 to [LT MainDS:8 (c)]
+4: %4 = Load [LT MainDS:4 (a)]
+5: %5 = Load [LT MainDS:8 (c)]
 6: %6 = %4 == %5
 7: store %6 to [LT MainDS:0 (b)]
 8: ReturnMain
@@ -841,9 +841,9 @@ LT entry_main[isTarget]
 0: %0 = LoadI(1)
 1: store %0 to [LT MainDS:0 (a)]
 2: %2 = LoadI(0)
-3: store %2 to [LT MainDS:1 (b)]
+3: store %2 to [LT MainDS:4 (b)]
 4: %4 = Load [LT MainDS:0 (a)]
-5: %5 = Load [LT MainDS:1 (b)]
+5: %5 = Load [LT MainDS:4 (b)]
 6: %6 = %4 and %5
 7: store %6 to [LT MainDS:0 (a)]
 8: ReturnMain
