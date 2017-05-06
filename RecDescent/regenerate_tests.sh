@@ -25,7 +25,7 @@ regenerate_test_comp_davm(){
 }
 
 regenerate_test_comp_davm functions
-regenerate_test_comp_davm lang_internal_test
+# regenerate_test_comp_davm lang_internal_test
 
 
 ###################################################################

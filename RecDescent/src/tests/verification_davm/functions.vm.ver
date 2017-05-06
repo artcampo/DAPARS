@@ -2,10 +2,17 @@ EXEC
 OP: LOADI R1 <- 1
 OP: STORE [@0] <- R1 val: 1
 OP: MOVE R0 <- R1 
-OP: Call 7
+OP: Call 7 ret@: 4
+  -- push @4294967295 val: 4
+OP: PUSH [@4294967294] <- R14
+  -- push @4294967294 val: 0
 OP: MOVE R14 <- R15 
 OP: MOVE R0 <- R0 
-OP: Return 4
+OP: MOVE R15 <- R14 
+OP: POP R14 <- [@4294967294]
+  -- pop @4294967294 val: 0
+OP:   -- pop @4294967295 val: 4
+Return 4
 OP: MOVE R1 <- R0 
 OP: STORE [@0] <- R1 val: 1
 STOP
