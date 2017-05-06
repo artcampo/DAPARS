@@ -23,7 +23,7 @@ public:
   }
 
   Word StackRegisterInitAddress() const noexcept{
-    return Word((uint64_t(1) << Spec::kWordBits) - 1);
+    return Word((uint64_t(1) << Spec::kWordBits) - Spec::kWordSize);
   }
 
 private:

@@ -12,7 +12,7 @@ namespace Compiler{
 
 namespace TypesSize{
 //Basic includes: int, bool, pointer
-const static int kBasic = 4;
+const static int kBasic = 4;  //size in bytes
 
 }//end namespace TypesSize
 

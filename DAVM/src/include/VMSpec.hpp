@@ -10,6 +10,8 @@ const static int kPageSize            = (1 << kPageNumBits);  //in bytes
 const static int kWordSize            = 4;    //in bytes
 const static int kWordBits            = kWordSize*8;
 
+const static int kCodeMemUnit         = 1;  //unit for indexing code memory (one 32 bits word)
+
 //Registers
 const static int kNumberRegisters     = 16;
 const static int kStackRegister       = 15;

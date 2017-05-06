@@ -6,3 +6,7 @@ DAVM specifications
 Mem operations work only on 4 bytes words aligned to 4.
 -Code and data reside in different memory spaces. Thus memory access depends on if
 we want to access data or code.
+
+
+While data memory is indexed in bytes, code memory is indexed as 32bits words.
+(if code was to reside in data memory, they should both be indexed by bytes)

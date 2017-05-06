@@ -10,9 +10,10 @@ namespace Internal{
 
 /*
   With the current specs, pages are 4k and the machine word is 4 bytes.
+  But accesses are done on byte addresses
   Thus a 32 bit address is splitted in two parts (31 being MSB):
-  1) 31-10: page of the address
-  2)  9- 0: offset within the page
+  1) 31-12: page of the address
+  2) 11- 0: offset within the page
 */
 
 template <class TestingPolicy>
@@ -21,7 +22,7 @@ class MMU{
 protected:
   MMU()
   : page_size_in_words_(Spec::kPageSize/Spec::kWordSize)
-  , address_mask_((1 << (Spec::kPageNumBits - Spec::kWordNumBits)) - 1){}
+  , address_mask_((1 << (Spec::kPageNumBits)) - 1){}
 
   ~MMU(){
     for(auto& it : page_mapping_) delete it.second.vector_;
@@ -57,7 +58,7 @@ private:
   TestingPolicy             testing_;
 
   Addr PageOfAddr(const Addr addr){
-    return addr >> (Spec::kPageNumBits - Spec::kWordNumBits);
+    return addr >> Spec::kPageNumBits;
   }
 
   Word *const PointerOfAddr(const Addr addr, const PageDesc& desc){
