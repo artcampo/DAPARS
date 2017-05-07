@@ -4,8 +4,8 @@
 #include <cstddef>
 #include <map>
 #include <iostream>
-#include "VMBasicTypes.hpp"
-#include "IRPrint.hpp"
+#include "VM/VMBasicTypes.hpp"
+#include "VM/ByteCode/IRPrint.hpp"
 
 namespace VM{
 

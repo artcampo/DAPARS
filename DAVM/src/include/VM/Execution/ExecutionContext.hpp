@@ -1,7 +1,7 @@
 #pragma once
 #include <stdint.h>
-#include "RegisterBank.hpp"
-#include "VMBasicTypes.hpp"
+#include "VM/Execution/RegisterBank.hpp"
+#include "VM/VMBasicTypes.hpp"
 
 namespace VM{
 namespace Internal{

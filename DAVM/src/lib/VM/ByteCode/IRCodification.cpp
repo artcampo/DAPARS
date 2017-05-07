@@ -1,6 +1,6 @@
-#include "IRCodification.hpp"
-#include "IRDefinition.hpp"
-#include "VMBasicTypes.hpp"
+#include "VM/ByteCode/IRCodification.hpp"
+#include "VM/ByteCode/IRDefinition.hpp"
+#include "VM/VMBasicTypes.hpp"
 #include <iostream>
 
 namespace VM{

@@ -1,7 +1,7 @@
-#include "Utils.hpp"
-#include "ByteCode.hpp"
-#include "IRBuilder.hpp"
-#include "IRPrint.hpp"
+#include "VM/ByteCode/Utils.hpp"
+#include "VM/ByteCode/ByteCode.hpp"
+#include "VM/ByteCode/IRBuilder.hpp"
+#include "VM/ByteCode/IRPrint.hpp"
 #include <iostream>
 #include <memory>
 #include <sstream>

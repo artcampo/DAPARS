@@ -1,7 +1,7 @@
 #include "IR/IRGenerator.hpp"
 #include "IR/MemAddr.hpp"
 #include "IR/IRSubtypes.hpp"
-#include "IRDefinition.hpp"
+#include "VM/ByteCode/IRDefinition.hpp"
 
 namespace Compiler{
 

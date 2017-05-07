@@ -1,9 +1,9 @@
-#include "IRBuilder.hpp"
-#include "IRDefinition.hpp"
-#include "IRCodification.hpp"
+#include "VM/ByteCode/IRBuilder.hpp"
+#include "VM/ByteCode/IRDefinition.hpp"
+#include "VM/ByteCode/IRCodification.hpp"
 #include <string>
 #include <iostream>
-#include "VMBasicTypes.hpp"
+#include "VM/VMBasicTypes.hpp"
 
 namespace VM{
 namespace IRBuilder{

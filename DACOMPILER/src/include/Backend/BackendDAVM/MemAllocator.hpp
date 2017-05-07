@@ -1,6 +1,6 @@
 #pragma once
 #include "IR/MemAddr.hpp"
-#include "VMBasicTypes.hpp"
+#include "VM/VMBasicTypes.hpp"
 #include <vector>
 #include <map>
 #include <memory>

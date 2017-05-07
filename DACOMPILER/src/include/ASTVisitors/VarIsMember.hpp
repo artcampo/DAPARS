@@ -1,8 +1,6 @@
 #pragma once
 #include "AST/ASTVisitor.hpp"
 #include "AST/Node.hpp"
-#include "ByteCode.hpp"
-#include "Utils.hpp"
 #include "Function.hpp"
 #include "IR/IRSubtypes.hpp"
 #include "IR/Offset.hpp"
@@ -41,9 +39,9 @@ public:
     p.Rhs().Accept(*this);
     unit_.SetIsMemberVar(p, true);
   }
-  
-  virtual void Visit(FuncRet& p){ 
-    p.GetCall().Accept(*this);   
+
+  virtual void Visit(FuncRet& p){
+    p.GetCall().Accept(*this);
     bool is_member = false;
     if(inside_member_func_)
       if(unit_.HasDecl(p.GetCall().Name(), member_scope_id_inht_)) is_member = true;
@@ -51,7 +49,7 @@ public:
   }
 
 
-  
+
   //Traversal
   virtual void Visit(ProgBody const& p){
     p.GetProgInit().Accept(*this);
@@ -97,7 +95,7 @@ public:
     p.Receiver().Accept(*this);
     for(const auto& it : p) it->Accept(*this);
   }
-  
+
   virtual void Visit(ReturnStmt const& p){ p.RetExpr().Accept(*this); }
   virtual void Visit(RefOp const& p){ p.Rhs().Accept(*this); }
   virtual void Visit(DerefOp const& p){ p.Rhs().Accept(*this); }

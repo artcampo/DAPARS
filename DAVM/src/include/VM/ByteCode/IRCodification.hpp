@@ -1,7 +1,7 @@
 #pragma once
 #include <stdint.h>
 #include <string>
-#include "VMBasicTypes.hpp"
+#include "VM/VMBasicTypes.hpp"
 
 namespace VM{
 namespace IRCodification{

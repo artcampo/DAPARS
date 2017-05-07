@@ -1,10 +1,13 @@
+//TODO should this file be erased?
+
 #include "AST/AST.hpp"
 #include "AST/Node.hpp"
-#include "Utils.hpp"
+#include "VM/ByteCode/Utils.hpp"
 #include "ASTVisitorCodeGenerator.hpp"
 #include "ASTVisitors/PrettyPrinter.hpp"
 #include <iostream>
 #include <fstream>
+
 
 
 using namespace Compiler;

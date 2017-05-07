@@ -1,8 +1,8 @@
 #pragma once
-#include "ByteCode.hpp"
-#include "ExecutionContext.hpp"
-#include "Memory.hpp"
-#include "Policies/MemoryTesting.hpp"
+#include "VM/ByteCode/ByteCode.hpp"
+#include "VM/Execution/ExecutionContext.hpp"
+#include "VM/Execution/Memory.hpp"
+#include "VM/Execution/Policies/MemoryTesting.hpp"
 #include <memory>
 #include <stdint.h>
 

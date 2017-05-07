@@ -1,7 +1,7 @@
 #include "AST/Node.hpp"
 #include "AST/ASTVisitor.hpp"
 #include "IR/IRGenerator.hpp"
-#include "IRDefinition.hpp"
+#include "VM/ByteCode/IRDefinition.hpp"
 #include <cstddef>
 
 namespace Compiler{

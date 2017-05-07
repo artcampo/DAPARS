@@ -1,8 +1,7 @@
 #include "ParserLR1.hpp"
 #include "GrammarLR1.hpp"
-#include "IRDefinition.hpp"
+#include "VM/ByteCode/IRDefinition.hpp"
 #include "AST/Node.hpp"
-#include "Utils.hpp"
 #include "ASTVisitors/PrettyPrinter.hpp"
 #include <iostream>
 #include <memory>

@@ -1,8 +1,8 @@
 #pragma once
-#include "ByteCode.hpp"
-#include "Process.hpp"
-#include "ErrorLog.hpp"
-#include "VMBasicTypes.hpp"
+#include "VM/ByteCode/ByteCode.hpp"
+#include "VM/Execution/Process.hpp"
+#include "VM/Execution/ErrorLog.hpp"
+#include "VM/VMBasicTypes.hpp"
 
 #include <string>
 #include <memory>

@@ -1,9 +1,9 @@
-#include "VM.hpp"
-#include "ByteCode.hpp"
-#include "IRCodification.hpp"
-#include "IRBuilder.hpp"
-#include "IRDefinition.hpp"
-#include "Utils.hpp"
+#include "VM/Execution/VM.hpp"
+#include "VM/ByteCode/ByteCode.hpp"
+#include "VM/ByteCode/IRCodification.hpp"
+#include "VM/ByteCode/IRBuilder.hpp"
+#include "VM/ByteCode/IRDefinition.hpp"
+#include "VM/ByteCode/Utils.hpp"
 #include <iostream>
 
 int main(){

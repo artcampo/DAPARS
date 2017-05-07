@@ -54,10 +54,10 @@ if(FLEX_FOUND)
 endif()
 
 set(VMInstructionBuilder
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../../DAVM/src/lib/IRCodification.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../../DAVM/src/lib/Utils.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../../DAVM/src/lib/IRBuilder.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../../DAVM/src/lib/IRPrint.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../../DAVM/src/lib/VM/ByteCode/IRCodification.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../../DAVM/src/lib/VM/ByteCode/Utils.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../../DAVM/src/lib/VM/ByteCode/IRBuilder.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../../DAVM/src/lib/VM/ByteCode/IRPrint.cpp)
 
 #Bare compiler without flex/bison
 add_library(BARECOMPILER STATIC ${files} ${VMInstructionBuilder})

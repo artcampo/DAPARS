@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
-#include "VMBasicTypes.hpp"
-#include "VMSpec.hpp"
+#include "VM/VMBasicTypes.hpp"
+#include "VM/VMSpec.hpp"
 
 namespace VM{
 namespace Internal{

@@ -2,7 +2,7 @@
 %{
     #include "AST/AST.hpp"
     #include "AST/Node.hpp"
-    #include "IRDefinition.hpp"
+    #include "VM/ByteCode/IRDefinition.hpp"
     #include <iostream>
 
     using namespace IRDefinition;

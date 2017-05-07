@@ -1,9 +1,9 @@
 #pragma once
 #include <map>
 #include <stdint.h>
-#include "VMBasicTypes.hpp"
-#include "VMSpec.hpp"
-//#include "Policies/MemoryTesting.hpp"
+#include "VM/VMBasicTypes.hpp"
+#include "VM/VMSpec.hpp"
+//#include "VM/Execution/Policies/MemoryTesting.hpp"
 
 namespace VM{
 namespace Internal{

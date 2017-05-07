@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "VMBasicTypes.hpp"
+#include "VM/VMBasicTypes.hpp"
 
 namespace VM{
 namespace Internal{

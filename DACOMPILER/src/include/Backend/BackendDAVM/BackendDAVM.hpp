@@ -1,9 +1,9 @@
 #pragma once
 #include "Backend/Backend.hpp"
-#include "ByteCode.hpp"
-#include "Utils.hpp"  //move to VM/
-#include "IRBuilder.hpp"
-#include "IRDefinition.hpp"
+#include "VM/ByteCode/ByteCode.hpp"
+#include "VM/ByteCode/Utils.hpp"
+#include "VM/ByteCode/IRBuilder.hpp"
+#include "VM/ByteCode/IRDefinition.hpp"
 #include "Function.hpp"
 #include "IR/IRSubtypes.hpp"
 #include "IR/Label.hpp"

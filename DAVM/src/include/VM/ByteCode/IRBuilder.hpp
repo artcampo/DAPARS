@@ -1,6 +1,6 @@
 #pragma once
-#include "IRCodification.hpp"
-#include "VMBasicTypes.hpp"
+#include "VM/ByteCode/IRCodification.hpp"
+#include "VM/VMBasicTypes.hpp"
 
 namespace VM{
 namespace IRBuilder{
