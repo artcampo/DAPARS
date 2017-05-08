@@ -11,6 +11,7 @@ public:
   TargetDefDAVM(){}
 
   size_t  NumRegisters() const noexcept{ return 16; }
+  size_t  StackReservedSpace() const noexcept{ return 4096; }
 protected:
 
 

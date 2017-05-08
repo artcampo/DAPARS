@@ -22,9 +22,7 @@ public:
     return *physical_addr;
   }
 
-  Word StackRegisterInitAddress() const noexcept{
-    return Word((uint64_t(1) << Spec::kWordBits) - Spec::kWordSize);
-  }
+
 
 private:
 

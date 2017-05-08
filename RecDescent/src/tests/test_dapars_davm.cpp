@@ -42,7 +42,7 @@ int main(int argc, char **argv)
     using namespace Compiler::Backend::BackendDAVM;
     BackendDAVM b(unit, visitor_irgen.GetIRUnit() );
     b.Run();
-    std::cout << "Static data segment size: " << b.GetByteCode().static_data_segment_size_ << "\n";
+    std::cout << "Static data segment size: " << b.GetByteCode().StaticDataSegmentSize() << "\n";
   } else
     std::cout << "Program block is empty!\n";
 

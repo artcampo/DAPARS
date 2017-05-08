@@ -36,6 +36,8 @@ public:
 
   void Run(){
     ComputeMainDataSegment();
+    ComputeCompilerDataSegment();
+    ComputeStackDataSegment();
     for(auto& it : ir_unit_.streams_) Visit(*it);
     BackpathCallTargets();
 
@@ -352,12 +354,30 @@ private:
     auto main = unit_.GetFunc("main");
     auto vars = main.LocalVars();
     auto size = vars.Size();
-    byte_code_.SetStaticDataSegment(size);
+    byte_code_.SetMemUser(VM::MemChunk(0, size));
     for(const auto& it : vars){
       IR::MemAddr addr_ir = it.second;
       mem_alloc_.ComputeRemap(addr_ir);
     }
     //mem_alloc_.Remap();
+  }
+
+  void ComputeCompilerDataSegment(){
+    auto main = unit_.GetFunc("__test");
+    auto vars = main.LocalVars();
+    auto size = vars.Size();
+    byte_code_.SetMemUser(VM::MemChunk::LastPage());
+    for(const auto& it : vars){
+      IR::MemAddr addr_ir = it.second;
+      mem_alloc_.ComputeRemap(addr_ir);
+    }
+    //mem_alloc_.Remap();
+  }
+
+  void ComputeStackDataSegment(){
+    VM::MemChunk m_last = VM::MemChunk::LastPage();
+    VM::MemChunk m(m_last.low_ - TargetDefDAVM().StackReservedSpace(), m_last.low_ - 1);
+    byte_code_.SetMemStack(m);
   }
 
   //Jumps refer to their IR address, and will have to be translated later

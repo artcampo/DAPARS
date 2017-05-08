@@ -50,7 +50,7 @@ void parse(const std::string& str, G& g)
     using namespace Compiler::Backend::BackendDAVM;
     BackendDAVM b(unit, visitor_irgen.GetIRUnit() );
     b.Run();
-    std::cout << "Static data segment size: " << b.GetByteCode().static_data_segment_size_ << "\n";
+    std::cout << "Static data segment size: " << b.GetByteCode().StaticDataSegmentSize() << "\n";
   }
 
   std::cout << "\n";

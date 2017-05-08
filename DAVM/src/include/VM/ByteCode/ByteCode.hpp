@@ -6,6 +6,7 @@
 #include <iostream>
 #include "VM/VMBasicTypes.hpp"
 #include "VM/ByteCode/IRPrint.hpp"
+#include "VM/ByteCode/MemChunk.hpp"
 
 namespace VM{
 
@@ -26,14 +27,24 @@ struct ByteCode{
   //TODO:make private
   std::vector<Inst> stream;
 
-  size_t static_data_segment_size_;
 
-  void SetStaticDataSegment(const size_t size){
-    static_data_segment_size_ = size;
+
+  size_t StaticDataSegmentSize() const noexcept{
+    if(mem_user_space_.empty()) return 0;
+    else return mem_user_space_[0].Size();
   }
 
-  std::vector<FuncDesc>       functions_;
-  std::map<VM::Addr, size_t>  func_index_by_addr_;
+  void SetMemUser(const MemChunk m){
+    mem_user_space_.push_back(m);
+  }
+
+  void SetMemStack(const MemChunk m){
+    mem_stack_ = m;
+  }
+
+  Word StackRegisterInitAddress() const noexcept{
+    return mem_stack_.high_;
+  }
 
   void Dump(const bool extra_dump) const{
     int line = 0;
@@ -61,6 +72,19 @@ struct ByteCode{
     auto index = func_index_by_addr_.at(addr);
     return functions_.at(index);
   }
+
+//   friend ByteCode* readByteCode(std::string const &file_name);
+//   friend void writeByteCode(ByteCode const &byte_code, std::string const &file_name);
+
+  std::vector<MemChunk> mem_user_space_;
+  MemChunk              mem_stack_;
+
+private:
+
+
+  std::vector<FuncDesc>       functions_;
+  std::map<VM::Addr, size_t>  func_index_by_addr_;
+
 
 };
 

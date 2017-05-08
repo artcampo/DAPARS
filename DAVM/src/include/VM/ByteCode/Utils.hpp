@@ -1,10 +1,11 @@
 #pragma once
 #include <string>
+#include "VM/ByteCode/MemChunk.hpp"
 
 namespace VM{
-  
-class ByteCode;  
-  
+
+class ByteCode;
+
 namespace VMUtils{
 
 class ASTVisitorCodeGenerator;
@@ -17,6 +18,9 @@ ByteCode* readByteCode(std::string const &file_name);
 
 //only useful for debugging/TESTING
 void printRaw(ByteCode const &byte_code);
+
+std::ostream& operator<<(std::ostream& os, const MemChunk& m);
+// std::istream& operator>>(std::istream &is, MemChunk& m);
 
 }//end namespace VMUtils
 }//end namespace VM

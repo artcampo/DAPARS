@@ -2,6 +2,7 @@
 #include "VM/ByteCode/ByteCode.hpp"
 #include "VM/ByteCode/IRBuilder.hpp"
 #include "VM/ByteCode/IRPrint.hpp"
+#include "VM/ByteCode/MemChunk.hpp"
 #include <iostream>
 #include <memory>
 #include <sstream>
@@ -35,6 +36,9 @@ void writeByteCode(ByteCode const &byte_code, std::string const &file_name){
     *outputFile << inst << "\n";
   }
 
+  *outputFile << byte_code.mem_stack_;
+
+
   outputFile->close();
 }
 
@@ -57,8 +61,18 @@ ByteCode* readByteCode(std::string const &file_name){
     *inputFile >> inst;
   }
 
+//   *inputFile >> byte_code->mem_stack_;
+
   inputFile->close();
   return byte_code;
+}
+
+std::ostream& operator<<(std::ostream& os, const MemChunk& m){
+   return os;
+}
+
+std::istream& operator>>(std::istream &is, MemChunk& m){
+   return is;
 }
 
 }//end namespace VMUtils
