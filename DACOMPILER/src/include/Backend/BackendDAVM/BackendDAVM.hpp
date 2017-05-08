@@ -378,6 +378,7 @@ private:
     VM::MemChunk m_last = VM::MemChunk::LastPage();
     VM::MemChunk m(m_last.low_ - TargetDefDAVM().StackReservedSpace(), m_last.low_ - 1);
     byte_code_.SetMemStack(m);
+//     std::cout << "Setting stack : " << m.low_<< ", " << m.high_ << "\n";
   }
 
   //Jumps refer to their IR address, and will have to be translated later

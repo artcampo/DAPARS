@@ -1,8 +1,17 @@
 #pragma once
 #include "VM/VMBasicTypes.hpp"
 #include "VM/VMSpec.hpp"
+#include <iostream>
 
 namespace VM{
+/*
+struct MemChunk;
+
+namespace VMUtils{
+  std::istream& operator>>(std::istream &is, MemChunk& m);
+  std::ostream& operator<<(std::ostream& os, const MemChunk& m);
+};*/
+
 
 struct MemChunk{
   MemChunk() = default;

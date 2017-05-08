@@ -43,7 +43,7 @@ struct ByteCode{
   }
 
   Word StackRegisterInitAddress() const noexcept{
-    return mem_stack_.high_;
+    return mem_stack_.high_ + 1 - Spec::kWordSize;
   }
 
   void Dump(const bool extra_dump) const{

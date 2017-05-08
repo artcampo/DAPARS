@@ -29,4 +29,4 @@ test_comp_davm(){
 }
 
 test_comp_davm functions
-# test_comp_davm lang_internal_test
+test_comp_davm lang_internal_test

@@ -1,10 +1,14 @@
 #pragma once
 #include <string>
+#include <iostream>
 #include "VM/ByteCode/MemChunk.hpp"
 
 namespace VM{
 
 class ByteCode;
+
+std::ostream& operator<<(std::ostream& os, const MemChunk& m);
+std::istream& operator>>(std::istream& is, MemChunk& m);
 
 namespace VMUtils{
 
@@ -19,8 +23,7 @@ ByteCode* readByteCode(std::string const &file_name);
 //only useful for debugging/TESTING
 void printRaw(ByteCode const &byte_code);
 
-std::ostream& operator<<(std::ostream& os, const MemChunk& m);
-// std::istream& operator>>(std::istream &is, MemChunk& m);
+
 
 }//end namespace VMUtils
 }//end namespace VM

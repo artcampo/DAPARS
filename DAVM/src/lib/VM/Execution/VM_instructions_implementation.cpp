@@ -14,15 +14,15 @@ using namespace IRBuilder;
 /////////////////////////////////////////////////////////////////////////////
 //  Helpers
 Word VirtualMachine::PopWord(){
-  std::cout << "  -- pop @"<<  Addr(process_->StackReg() + Spec::kWordSize)<< " val: "
-            << process_->Load( Addr(process_->StackReg() + Spec::kWordSize)) << "\n";
+//   std::cout << "  -- pop @"<<  Addr(process_->StackReg() + Spec::kWordSize)<< " val: "
+//             << process_->Load( Addr(process_->StackReg() + Spec::kWordSize)) << "\n";
   process_->StackReg() += Spec::kWordSize;
   return process_->Load( Addr(process_->StackReg()));
 }
 
 void VirtualMachine::PushWord(const Word word){
-  std::cout << "  -- push @"<< Addr(process_->StackReg())<< " val: "
-            << word << "\n";
+//   std::cout << "  -- push @"<< Addr(process_->StackReg())<< " val: "
+//             << word << "\n";
   process_->Store( Addr(process_->StackReg()), word);
   process_->StackReg() -= Spec::kWordSize;
 }

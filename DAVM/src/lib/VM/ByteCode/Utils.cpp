@@ -6,7 +6,6 @@
 #include <iostream>
 #include <memory>
 #include <sstream>
-#include <iostream>
 #include <fstream>
 
 namespace VM{
@@ -26,7 +25,7 @@ void printRaw(ByteCode const &byte_code){
   }
 }
 
-void writeByteCode(ByteCode const &byte_code, std::string const &file_name){
+void writeByteCode(const ByteCode& byte_code, std::string const &file_name){
   std::unique_ptr<std::ofstream> outputFile( new std::ofstream() );
   outputFile->open (file_name);
   *outputFile << "davm" << "\n";
@@ -36,8 +35,10 @@ void writeByteCode(ByteCode const &byte_code, std::string const &file_name){
     *outputFile << inst << "\n";
   }
 
-  *outputFile << byte_code.mem_stack_;
-
+  *outputFile << "MemChunk" << "\n";
+  *outputFile << byte_code.mem_stack_<< "\n";;
+  *outputFile << byte_code.mem_user_space_.size()<< "\n";;
+  for(const auto &m : byte_code.mem_user_space_) *outputFile << m << "\n";
 
   outputFile->close();
 }
@@ -56,24 +57,32 @@ ByteCode* readByteCode(std::string const &file_name){
   int size; *inputFile >> size;
   ByteCode* byte_code = new ByteCode();
   byte_code->stream.resize(size);
+  for(auto &inst : byte_code->stream) *inputFile >> inst;
 
-  for ( auto &inst : byte_code->stream){
-    *inputFile >> inst;
-  }
+  *inputFile >> s;  //"MemChunk" << "\n";
 
-//   *inputFile >> byte_code->mem_stack_;
+  *inputFile >> byte_code->mem_stack_;
+  *inputFile >> size;
+  byte_code->mem_user_space_.resize(size);
+  for(auto &m : byte_code->mem_user_space_) *inputFile >> m;
 
   inputFile->close();
   return byte_code;
 }
 
+
+}//end namespace VMUtils
+
 std::ostream& operator<<(std::ostream& os, const MemChunk& m){
-   return os;
+  os << m.low_<<"\n";
+  os << m.high_<<"\n";
+  return os;
 }
 
 std::istream& operator>>(std::istream &is, MemChunk& m){
-   return is;
+  is >> m.low_;
+  is >> m.high_;
+  return is;
 }
 
-}//end namespace VMUtils
 }//end namespace VM

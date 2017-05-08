@@ -143,7 +143,7 @@ int VirtualMachine::LoadProcess(const std::string &file_name){
 //inits the machine to a blank state
 void VirtualMachine::ColdBoot(){
   process_->StackReg() = byte_code_.StackRegisterInitAddress();
-  std::cout << "Set SR: " << byte_code_.StackRegisterInitAddress() << "\n";
+//   std::cout << "Set SR: " << Addr(byte_code_.StackRegisterInitAddress())<< "\n";
 }
 
 
