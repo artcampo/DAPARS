@@ -5,6 +5,7 @@
 #include "VM/Execution/RegisterBank.hpp"
 #include <stdint.h>
 #include <iostream>
+#include <memory>
 
 namespace VM{
 
@@ -117,8 +118,8 @@ bool VirtualMachine::ExecProcess(){
 
 VirtualMachine::VirtualMachine(ByteCode const &byte_code)
   : byte_code_(byte_code)
-  , process_(new Internal::Process(byte_code_))
-  , error_log_( new ErrorLog()){
+  , error_log_( new ErrorLog())
+  , process_(std::make_unique<Internal::Process>(byte_code_, *error_log_)){
 }
 
 ByteCode* VirtualMachine::ReadByteCode(const std::string &file_name){

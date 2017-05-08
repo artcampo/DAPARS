@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include "VM/VMBasicTypes.hpp"
 #include "VM/VMSpec.hpp"
+#include "VM/Execution/ErrorLog.hpp"
 //#include "VM/Execution/Policies/MemoryTesting.hpp"
 
 namespace VM{
@@ -20,9 +21,10 @@ template <class TestingPolicy>
 class MMU{
 
 protected:
-  MMU()
+  MMU(ErrorLog& error_log, TestingPolicy t)
   : page_size_in_words_(Spec::kPageSize/Spec::kWordSize)
-  , address_mask_((1 << (Spec::kPageNumBits)) - 1){}
+  , address_mask_((1 << (Spec::kPageNumBits)) - 1)
+  , error_log_(error_log){}
 
   ~MMU(){
     for(auto& it : page_mapping_) delete it.second.vector_;
@@ -52,6 +54,7 @@ private:
     std::vector<Word>*  vector_;  //vector holding page
   };
 
+  ErrorLog&                 error_log_;
   const size_t              page_size_in_words_;
   const size_t              address_mask_;
   std::map<Addr, PageDesc>  page_mapping_;

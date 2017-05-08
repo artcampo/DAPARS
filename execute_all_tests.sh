@@ -1,9 +1,10 @@
 test_folder(){
     cd $1
+    printf "                                          "
     printf $1
-    printf " >>> "
+    printf "\n"
     ./execute_tests.sh
-    cd .. 
+    cd ..
 }
 
 test_folder LALR
