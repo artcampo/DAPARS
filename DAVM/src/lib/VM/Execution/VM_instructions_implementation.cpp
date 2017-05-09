@@ -16,6 +16,10 @@ using namespace IRBuilder;
 Word VirtualMachine::PopWord(){
 //   std::cout << "  -- pop @"<<  Addr(process_->StackReg() + Spec::kWordSize)<< " val: "
 //             << process_->Load( Addr(process_->StackReg() + Spec::kWordSize)) << "\n";
+  if(process_->StackReg() >= byte_code_.StackRegisterHigh()){
+    error_log_.Log("Stack underflow");
+    return 0; //TODO: do not allow inst to commit on error
+  }
   process_->StackReg() += Spec::kWordSize;
   return process_->Load( Addr(process_->StackReg()));
 }
@@ -23,6 +27,10 @@ Word VirtualMachine::PopWord(){
 void VirtualMachine::PushWord(const Word word){
 //   std::cout << "  -- push @"<< Addr(process_->StackReg())<< " val: "
 //             << word << "\n";
+  if(process_->StackReg() < byte_code_.StackRegisterLow()){
+    error_log_.Log("Stack overflow");
+    return;
+  }
   process_->Store( Addr(process_->StackReg()), word);
   process_->StackReg() -= Spec::kWordSize;
 }
@@ -114,9 +122,9 @@ void VirtualMachine::JumpC (const Reg reg_src, const Target target, const SubIns
 
 /////////////////////////////////////////////////////////////////////////////
 //  Class 3: type ARI
-bool VirtualMachine::InstTypeArihmetic (const Reg reg_src1,
+void VirtualMachine::InstTypeArihmetic (const Reg reg_src1,
   const Reg reg_src2, const Reg reg_dst, const SubInst sub_type){
-  bool error = false;
+
   using namespace IRDefinition::SubtypesArithmetic;
   switch(sub_type){
     case IR_ADD:  Add(reg_src1, reg_src2, reg_dst); break;
@@ -124,10 +132,9 @@ bool VirtualMachine::InstTypeArihmetic (const Reg reg_src1,
     case IR_MUL:  Mul(reg_src1, reg_src2, reg_dst); break;
     case IR_DIV:  Div(reg_src1, reg_src2, reg_dst); break;
     case IR_MOV:  Move(reg_src1, reg_src2, reg_dst); break;
-    default:      error_log_.Log("ari :: subtype not found");
-                  error = true;                          break;
+    default:      error_log_.Log("ari :: subtype not found"); break;
   }
-  return error;
+
 }
 
 void VirtualMachine::Add (const Reg reg_src1,
@@ -171,9 +178,8 @@ void VirtualMachine::Move(const Reg reg_src1,
 
 /////////////////////////////////////////////////////////////////////////////
 //  Class 3: type CMP
-bool VirtualMachine::InstTypeComparison (const Reg reg_src1,
+void VirtualMachine::InstTypeComparison (const Reg reg_src1,
   const Reg reg_src2, const Reg reg_dst, const SubInst sub_type){
-  bool error = false;
   using namespace IRDefinition;
   using namespace SubtypesComparison;
   switch(sub_type){
@@ -181,10 +187,8 @@ bool VirtualMachine::InstTypeComparison (const Reg reg_src1,
     case IR_EQT:  Eqt(reg_src1, reg_src2, reg_dst); break;
     case IR_LST:  Lst(reg_src1, reg_src2, reg_dst); break;
     case IR_LTE:  Lte(reg_src1, reg_src2, reg_dst); break;
-    default:      error_log_.Log("cmp :: subtype not found");
-                  error = true;                          break;
+    default:      error_log_.Log("cmp :: subtype not found"); break;
   }
-  return error;
 }
 
 void VirtualMachine::Not (const Reg reg_src1,
@@ -219,18 +223,15 @@ void VirtualMachine::Lte (const Reg reg_src1,
 
 /////////////////////////////////////////////////////////////////////////////
 //  Class 3: type Logic
-bool VirtualMachine::InstTypeLogic(const Reg reg_src1,
+void VirtualMachine::InstTypeLogic(const Reg reg_src1,
   const Reg reg_src2, const Reg reg_dst, const SubInst sub_type){
-  bool error = false;
   using namespace IRDefinition;
   using namespace SubtypesLogic;
   switch(sub_type){
     case IR_OR:   Or (reg_src1, reg_src2, reg_dst); break;
     case IR_AND:  And(reg_src1, reg_src2, reg_dst); break;
-    default:      error_log_.Log("logic :: subtype not found");
-                  error = true; break;
+    default:      error_log_.Log("logic :: subtype not found"); break;
   }
-  return error;
 }
 
 void VirtualMachine::Or(const Reg reg_src1, const Reg reg_src2, const Reg reg_dst){

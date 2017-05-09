@@ -12,12 +12,10 @@ namespace VM{
 bool VirtualMachine::ExecProcess(){
   ColdBoot();
   bool executing  = true;
-  bool error      = false;  //TODO: delete this, use ErrorLog
 
   std::cout << "EXEC\n";
-  while(executing and not error){
+  while(executing and not error_log_.HasErrors()){
     if( not process_->NextOpCodeIsValid() ){
-      error     = true;
       executing = false;
       error_log_.Log("Next opcode invalid");
     }else{
@@ -50,8 +48,7 @@ bool VirtualMachine::ExecProcess(){
               case IR_JMP:  Jump(Target(literal));  break;
               case IR_CALL: Call(Target(literal));  break;
               case IR_RET:  Return();               break;
-              default:      error_log_.Log("op not found (c0)");
-                            error = true; break;
+              default:      error_log_.Log("op not found (c0)"); break;
             }
             break;
 
@@ -66,8 +63,7 @@ bool VirtualMachine::ExecProcess(){
               case IR_STOREB:StoreB(reg_dst, reg_base, literal);  break;
               case IR_PUSH:  Push  (reg_dst);                     break;
               case IR_POP:   Pop   (reg_dst);                     break;
-              default:       error_log_.Log("op not found (c1)");
-                             error = true; break;
+              default:       error_log_.Log("op not found (c1)"); break;
             }
             break;
 
@@ -77,8 +73,7 @@ bool VirtualMachine::ExecProcess(){
             switch(current_op_code){
               case IR_JMPC: JumpC (reg_dst, Target(literal), sub_type); break;
               case IR_ARII: ArithI(reg_dst, literal, sub_type);         break;
-              default:      error_log_.Log("op not found (c2)");
-                            error = true; break;
+              default:      error_log_.Log("op not found (c2)");        break;
             }
             break;
 
@@ -86,17 +81,15 @@ bool VirtualMachine::ExecProcess(){
           case InstClassRegRegRegSub:
             DecodeClass3(current_instruction, reg_src1, reg_src2, reg_dst, sub_type);
             switch(current_op_code){
-              case IR_ARI:  error = InstTypeArihmetic (reg_src1, reg_src2, reg_dst, sub_type); break;
-              case IR_CMP:  error = InstTypeComparison(reg_src1, reg_src2, reg_dst, sub_type); break;
-              case IR_LOGIC:error = InstTypeLogic     (reg_src1, reg_src2, reg_dst, sub_type); break;
-              default:      error_log_.Log("op not found (c3)");
-                            error = true; break;
+              case IR_ARI:  InstTypeArihmetic (reg_src1, reg_src2, reg_dst, sub_type); break;
+              case IR_CMP:  InstTypeComparison(reg_src1, reg_src2, reg_dst, sub_type); break;
+              case IR_LOGIC:InstTypeLogic     (reg_src1, reg_src2, reg_dst, sub_type); break;
+              default:      error_log_.Log("op not found (c3)");                               break;
             }
             break;
 
           ////////////////////////////////////////////////////////////
-          default:      error_log_.Log("class not found");
-                        error = true; break;
+          default:      error_log_.Log("class not found"); break;
 
         }
 
@@ -109,7 +102,7 @@ bool VirtualMachine::ExecProcess(){
     }
   }
 
-  return error;
+  return error_log_.HasErrors();  //TODO: needed?
 }
 
 // VirtualMachine::VirtualMachine(std::string const &file_name){

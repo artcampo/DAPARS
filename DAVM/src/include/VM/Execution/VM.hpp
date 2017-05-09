@@ -32,11 +32,11 @@ private:
   ByteCode* ReadByteCode(const std::string &file_name);
 
   //Functions that handle a set of subtypes of instructions
-  bool InstTypeArihmetic( const Reg reg_src1, const Reg reg_src2,
+  void InstTypeArihmetic( const Reg reg_src1, const Reg reg_src2,
                           const Reg reg_dst,  const SubInst sub_type);
-  bool InstTypeComparison(const Reg reg_src1, const Reg reg_src2,
+  void InstTypeComparison(const Reg reg_src1, const Reg reg_src2,
                           const Reg reg_dst,  const SubInst sub_type);
-  bool InstTypeLogic     (const Reg reg_src1, const Reg reg_src2,
+  void InstTypeLogic     (const Reg reg_src1, const Reg reg_src2,
                           const Reg reg_dst,  const SubInst sub_type);
 
   Word PopWord();

@@ -46,6 +46,14 @@ struct ByteCode{
     return mem_stack_.high_ + 1 - Spec::kWordSize;
   }
 
+  Addr StackRegisterHigh() const noexcept{
+    return StackRegisterInitAddress();
+  }
+
+  Addr StackRegisterLow() const noexcept{
+    return mem_stack_.low_ - Spec::kWordSize;
+  }
+
   void Dump(const bool extra_dump) const{
     int line = 0;
     for ( auto const inst : stream){
