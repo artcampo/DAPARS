@@ -1,0 +1,2 @@
+bool f(){ return f(); }
+bool main(){ return f(); }
