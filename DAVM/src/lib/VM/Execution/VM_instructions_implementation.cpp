@@ -124,7 +124,7 @@ bool VirtualMachine::InstTypeArihmetic (const Reg reg_src1,
     case IR_MUL:  Mul(reg_src1, reg_src2, reg_dst); break;
     case IR_DIV:  Div(reg_src1, reg_src2, reg_dst); break;
     case IR_MOV:  Move(reg_src1, reg_src2, reg_dst); break;
-    default:      error_log_->Log("ari :: subtype not found");
+    default:      error_log_.Log("ari :: subtype not found");
                   error = true;                          break;
   }
   return error;
@@ -181,7 +181,7 @@ bool VirtualMachine::InstTypeComparison (const Reg reg_src1,
     case IR_EQT:  Eqt(reg_src1, reg_src2, reg_dst); break;
     case IR_LST:  Lst(reg_src1, reg_src2, reg_dst); break;
     case IR_LTE:  Lte(reg_src1, reg_src2, reg_dst); break;
-    default:      error_log_->Log("cmp :: subtype not found");
+    default:      error_log_.Log("cmp :: subtype not found");
                   error = true;                          break;
   }
   return error;
@@ -227,7 +227,7 @@ bool VirtualMachine::InstTypeLogic(const Reg reg_src1,
   switch(sub_type){
     case IR_OR:   Or (reg_src1, reg_src2, reg_dst); break;
     case IR_AND:  And(reg_src1, reg_src2, reg_dst); break;
-    default:      error_log_->Log("logic :: subtype not found");
+    default:      error_log_.Log("logic :: subtype not found");
                   error = true; break;
   }
   return error;

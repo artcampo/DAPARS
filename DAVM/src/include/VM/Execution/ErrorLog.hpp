@@ -7,7 +7,9 @@ namespace VM{
 
 struct ErrorLog{
 
-  ErrorLog() : num_errors_(0){};
+  static ErrorLog& GetInstance(){ static ErrorLog instance; return instance;}
+  ErrorLog(ErrorLog const&)       = delete;
+  void operator=(ErrorLog const&) = delete;
 
   bool HasErrors() const noexcept{ return num_errors_ > 0;}
 
@@ -23,6 +25,8 @@ struct ErrorLog{
 private:
   std::vector<std::string> errors_;
   int num_errors_;
+
+  ErrorLog() : num_errors_(0){};
 
 };
 

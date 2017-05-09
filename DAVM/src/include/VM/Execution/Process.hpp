@@ -19,8 +19,9 @@ class Process : public Internal::ExecutionContext
   , public Internal::Memory<Internal::BasicPatternTestingPolicy>{
 
 public:
-  Process(const ByteCode &byte_code, ErrorLog& error_log, BasicPatternTestingPolicy t)
-    : MMU<Internal::BasicPatternTestingPolicy>(error_log, t), byte_code_(byte_code), error_log_(error_log){};
+  Process(const ByteCode &byte_code)
+    : byte_code_(byte_code)
+    , error_log_(ErrorLog::GetInstance()){};
 
   void NextOpCode();
 

@@ -9,6 +9,11 @@
 namespace VM{
 namespace Internal{
 
+  struct PageDesc{
+    Word* address_;               //Typed pointer for faster access
+    std::vector<Word>*  vector_;  //vector holding page
+  };
+
 /*
   With the current specs, pages are 4k and the machine word is 4 bytes.
   But accesses are done on byte addresses
@@ -21,10 +26,10 @@ template <class TestingPolicy>
 class MMU{
 
 protected:
-  MMU(ErrorLog& error_log, TestingPolicy t)
+  MMU()
   : page_size_in_words_(Spec::kPageSize/Spec::kWordSize)
   , address_mask_((1 << (Spec::kPageNumBits)) - 1)
-  , error_log_(error_log){}
+  , error_log_(ErrorLog::GetInstance()){}
 
   ~MMU(){
     for(auto& it : page_mapping_) delete it.second.vector_;
@@ -49,15 +54,13 @@ protected:
   }
 
 private:
-  struct PageDesc{
-    Word* address_;               //Typed pointer for faster access
-    std::vector<Word>*  vector_;  //vector holding page
-  };
 
-  ErrorLog&                 error_log_;
+
+
   const size_t              page_size_in_words_;
   const size_t              address_mask_;
   std::map<Addr, PageDesc>  page_mapping_;
+  ErrorLog&                 error_log_;
   TestingPolicy             testing_;
 
   Addr PageOfAddr(const Addr addr){

@@ -24,8 +24,8 @@ private:
   void    ColdBoot();
   int     LoadProcess(const std::string &file_name);
 
-  ByteCode const            &byte_code_;
-  std::unique_ptr<ErrorLog> error_log_;
+  ByteCode const& byte_code_;
+  ErrorLog&       error_log_;
   std::unique_ptr<Internal::Process>  process_;
   bool  ip_modified_;
 
