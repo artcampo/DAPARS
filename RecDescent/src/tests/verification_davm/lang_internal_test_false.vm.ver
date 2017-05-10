@@ -7,7 +7,7 @@ OP: MOVE R0 <- R3
 OP: Call 9 ret@: 6
 OP: PUSH [@4294963192] <- R14
 OP: MOVE R14 <- R15 
-OP: LOAD R1 <- [@-4], val = 0 
+OP: LOAD R1 <- [@-4], val = 1049598 
 OP: OP: STORE [@-4] <- R2 val: 0
 OP: MOVE R15 <- R14 
 OP: POP R14 <- [@4294963192]

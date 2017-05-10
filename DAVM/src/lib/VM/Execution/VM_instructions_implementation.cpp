@@ -16,8 +16,8 @@ using namespace IRBuilder;
 Word VirtualMachine::PopWord(){
 //   std::cout << "  -- pop @"<<  Addr(process_->StackReg() + Spec::kWordSize)<< " val: "
 //             << process_->Load( Addr(process_->StackReg() + Spec::kWordSize)) << "\n";
-  if(process_->StackReg() >= byte_code_.StackRegisterHigh()){
-    error_log_.Log("Stack underflow");
+  if(process_->StackAddr() >= byte_code_.StackRegisterHigh()){
+    error_log_.Exception("Stack underflow");
     return 0; //TODO: do not allow inst to commit on error
   }
   process_->StackReg() += Spec::kWordSize;
@@ -27,8 +27,8 @@ Word VirtualMachine::PopWord(){
 void VirtualMachine::PushWord(const Word word){
 //   std::cout << "  -- push @"<< Addr(process_->StackReg())<< " val: "
 //             << word << "\n";
-  if(process_->StackReg() < byte_code_.StackRegisterLow()){
-    error_log_.Log("Stack overflow");
+  if(process_->StackAddr() < byte_code_.StackRegisterLow()){
+    error_log_.Exception("Stack overflow");
     return;
   }
   process_->Store( Addr(process_->StackReg()), word);
@@ -132,7 +132,7 @@ void VirtualMachine::InstTypeArihmetic (const Reg reg_src1,
     case IR_MUL:  Mul(reg_src1, reg_src2, reg_dst); break;
     case IR_DIV:  Div(reg_src1, reg_src2, reg_dst); break;
     case IR_MOV:  Move(reg_src1, reg_src2, reg_dst); break;
-    default:      error_log_.Log("ari :: subtype not found"); break;
+    default:      error_log_.Exception("ari :: subtype not found"); break;
   }
 
 }
@@ -187,7 +187,7 @@ void VirtualMachine::InstTypeComparison (const Reg reg_src1,
     case IR_EQT:  Eqt(reg_src1, reg_src2, reg_dst); break;
     case IR_LST:  Lst(reg_src1, reg_src2, reg_dst); break;
     case IR_LTE:  Lte(reg_src1, reg_src2, reg_dst); break;
-    default:      error_log_.Log("cmp :: subtype not found"); break;
+    default:      error_log_.Exception("cmp :: subtype not found"); break;
   }
 }
 
@@ -230,7 +230,7 @@ void VirtualMachine::InstTypeLogic(const Reg reg_src1,
   switch(sub_type){
     case IR_OR:   Or (reg_src1, reg_src2, reg_dst); break;
     case IR_AND:  And(reg_src1, reg_src2, reg_dst); break;
-    default:      error_log_.Log("logic :: subtype not found"); break;
+    default:      error_log_.Exception("logic :: subtype not found"); break;
   }
 }
 

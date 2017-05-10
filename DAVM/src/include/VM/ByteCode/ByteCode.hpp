@@ -51,7 +51,7 @@ struct ByteCode{
   }
 
   Addr StackRegisterLow() const noexcept{
-    return mem_stack_.low_ - Spec::kWordSize;
+    return mem_stack_.low_;
   }
 
   void Dump(const bool extra_dump) const{

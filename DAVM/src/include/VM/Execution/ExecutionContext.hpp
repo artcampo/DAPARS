@@ -13,6 +13,8 @@ struct ExecutionContext : public RegisterBank<Word>{
   Word&  StackReg() noexcept { return registers_[Spec::kNumberRegisters - 1];}
   const Word&  StackReg() const noexcept { return registers_[Spec::kNumberRegisters - 1];}
 
+  Addr  StackAddr() noexcept { return Addr(registers_[Spec::kNumberRegisters - 1]);}
+
   Target  GetIP() const noexcept{return instruction_pointer_;}
 
 protected:

@@ -68,7 +68,7 @@ private:
   }
 
   Word *const PointerOfAddr(const Addr addr, const PageDesc& desc){
-    return desc.address_ + (addr & address_mask_);
+    return desc.address_ + ((addr & address_mask_) >> Spec::kWordNumBits);
   }
 
 };
