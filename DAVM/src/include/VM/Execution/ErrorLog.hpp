@@ -14,6 +14,7 @@ struct ErrorLog{
   bool HasErrors() const noexcept{ return num_errors_ > 0;}
 
   void Log(const std::string& m){
+    std::cout << m << "\n";
     errors_.push_back(m);
     num_errors_++;
   }

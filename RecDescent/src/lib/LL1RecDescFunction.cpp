@@ -48,6 +48,7 @@ PtrFuncDef ParserLL1RecDesc::ParseFuncDef(const Compiler::AST::Type& ret_type_in
   }
 
   PtrFuncDecl decl = NewFuncDecl(name_inht, ret_type_inht, par_list, scope_inht, locus_inht);
+  unit_.RegisterDecl(name_inht, type_func, scope_inht, sid);
   unit_.EnterFunctionDefinition(decl.get());
 
   //Process function definition
@@ -67,7 +68,7 @@ PtrFuncDef ParserLL1RecDesc::ParseFuncDef(const Compiler::AST::Type& ret_type_in
   unit_.SetFuncOriginNode(*func_def_synth);
   unit_.ExitFunctionDefinition();
   unit_.RestoreScope();
-  unit_.RegisterDecl(name_inht, type_func, scope_inht, sid);
+
 
   return std::move(func_def_synth);
 }

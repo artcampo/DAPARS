@@ -41,6 +41,7 @@ void LangLib::InitRTFunctionTest(){
   ScopeId func_scope_id;
   const AST::Symbols::SymbolId sid_func = unit_.FreeSymbolId();
   func_scope_id = unit_.NewFunction(name, func_id);
+  unit_.RegisterDecl(name, function_type, global_scope_id, sid_func);
 
 
   par_decl_.push_back(std::move(NewVarDecl(name_par, par_type, func_scope_id, l_)));
@@ -67,7 +68,7 @@ void LangLib::InitRTFunctionTest(){
   unit_.SetFuncOriginNode(*func_def_);
   unit_.ExitFunctionDefinition();
   unit_.RestoreScope();
-  unit_.RegisterDecl(name, function_type, global_scope_id, sid_func);
+
 //   std::cout << "func: " << func_def->str() << "\n";
 
 
