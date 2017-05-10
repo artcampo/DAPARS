@@ -113,7 +113,11 @@ public:
   }
 
 
-  LexicalScope& GetLScope(const std::string& func_name) const{
+  const LexicalScope& GetLScope(const std::string& func_name) const{
+    const ScopeId id = lscope_by_function_name_.at(func_name);
+    return dynamic_cast<LexicalScope&>(*scope_by_id_.at(id));
+  }
+  LexicalScope& GetLScope(const std::string& func_name){
     const ScopeId id = lscope_by_function_name_.at(func_name);
     return dynamic_cast<LexicalScope&>(*scope_by_id_.at(id));
   }

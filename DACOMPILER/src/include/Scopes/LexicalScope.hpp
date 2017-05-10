@@ -30,7 +30,7 @@ public:
   bool IsDeclValid(const std::string& name);
   bool HasDecl(const std::string& name);
 
-  bool RegisterDecl(const std::string& name, const Type& type, const Node& n
+  bool RegisterDecl(const std::string& name, const Type& type
       , AST::Symbols::SymbolId symbol_id);
 
 //   const Type& GetType(const std::string& name) const;
@@ -67,6 +67,10 @@ public:
   const Symbols::SymbolId PostDeclId(const std::string& name) const {
     auto it = post_parse_symbol_table_.find(name);
     return it->second;
+  }
+
+  const Symbols::Symbol& PostParseDecl(const std::string& name) const{
+    return *post_parse_declaration_table_.at(PostDeclId(name));
   }
 
 private:

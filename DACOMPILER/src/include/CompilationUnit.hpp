@@ -67,24 +67,27 @@ public:
   //TODO: get rid of these
   const ScopeId NewFunction(const std::string& name
     , const AST::Symbols::SymbolId symbol_id){
-    const Label entry = NewFunctionEntryLabel(name);
+    const ScopeId func_scope = NewNestedScopeFunction(name);
+    const Label entry        = NewFunctionEntryLabel(name);
     Label local;
     if(name == "main")  local = GetLabelMainLocals();
     else                local = NewFunctionARLabel(name);
-    FunctionManager::NewFunction(name, symbol_id, ModuleAddressTable(), entry, local);
-    return NewNestedScopeFunction(name);
+    FunctionManager::NewFunction(name, symbol_id, ModuleAddressTable()
+      , entry, local, GetLScope(name));
+    return func_scope;
   }
 
 
   const ScopeId NewFunction(const std::string& name
     , const AST::Symbols::SymbolId symbol_id
     , const std::string& class_name){
+    const ScopeId func_scope       = NewNestedScopeFunction(name);
     const std::string mangled_name = Function::MangledName(name, class_name);
     const Label entry = NewFunctionEntryLabel(mangled_name);
     Label local       = NewFunctionARLabel(mangled_name);
     Function& f = FunctionManager::NewFunction(name, symbol_id, class_name
-      , ModuleAddressTable(), entry, local);
-    return NewNestedScopeFunction(name);
+      , ModuleAddressTable(), entry, local, GetLScope(name));
+    return func_scope;
   }
 
   const Type& GetType(const std::string& name, const ScopeId scope_id){
@@ -96,30 +99,19 @@ public:
   const AST::Symbols::SymbolId FreeSymbolId() noexcept{return free_symbol_id_++;}
 
   //Used while parsing
-  bool RegisterDecl(const std::string& name, const Type& type, const Node& n
+  bool RegisterDecl(const std::string& name, const Type& type
     , const ScopeId scope_id, const AST::Symbols::SymbolId symbol_id){
-    bool registered = GetScope(scope_id)->RegisterDecl(name, type, n, symbol_id);
+    bool registered = GetScope(scope_id)->RegisterDecl(name, type, symbol_id);
 //     std::cout << "Register: " << name << " in " << GetScope(scope_id)->str()<<"\n";
-    if(registered){
-      if(CurrentFunction() != nullptr){
-        CurrentFunction()->StoreDecl( *module_declaration_table_[symbol_id], n);
-//         std::cout << "Reg: n:"<< &n << " s: " <<module_declaration_table_[symbol_id].get()
-//         << " symbol: " << module_declaration_table_[symbol_id]->str()
-//         << " " << n.str()
-//         << std::endl;
-      }
-    }
     return registered;
   }
 
   //TODO: should StoreDecl instead be called from the given scope,
   //or forbid direct calls to scope's register
   //Used outside of parsing, when we want to force variables into a given function
-  bool ForceRegisterDecl(const std::string& function_name, const std::string& name, const Type& type, const Node& n
+  bool ForceRegisterDecl(const std::string& function_name, const std::string& name, const Type& type
     , const ScopeId scope_id, const AST::Symbols::SymbolId symbol_id){
-    bool registered = GetScope(scope_id)->RegisterDecl(name, type, n, symbol_id);
-    if(registered)
-      GetFunc(function_name).StoreDecl( *module_declaration_table_[symbol_id], n);
+    bool registered = GetScope(scope_id)->RegisterDecl(name, type, symbol_id);
     return registered;
   }
 

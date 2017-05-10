@@ -16,7 +16,7 @@ public:
   ~HierarchicalScope() = default;
 
   bool RegisterDecl(const std::string& name, const Type& type
-    ,  const Node& n, AST::Symbols::SymbolId symbol_id){
+    , AST::Symbols::SymbolId symbol_id){
     //RegisterDecl only can insert in the current HScope
     auto it = symbol_table_.find(name);
     Symbols::SymbolId previous_id = -1;
@@ -93,6 +93,10 @@ public:
     }
     s += "}";
     return s;
+  }
+
+  const Symbols::Symbol& PostParseDecl(const std::string& name) const{
+    return *declaration_table_.at(DeclId(name));
   }
 
 private:

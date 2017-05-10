@@ -29,17 +29,20 @@ public:
   Scope(const ScopeId id) : id_(id){}
   virtual ~Scope() = default;
 
+  const ScopeId GetScopeId() const noexcept{return id_;};
+
   virtual const Symbols::SymbolId DeclId(const std::string& name) const = 0;
   virtual bool IsDeclValid(const std::string& name) = 0;
   virtual bool HasDecl(const std::string& name) = 0;
-  virtual bool RegisterDecl(const std::string& name, const Type& type, const Node& n
+  virtual bool RegisterDecl(const std::string& name, const Type& type
       , AST::Symbols::SymbolId symbol_id) = 0;
   virtual std::string str() const noexcept = 0;
 
-  const ScopeId GetScopeId() const noexcept{return id_;};
+
 
 
   virtual const Type& GetType(const std::string& name) const = 0;
+  virtual const Symbols::Symbol& PostParseDecl(const std::string& name) const = 0;
 
 protected:
   ScopeId       id_;

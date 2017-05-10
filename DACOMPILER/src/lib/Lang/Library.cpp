@@ -45,7 +45,7 @@ void LangLib::InitRTFunctionTest(){
 
   par_decl_.push_back(std::move(NewVarDecl(name_par, par_type, func_scope_id, l_)));
   const AST::Symbols::SymbolId sid_par = unit_.FreeSymbolId();
-  unit_.RegisterDecl(name_par, par_type, *par_decl_[0], func_scope_id, sid_par);
+  unit_.RegisterDecl(name_par, par_type, func_scope_id, sid_par);
   decl_ = NewFuncDecl(name, ret_type, par_decl_, global_scope_id, l_);
 
   unit_.EnterFunctionDefinition(decl_.get());
@@ -67,7 +67,7 @@ void LangLib::InitRTFunctionTest(){
   unit_.SetFuncOriginNode(*func_def_);
   unit_.ExitFunctionDefinition();
   unit_.RestoreScope();
-  unit_.RegisterDecl(name, function_type, *decl_, global_scope_id, sid_func);
+  unit_.RegisterDecl(name, function_type, global_scope_id, sid_func);
 //   std::cout << "func: " << func_def->str() << "\n";
 
 
@@ -82,8 +82,8 @@ void LangLib::InitRTVarsDef(){
   const ScopeId main_scope_id = unit_.GetLScope("main").GetScopeId();
   const Type& type                  = unit_.GetTypeBool();
   cond_test_var_decl_ = NewVarDecl(name_cond_, type, main_scope_id, l_);
-  //unit_.GetGlobalLexicalScope().ForceRegisterDecl("main", name_cond_, type, *cond_test_var_decl_, cond_sid_);
-  unit_.ForceRegisterDecl("main", name_cond_, type, *cond_test_var_decl_, main_scope_id, cond_sid_);
+  //unit_.GetGlobalLexicalScope().ForceRegisterDecl("main", name_cond_, type, cond_sid_);
+  unit_.ForceRegisterDecl("main", name_cond_, type, main_scope_id, cond_sid_);
 
   std::vector<PtrVarDecl> l;
   l.push_back(std::move(cond_test_var_decl_));

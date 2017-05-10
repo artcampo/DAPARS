@@ -18,11 +18,11 @@ PtrClassDef ParserLL1RecDesc::ClassDef_(const ScopeId scope_inht){
     Error(kErr84);
     return std::move(nullptr);
   }
-  
+
   std::vector<ClassType*> parents;
   if(Check({kToken::colon})) InhtList(parents);
-  
-  
+
+
   const AST::Type& type = unit_.GetClassType(name);
   const ScopeId scope_id = unit_.NewClassDecl(name, parents);
   unit_.EnterClassDefinition(name);
@@ -41,7 +41,7 @@ PtrClassDef ParserLL1RecDesc::ClassDef_(const ScopeId scope_inht){
   const AST::Symbols::SymbolId sid = unit_.FreeSymbolId();
   PtrClassDef cdef = NewClassDef(name, var_decl, func_def, scope_inht, l);
   RegNameType(name);
-  unit_.RegisterDecl(name, unit_.GetClassType(name), *cdef, scope_inht, sid);
+  unit_.RegisterDecl(name, unit_.GetClassType(name), scope_inht, sid);
   unit_.NewClass(name, sid, scope_id, *cdef);
 
   return std::move(cdef);
@@ -102,19 +102,19 @@ void ParserLL1RecDesc::Member(const Compiler::AST::Type& type_inht
 /*
 
 
-INHT_LIST' -> , ntype INHT_LIST'  => , 
-INHT_LIST' -> {empty}  => {empty} 
- 
+INHT_LIST' -> , ntype INHT_LIST'  => ,
+INHT_LIST' -> {empty}  => {empty}
+
  */
 
 void ParserLL1RecDesc::InhtList(std::vector<ClassType*>& parents_inht)
 {
   //INHT_LIST -> {empty}  => {empty} {
   if(Check({kToken::lcbr})) return;
-  
-  //INHT_LIST -> : ntype INHT_LIST'  => : 
+
+  //INHT_LIST -> : ntype INHT_LIST'  => :
   if(not Accept(kToken::colon, kErr93)) return;
-     
+
   BuildParent(parents_inht);
   InhtListPrime(parents_inht);
 }
@@ -123,19 +123,19 @@ void ParserLL1RecDesc::InhtListPrime(std::vector<ClassType*>& parents_inht)
 {
   //INHT_LIST' -> {empty}  => {empty} {
   if(Check({kToken::lcbr})) return;
-  
+
   //INHT_LIST' -> , ntype INHT_LIST'  => ,
   if(not Accept(kToken::comma, kErr94)) return;
-  
+
   BuildParent(parents_inht);
-  InhtListPrime(parents_inht);     
+  InhtListPrime(parents_inht);
 }
 
 void ParserLL1RecDesc::BuildParent(std::vector<ClassType*>& parents_inht){
   const AST::Type& type = this->Type();
   if(not type.IsClass()) {Error(kErr92 + type.str()); return; }
-  
-  parents_inht.push_back(dynamic_cast<ClassType*>(&const_cast<AST::Type&>(type)));  
+
+  parents_inht.push_back(dynamic_cast<ClassType*>(&const_cast<AST::Type&>(type)));
 }
 
 /*

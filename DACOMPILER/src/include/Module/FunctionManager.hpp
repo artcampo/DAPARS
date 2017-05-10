@@ -40,13 +40,15 @@ public:
   void NewFunction(const std::string& name
     , const AST::Symbols::SymbolId symbol_id
     , AddressTable& module_offset_table
-    , const Label entry, const Label local){
+    , const Label entry, const Label local
+    , LexicalScope& scope){
     functions_.push_back( std::move(
       Function::NewFunction(name
         , symbol_id
         , module_offset_table
         , entry
-        , local)));
+        , local
+        , scope)));
     curr_func_ = functions_.back().get();
     function_by_name_[name] = curr_func_;
   }
@@ -56,14 +58,16 @@ public:
     , const AST::Symbols::SymbolId symbol_id
     , const std::string& class_name
     , AddressTable& module_offset_table
-    , const Label entry, const Label local){
+    , const Label entry, const Label local
+    , LexicalScope& scope){
     functions_.push_back( std::move(
       Function::NewMemberFunction(name
         , symbol_id
         , class_name
         , module_offset_table
         , entry
-        , local)));
+        , local
+        , scope)));
     curr_func_ = functions_.back().get();
     function_by_name_[name] = curr_func_;
     return *functions_.back();

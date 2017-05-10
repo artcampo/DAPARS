@@ -76,16 +76,16 @@ public:
   const IR::Offset FuncPtrThisAdjust(const std::string& name)const{
     return offset_of_func_.at(name);
   }
-  
+
   Function& GetFunction(const std::string& name)const{
     return *function_by_name_.at(name);
   }
 
   std::string Name()  const noexcept{return name_;}
-  
-  std::string str()  const noexcept{ 
+
+  std::string str()  const noexcept{
     if(parents_.empty()) return name_;
-    std::string n = name_ + ":"; 
+    std::string n = name_ + ":";
     bool first = true;
     for(auto& parent : parents_){
       if(not first) n += ",";
@@ -94,7 +94,7 @@ public:
     return n;
   }
   const size_t Size() const noexcept{ return class_size_;}
-  
+
   std::vector<Function*>  GetFuncsNotInherited() noexcept{ return functions_not_inherited_;}
   const std::vector<Function*>  GetFuncsNotInherited() const noexcept{ return functions_not_inherited_;}
 private:
@@ -104,7 +104,7 @@ private:
   IR::Label               this_label_;
   std::vector<Class*>     parents_;
   ClassDef&               class_def_;
-  
+
   //Data computed
   size_t  class_size_;
   std::map<AST::Symbols::SymbolId, IR::Offset> offset_of_var_;
@@ -120,13 +120,13 @@ private:
   void InsertObjectRecord(const AST::Symbols::SymbolId sid, const Offset offset
     , const size_t size){
     offset_of_var_[sid] = offset;
-    object_record_.push_back( {sid, {offset, size} });    
+    object_record_.push_back( {sid, {offset, size} });
   }
   void BuildObjectRecord(const ClassDef& class_def){
-    
+
     size_t offset       = RtiSize();
     size_t next_offset  = offset; //offset after processing current parent
-    
+
     //Insert parent's functions and variables
     for(const auto& p : parents_){
       //correction of this parent's function is current offset
@@ -138,7 +138,7 @@ private:
         offset_of_func_[f->Name()] = offset;
         std::cout <<  "(" << f->Name() << ", " << offset << ") ";
       }
-      
+
       //variables adapted to child layout
       for(const auto& sid_offset_size : p->object_record_){
         const size_t size = sid_offset_size.second.second;
@@ -155,7 +155,7 @@ private:
       const std::string name  = it->Name();
       const Type& type        = it->GetType();
       const size_t size       = type.Size();
-      
+
       InsertObjectRecord(scope_.DeclId(name), Offset(offset, name), size);
       offset += size;
     }
@@ -172,17 +172,17 @@ private:
     function_by_name_[std::string(f.Name())] = &f;
     functions_.push_back(&f);
   }
-  
+
   void BuildFuncsNotInht(){
-    for( const auto& it : class_def_) 
+    for( const auto& it : class_def_)
       functions_not_inherited_.push_back(&func_manager_->GetFunc(*it));
   }
-  
+
   const size_t RtiSize() const noexcept{ return 0; }
 
   FunctionManager* func_manager_;
-  
-public:  
+
+public:
   using iterator = std::vector<Function*>::iterator;
   using const_iterator = std::vector<Function*>::const_iterator;
 
@@ -191,17 +191,8 @@ public:
   const_iterator begin()  const { return functions_.begin(); }
   const_iterator end()    const { return functions_.end(); }
   const_iterator cbegin() const { return functions_.cbegin(); }
-  const_iterator cend()   const { return functions_.cend(); }  
-  /*
-  Symbols::Symbol& GetSymbolDecl(const Node& n) const{
-//     std::cout << "Asking n: " << &n << " " << n.str() << std::endl;
-    return *symbol_decl_of_node_.at(&n);
-  }
+  const_iterator cend()   const { return functions_.cend(); }
 
-  void StoreDecl(Symbols::Symbol& s, const Node& n){
-    symbol_decl_of_node_[&n] = &s;
-  }
-  */
 
 /*
   void SetOriginNode(const FuncDef& n){

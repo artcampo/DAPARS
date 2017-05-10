@@ -8,6 +8,7 @@
 #include "IR/Offset.hpp"
 #include "IR/Label.hpp"
 #include "Scopes/Scope.hpp"
+#include "Scopes/LexicalScope.hpp"
 #include "Decoration/AddressTable.hpp"
 #include <map>
 #include <memory>
@@ -32,10 +33,10 @@ class Function{
 public:
   static PtrFunction NewFunction(const std::string& name
     , const AST::Symbols::SymbolId symbol_id , AddressTable& module_offset_table
-    , const Label entry_label, const Label locals_label){
+    , const Label entry_label, const Label locals_label, LexicalScope& scope){
     return std::move( std::make_unique<Function>
       (name, symbol_id, "", name, module_offset_table, entry_label
-      , locals_label, false));
+      , locals_label, false, scope));
   }
 
   static PtrFunction NewMemberFunction(const std::string& name
@@ -43,10 +44,11 @@ public:
     , const std::string& class_name
     , AddressTable& module_offset_table
     , const Label entry_label
-    , const Label locals_label){
+    , const Label locals_label
+    , LexicalScope& scope){
     return std::move( std::make_unique<Function>
       (name, symbol_id, class_name, MangledName(name, class_name), module_offset_table
-      , entry_label, locals_label, true));
+      , entry_label, locals_label, true, scope));
   }
 
   const static std::string MangledName(const std::string& name
@@ -57,14 +59,15 @@ public:
   FuncDef& GetFuncDefNode() { return *origin_node_; }
   const FuncDef& GetFuncDefNode() const { return *origin_node_; }
 
-
-  Symbols::Symbol& GetSymbolDecl(const Node& n) const{
-//     std::cout << "Asking n: " << &n << " " << n.str() << std::endl;
-    return *symbol_decl_of_node_.at(&n);
+  const Symbols::Symbol& GetSymbolDecl(const NamedNode& n){
+    return scope_.PostParseDecl(n.Name());
   }
 
-  void StoreDecl(Symbols::Symbol& s, const Node& n){
-    symbol_decl_of_node_[&n] = &s;
+  const Symbols::Symbol& GetSymbolDecl(const NamedNode& n) const{
+    //use scope_
+    return scope_.PostParseDecl(n.Name());
+//     std::cout << "Asking n: " << &n << " " << n.str() << std::endl;
+//     return *symbol_decl_of_node_.at(&n);
   }
 
   void SetOriginNode(const FuncDef& n){
@@ -88,7 +91,6 @@ public:
   IR::MemAddr LocalVarMemAddr(Symbols::SymbolId id) const{
     return locals_offset_table_.GetMemAddr(id);
   }
-
 
   const Label      EntryLabel() const noexcept{ return entry_label_;}
   const Label      LocalsLabel() const noexcept{ return locals_label_;}
@@ -118,12 +120,11 @@ private:
   const Label       locals_label_;
   bool              is_member_;
   bool              is_main_;
-
+  LexicalScope&     scope_;
 
   AddressTable&      module_offset_table_;
   AddressTable       locals_offset_table_;
   AddressTable       params_offset_table_;
-  std::map<const Node*, Symbols::Symbol*> symbol_decl_of_node_;
 
 public:
   Function(const std::string& name
@@ -132,7 +133,9 @@ public:
     , const std::string& mangled_name
     , AddressTable& module_offset_table
     , const Label entry_label
-    , const Label locals_label, const bool is_member)
+    , const Label locals_label
+    , const bool is_member
+    , LexicalScope& scope)
   : name_(name)
     , class_name_(class_name)
     , symbol_id_(symbol_id)
@@ -142,7 +145,8 @@ public:
     , locals_label_(locals_label)
     , is_member_ (is_member)
     , mangled_name_(mangled_name)
-    , is_main_(name == "main"){}
+    , is_main_(name == "main")
+    , scope_(scope){}
 
 };
 
