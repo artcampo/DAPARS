@@ -1,4 +1,5 @@
 #pragma once
+#include "AST/Node.hpp"
 #include "Symbol.hpp"
 #include "Types/TypeId.hpp"
 #include "IR/Label.hpp"
@@ -31,6 +32,10 @@ public:
   bool HasDecl(const std::string& name, const ScopeId scope_id){
     return GetScope(scope_id)->HasDecl(name);
 
+  }
+
+  const AST::Symbols::Symbol& GetSymbolDecl(const AST::NamedNode& n, const ScopeId scope_id){
+    return GetScope(scope_id)->PostParseDecl(n.Name());
   }
 
   const AST::Symbols::SymbolId DeclId(const std::string& name

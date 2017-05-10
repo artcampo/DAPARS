@@ -33,7 +33,7 @@ public:
     if(func_.IsMember())  args_base += 1;
 
     for(auto& it : p.ParList()){
-      const Symbols::Symbol& s = func_.GetSymbolDecl(*it);
+      const Symbols::Symbol& s = unit_.GetSymbolDecl(*it, it->GetScopeId());
       auto size = s.Size();
       if(arg_position < IR::kNumArgsInRegister){
         IR::AddrOffset offset = arg_position;
@@ -52,7 +52,7 @@ public:
   }
 
   virtual void Visit(VarDecl const& p){
-    const Symbols::Symbol& s = func_.GetSymbolDecl(p);
+    const Symbols::Symbol& s = unit_.GetSymbolDecl(p, p.GetScopeId());
     auto size = s.Size();
     IR::Offset o;
 

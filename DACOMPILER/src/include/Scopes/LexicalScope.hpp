@@ -1,5 +1,6 @@
 #pragma once
 #include "Scopes/Scope.hpp"
+#include <iostream>
 
 /*
  * Resolving a current's scope symbol revolves around checking current and
@@ -65,6 +66,10 @@ public:
   }
 
   const Symbols::SymbolId PostDeclId(const std::string& name) const {
+//     std::cout << "ask: " << name << " in: \n";
+//     for(const auto& it : post_parse_declaration_table_)
+//     if(not it.second->IsCompilerPrivate())
+//       std::cout << it.first << ": " << it.second->str() << "\n";
     auto it = post_parse_symbol_table_.find(name);
     return it->second;
   }

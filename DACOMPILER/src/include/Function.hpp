@@ -59,9 +59,6 @@ public:
   FuncDef& GetFuncDefNode() { return *origin_node_; }
   const FuncDef& GetFuncDefNode() const { return *origin_node_; }
 
-  const Symbols::Symbol& GetSymbolDecl(const NamedNode& n){
-    return scope_.PostParseDecl(n.Name());
-  }
 
   const Symbols::Symbol& GetSymbolDecl(const NamedNode& n) const{
     //use scope_
