@@ -17,7 +17,6 @@ using ScopeId = size_t;
 //pair of name and symbol that was shadowed (or -1 if none)
 using InsertedSymbol = std::pair<Symbols::SymbolString, Symbols::SymbolId>;
 using InsertedDeclarations = std::pair<Symbols::SymbolId, Symbols::Symbol&>;
-using SymbolIdOfNode = std::map<const Node*, Symbols::SymbolId>;
 
 class LexicalScope;
 class HierarchicalScope;
@@ -38,7 +37,7 @@ public:
   virtual std::string str() const noexcept = 0;
 
   const ScopeId GetScopeId() const noexcept{return id_;};
-  
+
 
   virtual const Type& GetType(const std::string& name) const = 0;
 

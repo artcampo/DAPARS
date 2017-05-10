@@ -22,7 +22,6 @@ bool LexicalScope::RegisterDecl(const std::string& name, const Type& type
   symbol_table_[name] = symbol_id;
   declaration_table_[symbol_id] = std::make_unique<Symbols::Symbol>
                               (name, type, GetScopeId(), symbol_id);
-  symbolid_of_node_[&n] = symbol_id;
 
   //store for deletion when scope is exited
   symbols_.push_back( InsertedSymbol(name, previous_id));
@@ -74,8 +73,7 @@ const Type& LexicalScope::GetType(const std::string& name){
 */
 LexicalScope* LexicalScope::NewNestedScope(const ScopeId id){
 
-  LexicalScope* n = new LexicalScope(id, this, symbol_table_
-            , declaration_table_, symbolid_of_node_);
+  LexicalScope* n = new LexicalScope(id, this, symbol_table_, declaration_table_);
   nested_scopes_.push_back( std::unique_ptr<LexicalScope>(n) );
   return n;
 }

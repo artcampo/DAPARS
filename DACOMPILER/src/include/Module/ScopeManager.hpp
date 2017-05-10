@@ -12,7 +12,6 @@ namespace Compiler{
 
 using AST::ScopeId;
 using AST::Scope;
-using AST::SymbolIdOfNode;
 using AST::PtrLexicalScope;
 using AST::LexicalScope;
 using AST::PtrHierarchicalScope;
@@ -53,11 +52,10 @@ public:
   }
 
   PtrLexicalScope GlobalLexicalScope(SymbolTable& symbol_table
-    , DeclarationTable& declaration_table
-    , SymbolIdOfNode& symbolid_of_node){
+    , DeclarationTable& declaration_table){
     const ScopeId id = FreeScopeId();
     PtrLexicalScope g = std::make_unique<LexicalScope>(
-        id, nullptr, symbol_table, declaration_table, symbolid_of_node);
+        id, nullptr, symbol_table, declaration_table);
     scope_by_id_[id] = g.get();
     current_scope_ = g.get();
     global_scope_id_ = id;

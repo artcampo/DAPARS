@@ -39,7 +39,6 @@ namespace AST{ class Dump;};
 
 using AST::PtrLexicalScope;
 using AST::Scope;
-using AST::SymbolIdOfNode;
 // using AST::AddressTable;
 using IR::Label;
 
@@ -57,8 +56,7 @@ public:
     , lang_lib_(*this)
     , ast_()
     , free_symbol_id_(AST::Symbols::Symbol::InitialFreeId())
-    , module_scope_(std::move(GlobalLexicalScope(symbol_table_
-        , module_declaration_table_, symbolid_of_node_)))
+    , module_scope_(std::move(GlobalLexicalScope(symbol_table_, module_declaration_table_)))
     , module_declaration_table_()
     {
       scope_by_id_[GlobalScopeId()] = module_scope_.get();
@@ -103,7 +101,6 @@ public:
     bool registered = GetScope(scope_id)->RegisterDecl(name, type, n, symbol_id);
 //     std::cout << "Register: " << name << " in " << GetScope(scope_id)->str()<<"\n";
     if(registered){
-      symbolid_of_node_[&n] = symbol_id;
       if(CurrentFunction() != nullptr){
         CurrentFunction()->StoreDecl( *module_declaration_table_[symbol_id], n);
 //         std::cout << "Reg: n:"<< &n << " s: " <<module_declaration_table_[symbol_id].get()
@@ -121,10 +118,8 @@ public:
   bool ForceRegisterDecl(const std::string& function_name, const std::string& name, const Type& type, const Node& n
     , const ScopeId scope_id, const AST::Symbols::SymbolId symbol_id){
     bool registered = GetScope(scope_id)->RegisterDecl(name, type, n, symbol_id);
-    if(registered){
-      symbolid_of_node_[&n] = symbol_id;
+    if(registered)
       GetFunc(function_name).StoreDecl( *module_declaration_table_[symbol_id], n);
-    }
     return registered;
   }
 
@@ -143,11 +138,6 @@ private:
   Library::LangLib  lang_lib_;
   Ast               ast_;
   PtrLexicalScope   module_scope_;
-
-
-  //Referencing structures
-  SymbolIdOfNode                    symbolid_of_node_;
-
 
 public:
   friend class AST::Dump;

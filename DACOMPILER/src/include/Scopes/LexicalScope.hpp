@@ -20,11 +20,9 @@ class LexicalScope : public Scope {
 public:
   LexicalScope(const ScopeId id, LexicalScope* const parent
     , SymbolTable& symbol_table
-    , DeclarationTable& declaration_table
-    , SymbolIdOfNode& symbolid_of_node)
+    , DeclarationTable& declaration_table)
   : Scope(id), parent_(parent)
-    , symbol_table_(symbol_table), declaration_table_(declaration_table)
-    , symbolid_of_node_(symbolid_of_node){}
+    , symbol_table_(symbol_table), declaration_table_(declaration_table){}
 
 
   virtual ~LexicalScope() = default;
@@ -82,7 +80,6 @@ private:
   //these are refence to function
   SymbolTable&      symbol_table_;
   DeclarationTable& declaration_table_;
-  SymbolIdOfNode&   symbolid_of_node_;
 
   //these are local copies to consult when parsing is done
   SymbolTable       post_parse_symbol_table_;

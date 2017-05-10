@@ -3,7 +3,7 @@
 
 namespace Compiler{
 namespace AST{
-  
+
 
 class HierarchicalScope : public Scope{
 public:
@@ -28,7 +28,7 @@ public:
     symbol_table_[name] = symbol_id;
     declaration_table_[symbol_id] = std::make_unique<Symbols::Symbol>
                               (name, type, GetScopeId(), symbol_id);
-//     symbolid_of_node_[&n] = symbol_id;
+
     return true;
   }
 
@@ -60,7 +60,7 @@ public:
 //     DumpScope::Dump(*declaration_table);
     return declaration_table->at(sid)->GetType();
   }
-  
+
   SymbolTableItC Find(const std::string& name)const{
     const DeclarationTable* d;  //won't be used
     return Find(name, &d);
@@ -68,19 +68,19 @@ public:
 
   SymbolTableItC Find(const std::string& name, const DeclarationTable** dec) const{
     auto it = symbol_table_.find(name);
-    if(not IsLast(it)) { 
-        *dec = &declaration_table_; 
+    if(not IsLast(it)) {
+        *dec = &declaration_table_;
         return it;
-    } 
+    }
     //check parents
     for(auto& parent : parents_){
       auto itp = parent->Find(name, dec);
       if(not parent->IsLast(itp)) return itp;
-    }    
+    }
     //not found, return it to last element within this hscope
     return it;
   }
-  
+
   bool IsLast(SymbolTableItC& it) const{
     return it == symbol_table_.end();
   }
@@ -100,7 +100,7 @@ private:
   SymbolTable       symbol_table_;
   DeclarationTable  declaration_table_;
   std::vector<HierarchicalScope*> parents_;
-//   SymbolIdOfNode    symbolid_of_node_;
+
 };
 
 
