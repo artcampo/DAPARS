@@ -65,7 +65,7 @@ public:
     unit_.SetNodeAsLval(p);
   }
 
-  virtual void Visit(NotOp& p){
+  virtual void Visit(NotOp const& p){
     p.Rhs().Accept(*this);
     unit_.SetNodeAsRval(p);
   }

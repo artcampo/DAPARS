@@ -86,7 +86,7 @@ public:
   virtual void Visit(ClassDef const& p){ for(const auto& it : p) it->Accept(*this); }
   virtual void Visit(FuncRet& p){ p.GetCall().Accept(*this); }
   virtual void Visit(RefOp const& p){p.Rhs().Accept(*this);}
-  virtual void Visit(NotOp& p){ p.Rhs().Accept(*this); }
+  virtual void Visit(NotOp const& p){ p.Rhs().Accept(*this); }
 
   //Nothing to do
   virtual void Visit(ProgInit const& p){};

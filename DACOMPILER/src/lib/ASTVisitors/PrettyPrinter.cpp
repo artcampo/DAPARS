@@ -79,7 +79,7 @@ void PrettyPrinter::Visit(BinaryOp const& p){
 }
 
 /////////////////////////////////////////////////////////////////////////////
-void PrettyPrinter::Visit(NotOp& p){
+void PrettyPrinter::Visit(NotOp const& p){
   std::cout << "not ";
   p.Rhs().Accept(*this);
 }
