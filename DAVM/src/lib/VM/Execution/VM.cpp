@@ -77,7 +77,7 @@ bool VirtualMachine::ExecProcess(){
             switch(current_op_code){
               case IR_JMPC: JumpC (reg_dst, Target(literal), sub_type); break;
               case IR_ARII: ArithI(reg_dst, literal, sub_type);         break;
-              default:      error_log_.Exception("op not found (c2)");        break;
+              default:      error_log_.Exception("op not found (c2)");  break;
             }
             break;
 
@@ -88,7 +88,7 @@ bool VirtualMachine::ExecProcess(){
               case IR_ARI:  InstTypeArihmetic (reg_src1, reg_src2, reg_dst, sub_type); break;
               case IR_CMP:  InstTypeComparison(reg_src1, reg_src2, reg_dst, sub_type); break;
               case IR_LOGIC:InstTypeLogic     (reg_src1, reg_src2, reg_dst, sub_type); break;
-              default:      error_log_.Exception("op not found (c3)");                               break;
+              default:      error_log_.Exception("op not found (c3)");                 break;
             }
             break;
 

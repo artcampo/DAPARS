@@ -107,15 +107,15 @@ public:
   virtual void Visit(ClassDef const& p){ for(const auto& it : p) it->Accept(*this); }
 
   //Nothing to do
-  virtual void Visit(ProgInit const& p){};
-  virtual void Visit(ProgEnd const& p){};
-  virtual void Visit(ProgBody const& p){};
-  virtual void Visit(BinaryOp const& p){};
-  virtual void Visit(AssignStmt const& p){};
-  virtual void Visit(Literal const& p){};
-  virtual void Visit(Var& p)    {};
-  virtual void Visit(RefOp const& p){};
-  virtual void Visit(DerefOp const& p){};
+  virtual void Visit(ProgInit const& p){}
+  virtual void Visit(ProgEnd const& p){}
+  virtual void Visit(ProgBody const& p){}
+  virtual void Visit(BinaryOp const& p){}
+  virtual void Visit(AssignStmt const& p){}
+  virtual void Visit(Literal const& p){}
+  virtual void Visit(Var& p)    {}
+  virtual void Visit(RefOp const& p){}
+  virtual void Visit(DerefOp const& p){}
   virtual void Visit(FuncCall& p){}
   virtual void Visit(FuncRet& p){}
   virtual void Visit(ReturnStmt const& p){}

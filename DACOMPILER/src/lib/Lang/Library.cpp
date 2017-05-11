@@ -43,7 +43,6 @@ void LangLib::InitRTFunctionTest(){
   func_scope_id = unit_.NewFunction(name, func_id);
   unit_.RegisterDecl(name, function_type, global_scope_id, sid_func);
 
-
   par_decl_.push_back(std::move(NewVarDecl(name_par, par_type, func_scope_id, l_)));
   const AST::Symbols::SymbolId sid_par = unit_.FreeSymbolId();
   unit_.RegisterDecl(name_par, par_type, func_scope_id, sid_par);
@@ -75,8 +74,8 @@ void LangLib::InitRTFunctionTest(){
 }
 
 void LangLib::InitRTVarsDecl(){
-  const Type& type                  = unit_.GetTypeBool();
-  cond_sid_  = unit_.FreeSymbolId();
+  const Type& type  = unit_.GetTypeBool();
+  cond_sid_         = unit_.FreeSymbolId();
 }
 
 void LangLib::InitRTVarsDef(){
