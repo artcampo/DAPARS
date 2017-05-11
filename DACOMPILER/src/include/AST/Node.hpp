@@ -50,6 +50,7 @@ class Literal;
 class BinaryOp;
 class UnaryOp;
 class RefOp;
+class NotOp;
 
 //subtypes of ExprVar (can evaluate to lval, unlike Expr)
 class Var;

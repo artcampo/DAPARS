@@ -81,6 +81,7 @@ public:
   virtual void Visit(Var& p){}
   virtual void Visit(VarName const& p){}
   virtual void Visit(VarDecl const& p){}
+  virtual void Visit(NotOp& p){}
 
 private:
   CompilationUnit&  unit_;
