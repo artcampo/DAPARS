@@ -64,8 +64,6 @@ private:
   PtrExpr rhs_;
 };
 
-
-
 /////////////////////////////////////////////////////////
 class UnaryOp  {
 public:
@@ -73,6 +71,26 @@ public:
   ~UnaryOp()  = default;
 
   UnaryOp(PtrExpr& rhs) :  rhs_(std::move(rhs)){}
+
+  virtual Expr& Rhs() const noexcept {return *rhs_;}
+
+private:
+  PtrExpr rhs_;
+};
+
+/////////////////////////////////////////////////////////
+class NotOp : public Expr, public UnaryOp  {
+public:
+  //NotOp()   = default;
+  virtual ~NotOp()  = default;
+
+  NotOp(PtrExpr& rhs, const ScopeId id, const Locus& locus)
+    : Expr(id, locus), UnaryOp(rhs){}
+
+  virtual std::string str() const noexcept{return "not " + rhs_->str();};
+
+  virtual void Accept(ASTVisitor& v);
+  virtual void Accept(IRGenerator& v, const Node* successor);
 
   virtual Expr& Rhs() const noexcept {return *rhs_;}
 

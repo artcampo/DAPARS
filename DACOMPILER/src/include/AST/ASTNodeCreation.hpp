@@ -70,6 +70,9 @@ PtrWhileStmt
 NewWhileStmt(PtrExpr& condition, PtrBlock& body
     , const ScopeId id, const Locus& locus);
 
+PtrNotOp
+NewNotOp(PtrExpr& rhs, const ScopeId id, const Locus& locus);
+
 PtrRefOp
 NewRefOp(PtrExpr& rhs, const ScopeId id, const Locus& locus);
 

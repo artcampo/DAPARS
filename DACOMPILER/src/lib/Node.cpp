@@ -24,6 +24,7 @@ void VarDeclList::Accept (ASTVisitor& v){ v.Visit(*this); }
 void VarDecl::Accept     (ASTVisitor& v){ v.Visit(*this); }
 void Var::Accept         (ASTVisitor& v){ v.Visit(*this); }
 void BinaryOp::Accept    (ASTVisitor& v){ v.Visit(*this); }
+void NotOp::Accept       (ASTVisitor& v){ v.Visit(*this); }
 void RefOp::Accept       (ASTVisitor& v){ v.Visit(*this); }
 void DerefOp::Accept     (ASTVisitor& v){ v.Visit(*this); }
 
@@ -50,6 +51,7 @@ void VarDeclList::Accept (IRGenerator& v, const Node* successor){ return v.Visit
 void VarDecl::Accept     (IRGenerator& v, const Node* successor){ return v.Visit(*this, successor); }
 void Var::Accept         (IRGenerator& v, const Node* successor){ return v.Visit(*this, successor); }
 void BinaryOp::Accept    (IRGenerator& v, const Node* successor){ return v.Visit(*this, successor); }
+void NotOp::Accept       (IRGenerator& v, const Node* successor){ return v.Visit(*this, successor); }
 void RefOp::Accept       (IRGenerator& v, const Node* successor){ return v.Visit(*this, successor); }
 void DerefOp::Accept     (IRGenerator& v, const Node* successor){ return v.Visit(*this, successor); }
 void FuncCall::Accept    (IRGenerator& v, const Node* successor){ return v.Visit(*this, successor); }

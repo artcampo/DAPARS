@@ -211,6 +211,9 @@ void IRGenerator::Visit(BinaryOp const& n, const Node* successor){
 
 }
 
+void IRGenerator::Visit(NotOp const& n, const Node* successor){
+}
+
 void IRGenerator::Visit(RefOp const& n, const Node* successor){
   n.Rhs().Accept(*this, successor);
   const MemAddr a       = addr_of_var_[&n.Rhs()];

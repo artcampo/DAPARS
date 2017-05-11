@@ -21,6 +21,7 @@ public:
   virtual void Visit(VarDecl const& p) = 0;
   virtual void Visit(AssignStmt const& p) = 0;
   virtual void Visit(Var& p) = 0;
+  virtual void Visit(NotOp const& p) = 0;
   virtual void Visit(RefOp const& p) = 0;
   virtual void Visit(DerefOp const& p) = 0;
   virtual void Visit(FuncCall& p) = 0;
