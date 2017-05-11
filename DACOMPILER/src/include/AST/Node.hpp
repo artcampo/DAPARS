@@ -88,6 +88,7 @@ using PtrLiteral    = std::unique_ptr<Literal>;
 using PtrBinaryOp   = std::unique_ptr<BinaryOp>;
 using PtrVar        = std::unique_ptr<Var>;
 using PtrUnaryOp    = std::unique_ptr<UnaryOp>;
+using PtrNotOp      = std::unique_ptr<NotOp>;
 using PtrRefOp      = std::unique_ptr<RefOp>;
 using PtrDerefOp    = std::unique_ptr<DerefOp>;
 using PtrFuncRet    = std::unique_ptr<FuncRet>;

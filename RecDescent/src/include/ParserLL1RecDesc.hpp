@@ -50,6 +50,7 @@ private:
 
   PtrExpr Term(const ScopeId scope_inht);
   PtrExpr Factor(const ScopeId scope_inht);
+  PtrExpr NotExpr(const ScopeId scope_inht);
   PtrExpr FactorPrime(const ScopeId scope_inht);
 
   //Control Flow

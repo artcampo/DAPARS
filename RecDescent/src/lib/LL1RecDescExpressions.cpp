@@ -200,20 +200,35 @@ PtrExpr ParserLL1RecDesc::Factor(const ScopeId scope_inht){
   //F := *F'
   if(TryAndAccept(kToken::astk)){
 //     f_synt = New
-    PtrExpr fp_synt = FactorPrime(scope_inht);
+    PtrExpr fp_synt = NotExpr(scope_inht);
     f_synt = NewDerefOp(fp_synt, scope_inht, l);
     return std::move(f_synt);
   }
 
   //F := &F'
   if(TryAndAccept(kToken::ampersand)){
-    PtrExpr fp_synt = FactorPrime(scope_inht);
+    PtrExpr fp_synt = NotExpr(scope_inht);
     f_synt = NewRefOp(fp_synt, scope_inht, l);
     return std::move(f_synt);
   }
 
   //F := F'
-  return std::move(FactorPrime(scope_inht));
+  return std::move(NotExpr(scope_inht));
+}
+
+// NotExpr := not F' | F'
+PtrExpr ParserLL1RecDesc::NotExpr(const ScopeId scope_inht){
+  Locus l = CurrentLocus();
+  PtrExpr fp_synt = FactorPrime(scope_inht);
+
+  // not F'
+  if(TryAndAccept(kToken::kwd_not)){
+    PtrExpr f_synt = NewNotOp(fp_synt, scope_inht, l);
+    return std::move(f_synt);
+  }
+
+  // F'
+  return std::move(fp_synt);
 }
 
 // F := ( E ) | numerical

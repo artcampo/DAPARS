@@ -111,6 +111,13 @@ NewWhileStmt(PtrExpr& condition, PtrBlock& body
   return std::make_unique<WhileStmt>( condition, body, id, locus);
 }
 
+PtrNotOp
+NewNot(PtrExpr& rhs, const ScopeId id, const Locus& locus){
+  if(rhs.get() == nullptr) return PtrNotOp(nullptr);
+  return std::make_unique<NotOp>(rhs, id, locus);
+}
+
+
 PtrRefOp
 NewRefOp(PtrExpr& rhs, const ScopeId id, const Locus& locus){
   if(rhs.get() == nullptr) return PtrRefOp(nullptr);
