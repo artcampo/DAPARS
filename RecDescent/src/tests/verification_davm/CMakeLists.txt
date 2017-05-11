@@ -5,10 +5,12 @@ INSTALL(FILES #input lang files
               lang_internal_test.lang
               lang_internal_test_false.lang
               error_stack_overflow.lang
+              lang_while.lang
 
               #output of davm of their execution
               functions.vm.ver
               lang_internal_test.vm.ver
               lang_internal_test_false.vm.ver
               error_stack_overflow.vm.ver
+              lang_while.vm.ver
         DESTINATION tests/davm_tests)

@@ -74,7 +74,6 @@ using PtrBlock      = std::unique_ptr<Block>;
 using PtrFuncDef    = std::unique_ptr<FuncDef>;
 using PtrFuncDecl   = std::unique_ptr<FuncDecl>;
 
-
 using PtrStatement  = std::unique_ptr<Statement>;
 using PtrIfStmt     = std::unique_ptr<IfStmt>;
 using PtrWhileStmt  = std::unique_ptr<WhileStmt>;
@@ -96,7 +95,6 @@ using PtrClassDef   = std::unique_ptr<ClassDef>;
 using PtrVarName    = std::unique_ptr<VarName>;
 using PtrExprVar    = std::unique_ptr<ExprVar>;
 using PtrDotOp      = std::unique_ptr<DotOp>;
-
 
 }//end namespace Ptrs
 

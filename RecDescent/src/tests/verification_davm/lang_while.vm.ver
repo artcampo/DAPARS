@@ -1,0 +1,21 @@
+EXEC
+OP: LOADI R1 <- 0
+OP: STORE [@0] <- R1 val: 0
+OP: LOADI R2 <- 11
+OP: LST R3 <- R1 < R2
+OP: OP: OP: LOAD R1 <- [@0], val = 0 
+OP: LOADI R2 <- 10
+OP: EQL R3 <- R1 == R2
+OP: MOVE R0 <- R3 
+OP: Call 18 ret@: 15
+OP: PUSH [@4294963192] <- R14
+OP: MOVE R14 <- R15 
+OP: LOAD R1 <- [@-4], val = 1049598 
+OP: OP: STORE [@-4] <- R2 val: 10
+OP: MOVE R15 <- R14 
+OP: POP R14 <- [@4294963192]
+OP: Return 15
+OP: MOVE R1 <- R0 
+OP: MOVE R0 <- R1 
+STOP
+Registers: 0, 0, 10, 0, 0, 0, 0, 0, 0, 0
