@@ -36,11 +36,12 @@ Closed class structure.
 
 -- Operators
 The order of preference is as follows:
-1) &, *
-2) +
-3) <, ==
-4) and
-5) or
+1) not
+2) &, *
+3) +
+4) <, ==
+5) and
+6) or
 
 ------------------------------------
 
