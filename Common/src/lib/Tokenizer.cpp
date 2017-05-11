@@ -102,6 +102,12 @@ ParseKeyword(std::vector<char>::const_iterator& current_position
     current_position += 3; t = kToken::kwd_and; return true;
   }
 
+  if( chars_left >= 3
+     and *(current_position) == 'n'  and *(current_position + 1) == 'o'
+     and *(current_position + 2) == 't'){
+    current_position += 3; t = kToken::kwd_not; return true;
+  }
+
   //TODO: delete these
   //For dragon test grammar
   if(chars_left >= 2){
@@ -217,6 +223,7 @@ std::string str(const kToken& t){
 
     case kToken::kwd_or:    return "or";  break;
     case kToken::kwd_and:   return "and";  break;
+    case kToken::kwd_not:   return "not";  break;
 
     case kToken::numerical: return "num";  break;
     case kToken::name:      return "name";  break;

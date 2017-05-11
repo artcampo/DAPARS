@@ -52,6 +52,7 @@ void CreateGrammarDalang(G& g){
 
   const Symbol kwd_or    = g.AddTerminalKeyword("OR", "or", Tokenizer::kToken::kwd_or);
   const Symbol kwd_and   = g.AddTerminalKeyword("AND", "and", Tokenizer::kToken::kwd_and);
+  const Symbol kwd_not   = g.AddTerminalKeyword("NOT", "not", Tokenizer::kToken::kwd_not);
 
 
 
@@ -97,6 +98,7 @@ void CreateGrammarDalang(G& g){
   const Symbol T      = g.AddNonTerminal("T");
   const Symbol TP     = g.AddNonTerminal("T''");
   const Symbol F      = g.AddNonTerminal("F");
+  const Symbol NOT_E  = g.AddNonTerminal("NOT_E");
   const Symbol FP     = g.AddNonTerminal("F'");
 
   //Extension of name
@@ -197,9 +199,12 @@ void CreateGrammarDalang(G& g){
 
   g.AddRule(Rule(T,   {F}));
 
-  g.AddRule(Rule(F,  {amps, FP}));
-  g.AddRule(Rule(F,  {astk, FP}));
-  g.AddRule(Rule(F,  {FP}));
+  g.AddRule(Rule(F,  {amps, NOT_E}));
+  g.AddRule(Rule(F,  {astk, NOT_E}));
+  g.AddRule(Rule(F,  {NOT_E}));
+
+  g.AddRule(Rule(NOT_E,  {kwd_not, FP}));
+  g.AddRule(Rule(NOT_E,  {FP}));
 
   g.AddRule(Rule(FP,  {lpar, E, rpar}));
   g.AddRule(Rule(FP,  {numr}));

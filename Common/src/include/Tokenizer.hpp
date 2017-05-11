@@ -16,7 +16,7 @@ enum class kToken{ eof, numerical, name
                  , kwd_if, kwd_else, kwd_while, kwd_return
                  , kwd_int, kwd_bool, kwd_void, kwd_class
                  , kwd_true, kwd_false
-                 , kwd_or, kwd_and
+                 , kwd_or, kwd_and, kwd_not
                  , semicolon, comma, ampersand
                  , name_type  //only if pre-registered
                  , error  //should not be issued

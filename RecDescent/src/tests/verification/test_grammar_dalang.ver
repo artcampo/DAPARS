@@ -11,6 +11,7 @@ KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
 KEYWORD EXTRA INFO NOT IMPLEMENTED
+KEYWORD EXTRA INFO NOT IMPLEMENTED
 Dalang grammar v0.3
 Grammar:
 PROG -> DEFL  init 
@@ -69,9 +70,11 @@ NE -> T NE'
 NE' -> + T NE' 
 NE' -> {empty} 
 T -> F 
-F -> & F' 
-F -> * F' 
-F -> F' 
+F -> & NOT_E 
+F -> * NOT_E 
+F -> NOT_E 
+NOT_E -> not F' 
+NOT_E -> F' 
 F' -> ( E ) 
 F' -> {num} 
 F' -> {nam} ARGM 
@@ -83,17 +86,17 @@ ARGM -> . {nam} ARGM
 
 -----------------------------
 First Table
-AE => & * false ( {nam} {num}  true 
+AE => & * false ( {nam} not {num}  true 
 AE'' => and {empty} 
-ARGL => & * {empty} false ( {nam} {num}  true 
+ARGL => & * {empty} false ( {nam} not {num}  true 
 ARGLP => , {empty} 
 ARGM => . {empty} ( 
 CDEF => class 
 DECL => bool int ntype void 
 DEFL => bool class {empty} int ntype void 
-E => & * false ( {nam} {num}  true 
+E => & * false ( {nam} not {num}  true 
 E' => {empty} or 
-F => & * false ( {nam} {num}  true 
+F => & * false ( {nam} not {num}  true 
 F' => false ( {nam} {num}  true 
 FDEF => bool int ntype void 
 IFELSE => else {empty} 
@@ -103,17 +106,18 @@ MEMBER => ( ;
 MEMBER_LIST => bool {empty} int ntype void 
 NAME_LIST => {nam} 
 NAME_LIST' => , {empty} 
-NE => & * false ( {nam} {num}  true 
+NE => & * false ( {nam} not {num}  true 
 NE' => {empty} + 
+NOT_E => false ( {nam} not {num}  true 
 PAR => bool int ntype void 
 PARL => bool {empty} int ntype void 
 PARLP => , {empty} 
 PROG => bool class {empty} int ntype void 
-RE => & * false ( {nam} {num}  true 
+RE => & * false ( {nam} not {num}  true 
 RE' => {empty} == < 
-STMT => & * bool false if int ( {nam} ntype {num} return  true void while 
-STMTS => & * bool {empty} false if int ( {nam} ntype {num} return  true void while 
-T => & * false ( {nam} {num}  true 
+STMT => & * bool false if int ( {nam} not ntype {num} return  true void while 
+STMTS => & * bool {empty} false if int ( {nam} not ntype {num} return  true void while 
+T => & * false ( {nam} not {num}  true 
 TYPE => bool int ntype void 
 TYPE' => * {empty} 
 -----------------------------
@@ -131,7 +135,7 @@ E' => , = ) ;
 F => and , == = < or + ) ; 
 F' => and , == = < or + ) ; 
 FDEF => bool class {eof} int ntype void 
-IFELSE => & * bool false if int ( {nam} ntype {num} } return  true void while 
+IFELSE => & * bool false if int ( {nam} not ntype {num} } return  true void while 
 INHT_LIST => { 
 INHT_LIST' => { 
 MEMBER => bool int ntype } void 
@@ -140,23 +144,24 @@ NAME_LIST => ;
 NAME_LIST' => ; 
 NE => and , == = < or ) ; 
 NE' => and , == = < or ) ; 
+NOT_E => and , == = < or + ) ; 
 PAR => , ) 
 PARL => ) 
 PARLP => ) 
 PROG => {eof} 
 RE => and , = or ) ; 
 RE' => and , = or ) ; 
-STMT => & * bool false if int ( {nam} ntype {num} } return  true void while 
+STMT => & * bool false if int ( {nam} not ntype {num} } return  true void while 
 STMTS => } 
 T => and , == = < or + ) ; 
 TYPE => {nam} 
 TYPE' => {nam} 
 -----------------------------
 First+ Table
-AE -> RE AE''  => & * false ( {nam} {num}  true 
+AE -> RE AE''  => & * false ( {nam} not {num}  true 
 AE'' -> and RE AE''  => and 
 AE'' -> {empty}  => , {empty} = or ) ; 
-ARGL -> E ARGLP  => & * false ( {nam} {num}  true 
+ARGL -> E ARGLP  => & * false ( {nam} not {num}  true 
 ARGL -> {empty}  => {empty} ) 
 ARGLP -> , E ARGLP  => , 
 ARGLP -> {empty}  => {empty} ) 
@@ -168,12 +173,12 @@ DECL -> TYPE NAME_LIST  => bool int ntype void
 DEFL -> CDEF DEFL  => class 
 DEFL -> {empty}  => {empty} {eof} 
 DEFL -> FDEF DEFL  => bool int ntype void 
-E -> AE E'  => & * false ( {nam} {num}  true 
+E -> AE E'  => & * false ( {nam} not {num}  true 
 E' -> {empty}  => , {empty} = ) ; 
 E' -> or AE E'  => or 
-F -> & F'  => & 
-F -> * F'  => * 
-F -> F'  => false ( {nam} {num}  true 
+F -> & NOT_E  => & 
+F -> * NOT_E  => * 
+F -> NOT_E  => false ( {nam} not {num}  true 
 F' -> false  => false 
 F' -> ( E )  => ( 
 F' -> {nam} ARGM  => {nam} 
@@ -181,7 +186,7 @@ F' -> {num}  => {num}
 F' ->  true  =>  true 
 FDEF -> TYPE {nam} ( PARL ) { STMTS }  => bool int ntype void 
 IFELSE -> else { STMTS }  => else 
-IFELSE -> {empty}  => & * bool {empty} false if int ( {nam} ntype {num} } return  true void while 
+IFELSE -> {empty}  => & * bool {empty} false if int ( {nam} not ntype {num} } return  true void while 
 INHT_LIST -> : ntype INHT_LIST'  => : 
 INHT_LIST -> {empty}  => {empty} { 
 INHT_LIST' -> , ntype INHT_LIST'  => , 
@@ -193,27 +198,29 @@ MEMBER_LIST -> TYPE {nam} MEMBER MEMBER_LIST  => bool int ntype void
 NAME_LIST -> {nam} NAME_LIST'  => {nam} 
 NAME_LIST' -> , {nam} NAME_LIST'  => , 
 NAME_LIST' -> {empty}  => {empty} ; 
-NE -> T NE'  => & * false ( {nam} {num}  true 
+NE -> T NE'  => & * false ( {nam} not {num}  true 
 NE' -> {empty}  => and , {empty} == = < or ) ; 
 NE' -> + T NE'  => + 
+NOT_E -> F'  => false ( {nam} {num}  true 
+NOT_E -> not F'  => not 
 PAR -> TYPE {nam}  => bool int ntype void 
 PARL -> {empty}  => {empty} ) 
 PARL -> PAR PARLP  => bool int ntype void 
 PARLP -> , PAR PARLP  => , 
 PARLP -> {empty}  => {empty} ) 
 PROG -> DEFL  init  => bool class {empty} int ntype void 
-RE -> NE RE'  => & * false ( {nam} {num}  true 
+RE -> NE RE'  => & * false ( {nam} not {num}  true 
 RE' -> {empty}  => and , {empty} = or ) ; 
 RE' -> == NE RE'  => == 
 RE' -> < NE RE'  => < 
 STMT -> DECL ;  => bool int ntype void 
-STMT -> E = E ;  => & * false ( {nam} {num}  true 
+STMT -> E = E ;  => & * false ( {nam} not {num}  true 
 STMT -> if ( E ) { STMTS } IFELSE  => if 
 STMT -> return E ;  => return 
 STMT -> while ( E ) { STMTS }  => while 
 STMTS -> {empty}  => {empty} } 
-STMTS -> STMT STMTS  => & * bool false if int ( {nam} ntype {num} return  true void while 
-T -> F  => & * false ( {nam} {num}  true 
+STMTS -> STMT STMTS  => & * bool false if int ( {nam} not ntype {num} return  true void while 
+T -> F  => & * false ( {nam} not {num}  true 
 TYPE -> bool TYPE'  => bool 
 TYPE -> int TYPE'  => int 
 TYPE -> ntype TYPE'  => ntype 
