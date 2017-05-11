@@ -64,9 +64,11 @@ NE    := T NE'
 NE'   := + T NE'
       |  empty
 T     := F
-F     := *F'
-      |  &F'
-      |  F'
+F     := *NotExpr'
+      |  &NotExpr'
+      |  NotExpr'
+NotExpr  := not F'
+         | F'
 F'    := ( E )
       |  numerical
       |  true
