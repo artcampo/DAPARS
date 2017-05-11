@@ -117,7 +117,7 @@ public:
     //const Type& dotop_type = s.GetType(name);
   }
 
-  virtual void Visit(NotOp& p){
+  virtual void Visit(NotOp const& p){
     p.Rhs().Accept(*this);
     const Type& type_rhs = unit_.GetTypeOfNode(p.Rhs());
     if(type_rhs != unit_.GetTypeBool()) unit_.Error(kErr55, p.GetLocus());

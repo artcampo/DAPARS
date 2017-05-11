@@ -69,7 +69,7 @@ public:
   virtual void Visit(ReturnStmt const& p){}
   virtual void Visit(VarName const& p){}
   virtual void Visit(DotOp const& p){}
-  virtual void Visit(NotOp& p){}
+  virtual void Visit(NotOp const& p){}
 
 private:
   CompilationUnit&  unit_;

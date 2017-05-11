@@ -30,7 +30,7 @@ public:
   virtual void Visit(ClassDef const& p);
   virtual void Visit(VarName const& p);
   virtual void Visit(DotOp const& p);
-  virtual void Visit(NotOp& p);
+  virtual void Visit(NotOp const& p);
 
 
   Dump(CompilationUnit& unit, const bool show_attributes = false, const bool ast_has_type_info = true)
