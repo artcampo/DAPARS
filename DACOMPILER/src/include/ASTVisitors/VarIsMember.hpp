@@ -99,6 +99,7 @@ public:
   virtual void Visit(ReturnStmt const& p){ p.RetExpr().Accept(*this); }
   virtual void Visit(RefOp const& p){ p.Rhs().Accept(*this); }
   virtual void Visit(DerefOp const& p){ p.Rhs().Accept(*this); }
+  virtual void Visit(NotOp& p){ p.Rhs().Accept(*this); }
 
   //Nothing to do
   virtual void Visit(ProgInit const& p){}

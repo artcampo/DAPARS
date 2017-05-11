@@ -73,7 +73,14 @@ void Dump::Visit(BinaryOp const& p){
   IncreaseIndent();
   Indent(); p.Lhs().Accept(*this); std::cout << "\n";
   Indent(); p.Rhs().Accept(*this);
+  DecreaseIndent();
+}
 
+/////////////////////////////////////////////////////////////////////////////
+void Dump::Visit(NotOp& p){
+  std::cout << "Not "; DisplayAttributes(p); std::cout <<"\n";
+  IncreaseIndent();
+  p.Rhs().Accept(*this);
   DecreaseIndent();
 }
 

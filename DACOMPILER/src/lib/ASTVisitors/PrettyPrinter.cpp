@@ -79,6 +79,12 @@ void PrettyPrinter::Visit(BinaryOp const& p){
 }
 
 /////////////////////////////////////////////////////////////////////////////
+void PrettyPrinter::Visit(NotOp& p){
+  std::cout << "not ";
+  p.Rhs().Accept(*this);
+}
+
+/////////////////////////////////////////////////////////////////////////////
 void PrettyPrinter::Visit(DeclStmt const& p){
   p.GetVarDeclList().Accept(*this);
 }

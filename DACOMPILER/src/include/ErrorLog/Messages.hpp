@@ -47,6 +47,7 @@ const static std::string kErr51("[err:51] Rhs is not Int");
 const static std::string kErr52("[err:50] Lhs is not Bool");
 const static std::string kErr53("[err:51] Rhs is not Bool");
 const static std::string kErr54("[err:54] Lhs and Rhs do not match");
+const static std::string kErr55("[err:55] Rhs of not is not Bool");
 
 const static std::string kErr80("[err:80] class declaration name missing");
 const static std::string kErr81("[err:81] class declaration not started with '{'");

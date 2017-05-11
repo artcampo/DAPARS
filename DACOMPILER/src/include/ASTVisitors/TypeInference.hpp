@@ -34,6 +34,11 @@ public:
       unit_.SetTypeOfNode(p, unit_.GetTypeBool());
   }
 
+  virtual void Visit(NotOp& p){
+    p.Rhs().Accept(*this);
+    unit_.SetTypeOfNode(p, unit_.GetTypeBool());
+  }
+
   virtual void Visit(AssignStmt const& p){
     p.Lhs().Accept(*this);
     p.Rhs().Accept(*this);

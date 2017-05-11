@@ -58,12 +58,17 @@ public:
     else
       unit_.SetNodeAsRval(p);
   }
-  
+
   virtual void Visit(DotOp const& p){
     p.Lhs().Accept(*this);
     p.Rhs().Accept(*this);
     unit_.SetNodeAsLval(p);
-  }  
+  }
+
+  virtual void Visit(NotOp& p){
+    p.Rhs().Accept(*this);
+    unit_.SetNodeAsRval(p);
+  }
 
   //Traversal
   virtual void Visit(ProgBody const& p){
