@@ -1,9 +1,8 @@
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../include")
 
-INSTALL(FILES test1.ver
-              test2.ver
-              test3.ver
-              test3.ver
+INSTALL(FILES test_loadi.ver
+              test_arith.ver
+              test_comparisons.ver
               test_mem.ver
               test_stack.ver
               test_call.ver

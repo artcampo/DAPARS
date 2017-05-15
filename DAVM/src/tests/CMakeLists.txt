@@ -3,14 +3,14 @@ add_subdirectory(verification)
 
 add_definitions( -std=c++14 -g)
 
-add_executable(test1 test1.cpp)
-target_link_libraries(test1 VM)
+add_executable(test_loadi test_loadi.cpp)
+target_link_libraries(test_loadi VM)
 
-add_executable(test2 test2.cpp)
-target_link_libraries(test2 VM)
+add_executable(test_arith test_arith.cpp)
+target_link_libraries(test_arith VM)
 
-add_executable(test3 test3.cpp)
-target_link_libraries(test3 VM)
+add_executable(test_comparisons test_comparisons.cpp)
+target_link_libraries(test_comparisons VM)
 
 add_executable(test_mem test_mem.cpp)
 target_link_libraries(test_mem VM)
@@ -33,9 +33,9 @@ target_link_libraries(davm VM)
 
 
 INSTALL(TARGETS
-        test1
-        test2
-        test3
+        test_loadi
+        test_arith
+        test_comparisons
         test_mem
         test_stack
         test_call

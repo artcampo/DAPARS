@@ -1,0 +1,20 @@
+RAW bytecode:
+5
+8229
+67595
+98315
+133147
+166043
+4
+LOADI, r0 val: 0
+LOADI, r1 val: 1
+OR, rs0 rs1 rd2
+OR, rs0 rs0 rd3
+AND, rs0 rs1 rd4
+AND, rs1 rs1 rd5
+STOP
+EXEC
+OP: LOADI R0 <- 0
+OP: LOADI R1 <- 1
+OP: OP: OP: OP: STOP
+Registers: 0, 1, 0, 0, 0, 0, 0, 0, 0, 0

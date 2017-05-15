@@ -20,9 +20,9 @@ test_standalone(){
     rm $1.out
 }
 
-test_standalone test1
-test_standalone test2
-test_standalone test3
+test_standalone test_loadi
+test_standalone test_arith
+test_standalone test_comparisons
 test_standalone test_mem
 test_standalone test_stack
 test_standalone test_call

@@ -20,9 +20,9 @@ regenerate_test_standalone(){
   cp $1.ver ../../../src/tests/verification/.
 }
 
-regenerate_test_standalone test1
-regenerate_test_standalone test2
-regenerate_test_standalone test3
+regenerate_test_standalone test_loadi
+regenerate_test_standalone test_arith
+regenerate_test_standalone test_comparisons
 regenerate_test_standalone test_mem
 regenerate_test_standalone test_stack
 regenerate_test_standalone test_call
