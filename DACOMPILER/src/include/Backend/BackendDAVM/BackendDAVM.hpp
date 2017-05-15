@@ -41,6 +41,7 @@ public:
     for(auto& it : ir_unit_.streams_) Visit(*it);
     BackpathCallTargets();
 
+    byte_code_.SetPerformCompilerTest();
     std::cout << "---------\nBytecode:\n";
     VM::VMUtils::print(byte_code_, true);
   }

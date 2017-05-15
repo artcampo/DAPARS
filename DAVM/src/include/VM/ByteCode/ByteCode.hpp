@@ -82,6 +82,7 @@ struct ByteCode{
 //   friend void writeByteCode(ByteCode const &byte_code, std::string const &file_name);
 
   bool PerformCompilerTest() const noexcept{ return perform_compiler_test_; }
+  void SetPerformCompilerTest() noexcept{ perform_compiler_test_ = true; }
 
   //TODO:make private
   std::vector<Inst> stream;
