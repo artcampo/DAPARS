@@ -4,6 +4,7 @@
 #include "VM/ByteCode/IRBuilder.hpp"
 #include "VM/ByteCode/IRDefinition.hpp"
 #include "VM/VMSpec.hpp"
+#include "VM/ByteCode/MemChunk.hpp"
 #include <iostream>
 
 int main(){
@@ -24,6 +25,8 @@ int main(){
     Load( IR_REG1, 3 + (1 << (kPageNumBits - kWordNumBits)) ),
     Stop ()
   };
+
+  bc->SetMemUser(MemChunk(0, 3 + (1 << (kPageNumBits - kWordNumBits))));
 
   if(!checkIRCodification()){
     std::cout << "IR sizes invalid\n";

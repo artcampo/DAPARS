@@ -26,6 +26,11 @@ struct MemChunk{
     return MemChunk(Spec::kMaxAddress - Spec::kPageSize + 1, Spec::kMaxAddress);
   }
 
+  static MemChunk DefaultStackPages(){
+    return MemChunk(Spec::kMaxAddress - Spec::kPageSize*2 + 1
+                  , Spec::kMaxAddress - Spec::kPageSize);
+  }
+
   static Addr LastWord(){
     return Spec::CompilerMemory::kTestBoolAddress;
   }

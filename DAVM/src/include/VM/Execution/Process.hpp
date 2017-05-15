@@ -21,7 +21,10 @@ class Process : public Internal::ExecutionContext
 public:
   Process(const ByteCode &byte_code)
     : byte_code_(byte_code)
-    , error_log_(ErrorLog::GetInstance()){};
+    , error_log_(ErrorLog::GetInstance()){
+      Allocate(byte_code_.mem_stack_);
+      for(const auto& it : byte_code_.mem_user_space_) Allocate(it);
+    }
 
   void NextOpCode();
 

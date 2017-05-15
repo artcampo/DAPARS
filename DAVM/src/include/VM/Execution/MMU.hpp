@@ -31,11 +31,21 @@ protected:
   , address_mask_((1 << (Spec::kPageNumBits)) - 1)
   , error_log_(ErrorLog::GetInstance()){}
 
-  ~MMU(){
-    for(auto& it : page_mapping_) delete it.second.vector_;
-  }
+  ~MMU(){ for(auto& it : page_mapping_) delete it.second.vector_; }
 
   Word *const LogicalToPhysical(const Addr addr){
+    Addr page = PageOfAddr(addr);
+    auto it = page_mapping_.find(page);
+    if(it == page_mapping_.end()){
+      error_log_.Exception("Page fault");
+      return 0;
+    }
+//     std::cout << "** Mem " << addr<< " page " << page << " offset: " << (addr & address_mask_)
+//       << " physical " << PointerOfAddr(addr, it->second) <<"\n";
+    return PointerOfAddr(addr, it->second);
+  }
+
+  void AllocateLogical(const Addr addr){
     Addr page = PageOfAddr(addr);
     auto it = page_mapping_.find(page);
     if(it == page_mapping_.end()){
@@ -44,13 +54,7 @@ protected:
       desc.address_ = &(*desc.vector_)[0];
       page_mapping_[page] = desc;
       testing_.WritePage(*desc.vector_, page);
-//       std::cout << "** Mem " << addr<< " page " << page << " offset: " << (addr & address_mask_)
-//         << " physical " << PointerOfAddr(addr, desc)  <<"\n";
-      return PointerOfAddr(addr, desc);
     }
-//     std::cout << "** Mem " << addr<< " page " << page << " offset: " << (addr & address_mask_)
-//       << " physical " << PointerOfAddr(addr, it->second) <<"\n";
-    return PointerOfAddr(addr, it->second);
   }
 
 private:

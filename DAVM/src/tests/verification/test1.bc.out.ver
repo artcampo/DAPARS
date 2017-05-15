@@ -1,6 +1,6 @@
 EXEC
 OP: LOADI R0 <- 0
-OP: PUSH [@4294967293] <- R8
+OP: PUSH [@4294963196] <- R8
 OP: ADD R0 <- R4 + R8
 STOP
 Registers: 0, 0, 0, 0, 0, 0, 0, 0, 0, 0

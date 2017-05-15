@@ -11,7 +11,10 @@
 namespace VM{
 
 struct ByteCode{
-  ByteCode() : perform_compiler_test_(false){}
+  ByteCode()
+    : perform_compiler_test_(false)
+    , mem_stack_(MemChunk::DefaultStackPages())  //default stack for hardcoded BC tests
+  {}
 
   void Append(const Inst inst){ stream.push_back(inst);}
 

@@ -136,11 +136,12 @@ void VirtualMachine::DumpExecutionContext(int const registers_num) const{
   }
 }
 
-int VirtualMachine::LoadProcess(const std::string &file_name){
-  std::unique_ptr<ByteCode> byte_code(ReadByteCode(file_name));
-}
+// int VirtualMachine::LoadProcess(const std::string &file_name){
+//   std::unique_ptr<ByteCode> byte_code(ReadByteCode(file_name));
+//   process_->Allocate( mem_stack_);
+// }
 
-//inits the machine to a blank state
+//inits the machine to a blank state TODO: not finished!! (not used either)
 void VirtualMachine::ColdBoot(){
   process_->StackReg() = byte_code_.StackRegisterInitAddress();
 //   std::cout << "Set SR: " << Addr(byte_code_.StackRegisterInitAddress())<< "\n";
