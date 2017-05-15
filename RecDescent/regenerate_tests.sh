@@ -1,3 +1,5 @@
+cd ../build
+make install -j8 >/dev/null
 cd ../install/tests/ll1
 
 ###################################################################
@@ -30,6 +32,8 @@ regenerate_test_comp_davm lang_internal_test_false
 regenerate_test_comp_davm error_stack_overflow
 regenerate_test_comp_davm lang_while
 
+###################################################################
+#
 
 ###################################################################
 #end

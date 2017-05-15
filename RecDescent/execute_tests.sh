@@ -1,3 +1,5 @@
+cd ../build
+make install -j8 >/dev/null
 cd ../install/tests/ll1
 
 ###################################################################
@@ -37,6 +39,6 @@ test_comp_davm lang_while
 ###################################################################
 # test of sub-repo: DAVM
 
-# cd ../../../
-# pwd
-# ./DAVM/execute_tests.sh
+cd ../../../
+pwd
+./DAVM/execute_tests.sh

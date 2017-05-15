@@ -1,4 +1,6 @@
-cd install/tests/davm_tests
+cd build
+make install -j8 >/dev/null
+cd ../install/tests/davm_tests
 
 ###################################################################
 regenerate_test_from_dacomp(){

@@ -1,5 +1,7 @@
 #!/bin/sh
-cd install/tests/davm_tests
+cd build
+make install -j8 >/dev/null
+cd ../install/tests/davm_tests
 
 test_from_dacomp(){
   echo "Test from compiler: $1"
