@@ -31,7 +31,6 @@ struct MemChunk{
   }
 
 
-
   friend std::istream& operator>>(std::istream &is, MemChunk& m);
   friend std::ostream& operator<<(std::ostream& os, const MemChunk& m);
 };
