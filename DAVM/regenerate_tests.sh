@@ -1,12 +1,12 @@
-cd install/tests
+cd install/tests/davm_tests
 
 ###################################################################
 regenerate_test_from_dacomp(){
-  cp ../../../DACOMPILER/src/tests/verification/$1.bc.ver .
-  cp ../../../DACOMPILER/src/tests/verification/$1.bc.ver \
-     ../../src/tests/verification/.
+  cp ../../../../DACOMPILER/src/tests/verification/$1.bc.ver .
+  cp ../../../../DACOMPILER/src/tests/verification/$1.bc.ver \
+     ../../../src/tests/verification/.
   ./davm $1.bc.ver > $1.bc.out.ver
-  cp $1.bc.out.ver ../../src/tests/verification/.
+  cp $1.bc.out.ver ../../../src/tests/verification/.
 }
 
 regenerate_test_from_dacomp test1
@@ -17,7 +17,7 @@ regenerate_test_from_dacomp test1
 ###################################################################
 regenerate_test_standalone(){
   ./$1 > $1.ver
-  cp $1.ver ../../src/tests/verification/.
+  cp $1.ver ../../../src/tests/verification/.
 }
 
 regenerate_test_standalone test1
@@ -26,6 +26,7 @@ regenerate_test_standalone test3
 regenerate_test_standalone test_mem
 regenerate_test_standalone test_stack
 regenerate_test_standalone test_call
+regenerate_test_standalone test_logic
 
 #end
 echo "Tests regenerated. You need to reinstall before running tests again."

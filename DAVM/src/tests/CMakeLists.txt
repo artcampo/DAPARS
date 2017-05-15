@@ -21,11 +21,15 @@ target_link_libraries(test_stack VM)
 add_executable(test_call test_call.cpp)
 target_link_libraries(test_call VM)
 
-add_executable(davm main.cpp)
-target_link_libraries(davm VM)
+add_executable(test_logic test_logic.cpp)
+target_link_libraries(test_logic VM)
 
 add_executable(unit_test unit_test.cpp)
 target_link_libraries(unit_test VM)
+
+#VM interpreter
+add_executable(davm main.cpp)
+target_link_libraries(davm VM)
 
 
 INSTALL(TARGETS
@@ -35,6 +39,7 @@ INSTALL(TARGETS
         test_mem
         test_stack
         test_call
+        test_logic
         davm
         unit_test
         DESTINATION tests/davm_tests)

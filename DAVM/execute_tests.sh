@@ -1,5 +1,5 @@
 #!/bin/sh
-cd install/tests
+cd install/tests/davm_tests
 
 test_from_dacomp(){
   echo "Test from compiler: $1"
@@ -26,6 +26,7 @@ test_standalone test3
 test_standalone test_mem
 test_standalone test_stack
 test_standalone test_call
+test_standalone test_logic
 
 #unit test, should give message only on error
 ./unit_test

@@ -1,9 +1,9 @@
 EXEC
-OP: LOADI R0<-2
-OP: Call 3
-OP: LOADI R1<-3
-OP: Call 6
-OP: LOADI R2<-4
+OP: LOADI R0 <- 2
+OP: Call 3 ret@: 2
+OP: LOADI R1 <- 3
+OP: Call 6 ret@: 5
+OP: LOADI R2 <- 4
 OP: Return 5
 OP: Return 2
 STOP

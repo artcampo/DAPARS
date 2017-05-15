@@ -22,15 +22,15 @@ LST, rs2 rs1 rd8
 LTE, rs2 rs1 rd9
 STOP
 EXEC
-OP: LOADI R0<-42
-OP: LOADI R1<-42
-OP: LOADI R2<-12
-OP: NOT R3= !R0
-OP: EQL R4=R0 == R1
-OP: LST R5=R0 < R1
-OP: LTE R6=R0 <= R1
-OP: EQL R7=R2 == R1
-OP: LST R8=R2 < R1
-OP: LTE R9=R2 <= R1
+OP: LOADI R0 <- 42
+OP: LOADI R1 <- 42
+OP: LOADI R2 <- 12
+OP: NOT R3 <-  !R0
+OP: EQL R4 <- R0 == R1
+OP: LST R5 <- R0 < R1
+OP: LTE R6 <- R0 <= R1
+OP: EQL R7 <- R2 == R1
+OP: LST R8 <- R2 < R1
+OP: LTE R9 <- R2 <= R1
 STOP
 Registers: 42, 42, 12, 0, 1, 0, 1, 0, 1, 1
