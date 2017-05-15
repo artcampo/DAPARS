@@ -11,4 +11,5 @@ test_folder LALR
 test_folder LR1
 test_folder GrammarAnalysis
 test_folder RecDescent
+test_folder DAVM
 

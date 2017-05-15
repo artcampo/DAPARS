@@ -33,14 +33,8 @@ regenerate_test_comp_davm error_stack_overflow
 regenerate_test_comp_davm lang_while
 
 ###################################################################
-#
-
-###################################################################
 #end
 echo "Tests regenerated. You need to reinstall before running tests again."
-
-
-
 
 
 ###################################################################
