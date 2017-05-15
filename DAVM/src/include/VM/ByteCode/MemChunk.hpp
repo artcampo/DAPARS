@@ -26,6 +26,12 @@ struct MemChunk{
     return MemChunk(Spec::kMaxAddress - Spec::kPageSize + 1, Spec::kMaxAddress);
   }
 
+  static Addr LastWord(){
+    return Spec::CompilerMemory::kTestBoolAddress;
+  }
+
+
+
   friend std::istream& operator>>(std::istream &is, MemChunk& m);
   friend std::ostream& operator<<(std::ostream& os, const MemChunk& m);
 };

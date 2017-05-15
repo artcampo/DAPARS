@@ -116,8 +116,10 @@ private:
     byte_code_.AddFunction(mname, byte_code_.NextAddress());
 
     //Translate
+    if(is_main) InitTest();
     reg_alloc_.Reset( stream.MaxRegUsed(), basic_register_usage );
     if(not is_main) FuncPrologue(stream.GetFunction());
+
     for(auto& it : stream){
       //Store translation of address from IR to VM's bytecode
       VM::Addr address_of_vm_inst = byte_code_.NextAddress();
@@ -363,6 +365,13 @@ private:
     //mem_alloc_.Remap();
   }
 
+  void ComputeStackDataSegment(){
+    VM::MemChunk m_last = VM::MemChunk::LastPage();
+    VM::MemChunk m(m_last.low_ - TargetDefDAVM().StackReservedSpace(), m_last.low_ - 1);
+    byte_code_.SetMemStack(m);
+//     std::cout << "Setting stack : " << m.low_<< ", " << m.high_ << "\n";
+  }
+
   void ComputeCompilerDataSegment(){
     auto main = unit_.GetFunc("__test");
     auto vars = main.LocalVars();
@@ -375,11 +384,10 @@ private:
     //mem_alloc_.Remap();
   }
 
-  void ComputeStackDataSegment(){
-    VM::MemChunk m_last = VM::MemChunk::LastPage();
-    VM::MemChunk m(m_last.low_ - TargetDefDAVM().StackReservedSpace(), m_last.low_ - 1);
-    byte_code_.SetMemStack(m);
-//     std::cout << "Setting stack : " << m.low_<< ", " << m.high_ << "\n";
+  //This doesn't need regalloc in place
+  void InitTest(){
+    byte_code_.Append( VM::IRBuilder::LoadI(0, 1));
+    byte_code_.Append( VM::IRBuilder::Store( 0, VM::MemChunk::LastWord()));
   }
 
   //Jumps refer to their IR address, and will have to be translated later
@@ -408,14 +416,15 @@ private:
     }
     return it->second;
   }
+
   void CallBackPatchTranslation(const IR::MemAddr addr, VM::Target target){
     call_backpatch_translation_[addr] = target;
   }
+
   VM::Target CallPatch(VM::Target target){
     const IR::MemAddr addr = call_backpatch_ids_inverse_.at(target);
     return call_backpatch_translation_.at(addr);
   }
-
 
   void BackpathCallTargets(){
     for(auto& inst : byte_code_.stream){
