@@ -11,6 +11,7 @@
 namespace VM{
 
 struct ByteCode{
+  ByteCode() : perform_compiler_test_(false){}
 
   void Append(const Inst inst){ stream.push_back(inst);}
 
@@ -23,10 +24,6 @@ struct ByteCode{
     func_index_by_addr_[entry] = functions_.size();
     functions_.push_back(FuncDesc(name, entry));
   }
-
-  //TODO:make private
-  std::vector<Inst> stream;
-
 
 
   size_t StaticDataSegmentSize() const noexcept{
@@ -84,8 +81,13 @@ struct ByteCode{
 //   friend ByteCode* readByteCode(std::string const &file_name);
 //   friend void writeByteCode(ByteCode const &byte_code, std::string const &file_name);
 
+  bool PerformCompilerTest() const noexcept{ return perform_compiler_test_; }
+
+  //TODO:make private
+  std::vector<Inst> stream;
   std::vector<MemChunk> mem_user_space_;
   MemChunk              mem_stack_;
+  bool  perform_compiler_test_;
 
 private:
 

@@ -36,9 +36,11 @@ void writeByteCode(const ByteCode& byte_code, std::string const &file_name){
   }
 
   *outputFile << "MemChunk" << "\n";
-  *outputFile << byte_code.mem_stack_<< "\n";;
-  *outputFile << byte_code.mem_user_space_.size()<< "\n";;
+  *outputFile << byte_code.mem_stack_<< "\n";
+  *outputFile << byte_code.mem_user_space_.size()<< "\n";
   for(const auto &m : byte_code.mem_user_space_) *outputFile << m << "\n";
+
+  *outputFile << byte_code.perform_compiler_test_ <<"\n";
 
   outputFile->close();
 }
@@ -65,6 +67,8 @@ ByteCode* readByteCode(std::string const &file_name){
   *inputFile >> size;
   byte_code->mem_user_space_.resize(size);
   for(auto &m : byte_code->mem_user_space_) *inputFile >> m;
+
+  *inputFile >> byte_code->perform_compiler_test_;
 
   inputFile->close();
   return byte_code;

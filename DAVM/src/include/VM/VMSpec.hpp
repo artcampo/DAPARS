@@ -18,7 +18,11 @@ const static int kCodeMemUnit         = 1;  //unit for indexing code memory (one
 const static int kNumberRegisters     = 16;
 const static int kStackRegister       = 15;
 
+namespace CompilerMemory{
+const static int kTestBoolAddress     = kMaxAddress + 1 - kWordSize;
+}//end namespace CompilerMemory
+
+}//end namespace Spec
 }//end namespace VM
-} //end namespace VM
 
 

@@ -77,6 +77,8 @@ private:
   void Or  (const Reg reg_src1, const Reg reg_src2, const Reg reg_dst);
   void And (const Reg reg_src1, const Reg reg_src2, const Reg reg_dst);
 
+  //Compiler support
+  void CompilerTest();
 };
 
 }//end namespace VM

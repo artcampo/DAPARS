@@ -106,6 +106,8 @@ bool VirtualMachine::ExecProcess(){
     }
   }
 
+  if(byte_code_.PerformCompilerTest()) CompilerTest();
+
   return error_log_.HasErrors();  //TODO: needed?
 }
 
@@ -144,6 +146,9 @@ void VirtualMachine::ColdBoot(){
 //   std::cout << "Set SR: " << Addr(byte_code_.StackRegisterInitAddress())<< "\n";
 }
 
-
+void VirtualMachine::CompilerTest(){
+  Load(IRDefinition::IRRegisters::IR_REG0, Spec::CompilerMemory::kTestBoolAddress);
+  if(process_->registers_[0] == 0) error_log_.Exception("Compiler injected tests failed");
+}
 
 }//end namespace VM
