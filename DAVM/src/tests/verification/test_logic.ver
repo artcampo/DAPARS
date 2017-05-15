@@ -16,5 +16,9 @@ STOP
 EXEC
 OP: LOADI R0 <- 0
 OP: LOADI R1 <- 1
-OP: OP: OP: OP: STOP
-Registers: 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+OP: OR R2 <- R0 <= R1
+OP: OR R3 <- R0 <= R0
+OP: AND R4 <- R0 <= R1
+OP: AND R5 <- R1 <= R1
+STOP
+Registers: 0, 1, 1, 0, 0, 1, 0, 0, 0

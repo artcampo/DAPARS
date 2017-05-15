@@ -235,11 +235,17 @@ void VirtualMachine::InstTypeLogic(const Reg reg_src1,
 }
 
 void VirtualMachine::Or(const Reg reg_src1, const Reg reg_src2, const Reg reg_dst){
-
+  std::cout << "OR R"<<reg_dst<<" <- R"<<reg_src1<<" <= R"<< reg_src2 <<"\n";
+  process_->registers_[reg_dst] =
+      process_->registers_[reg_src1]
+    | process_->registers_[reg_src2];
 }
 
 void VirtualMachine::And(const Reg reg_src1, const Reg reg_src2, const Reg reg_dst){
-
+std::cout << "AND R"<<reg_dst<<" <- R"<<reg_src1<<" <= R"<< reg_src2 <<"\n";
+  process_->registers_[reg_dst] =
+      process_->registers_[reg_src1]
+    & process_->registers_[reg_src2];
 }
 
 

@@ -42,7 +42,7 @@ int main(){
   //Execute bytecode
   std::unique_ptr<VirtualMachine> vm(new VirtualMachine(*bc) );
   vm->ExecProcess();
-  vm->DumpExecutionContext();
+  vm->DumpExecutionContext(9);
 
 
   return 0;

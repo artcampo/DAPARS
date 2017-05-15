@@ -7,6 +7,7 @@ INSTALL(FILES test_loadi.ver
               test_stack.ver
               test_call.ver
               test_logic.ver
+
               test1.bc.ver
               test2.bc.ver
               test3.bc.ver
