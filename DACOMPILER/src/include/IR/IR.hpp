@@ -108,8 +108,8 @@ struct BinaryOp : public Inst, public InstDst, public InstSrcSrc{
 };
 
 struct UnaryOp : public Inst, public InstDst, public InstSrc{
-  UnaryOp(const Reg reg_dst, const Reg src1)
-  : InstDst(reg_dst), InstSrc(src1){};
+  UnaryOp(const Reg reg_dst, const Reg src)
+  : InstDst(reg_dst), InstSrc(src){};
   virtual ~UnaryOp() = default;
 
   virtual std::string str() const noexcept = 0;
