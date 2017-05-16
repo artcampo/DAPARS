@@ -67,7 +67,7 @@ LT entry_main[isTarget]
 4: %2 = LoadI(3)
 5: %3 = %1 + %2
 6: store %3 to [LT MainDS:4 (b)]
-7: JumpCondFalse %0 to:0
+7: JumpIncond to0
 8: %5 = LoadI(3)
 9: %6 = LoadI(4)
 10: %7 = %5 + %6
@@ -134,10 +134,10 @@ LT entry_main[isTarget]
 4: %2 = LoadI(3)
 5: %3 = %1 + %2
 6: store %3 to [LT MainDS:0 (a)]
-7: JumpIncond11
+7: JumpIncond to11
 8: %5 = LoadI(4)
 9: store %5 to [LT MainDS:8 (d)]
-10: JumpIncond11
+10: JumpIncond to11
 11: %7 = LoadI(5)
 12: %8 = LoadI(6)
 13: %9 = %7 + %8

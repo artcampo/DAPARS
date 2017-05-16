@@ -9,9 +9,9 @@
 #include <memory>
 
 namespace Compiler{
-  
-// namespace AST{ class Function; }  
-  
+
+// namespace AST{ class Function; }
+
 namespace IR{
 
 //Each stream is uniquely associated to a function
@@ -30,13 +30,14 @@ struct IRStream : public IRBuilder{
   Inst::Inst& GetInst(const Addr addr) const noexcept{ return *stream_[addr];}
 
   void Print() const noexcept;
-  Reg   MaxRegUsed() const noexcept { return num_regs_used_;} 
-  const AST::Function& GetFunction()const noexcept { return function_;} 
-  
+  Reg   MaxRegUsed() const noexcept { return num_regs_used_;}
+  const AST::Function& GetFunction()const noexcept { return function_;}
+
   //TODO: put these in different sub-class
   void AppendJumpIfTrue(const Reg cond);
   void AppendJumpIfFalse(const Reg cond);
   void AppendJumpIfFalse(const Reg cond, const Addr target);
+  void AppendJumpInconditional(const Addr target);
   void AppendJumpInconditional();
 
   void AppendStore(const Reg src,const MemAddr addr);
@@ -49,7 +50,7 @@ struct IRStream : public IRBuilder{
   Reg  AppendArith(const Reg src1, const Reg src2, const ArithType op);
   Reg  AppendLogic(const Reg src1, const Reg src2, const LogicType op);
   Reg  AppendComparison(const Reg src1, const Reg src2, const CompType op);
-  
+
   Reg  AppendPtrElem(const MemAddr addr);
 
   Reg  AppendGetRetVal();
@@ -60,7 +61,7 @@ struct IRStream : public IRBuilder{
   void AppendReturnMain();
   void AppendCall(const MemAddr addr);
 
-  
+
 private:
   std::vector<Inst::PtrInst> stream_;
   Label entry_label_;
@@ -72,7 +73,7 @@ private:
 
   Reg RegAssignedToPreviousInst() const;
 
-public:  
+public:
   using iterator = std::vector<Inst::PtrInst>::iterator;
   using const_iterator = std::vector<Inst::PtrInst>::const_iterator;
 
@@ -81,8 +82,8 @@ public:
   const_iterator begin()  const { return stream_.begin(); }
   const_iterator end()    const { return stream_.end(); }
   const_iterator cbegin() const { return stream_.cbegin(); }
-  const_iterator cend()   const { return stream_.cend(); }    
-  
+  const_iterator cend()   const { return stream_.cend(); }
+
 };
 
 

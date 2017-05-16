@@ -24,24 +24,24 @@ protected:
     return std::make_unique<Inst::JumpCondFalse>(cond, target);
   };
 
-  Inst::PtrJumpIncond JumpInconditional(){
-    return std::make_unique<Inst::JumpIncond>();
+  Inst::PtrJumpIncond JumpInconditional(const Addr target){
+    return std::make_unique<Inst::JumpIncond>(target);
   };
 
   Inst::PtrArith Arith(const Reg src1, const Reg src2, const ArithType op){
     Reg assigned_reg = FreeReg();
     return std::make_unique<Inst::Arith>(assigned_reg, src1, src2, op);
   }
-  
+
   Inst::PtrLogic Logic(const Reg src1, const Reg src2, const LogicType op){
     Reg assigned_reg = FreeReg();
     return std::make_unique<Inst::Logic>(assigned_reg, src1, src2, op);
-  }  
+  }
 
   Inst::PtrComparison Comparison(const Reg src1, const Reg src2, const CompType op){
     Reg assigned_reg = FreeReg();
     return std::make_unique<Inst::Comparison>(assigned_reg, src1, src2, op);
-  }  
+  }
 
   Inst::PtrLoadI LoadI(const NodeValue val){
     Reg assigned_reg = FreeReg();
@@ -91,12 +91,12 @@ protected:
   Inst::PtrSetArg SetArg(const Reg src){
     return std::make_unique<Inst::SetArg>(src);
   }
-  
+
   Inst::PtrGetArg GetArg(const NodeValue position){
     Reg assigned_reg = FreeReg();
     return std::make_unique<Inst::GetArg>(assigned_reg, position);
   }
-    
+
 
   Inst::PtrReturn Return(){
     return std::make_unique<Inst::Return>();
@@ -111,7 +111,7 @@ protected:
   }
 
 protected:
-  Reg   UsedRegs(){return next_free_reg_;}  
+  Reg   UsedRegs(){return next_free_reg_;}
 
 private:
   Reg   next_free_reg_;

@@ -3,13 +3,15 @@ OP: LOADI R0 <- 1
 OP: STORE [@-4] <- R0 val: 1
 OP: LOADI R1 <- 0
 OP: STORE [@0] <- R1 val: 0
-OP: LOADI R2 <- 11
+OP: LOADI R2 <- 3
 OP: LST R3 <- R1 < R2
-OP: OP: LOADI R2 <- 1
+OP: JUMP_T cond R0 to @8
+OP: LOADI R2 <- 1
 OP: ADD R3 <- R1 + R2
 OP: STORE [@0] <- R3 val: 1
-OP: OP: LOAD R1 <- [@0], val = 1 
-OP: LOADI R2 <- 10
+OP: JUMP_F cond R0 to @4
+OP: LOAD R1 <- [@0], val = 1 
+OP: LOADI R2 <- 3
 OP: EQL R3 <- R1 == R2
 OP: MOVE R0 <- R3 
 OP: Call 20 ret@: 17

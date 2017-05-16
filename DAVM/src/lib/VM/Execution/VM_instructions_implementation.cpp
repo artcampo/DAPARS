@@ -88,22 +88,16 @@ void VirtualMachine::StoreB(const Reg reg_src, const Reg reg_base, const Word li
   process_->Store(Addr(literal + process_->registers_[reg_base]), process_->registers_[reg_src]);
 }
 
-
 void VirtualMachine::Pop(const Reg reg_dst){
   std::cout << "POP R"<<reg_dst<<" <- [@"<<Addr(process_->StackReg() + Spec::kWordSize) <<"]\n";
   process_->registers_[reg_dst] = PopWord();
 }
-
-
-
 
 void VirtualMachine::Push(const Reg reg_src){
   std::cout << "PUSH [@" <<Addr(process_->StackReg())
             <<  "] <- R" << reg_src <<"\n";
   PushWord(process_->registers_[reg_src]);
 }
-
-
 
 /////////////////////////////////////////////////////////////////////////////
 //  Class 2
@@ -113,6 +107,9 @@ void VirtualMachine::ArithI(const Reg reg_dst, const Word literal, const SubInst
 
 void VirtualMachine::JumpC (const Reg reg_src, const Target target, const SubInst op){
   using namespace IRDefinition::SubtypesJMPC;
+  if(op == IR_TRUE)  std::cout << "JUMP_T";
+  if(op == IR_FALSE) std::cout << "JUMP_F";
+  std::cout << " cond R" << reg_src <<" to @"<< target << "\n";
   if(  (op == IR_TRUE  and     process_->registers_[reg_src])
     or (op == IR_FALSE and not process_->registers_[reg_src]) ){
     process_->ModifyIP(target);

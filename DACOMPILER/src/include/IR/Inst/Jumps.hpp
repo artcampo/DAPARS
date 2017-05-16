@@ -14,21 +14,21 @@ struct Jump: public Inst, InstTarget{
 
 struct JumpCond : public Jump{
   JumpCond(const JumpCondType t, const Reg cond) : JumpCond(t, cond, 0){};
-  JumpCond(const JumpCondType t, const Reg cond, const Addr target) 
+  JumpCond(const JumpCondType t, const Reg cond, const Addr target)
     : jump_type_(t),Jump(target), reg_cond_(cond){};
   ~JumpCond() = default;
 
   virtual std::string str() const noexcept{
     return std::string("JumpCond ");
   }
-  
+
   JumpCondType  GetJumpCondType() const noexcept{ return jump_type_; }
   Reg           RegCond() const noexcept{ return reg_cond_; }
-  
+
 protected:
   Reg           reg_cond_;
   JumpCondType  jump_type_;
-  
+
 };
 
 struct JumpCondFalse : public JumpCond{
@@ -40,7 +40,7 @@ struct JumpCondFalse : public JumpCond{
     return std::string("JumpCondFalse %") + std::to_string(reg_cond_)
          + std::string(" to:")  + std::to_string(target_);
   }
-  
+
   void Accept(IRVisitor& v) override { v.Visit(*this); }
 };
 
@@ -53,18 +53,18 @@ struct JumpCondTrue : public JumpCond{
     return std::string("JumpCondTrue %") + std::to_string(reg_cond_)
          + std::string(" to:")  + std::to_string(target_);
   }
-  
+
   void Accept(IRVisitor& v) override { v.Visit(*this); }
 };
 
 struct JumpIncond : public Jump{
-  JumpIncond() : Jump(){};
+  JumpIncond(const Addr target) : Jump(target){};
   ~JumpIncond() = default;
 
   virtual std::string str() const noexcept{
-    return std::string("JumpIncond") + std::to_string(target_);
+    return std::string("JumpIncond to") + std::to_string(target_);
   }
-  
+
   void Accept(IRVisitor& v) override { v.Visit(*this); }
 };
 

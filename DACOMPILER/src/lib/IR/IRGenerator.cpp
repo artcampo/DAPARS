@@ -154,8 +154,7 @@ void IRGenerator::Visit(WhileStmt const& p, const Node* successor){
   AddToBackPatch(*successor,   current_addr + 1);
 
   p.GetBody().Accept(*this, successor);
-  CurrentStream().AppendJumpIfFalse(reg_src, reentry_addr);
-
+  CurrentStream().AppendJumpInconditional(reentry_addr);
 }
 
 

@@ -19,8 +19,13 @@ void IRStream::AppendJumpIfFalse(const Reg cond, const Addr target){
   Append( JumpIfFalse(cond, target) );
 }
 
+void IRStream::AppendJumpInconditional(const Addr target){
+  Append( JumpInconditional(target) );
+}
+
+//used for jumps that will be backpatched
 void IRStream::AppendJumpInconditional(){
-  Append( JumpInconditional() );
+  AppendJumpInconditional(-1);
 }
 
 Reg IRStream::AppendLoadI(const NodeValue val){
