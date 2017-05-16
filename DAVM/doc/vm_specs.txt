@@ -2,11 +2,21 @@ DAVM specifications
 
 - Interpreted bytecode, 3 address instructions
 - 16 registers, signed 32 bits. Reg #15 is stack pointer.
-- Memory: 2^32 addressable bytes in 4k pages. Unit of memory accesses is 32 bit words.
-Mem operations work only on 4 bytes words aligned to 4.
--Code and data reside in different memory spaces. Thus memory access depends on if
-we want to access data or code.
-
+- Memory: 2^32 addressable bytes in 4k pages. Unit of memory accesses is 32
+bit words. Mem operations work only on 4 bytes words aligned to 4.
+-Code and data reside in different memory spaces. Thus memory access depends
+on if we want to access data or code.
+- Instruction set is divided in 4 classes according to their bit layour. This
+allows to share decoding of operands/fields within same class.
+- Instruction identifier is a mix of:
+1) Class Id
+2) Instruction ID
+3) Subtype ID (does not apply to all instructions)
+- Stack is within data memory space, its location and size dictated statically
+within the ByteCode. Stack register grows in decreasing order. If [S1,S2] is
+its allocated space, it's initialized to S2. Exceptions will occur when:
+1) there's a push and StackPointer == S1 - 1
+2) there's a pop and StackPointer >= S2
 
 While data memory is indexed in bytes, code memory is indexed as 32bits words.
 (if code was to reside in data memory, they should both be indexed by bytes)

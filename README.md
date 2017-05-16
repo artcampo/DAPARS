@@ -1,14 +1,19 @@
 # DAPARS
-Suite of different parsers for DACOMPILER
+This is the main repository for a basic 3 phases compiler. So far the
+backend targets a VM but it will be expanded to produce x86 as well.
 
-Uses DACOMPILER repository which has to be placed at /DAPARS/DACOMPILER.
-Uses DAVM repository which has to be placed at /DAPARS/DAVM.
-Both are managed via git submodules.
+The project is composed of:
+-DAPARS, suite of different parsers for DACOMPILER
+-DACOMPILER, the compiler itself minus parser
+-DAVM, virtual machine, 3-address instructions (similar to low level ISA)
 
 Parsers are on different stages of evolution:
 -RecDesc, this is the more active and up to date
 -LLR, on an early stage but stable
 -LALR, temporaly on hold (looks like will soon be dead)
+
+*At some point I was using git submodules but it turned out to be only cute,
+not effective.
 
 ------------------------------------------------------------------------------
 CLONING
@@ -36,20 +41,23 @@ by number of processors, ex: "-j8").
 ------------------------------------------------------------------------------
 WHERE TO START
 The grammar is defined at "DACOMPILER/doc/grammar.txt" as well as in the file
-"Common/src/lib/grammars/grammar_dalang.cpp" which is used to check the ll1 
+"Common/src/lib/grammars/grammar_dalang.cpp" which is used to check the ll1
 validity.
 
 The nodes that form the AST are defined in:
 "DACOMPILER/src/include/AST/Node.hpp"
 
-A good overview of all the passes being used: 
+A good overview of all the passes being used:
 "DACOMPILER/src/include/Passes/PassManager.hpp"
 
 The main file for AST creation and semantic analysis is:
 "DACOMPILER/src/include/CompilationUnit.hpp"
 
-The last step (so far) is IR generation which is entirely within:
+The next step is IR generation which is entirely within:
 "DACOMPILER/src/include/IR"
+
+The backend for the VM is in:
+"DACOMPILER/src/include/Backend/BackendDAVM/BackendDAVM.hpp"
 
 ------------------------------------------------------------------------------
 CURRENT STATE
@@ -65,15 +73,15 @@ Scope 2: {(4:a) }
 
 AST fully decorated dump:
 [FDef] FuncDef: f
--[VDec] int a 
--[Asgst] 
+-[VDec] int a
+-[Asgst]
 --[Var] a [int Lvalue Write Value Nmemb]
 --[Var] p1 [int Lvalue Read Value Nmemb]
 -[Retst] Return (a)
 --[Var] a [int Lvalue Read Value Nmemb]
 [FDef] FuncDef: main
--[VDec] int a 
--[Asgst] 
+-[VDec] int a
+-[Asgst]
 --[Var] a [int Lvalue Write Value Nmemb]
 --[Fret] FuncRet: int [int Rvalue]
 ---[Fcal] FuncCall: f [function: (int)->int]
