@@ -125,6 +125,7 @@ private:
       VM::Addr address_of_vm_inst = byte_code_.NextAddress();
       JumpBackPatchTranslation(ir_inst_addr_, address_of_vm_inst);
 
+      std::cout << it->str() <<" IR " <<ir_inst_addr_ << "-> VM " <<address_of_vm_inst<<"\n";
       it->Accept(*this);
       ir_inst_addr_++;  //keep track of current IR's instruction offset
     }
@@ -137,10 +138,11 @@ private:
   }
 
   void Visit(const IR::Inst::JumpCond& inst) override{
-    std::cout << inst.str() << "\n";
-    IssuePreBasicBlocEnding();
+    IssueWriteBack();
     RegMap rc = reg_alloc_.IRReg(inst.RegCond());
+//     reg_alloc_.Dump2();
     reg_alloc_.GetRegRead(rc);
+    std::cout << "jump cond " << inst.RegCond() << " to " << rc.mreg_ << "\n";
     VM::Target target_id = BackpatchId(inst.GetTarget());
     if(inst.GetJumpCondType() == IR::JumpCondType::kTrue)
       byte_code_.Append( VM::IRBuilder::JumpIfTrue (rc.mreg_, target_id));
@@ -149,21 +151,18 @@ private:
   }
 
   void Visit(const IR::Inst::JumpIncond& inst) override{
-    std::cout << inst.str() << "\n";
-    IssuePreBasicBlocEnding();
+    IssueWriteBack();
     VM::Target target_id = BackpatchId(inst.GetTarget());
     byte_code_.Append( VM::IRBuilder::Jump(target_id));
   }
 
   void Visit(const IR::Inst::LoadI& inst) override{
-    std::cout << inst.str() << "\n";
     RegMap rd = reg_alloc_.IRReg( inst.RegDst() );
     reg_alloc_.GetRegLoadI(rd);
     byte_code_.Append( VM::IRBuilder::LoadI(rd.mreg_, inst.Value()));
   }
 
   void Visit(const IR::Inst::Load& inst) override{
-    std::cout << inst.str() << "\n";
     RegMap rd = reg_alloc_.IRReg    (inst.RegDst());
     RegMap rs = reg_alloc_.IRMemAddr(inst.Addr());
     reg_alloc_.GetRegLoad(rd, rs);
@@ -178,7 +177,6 @@ private:
   }
 
   void Visit(const IR::Inst::Store& inst) override{
-    std::cout << inst.str() << "\n";
     RegMap rs = reg_alloc_.IRReg    (inst.RegSrc());
     RegMap rd = reg_alloc_.IRMemAddr(inst.Addr());
     reg_alloc_.GetRegStore(rs, rd);
@@ -190,7 +188,6 @@ private:
   }
 
   void Visit(const IR::Inst::Arith& inst) override{
-    std::cout << inst.str() << "\n";
     RegMap rd  = reg_alloc_.IRReg( inst.RegDst() );
     RegMap rs1 = reg_alloc_.IRReg( inst.RegSrc1() );
     RegMap rs2 = reg_alloc_.IRReg( inst.RegSrc2() );
@@ -201,7 +198,6 @@ private:
   }
 
   void Visit(const IR::Inst::Logic& inst) override{
-    std::cout << inst.str() << "\n";
     RegMap rd  = reg_alloc_.IRReg( inst.RegDst() );
     RegMap rs1 = reg_alloc_.IRReg( inst.RegSrc1() );
     RegMap rs2 = reg_alloc_.IRReg( inst.RegSrc2() );
@@ -215,7 +211,6 @@ private:
   }
 
   void Visit(const IR::Inst::Comparison& inst) override{
-    std::cout << inst.str() << "\n";
     RegMap rd  = reg_alloc_.IRReg( inst.RegDst() );
     RegMap rs1 = reg_alloc_.IRReg( inst.RegSrc1() );
     RegMap rs2 = reg_alloc_.IRReg( inst.RegSrc2() );
@@ -233,7 +228,6 @@ private:
   }
 
   void Visit(const IR::Inst::GetRetVal& inst) override{
-    std::cout << inst.str() << "\n";
     RegMap rd     = reg_alloc_.IRReg( inst.RegDst() );
     MReg rs_mreg  = reg_alloc_.MRegRetValue();
     reg_alloc_.GetRegGetRetVal(rd);
@@ -241,14 +235,12 @@ private:
   }
 
   void Visit(const IR::Inst::SetRetVal& inst) override{
-    std::cout << inst.str() << "\n";
     RegMap rs = reg_alloc_.IRReg(inst.RegSrc());
     reg_alloc_.GetRegRead(rs);
       byte_code_.Append( VM::IRBuilder::Move(rs.mreg_, reg_alloc_.MRegRetValue()));
   }
 
   void Visit(const IR::Inst::SetArg& inst) override{
-    std::cout << inst.str() << "\n";
     if(is_first_arg_){
       RegMap rs = reg_alloc_.IRReg(inst.RegSrc());
       reg_alloc_.GetRegRead(rs);
@@ -270,27 +262,23 @@ private:
   }
 
   void Visit(const IR::Inst::GetArg& inst) override{
-    std::cout << inst.str() << "\n";
     RegMap rd = reg_alloc_.IRReg( inst.RegDst() );
     rd.mreg_  = inst.Value ();
     reg_alloc_.SetRegGetArg(rd);
   }
 
   void Visit(const IR::Inst::Return& inst) override{
-    std::cout << inst.str() << "\n";
     IssuePreBasicBlocEnding();
     //Return emitted alongside epilogue
   }
 
   void Visit(const IR::Inst::ReturnMain& inst) override{
-    std::cout << inst.str() << "\n";
     IssuePreBasicBlocEnding();
     byte_code_.Append( VM::IRBuilder::Stop());
   }
 
   void Visit(const IR::Inst::Call& inst) override{
-    std::cout << inst.str() << "\n";
-    IssuePreBasicBlocEnding();
+    IssueWriteBack();
 
     if(inst.Addr().GetLabel().IsLinkTime()){
 //       std::cout << "call to: " << inst.Addr().str()<<"\n";
@@ -352,6 +340,10 @@ private:
     reg_alloc_.Flush();
   }
 
+  void IssueWriteBack(){
+    reg_alloc_.WriteBack();
+  }
+
   //Other functions that do not handle sections of IR
   void ComputeMainDataSegment(){
     auto main = unit_.GetFunc("main");
@@ -393,15 +385,12 @@ private:
   //Jumps refer to their IR address, and will have to be translated later
   //to the VM address where the original instruction was placed
   VM::Target  BackpatchId(const IR::Addr addr){return addr;}
-  void        JumpBackPatchTranslation(const IR::Addr addr, VM::Target target){
+  void JumpBackPatchTranslation(const IR::Addr addr, VM::Target target){
     jump_backpatch_translation_[addr] = target;
-//     for(const auto& it : jump_backpatch_ids_) std::cout << it.first <<":" <<it.second << " ";
-//     std::cout << "\n";
   }
+
   VM::Target JumpPatch(const IR::Addr addr){
-//     for(const auto& it : jump_backpatch_ids_) std::cout << it.first <<":" <<it.second << " ";
-//     std::cout << "\n";
-//     std::cout << "ask : " << addr;
+    std::cout << "Patch IR: " << addr << " to VM: " << jump_backpatch_translation_.at(addr) <<"\n";
     return jump_backpatch_translation_.at(addr);
   }
 

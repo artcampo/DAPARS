@@ -69,7 +69,7 @@ std::string ArithString(const Reg reg_dst, const SubInst literal, const SubInst 
   return s;
 }
 
-std::string PrintInstruction(const Inst instruction){
+std::string Print(const Inst instruction){
   const SubInst current_class   = DecodeClass(instruction);
   const SubInst current_type    = DecodeType(instruction, current_class);
   const SubInst current_op_code = DecodeOpCode(current_class, current_type);
@@ -148,9 +148,10 @@ std::string PrintInstruction(const Inst instruction){
 
     //Class 2
     case IR_JMPC:
-      s = string("JUMPIF ");
-      if(sub_type == SubtypesJMPC::IR_TRUE ) s += string("true");
-      if(sub_type == SubtypesJMPC::IR_FALSE) s += string("false");
+      s = string("JUMP_");
+      if(sub_type == SubtypesJMPC::IR_TRUE ) s += string("T");
+      if(sub_type == SubtypesJMPC::IR_FALSE) s += string("F");
+      s += " cond R" + to_string(reg_dst);
       s += string(" to:") + to_string(literal);
       break;
     case IR_ARII:

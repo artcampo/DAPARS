@@ -4,7 +4,7 @@
 namespace VM{
 namespace IRBuilder{
 
-std::string PrintInstruction(const Inst instruction);
+std::string Print(const Inst instruction);
 
 } //namespace IRBuilder
 }//end namespace VM

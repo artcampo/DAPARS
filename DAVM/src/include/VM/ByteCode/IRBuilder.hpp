@@ -7,7 +7,7 @@ namespace IRBuilder{
 
 
 bool        checkIRCodification();
-std::string PrintInstruction(const Inst instruction);
+std::string Print(const Inst instruction);
 
 //if it is, return its target
 bool  IsJump(const Inst instruction, Target& target);

@@ -30,14 +30,14 @@ public:
     reg_desc_.resize(max_machine_reg_);
     mreg_can_be_flushed_.resize(max_machine_reg_);
   }
-  
+
   MReg MRegRetValue() const noexcept{ return 0; }
   MReg MRegStackPtr() const noexcept{ return max_machine_reg_ - 1; }
   MReg MRegArpPtr()   const noexcept{ return max_machine_reg_ - 2; }
   MReg MRegThisPtr()  const noexcept{ return max_machine_reg_ - 3; }
 
   static int FirstMachRegFree() noexcept { return 1; }  //forbid use of mach_r0
-  
+
   //Initialize regAllocator for a function given its max_ir_registers
   //and the max of machine reg
   void Reset(const IR::Reg max_ir_registers, const int function_fixed_usage_machine_reg){
@@ -53,10 +53,9 @@ public:
     max_ir_registers_         = max_ir_registers;
     function_max_machine_reg_ = max_machine_reg_ - function_fixed_usage_machine_reg;
     register_usage_ = FirstMachRegFree();
-  }  
-  
-  //If any value's memory address is outdated, update it; then evit all irsymbols
-  void Flush(){
+  }
+
+  void WriteBack(){
     for(auto& it : is_in_memory_) // for each IrSymbol not updated in memory
       if(not it.second){
         Dump();
@@ -65,47 +64,52 @@ public:
         FlushIRSymbol(it.first);
         it.second = true;
       }
+  }
+
+  //If any value's memory address is outdated, update it; then evit all irsymbols
+  void Flush(){
+    WriteBack();
     Evict();
     Dump();
   }
-  
+
   //Flush value of a given register
   void FlushMReg(const MReg r){
     for(auto& it : reg_desc_[r]) FlushIRSymbol(it);
-  }  
+  }
 
-  
+
   //Structure for mappjng an IR register
   RegMap IRReg(RegSym in){
     return RegMap(in);
-  }  
-  
+  }
 
-  
+
+
   //Actually, only the mreg=0 will be forced
   RegMap ForceReg(const MReg r){
     if(r == 0 and register_usage_ == 0) register_usage_ = 1;
     return RegMap(-1, r);
   }
-  
+
   //Structure for mappjng an IR MemAddr
   RegMap IRMemAddr(const IR::MemAddr addr){
     return RegMap(RegSymId(addr));
-  }    
-  
-  
+  }
+
+
   void GetRegRead(RegMap& mapping){
     GetReg(mapping);
     UsageShared(mapping);
     Dump();
-  }  
-  
+  }
+
   void GetRegLoadI(RegMap& mapping){
     GetReg(mapping);
     UsageShared(mapping);
     Dump();
   }
-  
+
   void GetRegArith(RegMap& md, RegMap& ms1, RegMap& ms2){
     GetReg(ms1);
     GetReg(ms2);
@@ -114,14 +118,14 @@ public:
     UsageShared(ms2);
     UsageNewValue(md);
     Dump();
-  }  
-  
+  }
+
   void GetRegStore(RegMap& ms, RegMap& md){
     GetReg(ms);
     UsageBackToMem(ms, md);
     Dump();
   }
-  
+
   //returns true if ms was not already on a register (thus load needs to happen)
   bool GetRegLoad(RegMap& md, RegMap& ms){
     if(HasMregAssigned(ms)){
@@ -145,26 +149,26 @@ public:
     (backend_->*callback_load_)(md.mreg_, mem_addr_of_reg_sym_id_.at(ms.regsymb_));
     Dump();
     return true;
-  }  
-  
+  }
+
   void SetRegGetArg(RegMap& md){
     UsageShared(md);
     ReserveNoFlush(md.mreg_);
     Dump();
   }
-  
+
   void GetRegGetRetVal(RegMap& md){
     GetReg(md);
     UsageShared(md);
     Dump();
-  }  
-  
-  
+  }
+
+
   std::string str(const RegSym rs){
-    if(rs < max_ir_registers_)  
+    if(rs < max_ir_registers_)
       return std::string("%") + std::to_string(rs) + " ";
-    else              
-      return mem_addr_of_reg_sym_id_[rs].GetOffset().Name() + " ";            
+    else
+      return mem_addr_of_reg_sym_id_[rs].GetOffset().Name() + " ";
   }
 
 
@@ -172,24 +176,24 @@ private:
   const int   max_machine_reg_;
   int         register_usage_;
   int         function_max_machine_reg_;  //registers reserved for: stack, arp and/or this
-  
+
   //what has been allocated and where
   std::vector<std::set<RegSym>>     reg_desc_;
   std::map<RegSym, bool>            is_in_memory_;
   std::map<RegSym, std::set<MReg>>  addr_desc_;
   std::vector<bool>                 mreg_can_be_flushed_;
-  
+
   //Identifiers for MemAddr
   std::map<IR::MemAddr, RegSym>       reg_sym_id_of_mem_addr_;
   std::map<RegSym, IR::MemAddr>       mem_addr_of_reg_sym_id_;  //only for debug
   RegSym      id_free_for_mem_addr_;
   RegSym      max_ir_registers_;
-  
+
   //Callbacks to the backed
   IssueStore  callback_store_;
   IssueLoad   callback_load_;
   Backend*    backend_;
-  
+
   RegSym RegSymId(const IR::MemAddr addr){
     auto it = reg_sym_id_of_mem_addr_.find(addr);
     if(it == reg_sym_id_of_mem_addr_.end()){
@@ -198,8 +202,8 @@ private:
       return id_free_for_mem_addr_++;
     }
     return it->second;
-  }  
-  
+  }
+
   //Assign mreg to regsymb
   void GetReg(RegMap& mapping){
     const RegSym& regsymb = mapping.regsymb_;
@@ -207,29 +211,29 @@ private:
       mapping.mreg_ = MregAssigned(regsymb);
     else
       mapping.mreg_ = GetFreeReg();
-  }    
-  
+  }
+
   bool  IsInMemory(const RegSym rs) const {
     return is_in_memory_.at(rs);
   }
-  
+
   bool  HasMregAssigned(RegMap& mapping) const {
     return HasMregAssigned(mapping.regsymb_);
   }
-  
+
   bool  HasMregAssigned(RegSym regsymb) const {
     auto it = addr_desc_.find(regsymb);
     if(it == addr_desc_.end()) return false;
     return it->second.size() > 0;
   }
-  
+
   MReg  MregAssigned(RegSym regsymb) const {
     auto it       = addr_desc_.find(regsymb);
     std::set<MReg>::iterator mreg_it  = it->second.begin();
     MReg m        = *mreg_it;
     return m;
-  }  
-  
+  }
+
   MReg GetFreeReg(){
     if(register_usage_ < function_max_machine_reg_)
       return register_usage_++;
@@ -246,10 +250,10 @@ private:
     const MReg&   mreg    = mapping.mreg_;
     addr_desc_[regsymb].emplace(mreg);
     reg_desc_[mreg].clear();
-    reg_desc_[mreg].emplace(regsymb);    
+    reg_desc_[mreg].emplace(regsymb);
     is_in_memory_[regsymb] = true;
   }
-  
+
   //(regsymb_, mreg_) mreg regsymb have same variable, regsymb
   //has now its copy in memory
   void UsageBackToMem(RegMap& ms, RegMap& md){
@@ -257,39 +261,39 @@ private:
     const MReg&   mreg    = ms.mreg_;
     reg_desc_[mreg].emplace(regsymb);
     addr_desc_[regsymb].clear();
-    addr_desc_[regsymb].emplace(mreg);   
+    addr_desc_[regsymb].emplace(mreg);
     is_in_memory_[regsymb] = true;
-  }  
-  
+  }
+
   //(regsymb_, mreg_) mreg regsymb have same variable, however
   //only mreg has its updated value
   void UsageNewValue(RegMap& mapping){
     const RegSym& regsymb = mapping.regsymb_;
-    const MReg&   mreg    = mapping.mreg_;   
+    const MReg&   mreg    = mapping.mreg_;
     RemoveMregFromOtherAddrDescriptors(mreg);
     reg_desc_[mreg].clear();
-    reg_desc_[mreg].emplace(regsymb);   
+    reg_desc_[mreg].emplace(regsymb);
     addr_desc_[regsymb].clear();
     addr_desc_[regsymb].emplace(mreg);
-    is_in_memory_[regsymb] = true;    
+    is_in_memory_[regsymb] = true;
   }
-  
+
   //(regsymb_, mreg_) mreg holds a copy of another mreg
   void UsageCopy(RegMap& mapping){
     const RegSym& regsymb = mapping.regsymb_;
-    const MReg&   mreg    = mapping.mreg_;   
-    reg_desc_[mreg].emplace(regsymb);   
+    const MReg&   mreg    = mapping.mreg_;
+    reg_desc_[mreg].emplace(regsymb);
     addr_desc_[regsymb].clear();
     addr_desc_[regsymb].emplace(mreg);
     is_in_memory_[regsymb] = false;
-  }  
-  
-  
+  }
+
+
   void RemoveMregFromOtherAddrDescriptors(const MReg& mreg){
     for(const auto& regsymb : reg_desc_[mreg])
       addr_desc_[regsymb].erase(mreg);
   }
-  
+
   //do not allow mreg to be flushed (used for registers that are
   //not available in memory (args in regs)
   //note that this is only done for GetArg ops which are issued
@@ -299,10 +303,10 @@ private:
     //TODO
     mreg_can_be_flushed_[mreg] = false;
   }
-  
+
   void FlushIRSymbol(const RegSym s){
     const MReg        rs  = *addr_desc_.at(s).begin();
-    const IR::MemAddr ma  = mem_addr_of_reg_sym_id_.at(s);    
+    const IR::MemAddr ma  = mem_addr_of_reg_sym_id_.at(s);
     (backend_->*callback_store_)(rs, ma);
   }
 
@@ -319,10 +323,10 @@ private:
         reg_desc_[mreg_index].clear();
         if(was_used) --register_usage_;
       }
-  }  
+  }
 
 void Dump(){
-    return;  //uncomment for dump at each change
+//     return;  //uncomment for dump at each change
     std::cout << "Usage: " <<register_usage_ << "/" << function_max_machine_reg_<<"\n";
     for(int i = 0; i < max_machine_reg_; ++i){
       if(not reg_desc_[i].empty()){
@@ -333,7 +337,7 @@ void Dump(){
         std::cout << "\n";
       }
     }
-    
+
     for(const auto& it : addr_desc_){
       if(not it.second.empty()){
         std::cout << "----";
@@ -341,13 +345,14 @@ void Dump(){
         if(IsInMemory(it.first)) std::cout <<"[m]"; else std::cout <<"[r]";
         std::cout<< ": ";
         for(const auto& it_rs : it.second) std::cout << "r"<< it_rs << " ";
-        std::cout << "\n";        
+        std::cout << "\n";
       }
     }
-    std::cout << "\n";   
+    std::cout << "\n";
   }
-    
-  
+
+
+
 };
 
 

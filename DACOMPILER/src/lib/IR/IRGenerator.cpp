@@ -108,7 +108,7 @@ void IRGenerator::Visit(IfStmt const& p, const Node* successor){
   p.GetCond().Accept(*this, successor);
 
   const IR::Addr current_addr = CurrentStream().NextAddress();
-  const IR::Reg  reg_src       = reg_dst_of_expr_[&p.GetCond()];
+  const IR::Reg  reg_src      = reg_dst_of_expr_[&p.GetCond()];
 
   CurrentStream().AppendJumpIfTrue (reg_src);
   CurrentStream().AppendJumpIfFalse(reg_src);
@@ -400,7 +400,7 @@ void IRGenerator::BackPatch(const Node& n, const IR::Addr position){
     for(const auto& address : it->second){
       Jump& inst = dynamic_cast<Jump&>(CurrentStream().GetInst(address));
 //       std::cout << "Backpatch: "
-//         << IRBuilder::PrintInstruction(inst)
+//         << IRBuilder::Print(inst)
 //         << " with node: " << n->str() << "\n";
       inst.PatchJump(position);
     }
@@ -416,7 +416,7 @@ void IRGenerator::BackPatch(const Node& n, const IR::Addr position){
 
 void IRGenerator::AddToBackPatch(const Node& n, const IR::Addr position){
 //   std::cout << "**Backpatch insert ["<< n->str()<< "] has to patch:"
-//             << IRBuilder::PrintInstruction(CurrentStream().GetInst(position))
+//             << IRBuilder::Print(CurrentStream().GetInst(position))
 //             << "\n";
   //<<"("<<(void*)n<<")\n";
   back_patch_[&n].push_back(position);

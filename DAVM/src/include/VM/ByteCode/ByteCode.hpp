@@ -58,7 +58,7 @@ struct ByteCode{
     int line = 0;
     for ( auto const inst : stream){
       if(extra_dump) std::cout << line<< ": ";
-      std::cout << IRBuilder::PrintInstruction(inst);
+      std::cout << IRBuilder::Print(inst);
       if(extra_dump and IsFuncEntry(line) ) std::cout << "  <- ["<< Func(line).name_ << "]";
       std::cout << "\n";
       ++line;
