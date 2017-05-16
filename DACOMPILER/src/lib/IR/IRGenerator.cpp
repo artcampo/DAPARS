@@ -208,10 +208,13 @@ void IRGenerator::Visit(BinaryOp const& n, const Node* successor){
 
   reg_dst_of_expr_[&n]   = r;
 //   std::cout << "OP: " << op << "\n";
-
 }
 
 void IRGenerator::Visit(NotOp const& n, const Node* successor){
+  n.Rhs().Accept(*this, successor);
+  const IR::Reg reg_src = reg_dst_of_expr_[&n.Rhs()];
+  IR::Reg r = CurrentStream().AppendNot(reg_src);
+  reg_dst_of_expr_[&n] = r;
 }
 
 void IRGenerator::Visit(RefOp const& n, const Node* successor){

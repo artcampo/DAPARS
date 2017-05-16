@@ -71,6 +71,19 @@ struct PtrElem : public Inst, public InstAddress, public InstDst{
   void Accept(IRVisitor& v) override { v.Visit(*this); }
 };
 
+struct Not : public UnaryOp{
+  Not(const Reg reg_dst, const Reg src)
+  : UnaryOp(reg_dst, src) {};
+  virtual ~Not() = default;
+
+  virtual std::string str() const noexcept{
+    return std::string("%")  + std::to_string(dst_)
+         + std::string(" = not %") + std::to_string(src_);
+  }
+
+  void Accept(IRVisitor& v) override { v.Visit(*this); }
+};
+
 }//end namespace Inst
 }//end namespace IR
 }//end namespace Compiler

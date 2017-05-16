@@ -38,6 +38,11 @@ protected:
     return std::make_unique<Inst::Logic>(assigned_reg, src1, src2, op);
   }  
 
+  Inst::PtrNot Not(const Reg src) {
+    Reg assigned_reg = FreeReg();
+    return std::make_unique<Inst::Not>(assigned_reg, src);
+  }  
+
   Inst::PtrComparison Comparison(const Reg src1, const Reg src2, const CompType op){
     Reg assigned_reg = FreeReg();
     return std::make_unique<Inst::Comparison>(assigned_reg, src1, src2, op);

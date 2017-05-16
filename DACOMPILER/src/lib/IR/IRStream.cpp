@@ -62,6 +62,11 @@ Reg IRStream::AppendLogic(const Reg src1, const Reg src2, const LogicType op){
   return RegAssignedToPreviousInst();
 }
 
+Reg IRStream::AppendNot(const Reg src){
+  Append( Not(src) );
+  return RegAssignedToPreviousInst();
+}
+
 Reg IRStream::AppendComparison(const Reg src1, const Reg src2, const CompType op){
   Append( Comparison(src1, src2, op) );
   return RegAssignedToPreviousInst();

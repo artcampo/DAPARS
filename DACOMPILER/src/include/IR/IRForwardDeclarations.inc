@@ -10,6 +10,7 @@ struct Store;
 struct StoreReg;
 struct Arith;
 struct Logic;
+struct Not;
 struct Comparison;
 struct PtrElem;
 struct GetRetVal;
@@ -31,6 +32,7 @@ using PtrStore        = std::unique_ptr<Store>;
 using PtrStoreReg     = std::unique_ptr<StoreReg>;
 using PtrArith        = std::unique_ptr<Arith>;
 using PtrLogic        = std::unique_ptr<Logic>;
+using PtrNot          = std::unique_ptr<Not>;
 using PtrComparison   = std::unique_ptr<Comparison>;
 using PtrPtrElem      = std::unique_ptr<PtrElem>;
 

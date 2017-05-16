@@ -48,6 +48,7 @@ struct IRStream : public IRBuilder{
   Reg  AppendLoadRegOffs(const Reg src, const Offset o);
   Reg  AppendArith(const Reg src1, const Reg src2, const ArithType op);
   Reg  AppendLogic(const Reg src1, const Reg src2, const LogicType op);
+  Reg  AppendNot(const Reg src);
   Reg  AppendComparison(const Reg src1, const Reg src2, const CompType op);
   
   Reg  AppendPtrElem(const MemAddr addr);
