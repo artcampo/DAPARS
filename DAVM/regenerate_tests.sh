@@ -29,6 +29,7 @@ regenerate_test_standalone test_mem
 regenerate_test_standalone test_stack
 regenerate_test_standalone test_call
 regenerate_test_standalone test_logic
+regenerate_test_standalone test_error_mem
 
 #end
 echo "Tests regenerated. You need to reinstall before running tests again."

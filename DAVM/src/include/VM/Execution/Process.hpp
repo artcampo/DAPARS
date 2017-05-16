@@ -16,7 +16,7 @@ namespace Internal{
 
 
 class Process : public Internal::ExecutionContext
-  , public Internal::Memory<Internal::BasicPatternTestingPolicy>{
+  , public Internal::Memory<Internal::NullMemPolicy>{
 
 public:
   Process(const ByteCode &byte_code)

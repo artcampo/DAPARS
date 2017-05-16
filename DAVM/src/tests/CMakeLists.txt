@@ -24,6 +24,9 @@ target_link_libraries(test_call VM)
 add_executable(test_logic test_logic.cpp)
 target_link_libraries(test_logic VM)
 
+add_executable(test_error_mem test_error_mem.cpp)
+target_link_libraries(test_error_mem VM)
+
 add_executable(unit_test unit_test.cpp)
 target_link_libraries(unit_test VM)
 
@@ -40,6 +43,8 @@ INSTALL(TARGETS
         test_stack
         test_call
         test_logic
+        test_error_mem
+
         davm
         unit_test
         DESTINATION tests/davm_tests)

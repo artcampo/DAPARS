@@ -29,6 +29,7 @@ test_standalone test_mem
 test_standalone test_stack
 test_standalone test_call
 test_standalone test_logic
+test_standalone test_error_mem
 
 #unit test, should give message only on error
 ./unit_test

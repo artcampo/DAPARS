@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include "VM/VMBasicTypes.hpp"
 #include "VM/VMSpec.hpp"
+#include "VM/ByteCode/MemChunk.hpp"
 #include "VM/Execution/ErrorLog.hpp"
 //#include "VM/Execution/Policies/MemoryTesting.hpp"
 
@@ -38,7 +39,8 @@ protected:
     auto it = page_mapping_.find(page);
     if(it == page_mapping_.end()){
       error_log_.Exception("Page fault");
-      return 0;
+      // on error return pointer to last position of stack, which will always be valid
+      return LogicalToPhysical(MemChunk::DefaultStackPages().low_);
     }
 //     std::cout << "** Mem " << addr<< " page " << page << " offset: " << (addr & address_mask_)
 //       << " physical " << PointerOfAddr(addr, it->second) <<"\n";

@@ -1,0 +1,5 @@
+EXEC
+OP: LOAD R0 <- [@0], val = 0 
+OP: LOAD R1 <- [@4096], val = 0 
+Errors in execution:
+Page fault

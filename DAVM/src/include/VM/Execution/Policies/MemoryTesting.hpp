@@ -24,6 +24,15 @@ public:
   }
 };
 
+class NullMemPolicy : public TestingPolicy{
+public:
+  virtual void WritePage(std::vector<Word>& page, const Addr addr){
+    for(int i = 0; i < (Spec::kPageSize / sizeof(Word)); ++i)
+      page[i] = 0;
+  }
+};
+
+
 
 }//end namespace Internal
 }//end namespace VM
