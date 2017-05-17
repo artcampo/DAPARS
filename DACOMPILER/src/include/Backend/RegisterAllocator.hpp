@@ -326,7 +326,7 @@ private:
   }
 
 void Dump(){
-//     return;  //uncomment for dump at each change
+    return;  //uncomment for dump at each change
     std::cout << "Usage: " <<register_usage_ << "/" << function_max_machine_reg_<<"\n";
     for(int i = 0; i < max_machine_reg_; ++i){
       if(not reg_desc_[i].empty()){

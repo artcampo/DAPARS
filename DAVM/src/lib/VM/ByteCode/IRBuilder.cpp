@@ -97,12 +97,12 @@ Inst Push(const Reg reg_src){
 
 ////////////////////////////////////////////////////////////////////////
 //CLASS 2
-Inst JumpIfTrue (const Reg reg_src1, const Target target){
-  return CodeClass2(0, target, IR_JMPC, SubtypesJMPC::IR_TRUE);
+Inst JumpIfTrue (const Reg reg_src, const Target target){
+  return CodeClass2(reg_src, target, IR_JMPC, SubtypesJMPC::IR_TRUE);
 }
 
-Inst JumpIfFalse (const Reg reg_src1, const Target target){
-  return CodeClass2(0, target, IR_JMPC, SubtypesJMPC::IR_FALSE);
+Inst JumpIfFalse (const Reg reg_src, const Target target){
+  return CodeClass2(reg_src, target, IR_JMPC, SubtypesJMPC::IR_FALSE);
 }
 
 Inst ArithI(const Reg reg_dst, const SubInst literal, const SubInst op){

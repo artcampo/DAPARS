@@ -148,6 +148,7 @@ private:
       byte_code_.Append( VM::IRBuilder::JumpIfTrue (rc.mreg_, target_id));
     else
       byte_code_.Append( VM::IRBuilder::JumpIfFalse(rc.mreg_, target_id));
+    std::cout << VM::IRBuilder::Print(byte_code_.stream.back()) << "\n";
   }
 
   void Visit(const IR::Inst::JumpIncond& inst) override{
