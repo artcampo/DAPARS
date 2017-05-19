@@ -29,7 +29,7 @@ public:
     ,inside_member_func_def_(false){};
 
   IR::IRUnit& GetIRUnit(){ return ir_unit_; }
-    
+
   virtual void Visit(ProgBody const& p, const Node* successor);
   virtual void Visit(ProgInit const& p, const Node* successor);
   virtual void Visit(ProgEnd const& p, const Node* successor);
@@ -59,7 +59,7 @@ public:
 private:
   CompilationUnit&  unit_;
   IR::IRUnit        ir_unit_;
-  IR::IRStream* current_stream_;
+  IR::IRStream*     current_stream_;
 
   //reg destination of Node
   std::map<const Node*, IR::Reg>    reg_dst_of_expr_;
@@ -85,7 +85,7 @@ private:
   void Print() const noexcept;
 
   IR::IRStream& CurrentStream() const noexcept{ return *current_stream_;}
-  
+
   void NewStream(const Label& entry_label, AST::Function& function){
     ir_unit_.NewStream(entry_label, function);
     current_stream_ = ir_unit_.streams_.back().get();

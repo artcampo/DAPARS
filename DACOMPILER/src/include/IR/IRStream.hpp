@@ -28,8 +28,9 @@ struct IRStream : public IRBuilder{
   Addr NextAddress() const noexcept{ return stream_.size(); }
 
   Inst::Inst& GetInst(const Addr addr) const noexcept{ return *stream_[addr];}
+  bool IsInstBeginBB(const Addr addr) const noexcept{ return is_begin_bb_[addr];}
 
-  void Print() const noexcept;
+  void  Print() const noexcept;
   Reg   MaxRegUsed() const noexcept { return num_regs_used_;}
   const AST::Function& GetFunction()const noexcept { return function_;}
 
@@ -64,6 +65,7 @@ struct IRStream : public IRBuilder{
 
 private:
   std::vector<Inst::PtrInst> stream_;
+  std::vector<bool> is_begin_bb_;
   Label entry_label_;
   MemAddr entry_mem_addr_;
   AST::Function& function_;
@@ -72,6 +74,8 @@ private:
   void Append(Inst::PtrInst inst){ stream_.push_back( std::move(inst)); }
 
   Reg RegAssignedToPreviousInst() const;
+
+  void ComputeBeginBB();
 
 public:
   using iterator = std::vector<Inst::PtrInst>::iterator;
@@ -83,6 +87,8 @@ public:
   const_iterator end()    const { return stream_.end(); }
   const_iterator cbegin() const { return stream_.cbegin(); }
   const_iterator cend()   const { return stream_.cend(); }
+
+  friend class IRUnit;
 
 };
 

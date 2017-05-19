@@ -21,12 +21,13 @@ struct Inst{
   virtual ~Inst() = default;
 
   virtual std::string str() const noexcept = 0;
-  
+  virtual bool IsJump() const noexcept{ return false;};
+
   //non-conventional, but while developing I want to see unimplemented instructions
   virtual void Accept(IRVisitor& v){ v.Visit(*this);};
 };
 
-//Policies 
+//Policies
 struct InstAddress{
   InstAddress(const MemAddr addr)
     :addr_(addr){}
@@ -87,10 +88,10 @@ struct InstTarget{
   ~InstTarget() = default;
 
   void PatchJump(const Addr target){ target_ = target;}
-  
+
   Addr GetTarget() const noexcept { return target_; }
-  
-  
+
+
 protected:
   Addr target_;
 };
@@ -103,8 +104,8 @@ struct BinaryOp : public Inst, public InstDst, public InstSrcSrc{
   virtual ~BinaryOp() = default;
 
   virtual std::string str() const noexcept = 0;
-  
-  
+
+
 };
 
 struct UnaryOp : public Inst, public InstDst, public InstSrc{

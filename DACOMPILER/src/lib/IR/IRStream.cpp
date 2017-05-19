@@ -109,6 +109,16 @@ Reg IRStream::RegAssignedToPreviousInst() const{
   return i.RegDst();
 }
 
+void IRStream::ComputeBeginBB(){
+  is_begin_bb_.resize(stream_.size(), false);
+  is_begin_bb_[0] = true;
+  for(const auto& inst : stream_)
+    if(inst->IsJump()){
+      const Inst::Jump& jump = dynamic_cast<const Inst::Jump&>(*inst);
+      is_begin_bb_[jump.GetTarget()] = true;
+    }
+}
+
 void IRStream::Print() const noexcept{
  Addr a = 0;
  std::cout << entry_label_.str() << "\n";

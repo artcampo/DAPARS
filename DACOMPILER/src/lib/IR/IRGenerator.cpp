@@ -388,6 +388,7 @@ void IRGenerator::Print() const noexcept{
 /////////////////////////////////////////////////////////////////////////////
 void IRGenerator::EndOfProgram(){
 //   CurrentStream().stream.push_back( IRBuilder::Stop());
+  ir_unit_.ComputeBeginBB();
   Print();
 }
 

@@ -197,8 +197,9 @@ void PatchJump(Inst& inst, const Target target){
     inst = CodeClass0(target, IR_JMP);
 
   if((inst & kClass2OpcodeBitMask) == IR_JMPC){
-    SubInst subt = DecodeClass2Subtype(inst);
-    inst = CodeClass2(0, target, IR_JMPC, subt);
+    Reg r; Word old_word; SubInst subt;
+    DecodeClass2(inst, r, old_word, subt);
+    inst = CodeClass2(r, target, IR_JMPC, subt);
   }
 }
 

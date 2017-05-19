@@ -7,6 +7,7 @@ struct Jump: public Inst, InstTarget{
   Jump(const Addr target) : InstTarget(target){};
   ~Jump() = default;
 
+  virtual bool IsJump() const noexcept override { return true; }
   virtual std::string str() const noexcept{
     return std::string("Jump to ") + std::to_string(target_);
   }
@@ -28,7 +29,6 @@ struct JumpCond : public Jump{
 protected:
   Reg           reg_cond_;
   JumpCondType  jump_type_;
-
 };
 
 struct JumpCondFalse : public JumpCond{

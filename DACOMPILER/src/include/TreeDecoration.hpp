@@ -23,6 +23,7 @@ class TreeDecoration : public LnessRness{
 public:
   TreeDecoration(){}
 
+  //TODO: split these in logical units!
   bool IsRead(const ExprVar& n) const{return var_is_read_or_write_.at(&n);}
   bool IsWrite(const ExprVar& n) const{return not var_is_read_or_write_.at(&n);}
 
