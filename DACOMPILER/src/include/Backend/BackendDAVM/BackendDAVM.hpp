@@ -121,6 +121,9 @@ private:
     if(not is_main) FuncPrologue(stream.GetFunction());
 
     for(auto& it : stream){
+      //flush reg alloc at start of BB
+      if(stream.IsInstBeginBB(ir_inst_addr_)) reg_alloc_.Flush();
+
       //Store translation of address from IR to VM's bytecode
       VM::Addr address_of_vm_inst = byte_code_.NextAddress();
       JumpBackPatchTranslation(ir_inst_addr_, address_of_vm_inst);

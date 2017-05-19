@@ -110,6 +110,7 @@ Reg IRStream::RegAssignedToPreviousInst() const{
 }
 
 void IRStream::ComputeBeginBB(){
+//   std::cout << "CompBB " << stream_.size()<<"\n";
   is_begin_bb_.resize(stream_.size(), false);
   is_begin_bb_[0] = true;
   for(const auto& inst : stream_)
