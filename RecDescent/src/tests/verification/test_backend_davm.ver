@@ -98,8 +98,8 @@ Bytecode:
 3: STORE, r1 -> [@0]
 4: MOV, rs1 rd0
 5: CALL: @9
-6: MOV, rs0 rd1
-7: STORE, r1 -> [@0]
+6: MOV, rs0 rd2
+7: STORE, r2 -> [@0]
 8: STOP
 9: PUSH, r14  <- [f]
 10: MOV, rs15 rd14
@@ -149,8 +149,8 @@ Bytecode:
 5: PUSH, r2
 6: CALL: @11
 7: ADDI, rd15 1
-8: MOV, rs0 rd1
-9: STORE, r1 -> [@0]
+8: MOV, rs0 rd3
+9: STORE, r3 -> [@0]
 10: STOP
 11: PUSH, r14  <- [f]
 12: MOV, rs15 rd14
@@ -216,8 +216,8 @@ Bytecode:
 9: PUSH, r4
 10: CALL: @15
 11: ADDI, rd15 3
-12: MOV, rs0 rd1
-13: STORE, r1 -> [@0]
+12: MOV, rs0 rd5
+13: STORE, r5 -> [@0]
 14: STOP
 15: PUSH, r14  <- [f]
 16: MOV, rs15 rd14
@@ -340,7 +340,9 @@ store %2 to [LT MainDS:4 (b)]
 %7 = LoadI(2)
 %8 = %6 < %7
 JumpCondTrue %8 to:11
+JUMP_T cond R5 to:11
 JumpCondFalse %8 to:14
+JUMP_F cond R5 to:14
 %9 = LoadI(2)
 store %9 to [LT MainDS:0 (a)]
 JumpIncond to17
@@ -368,26 +370,25 @@ Bytecode:
 6: ADD, rs1 rs2 rd3
 7: LOADI, r4 val: 2
 8: LST, rs3 rs4 rd5
-9: JUMPIF true to:11
-10: JUMPIF false to:14
-11: LOADI, r2 val: 2
-12: STORE, r2 -> [@0]
+9: JUMP_T cond R5 to:11
+10: JUMP_F cond R5 to:14
+11: LOADI, r6 val: 2
+12: STORE, r6 -> [@0]
 13: JUMP: @17
-14: LOADI, r1 val: 1
-15: STORE, r1 -> [@0]
+14: LOADI, r7 val: 1
+15: STORE, r7 -> [@0]
 16: JUMP: @17
-17: LOAD, rd1 <- [@0]
-18: STORE, r1 -> [@8]
-19: STORE, r2 -> [@12]
-20: STOP
-21: PUSH, r14  <- [__test]
-22: MOV, rs15 rd14
-23: LOAD, rd1 <- [@-4]
-24: AND, rs1 rs0 rd2
-25: STORE, r2 -> [@-4]
-26: MOV, rs14 rd15
-27: POP, r14
-28: RETURN
+17: STORE, r7 -> [@8]
+18: STORE, r2 -> [@12]
+19: STOP
+20: PUSH, r14  <- [__test]
+21: MOV, rs15 rd14
+22: LOAD, rd1 <- [@-4]
+23: AND, rs1 rs0 rd2
+24: STORE, r2 -> [@-4]
+25: MOV, rs14 rd15
+26: POP, r14
+27: RETURN
 Static data segment size: 20
 
 ---------------------------------------------------
@@ -421,8 +422,8 @@ Bytecode:
 2: CALL: @9
 3: MOV, rs0 rd1
 4: CALL: @12
-5: MOV, rs0 rd1
-6: ADD, rs2 rs1 rd3
+5: MOV, rs0 rd2
+6: ADD, rs1 rs2 rd3
 7: STORE, r3 -> [@0]
 8: STOP
 9: LOADI, r1 val: 1  <- [f]
@@ -620,8 +621,8 @@ Bytecode:
 6: LOADI, r3 val: 0
 7: MOV, rs3 rd0
 8: CALL: @12
-9: MOV, rs0 rd1
-10: MOV, rs1 rd0
+9: MOV, rs0 rd4
+10: MOV, rs4 rd0
 11: STOP
 12: PUSH, r14  <- [__test]
 13: MOV, rs15 rd14

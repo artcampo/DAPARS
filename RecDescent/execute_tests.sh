@@ -34,4 +34,4 @@ test_comp_davm functions
 test_comp_davm lang_internal_test
 test_comp_davm lang_internal_test_false
 test_comp_davm error_stack_overflow
-test_comp_davm lang_while
+# test_comp_davm lang_while

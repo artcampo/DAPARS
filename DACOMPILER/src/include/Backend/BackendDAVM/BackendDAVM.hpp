@@ -125,7 +125,8 @@ private:
       VM::Addr address_of_vm_inst = byte_code_.NextAddress();
       JumpBackPatchTranslation(ir_inst_addr_, address_of_vm_inst);
 
-      std::cout << it->str() <<" IR " <<ir_inst_addr_ << "-> VM " <<address_of_vm_inst<<"\n";
+      std::cout << it->str() <<"\n";
+//       std::cout << it->str() <<" IR " <<ir_inst_addr_ << "-> VM " <<address_of_vm_inst<<"\n";
       it->Accept(*this);
       ir_inst_addr_++;  //keep track of current IR's instruction offset
     }
@@ -142,7 +143,7 @@ private:
     RegMap rc = reg_alloc_.IRReg(inst.RegCond());
 //     reg_alloc_.Dump2();
     reg_alloc_.GetRegRead(rc);
-    std::cout << "jump cond " << inst.RegCond() << " to " << rc.mreg_ << "\n";
+//     std::cout << "jump cond " << inst.RegCond() << " to " << rc.mreg_ << "\n";
     VM::Target target_id = BackpatchId(inst.GetTarget());
     if(inst.GetJumpCondType() == IR::JumpCondType::kTrue)
       byte_code_.Append( VM::IRBuilder::JumpIfTrue (rc.mreg_, target_id));
@@ -391,7 +392,7 @@ private:
   }
 
   VM::Target JumpPatch(const IR::Addr addr){
-    std::cout << "Patch IR: " << addr << " to VM: " << jump_backpatch_translation_.at(addr) <<"\n";
+//     std::cout << "Patch IR: " << addr << " to VM: " << jump_backpatch_translation_.at(addr) <<"\n";
     return jump_backpatch_translation_.at(addr);
   }
 

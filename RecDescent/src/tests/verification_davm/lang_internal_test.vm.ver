@@ -15,8 +15,8 @@ OP: STORE [@-4] <- R2 val: 1
 OP: MOVE R15 <- R14 
 OP: POP R14 <- [@4294963192]
 OP: Return 8
-OP: MOVE R1 <- R0 
-OP: MOVE R0 <- R1 
+OP: MOVE R4 <- R0 
+OP: MOVE R0 <- R4 
 STOP
 LOAD R0 <- [@-4], val = 1 
-Registers: 1, 1, 1, 1, 0, 0, 0, 0, 0, 0
+Registers: 1, 1, 1, 1, 1, 0, 0, 0, 0, 0
