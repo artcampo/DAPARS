@@ -1,4 +1,4 @@
 bool main(){
-int a; a = 0;
-while(a < 3){ a = a + 1;}
-return __test(a == 3); }
+int a, c; a = 0; c= 0;
+while(a < 4){ a = a + 1; c = c + a;}
+return __test(a == 4) and __test(c == 6); }

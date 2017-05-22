@@ -12,12 +12,13 @@ OP: PUSH [@4294963192] <- R14
 OP: MOVE R14 <- R15 
 OP: LOAD R1 <- [@-4], val = 1 
 OP: AND R2 <- R1 or R0
-OP: STORE [@-4] <- R1 val: 1
+OP: STORE [@-4] <- R2 val: 0
 OP: MOVE R15 <- R14 
 OP: POP R14 <- [@4294963192]
 OP: Return 9
 OP: MOVE R5 <- R0 
 OP: MOVE R0 <- R5 
 STOP
-LOAD R0 <- [@-4], val = 1 
-Registers: 1, 1, 0, 0, 0, 0, 0, 0, 0, 0
+LOAD R0 <- [@-4], val = 0 
+Errors in execution:
+Compiler injected tests failed

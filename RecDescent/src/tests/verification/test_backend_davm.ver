@@ -68,7 +68,7 @@ Bytecode:
 12: MOV, rs15 rd14
 13: LOAD, rd1 <- [@-4]
 14: AND, rs1 rs0 rd2
-15: STORE, r2 -> [@-4]
+15: STORE, r1 -> [@-4]
 16: MOV, rs14 rd15
 17: POP, r14
 18: RETURN
@@ -115,7 +115,7 @@ Bytecode:
 17: MOV, rs15 rd14
 18: LOAD, rd1 <- [@-4]
 19: AND, rs1 rs0 rd2
-20: STORE, r2 -> [@-4]
+20: STORE, r1 -> [@-4]
 21: MOV, rs14 rd15
 22: POP, r14
 23: RETURN
@@ -227,10 +227,10 @@ Bytecode:
 16: MOV, rs15 rd14
 17: LOADB, r1 <- [@ r14 + 4]
 18: ADD, rs0 rs1 rd2
-19: LOADB, r3 <- [@ r14 + 3]
+19: LOADB, r1 <- [@ r14 + 3]
 20: ADD, rs1 rs2 rd3
-21: LOADB, r1 <- [@ r14 + 2]
-22: ADD, rs1 rs2 rd3
+21: LOADB, r4 <- [@ r14 + 2]
+22: ADD, rs3 rs4 rd5
 23: MOV, rs1 rd0
 24: MOV, rs14 rd15
 25: POP, r14
@@ -325,7 +325,7 @@ Bytecode:
 17: MOV, rs15 rd14
 18: LOAD, rd1 <- [@-4]
 19: AND, rs1 rs0 rd2
-20: STORE, r2 -> [@-4]
+20: STORE, r1 -> [@-4]
 21: MOV, rs14 rd15
 22: POP, r14
 23: RETURN
@@ -391,7 +391,7 @@ Bytecode:
 25: MOV, rs15 rd14
 26: LOAD, rd1 <- [@-4]
 27: AND, rs1 rs0 rd2
-28: STORE, r2 -> [@-4]
+28: STORE, r1 -> [@-4]
 29: MOV, rs14 rd15
 30: POP, r14
 31: RETURN
@@ -437,9 +437,9 @@ Bytecode:
 11: RETURN
 12: CALL: @9  <- [g]
 13: MOV, rs0 rd1
-14: LOADI, r2 val: 2
-15: ADD, rs1 rs2 rd3
-16: MOV, rs3 rd0
+14: LOADI, r1 val: 2
+15: ADD, rs2 rs1 rd3
+16: MOV, rs1 rd0
 17: RETURN
 18: PUSH, r14  <- [__test]
 19: MOV, rs15 rd14
@@ -544,10 +544,10 @@ Bytecode:
 14: LOADB, r1 <- [@ r14 + 0]
 15: LOADI, r2 val: 10
 16: ADD, rs1 rs2 rd3
-17: STORE, r1 -> [@r14 + 0]
-18: LOADI, r1 val: 11
-19: STORE, r1 -> [@r14 + -4]
-20: LOADI, r2 val: 12
+17: STORE, r3 -> [@r14 + 0]
+18: LOADI, r4 val: 11
+19: STORE, r4 -> [@r14 + -4]
+20: LOADI, r1 val: 12
 21: STORE, r1 -> [@r14 + -8]
 22: MOV, rs14 rd15
 23: POP, r14
@@ -556,7 +556,7 @@ Bytecode:
 26: MOV, rs15 rd14
 27: LOAD, rd1 <- [@-4]
 28: AND, rs1 rs0 rd2
-29: STORE, r1 -> [@-4]
+29: STORE, r2 -> [@-4]
 30: MOV, rs14 rd15
 31: POP, r14
 32: RETURN
@@ -596,7 +596,7 @@ Bytecode:
 12: MOV, rs15 rd14
 13: LOAD, rd1 <- [@-4]
 14: AND, rs1 rs0 rd2
-15: STORE, r2 -> [@-4]
+15: STORE, r1 -> [@-4]
 16: MOV, rs14 rd15
 17: POP, r14
 18: RETURN
@@ -638,7 +638,7 @@ Bytecode:
 13: MOV, rs15 rd14
 14: LOAD, rd1 <- [@-4]
 15: AND, rs1 rs0 rd2
-16: STORE, r2 -> [@-4]
+16: STORE, r1 -> [@-4]
 17: MOV, rs14 rd15
 18: POP, r14
 19: RETURN
@@ -678,7 +678,7 @@ Bytecode:
 12: MOV, rs15 rd14
 13: LOAD, rd1 <- [@-4]
 14: AND, rs1 rs0 rd2
-15: STORE, r2 -> [@-4]
+15: STORE, r1 -> [@-4]
 16: MOV, rs14 rd15
 17: POP, r14
 18: RETURN

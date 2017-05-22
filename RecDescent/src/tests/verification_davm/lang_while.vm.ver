@@ -3,53 +3,95 @@ OP: LOADI R0 <- 1
 OP: STORE [@-4] <- R0 val: 1
 OP: LOADI R1 <- 0
 OP: STORE [@0] <- R1 val: 0
+OP: LOADI R2 <- 0
+OP: STORE [@4] <- R2 val: 0
 OP: LOAD R1 <- [@0], val = 0 
-OP: LOADI R2 <- 3
+OP: LOADI R2 <- 4
 OP: LST R3 <- R1 < R2
-OP: JUMP_T cond R3 to @9
+OP: JUMP_T cond R3 to @11
 OP: LOAD R1 <- [@0], val = 0 
 OP: LOADI R2 <- 1
 OP: ADD R3 <- R1 + R2
 OP: STORE [@0] <- R3 val: 1
-OP: JUMP 4
+OP: LOAD R4 <- [@4], val = 0 
+OP: LOAD R5 <- [@0], val = 1 
+OP: ADD R6 <- R4 + R5
+OP: STORE [@4] <- R6 val: 1
+OP: JUMP 6
 OP: LOAD R1 <- [@0], val = 1 
-OP: LOADI R2 <- 3
+OP: LOADI R2 <- 4
 OP: LST R3 <- R1 < R2
-OP: JUMP_T cond R3 to @9
+OP: JUMP_T cond R3 to @11
 OP: LOAD R1 <- [@0], val = 1 
 OP: LOADI R2 <- 1
 OP: ADD R3 <- R1 + R2
 OP: STORE [@0] <- R3 val: 2
-OP: JUMP 4
+OP: LOAD R4 <- [@4], val = 1 
+OP: LOAD R5 <- [@0], val = 2 
+OP: ADD R6 <- R4 + R5
+OP: STORE [@4] <- R6 val: 3
+OP: JUMP 6
 OP: LOAD R1 <- [@0], val = 2 
-OP: LOADI R2 <- 3
+OP: LOADI R2 <- 4
 OP: LST R3 <- R1 < R2
-OP: JUMP_T cond R3 to @9
+OP: JUMP_T cond R3 to @11
 OP: LOAD R1 <- [@0], val = 2 
 OP: LOADI R2 <- 1
 OP: ADD R3 <- R1 + R2
 OP: STORE [@0] <- R3 val: 3
-OP: JUMP 4
+OP: LOAD R4 <- [@4], val = 3 
+OP: LOAD R5 <- [@0], val = 3 
+OP: ADD R6 <- R4 + R5
+OP: STORE [@4] <- R6 val: 6
+OP: JUMP 6
 OP: LOAD R1 <- [@0], val = 3 
-OP: LOADI R2 <- 3
+OP: LOADI R2 <- 4
 OP: LST R3 <- R1 < R2
-OP: JUMP_T cond R3 to @9
-OP: JUMP_F cond R3 to @14
+OP: JUMP_T cond R3 to @11
 OP: LOAD R1 <- [@0], val = 3 
-OP: LOADI R2 <- 3
+OP: LOADI R2 <- 1
+OP: ADD R3 <- R1 + R2
+OP: STORE [@0] <- R3 val: 4
+OP: LOAD R4 <- [@4], val = 6 
+OP: LOAD R5 <- [@0], val = 4 
+OP: ADD R6 <- R4 + R5
+OP: STORE [@4] <- R6 val: 10
+OP: JUMP 6
+OP: LOAD R1 <- [@0], val = 4 
+OP: LOADI R2 <- 4
+OP: LST R3 <- R1 < R2
+OP: JUMP_T cond R3 to @11
+OP: JUMP_F cond R3 to @20
+OP: LOAD R1 <- [@0], val = 4 
+OP: LOADI R2 <- 4
 OP: EQL R3 <- R1 == R2
 OP: MOVE R0 <- R3 
-OP: Call 22 ret@: 19
+OP: Call 35 ret@: 25
 OP: PUSH [@4294963192] <- R14
 OP: MOVE R14 <- R15 
 OP: LOAD R1 <- [@-4], val = 1 
 OP: AND R2 <- R1 or R0
-OP: STORE [@-4] <- R2 val: 1
+OP: STORE [@-4] <- R1 val: 1
 OP: MOVE R15 <- R14 
 OP: POP R14 <- [@4294963192]
-OP: Return 19
+OP: Return 25
 OP: MOVE R4 <- R0 
-OP: MOVE R0 <- R4 
+OP: LOAD R5 <- [@4], val = 10 
+OP: LOADI R6 <- 6
+OP: EQL R7 <- R5 == R6
+OP: MOVE R0 <- R7 
+OP: Call 35 ret@: 31
+OP: PUSH [@4294963192] <- R14
+OP: MOVE R14 <- R15 
+OP: LOAD R1 <- [@-4], val = 1 
+OP: AND R2 <- R1 or R0
+OP: STORE [@-4] <- R1 val: 1
+OP: MOVE R15 <- R14 
+OP: POP R14 <- [@4294963192]
+OP: Return 31
+OP: MOVE R8 <- R0 
+OP: AND R9 <- R4 or R8
+OP: MOVE R0 <- R9 
 STOP
 LOAD R0 <- [@-4], val = 1 
-Registers: 1, 1, 1, 1, 1, 0, 0, 0, 0, 0
+Registers: 1, 1, 0, 1, 1, 10, 6, 0, 0, 0
