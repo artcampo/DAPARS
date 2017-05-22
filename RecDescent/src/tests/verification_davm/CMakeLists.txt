@@ -7,6 +7,7 @@ INSTALL(FILES #input lang files
               error_stack_overflow.lang
               lang_while.lang
               lang_if.lang
+              lang_args.lang
 
               #output of their compilation
               functions.comp.ver
@@ -15,6 +16,7 @@ INSTALL(FILES #input lang files
               error_stack_overflow.comp.ver
               lang_while.comp.ver
               lang_if.comp.ver
+              lang_args.comp.ver
 
               #output of davm of their execution
               functions.vm.ver
@@ -23,4 +25,5 @@ INSTALL(FILES #input lang files
               error_stack_overflow.vm.ver
               lang_while.vm.ver
               lang_if.vm.ver
+              lang_args.vm.ver
         DESTINATION tests/davm_tests)

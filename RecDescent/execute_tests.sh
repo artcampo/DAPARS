@@ -17,7 +17,6 @@ test_standalone test_parser
 test_standalone test_errors_parser
 test_standalone test_ir_generator
 test_standalone test_backend_davm
-# test_standalone lang_if
 
 ###################################################################
 cd ../davm_tests/
@@ -38,3 +37,4 @@ test_comp_davm lang_internal_test_false
 test_comp_davm error_stack_overflow
 test_comp_davm lang_while
 # test_comp_davm lang_if
+test_comp_davm lang_args
