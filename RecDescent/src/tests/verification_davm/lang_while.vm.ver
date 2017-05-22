@@ -3,29 +3,53 @@ OP: LOADI R0 <- 1
 OP: STORE [@-4] <- R0 val: 1
 OP: LOADI R1 <- 0
 OP: STORE [@0] <- R1 val: 0
+OP: LOAD R1 <- [@0], val = 0 
 OP: LOADI R2 <- 3
 OP: LST R3 <- R1 < R2
-OP: JUMP_T cond R0 to @8
+OP: JUMP_T cond R3 to @9
+OP: LOAD R1 <- [@0], val = 0 
 OP: LOADI R2 <- 1
 OP: ADD R3 <- R1 + R2
 OP: STORE [@0] <- R3 val: 1
-OP: JUMP_F cond R0 to @4
+OP: JUMP 4
 OP: LOAD R1 <- [@0], val = 1 
+OP: LOADI R2 <- 3
+OP: LST R3 <- R1 < R2
+OP: JUMP_T cond R3 to @9
+OP: LOAD R1 <- [@0], val = 1 
+OP: LOADI R2 <- 1
+OP: ADD R3 <- R1 + R2
+OP: STORE [@0] <- R3 val: 2
+OP: JUMP 4
+OP: LOAD R1 <- [@0], val = 2 
+OP: LOADI R2 <- 3
+OP: LST R3 <- R1 < R2
+OP: JUMP_T cond R3 to @9
+OP: LOAD R1 <- [@0], val = 2 
+OP: LOADI R2 <- 1
+OP: ADD R3 <- R1 + R2
+OP: STORE [@0] <- R3 val: 3
+OP: JUMP 4
+OP: LOAD R1 <- [@0], val = 3 
+OP: LOADI R2 <- 3
+OP: LST R3 <- R1 < R2
+OP: JUMP_T cond R3 to @9
+OP: JUMP_F cond R3 to @14
+OP: LOAD R1 <- [@0], val = 3 
 OP: LOADI R2 <- 3
 OP: EQL R3 <- R1 == R2
 OP: MOVE R0 <- R3 
-OP: Call 20 ret@: 17
+OP: Call 22 ret@: 19
 OP: PUSH [@4294963192] <- R14
 OP: MOVE R14 <- R15 
 OP: LOAD R1 <- [@-4], val = 1 
 OP: AND R2 <- R1 or R0
-OP: STORE [@-4] <- R2 val: 0
+OP: STORE [@-4] <- R2 val: 1
 OP: MOVE R15 <- R14 
 OP: POP R14 <- [@4294963192]
-OP: Return 17
-OP: MOVE R1 <- R0 
-OP: MOVE R0 <- R1 
+OP: Return 19
+OP: MOVE R4 <- R0 
+OP: MOVE R0 <- R4 
 STOP
-LOAD R0 <- [@-4], val = 0 
-Errors in execution:
-Compiler injected tests failed
+LOAD R0 <- [@-4], val = 1 
+Registers: 1, 1, 1, 1, 1, 0, 0, 0, 0, 0

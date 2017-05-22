@@ -58,7 +58,7 @@ public:
   void WriteBack(){
     for(auto& it : is_in_memory_) // for each IrSymbol not updated in memory
       if(not it.second){
-        Dump();
+//         Dump();
         std::cout << std::endl;
         std::cout << "Flush: Store: " << str(it.first) << "\n";
         FlushIRSymbol(it.first);
@@ -70,7 +70,7 @@ public:
   void Flush(){
     WriteBack();
     Evict();
-    Dump();
+//     Dump();
   }
 
   //Flush value of a given register
@@ -101,13 +101,13 @@ public:
   void GetRegRead(RegMap& mapping){
     GetReg(mapping);
     UsageShared(mapping);
-    Dump();
+//     Dump();
   }
 
   void GetRegLoadI(RegMap& mapping){
     GetReg(mapping);
     UsageShared(mapping);
-    Dump();
+//     Dump();
   }
 
   void GetRegArith(RegMap& md, RegMap& ms1, RegMap& ms2){
@@ -117,13 +117,13 @@ public:
     UsageShared(ms1);
     UsageShared(ms2);
     UsageNewValue(md);
-    Dump();
+//     Dump();
   }
 
   void GetRegStore(RegMap& ms, RegMap& md){
     GetReg(ms);
     UsageBackToMem(ms, md);
-    Dump();
+//     Dump();
   }
 
   //returns true if ms was not already on a register (thus load needs to happen)
@@ -134,7 +134,7 @@ public:
       md.mreg_ = ms.mreg_;
       UsageShared(ms);
       UsageShared(md);
-      Dump();
+//       Dump();
       return false;
     }
     //variable does need load
@@ -147,20 +147,20 @@ public:
     UsageShared(ms);
     //std::invoke(backend_, callback_load_, md.mreg_, mem_addr_of_reg_sym_id_.at() );
     (backend_->*callback_load_)(md.mreg_, mem_addr_of_reg_sym_id_.at(ms.regsymb_));
-    Dump();
+//     Dump();
     return true;
   }
 
   void SetRegGetArg(RegMap& md){
     UsageShared(md);
     ReserveNoFlush(md.mreg_);
-    Dump();
+//     Dump();
   }
 
   void GetRegGetRetVal(RegMap& md){
     GetReg(md);
     UsageShared(md);
-    Dump();
+//     Dump();
   }
 
 
@@ -325,13 +325,14 @@ private:
       }
   }
 
+public:
 void Dump(){
-    return;  //uncomment for dump at each change
-    std::cout << "Usage: " <<register_usage_ << "/" << function_max_machine_reg_<<"\n";
+//     return;  //uncomment for dump at each change
+//     std::cout << "Usage: " <<register_usage_ << "/" << function_max_machine_reg_<<"\n";
     for(int i = 0; i < max_machine_reg_; ++i){
       if(not reg_desc_[i].empty()){
-        std::cout << "---- ";
-        std::cout << "r" << i << ": ";
+        std::cout << "---REG_ALLOC- ";
+        std::cout << "    r" << i << ": ";
         for(auto& it : reg_desc_[i]) std::cout << str(it)  << " ";
         if(not mreg_can_be_flushed_[i]) std::cout << " [dont flush]";
         std::cout << "\n";
@@ -340,15 +341,15 @@ void Dump(){
 
     for(const auto& it : addr_desc_){
       if(not it.second.empty()){
-        std::cout << "----";
+        std::cout << "---REG_ALLOC- ";
+        if(IsInMemory(it.first)) std::cout <<"[m] "; else std::cout <<"[r] ";
         std::cout << str(it.first);
-        if(IsInMemory(it.first)) std::cout <<"[m]"; else std::cout <<"[r]";
         std::cout<< ": ";
         for(const auto& it_rs : it.second) std::cout << "r"<< it_rs << " ";
         std::cout << "\n";
       }
     }
-    std::cout << "\n";
+//     std::cout << "\n";
   }
 
 

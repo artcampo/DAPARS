@@ -31,6 +31,7 @@ struct IRStream : public IRBuilder{
   bool IsInstBeginBB(const Addr addr) const noexcept{ return is_begin_bb_[addr];}
 
   void  Print() const noexcept;
+//   void  PrintLast() const noexcept;
   Reg   MaxRegUsed() const noexcept { return num_regs_used_;}
   const AST::Function& GetFunction()const noexcept { return function_;}
 

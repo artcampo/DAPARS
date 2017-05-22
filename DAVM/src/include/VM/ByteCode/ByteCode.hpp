@@ -14,6 +14,7 @@ struct ByteCode{
   ByteCode()
     : perform_compiler_test_(false)
     , mem_stack_(MemChunk::DefaultStackPages())  //default stack for hardcoded BC tests
+    , be_dump_(0)
   {}
 
   void Append(const Inst inst){ stream.push_back(inst);}
@@ -65,6 +66,11 @@ struct ByteCode{
     }
   }
 
+  void DumpLast() const{
+    for(; be_dump_ < stream.size(); ++be_dump_)
+      std::cout << IRBuilder::Print(stream[be_dump_])<<" ";
+  }
+
   bool  IsFuncEntry(const VM::Addr addr) const{
     auto it = func_index_by_addr_.find(addr);
     return it != func_index_by_addr_.end();
@@ -96,9 +102,11 @@ struct ByteCode{
 private:
 
 
+
   std::vector<FuncDesc>       functions_;
   std::map<VM::Addr, size_t>  func_index_by_addr_;
 
+  mutable int be_dump_; //debug
 
 };
 

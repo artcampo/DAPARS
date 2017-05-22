@@ -130,5 +130,13 @@ void IRStream::Print() const noexcept{
   }
 }
 
+/*
+void IRStream::PrintLast() const noexcept{
+ Addr a = 0;
+ if(not function_.IsCompilerPrivate())
+    std::cout <<  stream_.back()->str();
+}
+*/
+
 }//end namespace IR
 }//end namespace Compiler

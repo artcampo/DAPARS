@@ -122,15 +122,22 @@ private:
 
     for(auto& it : stream){
       //flush reg alloc at start of BB
-      if(stream.IsInstBeginBB(ir_inst_addr_)) reg_alloc_.Flush();
+      if(stream.IsInstBeginBB(ir_inst_addr_)){
+//         std::cout << "RegAlloc::flush::BB\n";
+        reg_alloc_.Flush();
+      }
 
       //Store translation of address from IR to VM's bytecode
       VM::Addr address_of_vm_inst = byte_code_.NextAddress();
       JumpBackPatchTranslation(ir_inst_addr_, address_of_vm_inst);
 
-      std::cout << it->str() <<"\n";
+
 //       std::cout << it->str() <<" IR " <<ir_inst_addr_ << "-> VM " <<address_of_vm_inst<<"\n";
+      std::cout << it->str();//<< " => ";
       it->Accept(*this);
+      //byte_code_.DumpLast();
+      std::cout <<"\n";
+//       reg_alloc_.Dump();
       ir_inst_addr_++;  //keep track of current IR's instruction offset
     }
     if(not is_main) FuncEpilogue(stream.GetFunction());
@@ -152,7 +159,7 @@ private:
       byte_code_.Append( VM::IRBuilder::JumpIfTrue (rc.mreg_, target_id));
     else
       byte_code_.Append( VM::IRBuilder::JumpIfFalse(rc.mreg_, target_id));
-    std::cout << VM::IRBuilder::Print(byte_code_.stream.back()) << "\n";
+//     std::cout << VM::IRBuilder::Print(byte_code_.stream.back()) << "\n";
   }
 
   void Visit(const IR::Inst::JumpIncond& inst) override{
@@ -168,9 +175,9 @@ private:
   }
 
   void Visit(const IR::Inst::Load& inst) override{
-    RegMap rd = reg_alloc_.IRReg    (inst.RegDst());
-    RegMap rs = reg_alloc_.IRMemAddr(inst.Addr());
-    reg_alloc_.GetRegLoad(rd, rs);
+    RegMap rd = reg_alloc_.IRReg(inst.RegDst());
+    reg_alloc_.GetRegLoadI(rd);
+    LoadCallBack(rd.mreg_, inst.Addr());
   }
 
   void Visit(const IR::Inst::LoadReg& inst) override{

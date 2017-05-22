@@ -19,18 +19,19 @@ Bytecode:
 1: STORE, r0 -> [@-4]
 2: LOADI, r1 val: 1
 3: STORE, r1 -> [@0]
-4: LOADI, r2 val: 2
-5: ADD, rs1 rs2 rd3
-6: STORE, r3 -> [@0]
-7: STOP
-8: PUSH, r14  <- [__test]
-9: MOV, rs15 rd14
-10: LOAD, rd1 <- [@-4]
-11: AND, rs1 rs0 rd2
-12: STORE, r2 -> [@-4]
-13: MOV, rs14 rd15
-14: POP, r14
-15: RETURN
+4: LOAD, rd2 <- [@0]
+5: LOADI, r3 val: 2
+6: ADD, rs2 rs3 rd4
+7: STORE, r4 -> [@0]
+8: STOP
+9: PUSH, r14  <- [__test]
+10: MOV, rs15 rd14
+11: LOAD, rd1 <- [@-4]
+12: AND, rs1 rs0 rd2
+13: STORE, r2 -> [@-4]
+14: MOV, rs14 rd15
+15: POP, r14
+16: RETURN
 Static data segment size: 8
 
 ---------------------------------------------------
@@ -58,17 +59,19 @@ Bytecode:
 3: STORE, r1 -> [@0]
 4: LOADI, r2 val: 3
 5: STORE, r2 -> [@4]
-6: ADD, rs1 rs2 rd3
-7: STORE, r3 -> [@8]
-8: STOP
-9: PUSH, r14  <- [__test]
-10: MOV, rs15 rd14
-11: LOAD, rd1 <- [@-4]
-12: AND, rs1 rs0 rd1
-13: STORE, r1 -> [@-4]
-14: MOV, rs14 rd15
-15: POP, r14
-16: RETURN
+6: LOAD, rd3 <- [@0]
+7: LOAD, rd4 <- [@4]
+8: ADD, rs3 rs4 rd5
+9: STORE, r5 -> [@8]
+10: STOP
+11: PUSH, r14  <- [__test]
+12: MOV, rs15 rd14
+13: LOAD, rd1 <- [@-4]
+14: AND, rs1 rs0 rd2
+15: STORE, r2 -> [@-4]
+16: MOV, rs14 rd15
+17: POP, r14
+18: RETURN
 Static data segment size: 16
 
 ---------------------------------------------------
@@ -96,25 +99,26 @@ Bytecode:
 1: STORE, r0 -> [@-4]
 2: LOADI, r1 val: 1
 3: STORE, r1 -> [@0]
-4: MOV, rs1 rd0
-5: CALL: @9
-6: MOV, rs0 rd2
-7: STORE, r2 -> [@0]
-8: STOP
-9: PUSH, r14  <- [f]
-10: MOV, rs15 rd14
-11: MOV, rs0 rd0
-12: MOV, rs14 rd15
-13: POP, r14
-14: RETURN
-15: PUSH, r14  <- [__test]
-16: MOV, rs15 rd14
-17: LOAD, rd1 <- [@-4]
-18: AND, rs1 rs0 rd2
-19: STORE, r2 -> [@-4]
-20: MOV, rs14 rd15
-21: POP, r14
-22: RETURN
+4: LOAD, rd2 <- [@0]
+5: MOV, rs2 rd0
+6: CALL: @10
+7: MOV, rs0 rd3
+8: STORE, r3 -> [@0]
+9: STOP
+10: PUSH, r14  <- [f]
+11: MOV, rs15 rd14
+12: MOV, rs0 rd0
+13: MOV, rs14 rd15
+14: POP, r14
+15: RETURN
+16: PUSH, r14  <- [__test]
+17: MOV, rs15 rd14
+18: LOAD, rd1 <- [@-4]
+19: AND, rs1 rs0 rd2
+20: STORE, r2 -> [@-4]
+21: MOV, rs14 rd15
+22: POP, r14
+23: RETURN
 Static data segment size: 8
 
 ---------------------------------------------------
@@ -163,7 +167,7 @@ Bytecode:
 19: PUSH, r14  <- [__test]
 20: MOV, rs15 rd14
 21: LOAD, rd1 <- [@-4]
-22: AND, rs1 rs0 rd1
+22: AND, rs1 rs0 rd2
 23: STORE, r1 -> [@-4]
 24: MOV, rs14 rd15
 25: POP, r14
@@ -223,19 +227,19 @@ Bytecode:
 16: MOV, rs15 rd14
 17: LOADB, r1 <- [@ r14 + 4]
 18: ADD, rs0 rs1 rd2
-19: LOADB, r1 <- [@ r14 + 3]
-20: ADD, rs1 rs1 rd2
+19: LOADB, r3 <- [@ r14 + 3]
+20: ADD, rs1 rs2 rd3
 21: LOADB, r1 <- [@ r14 + 2]
-22: ADD, rs2 rs1 rd3
-23: MOV, rs3 rd0
+22: ADD, rs1 rs2 rd3
+23: MOV, rs1 rd0
 24: MOV, rs14 rd15
 25: POP, r14
 26: RETURN
 27: PUSH, r14  <- [__test]
 28: MOV, rs15 rd14
 29: LOAD, rd1 <- [@-4]
-30: AND, rs1 rs0 rd1
-31: STORE, r1 -> [@-4]
+30: AND, rs1 rs0 rd2
+31: STORE, r2 -> [@-4]
 32: MOV, rs14 rd15
 33: POP, r14
 34: RETURN
@@ -275,8 +279,8 @@ Bytecode:
 14: PUSH, r14  <- [__test]
 15: MOV, rs15 rd14
 16: LOAD, rd1 <- [@-4]
-17: AND, rs1 rs0 rd1
-18: STORE, r1 -> [@-4]
+17: AND, rs1 rs0 rd2
+18: STORE, r2 -> [@-4]
 19: MOV, rs14 rd15
 20: POP, r14
 21: RETURN
@@ -311,7 +315,7 @@ Bytecode:
 7: MOV, rs15 rd14
 8: SUBI, rd15 16
 9: LOADB, r1 <- [@ r14 + 0]
-10: LOADB, r2 <- [@ r14 + -12]
+10: LOADB, r1 <- [@ r14 + -12]
 11: ADD, rs1 rs2 rd3
 12: MOV, rs3 rd0
 13: MOV, rs14 rd15
@@ -320,8 +324,8 @@ Bytecode:
 16: PUSH, r14  <- [__test]
 17: MOV, rs15 rd14
 18: LOAD, rd1 <- [@-4]
-19: AND, rs1 rs0 rd1
-20: STORE, r1 -> [@-4]
+19: AND, rs1 rs0 rd2
+20: STORE, r2 -> [@-4]
 21: MOV, rs14 rd15
 22: POP, r14
 23: RETURN
@@ -340,9 +344,7 @@ store %2 to [LT MainDS:4 (b)]
 %7 = LoadI(2)
 %8 = %6 < %7
 JumpCondTrue %8 to:11
-JUMP_T cond R5 to:11
 JumpCondFalse %8 to:14
-JUMP_F cond R5 to:14
 %9 = LoadI(2)
 store %9 to [LT MainDS:0 (a)]
 JumpIncond to17
@@ -367,29 +369,32 @@ Bytecode:
 3: STORE, r1 -> [@0]
 4: LOADI, r2 val: 0
 5: STORE, r2 -> [@4]
-6: ADD, rs1 rs2 rd3
-7: LOADI, r4 val: 2
-8: LST, rs3 rs4 rd5
-9: JUMP_T cond R5 to:11
-10: JUMP_F cond R5 to:14
-11: LOADI, r1 val: 2
-12: STORE, r1 -> [@0]
-13: JUMP: @17
-14: LOADI, r1 val: 1
-15: STORE, r1 -> [@0]
-16: JUMP: @17
-17: LOAD, rd1 <- [@0]
-18: STORE, r1 -> [@8]
-19: STORE, r2 -> [@12]
-20: STOP
-21: PUSH, r14  <- [__test]
-22: MOV, rs15 rd14
-23: LOAD, rd1 <- [@-4]
-24: AND, rs1 rs0 rd2
-25: STORE, r1 -> [@-4]
-26: MOV, rs14 rd15
-27: POP, r14
-28: RETURN
+6: LOAD, rd3 <- [@0]
+7: LOAD, rd4 <- [@4]
+8: ADD, rs3 rs4 rd5
+9: LOADI, r6 val: 2
+10: LST, rs5 rs6 rd7
+11: JUMP_T cond R7 to:13
+12: JUMP_F cond R7 to:16
+13: LOADI, r1 val: 2
+14: STORE, r1 -> [@0]
+15: JUMP: @19
+16: LOADI, r1 val: 1
+17: STORE, r1 -> [@0]
+18: JUMP: @19
+19: LOAD, rd1 <- [@0]
+20: STORE, r1 -> [@8]
+21: LOAD, rd2 <- [@4]
+22: STORE, r2 -> [@12]
+23: STOP
+24: PUSH, r14  <- [__test]
+25: MOV, rs15 rd14
+26: LOAD, rd1 <- [@-4]
+27: AND, rs1 rs0 rd2
+28: STORE, r2 -> [@-4]
+29: MOV, rs14 rd15
+30: POP, r14
+31: RETURN
 Static data segment size: 20
 
 ---------------------------------------------------
@@ -434,12 +439,12 @@ Bytecode:
 13: MOV, rs0 rd1
 14: LOADI, r2 val: 2
 15: ADD, rs1 rs2 rd3
-16: MOV, rs1 rd0
+16: MOV, rs3 rd0
 17: RETURN
 18: PUSH, r14  <- [__test]
 19: MOV, rs15 rd14
 20: LOAD, rd1 <- [@-4]
-21: AND, rs1 rs0 rd1
+21: AND, rs1 rs0 rd2
 22: STORE, r1 -> [@-4]
 23: MOV, rs14 rd15
 24: POP, r14
@@ -475,21 +480,23 @@ Bytecode:
 3: STORE, r1 -> [@0]
 4: LOADI, r2 val: 0
 5: STORE, r2 -> [@4]
-6: OR, rs1 rs2 rd3
-7: STORE, r3 -> [@8]
-8: LOADI, r4 val: 0
-9: LOADI, r5 val: 1
-10: OR, rs4 rs5 rd6
-11: STORE, r6 -> [@8]
-12: STOP
-13: PUSH, r14  <- [__test]
-14: MOV, rs15 rd14
-15: LOAD, rd1 <- [@-4]
-16: AND, rs1 rs0 rd1
-17: STORE, r1 -> [@-4]
-18: MOV, rs14 rd15
-19: POP, r14
-20: RETURN
+6: LOAD, rd3 <- [@0]
+7: LOAD, rd4 <- [@4]
+8: OR, rs3 rs4 rd5
+9: STORE, r5 -> [@8]
+10: LOADI, r6 val: 0
+11: LOADI, r7 val: 1
+12: OR, rs6 rs7 rd8
+13: STORE, r8 -> [@8]
+14: STOP
+15: PUSH, r14  <- [__test]
+16: MOV, rs15 rd14
+17: LOAD, rd1 <- [@-4]
+18: AND, rs1 rs0 rd2
+19: STORE, r1 -> [@-4]
+20: MOV, rs14 rd15
+21: POP, r14
+22: RETURN
 Static data segment size: 16
 
 ---------------------------------------------------
@@ -535,12 +542,12 @@ Bytecode:
 12: MOV, rs15 rd14
 13: SUBI, rd15 12
 14: LOADB, r1 <- [@ r14 + 0]
-15: LOADI, r1 val: 10
-16: ADD, rs1 rs1 rd2
-17: STORE, r2 -> [@r14 + 0]
+15: LOADI, r2 val: 10
+16: ADD, rs1 rs2 rd3
+17: STORE, r1 -> [@r14 + 0]
 18: LOADI, r1 val: 11
 19: STORE, r1 -> [@r14 + -4]
-20: LOADI, r1 val: 12
+20: LOADI, r2 val: 12
 21: STORE, r1 -> [@r14 + -8]
 22: MOV, rs14 rd15
 23: POP, r14
@@ -580,17 +587,19 @@ Bytecode:
 3: STORE, r1 -> [@4]
 4: LOADI, r2 val: 11
 5: STORE, r2 -> [@8]
-6: EQT, rs1 rs2 rd3
-7: STORE, r3 -> [@0]
-8: STOP
-9: PUSH, r14  <- [__test]
-10: MOV, rs15 rd14
-11: LOAD, rd1 <- [@-4]
-12: AND, rs1 rs0 rd2
-13: STORE, r2 -> [@-4]
-14: MOV, rs14 rd15
-15: POP, r14
-16: RETURN
+6: LOAD, rd3 <- [@4]
+7: LOAD, rd4 <- [@8]
+8: EQT, rs3 rs4 rd5
+9: STORE, r5 -> [@0]
+10: STOP
+11: PUSH, r14  <- [__test]
+12: MOV, rs15 rd14
+13: LOAD, rd1 <- [@-4]
+14: AND, rs1 rs0 rd2
+15: STORE, r2 -> [@-4]
+16: MOV, rs14 rd15
+17: POP, r14
+18: RETURN
 Static data segment size: 16
 
 ---------------------------------------------------
@@ -628,8 +637,8 @@ Bytecode:
 12: PUSH, r14  <- [__test]
 13: MOV, rs15 rd14
 14: LOAD, rd1 <- [@-4]
-15: AND, rs1 rs0 rd1
-16: STORE, r1 -> [@-4]
+15: AND, rs1 rs0 rd2
+16: STORE, r2 -> [@-4]
 17: MOV, rs14 rd15
 18: POP, r14
 19: RETURN
@@ -660,16 +669,18 @@ Bytecode:
 3: STORE, r1 -> [@0]
 4: LOADI, r2 val: 0
 5: STORE, r2 -> [@4]
-6: AND, rs1 rs2 rd3
-7: STORE, r3 -> [@0]
-8: STOP
-9: PUSH, r14  <- [__test]
-10: MOV, rs15 rd14
-11: LOAD, rd1 <- [@-4]
-12: AND, rs1 rs0 rd1
-13: STORE, r1 -> [@-4]
-14: MOV, rs14 rd15
-15: POP, r14
-16: RETURN
+6: LOAD, rd3 <- [@0]
+7: LOAD, rd4 <- [@4]
+8: AND, rs3 rs4 rd5
+9: STORE, r5 -> [@0]
+10: STOP
+11: PUSH, r14  <- [__test]
+12: MOV, rs15 rd14
+13: LOAD, rd1 <- [@-4]
+14: AND, rs1 rs0 rd2
+15: STORE, r2 -> [@-4]
+16: MOV, rs14 rd15
+17: POP, r14
+18: RETURN
 Static data segment size: 12
 
