@@ -8,6 +8,14 @@ INSTALL(FILES #input lang files
               lang_while.lang
               lang_if.lang
 
+              #output of their compilation
+              functions.comp.ver
+              lang_internal_test.comp.ver
+              lang_internal_test_false.comp.ver
+              error_stack_overflow.comp.ver
+              lang_while.comp.ver
+              lang_if.comp.ver
+
               #output of davm of their execution
               functions.vm.ver
               lang_internal_test.vm.ver

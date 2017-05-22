@@ -1,0 +1,37 @@
+%0 = LoadI(1)
+store %0 to [LT MainDS:0 (a)]
+%2 = Load [LT MainDS:0 (a)]
+%3 = LoadI(0)
+%4 = %2 == %3
+SetArg( %4)
+call [LT entry___test[isTarget]:0 ()]
+%5 = GetRetVal()
+SetRetVal( %5)
+ReturnMain
+%0 = Load [LT MainDS:-4 (__test_result)]
+%1 = GetArg( arg0 )
+%2 = %0 and %1
+store %2 to [LT MainDS:-4 (__test_result)]
+Return
+---------
+Bytecode:
+0: LOADI, r0 val: 1  <- [main]
+1: STORE, r0 -> [@-4]
+2: LOADI, r1 val: 1
+3: STORE, r1 -> [@0]
+4: LOAD, rd2 <- [@0]
+5: LOADI, r3 val: 0
+6: EQT, rs2 rs3 rd4
+7: MOV, rs4 rd0
+8: CALL: @12
+9: MOV, rs0 rd5
+10: MOV, rs5 rd0
+11: STOP
+12: PUSH, r14  <- [__test]
+13: MOV, rs15 rd14
+14: LOAD, rd1 <- [@-4]
+15: AND, rs1 rs0 rd2
+16: STORE, r2 -> [@-4]
+17: MOV, rs14 rd15
+18: POP, r14
+19: RETURN

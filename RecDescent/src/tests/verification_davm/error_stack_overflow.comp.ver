@@ -1,0 +1,33 @@
+call [LT entry_f[isTarget]:0 ()]
+%0 = GetRetVal()
+SetRetVal( %0)
+ReturnMain
+call [LT entry_f[isTarget]:0 ()]
+%0 = GetRetVal()
+SetRetVal( %0)
+Return
+%0 = Load [LT MainDS:-4 (__test_result)]
+%1 = GetArg( arg0 )
+%2 = %0 and %1
+store %2 to [LT MainDS:-4 (__test_result)]
+Return
+---------
+Bytecode:
+0: LOADI, r0 val: 1  <- [main]
+1: STORE, r0 -> [@-4]
+2: CALL: @6
+3: MOV, rs0 rd1
+4: MOV, rs1 rd0
+5: STOP
+6: CALL: @6  <- [f]
+7: MOV, rs0 rd1
+8: MOV, rs1 rd0
+9: RETURN
+10: PUSH, r14  <- [__test]
+11: MOV, rs15 rd14
+12: LOAD, rd1 <- [@-4]
+13: AND, rs1 rs0 rd2
+14: STORE, r2 -> [@-4]
+15: MOV, rs14 rd15
+16: POP, r14
+17: RETURN

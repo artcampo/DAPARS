@@ -1,5 +1,5 @@
 cd ../build
-make install -j8 >/dev/null
+# make install -j8 >/dev/null
 cd ../install/tests/ll1
 
 ###################################################################
@@ -20,10 +20,11 @@ regenerate_test_standalone test_backend_davm
 
 cd ../davm_tests/
 regenerate_test_comp_davm(){
-    ./test_parser_compiler_davm $1.lang $1.bc > comp.out
+    ./test_parser_compiler_davm $1.lang $1.bc > $1.comp.out
     ./davm $1.bc > $1.vm.out
-    cp $1.vm.out ../../../RecDescent/src/tests/verification_davm/$1.vm.ver
-    rm $1.bc $1.vm.out comp.out
+    cp $1.vm.out   ../../../RecDescent/src/tests/verification_davm/$1.vm.ver
+    cp $1.comp.out ../../../RecDescent/src/tests/verification_davm/$1.comp.ver
+    rm $1.bc $1.vm.out $1.comp.out
 }
 
 regenerate_test_comp_davm functions

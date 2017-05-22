@@ -168,7 +168,7 @@ Bytecode:
 20: MOV, rs15 rd14
 21: LOAD, rd1 <- [@-4]
 22: AND, rs1 rs0 rd2
-23: STORE, r1 -> [@-4]
+23: STORE, r2 -> [@-4]
 24: MOV, rs14 rd15
 25: POP, r14
 26: RETURN
@@ -227,11 +227,11 @@ Bytecode:
 16: MOV, rs15 rd14
 17: LOADB, r1 <- [@ r14 + 4]
 18: ADD, rs0 rs1 rd2
-19: LOADB, r1 <- [@ r14 + 3]
+19: LOADB, r3 <- [@ r14 + 3]
 20: ADD, rs1 rs2 rd3
 21: LOADB, r4 <- [@ r14 + 2]
-22: ADD, rs3 rs4 rd5
-23: MOV, rs1 rd0
+22: ADD, rs1 rs2 rd3
+23: MOV, rs3 rd0
 24: MOV, rs14 rd15
 25: POP, r14
 26: RETURN
@@ -239,7 +239,7 @@ Bytecode:
 28: MOV, rs15 rd14
 29: LOAD, rd1 <- [@-4]
 30: AND, rs1 rs0 rd2
-31: STORE, r2 -> [@-4]
+31: STORE, r1 -> [@-4]
 32: MOV, rs14 rd15
 33: POP, r14
 34: RETURN
@@ -391,7 +391,7 @@ Bytecode:
 25: MOV, rs15 rd14
 26: LOAD, rd1 <- [@-4]
 27: AND, rs1 rs0 rd2
-28: STORE, r1 -> [@-4]
+28: STORE, r2 -> [@-4]
 29: MOV, rs14 rd15
 30: POP, r14
 31: RETURN
@@ -445,7 +445,7 @@ Bytecode:
 19: MOV, rs15 rd14
 20: LOAD, rd1 <- [@-4]
 21: AND, rs1 rs0 rd2
-22: STORE, r1 -> [@-4]
+22: STORE, r2 -> [@-4]
 23: MOV, rs14 rd15
 24: POP, r14
 25: RETURN
@@ -493,7 +493,7 @@ Bytecode:
 16: MOV, rs15 rd14
 17: LOAD, rd1 <- [@-4]
 18: AND, rs1 rs0 rd2
-19: STORE, r1 -> [@-4]
+19: STORE, r2 -> [@-4]
 20: MOV, rs14 rd15
 21: POP, r14
 22: RETURN
@@ -547,7 +547,7 @@ Bytecode:
 17: STORE, r3 -> [@r14 + 0]
 18: LOADI, r4 val: 11
 19: STORE, r4 -> [@r14 + -4]
-20: LOADI, r1 val: 12
+20: LOADI, r5 val: 12
 21: STORE, r1 -> [@r14 + -8]
 22: MOV, rs14 rd15
 23: POP, r14
@@ -556,7 +556,7 @@ Bytecode:
 26: MOV, rs15 rd14
 27: LOAD, rd1 <- [@-4]
 28: AND, rs1 rs0 rd2
-29: STORE, r2 -> [@-4]
+29: STORE, r1 -> [@-4]
 30: MOV, rs14 rd15
 31: POP, r14
 32: RETURN
