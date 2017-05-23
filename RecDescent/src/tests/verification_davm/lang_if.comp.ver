@@ -1,0 +1,81 @@
+%0 = LoadI(0)
+store %0 to [LT MainDS:0 (a)]
+%2 = LoadI(1)
+store %2 to [LT MainDS:4 (b)]
+%4 = Load [LT MainDS:4 (b)]
+%5 = LoadI(1)
+%6 = %4 < %5
+JumpCondTrue %6 to:9
+JumpCondFalse %6 to:12
+%7 = LoadI(2)
+store %7 to [LT MainDS:0 (a)]
+JumpIncond to24
+%9 = Load [LT MainDS:0 (a)]
+%10 = LoadI(0)
+%11 = %9 < %10
+JumpCondTrue %11 to:17
+JumpCondFalse %11 to:20
+%12 = LoadI(3)
+store %12 to [LT MainDS:0 (a)]
+JumpIncond to24
+%14 = LoadI(1)
+store %14 to [LT MainDS:0 (a)]
+JumpIncond to24
+JumpIncond to24
+%16 = Load [LT MainDS:0 (a)]
+%17 = LoadI(1)
+%18 = %16 == %17
+SetArg( %18)
+call [LT entry___test[isTarget]:0 ()]
+%19 = GetRetVal()
+SetRetVal( %19)
+ReturnMain
+%0 = Load [LT MainDS:-4 (__test_result)]
+%1 = GetArg( arg0 )
+%2 = %0 and %1
+store %2 to [LT MainDS:-4 (__test_result)]
+Return
+---------
+Bytecode:
+0: LOADI, r0 val: 1  <- [main]
+1: STORE, r0 -> [@-4]
+2: LOADI, r1 val: 0
+3: STORE, r1 -> [@0]
+4: LOADI, r2 val: 1
+5: STORE, r2 -> [@4]
+6: LOAD, rd3 <- [@4]
+7: LOADI, r4 val: 1
+8: LST, rs3 rs4 rd5
+9: JUMP_T cond R5 to:11
+10: JUMP_F cond R5 to:14
+11: LOADI, r1 val: 2
+12: STORE, r1 -> [@0]
+13: JUMP: @26
+14: LOAD, rd1 <- [@0]
+15: LOADI, r2 val: 0
+16: LST, rs1 rs2 rd3
+17: JUMP_T cond R3 to:19
+18: JUMP_F cond R3 to:22
+19: LOADI, r1 val: 3
+20: STORE, r1 -> [@0]
+21: JUMP: @26
+22: LOADI, r1 val: 1
+23: STORE, r1 -> [@0]
+24: JUMP: @26
+25: JUMP: @26
+26: LOAD, rd1 <- [@0]
+27: LOADI, r2 val: 1
+28: EQT, rs1 rs2 rd3
+29: MOV, rs3 rd0
+30: CALL: @34
+31: MOV, rs0 rd4
+32: MOV, rs4 rd0
+33: STOP
+34: PUSH, r14  <- [__test]
+35: MOV, rs15 rd14
+36: LOAD, rd1 <- [@-4]
+37: AND, rs1 rs0 rd2
+38: STORE, r2 -> [@-4]
+39: MOV, rs14 rd15
+40: POP, r14
+41: RETURN

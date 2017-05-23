@@ -1,1 +1,38 @@
-Loading of ByteCode failed: 
+EXEC
+OP: LOADI R0 <- 1
+OP: STORE [@-4] <- R0 val: 1
+OP: LOADI R1 <- 0
+OP: STORE [@0] <- R1 val: 0
+OP: LOADI R2 <- 1
+OP: STORE [@4] <- R2 val: 1
+OP: LOAD R3 <- [@4], val = 1 
+OP: LOADI R4 <- 1
+OP: LST R5 <- R3 < R4
+OP: JUMP_T cond R5 to @11
+OP: JUMP_F cond R5 to @14
+OP: LOAD R1 <- [@0], val = 0 
+OP: LOADI R2 <- 0
+OP: LST R3 <- R1 < R2
+OP: JUMP_T cond R3 to @19
+OP: JUMP_F cond R3 to @22
+OP: LOADI R1 <- 1
+OP: STORE [@0] <- R1 val: 1
+OP: JUMP 26
+OP: LOAD R1 <- [@0], val = 1 
+OP: LOADI R2 <- 1
+OP: EQL R3 <- R1 == R2
+OP: MOVE R0 <- R3 
+OP: Call 34 ret@: 31
+OP: PUSH [@4294963192] <- R14
+OP: MOVE R14 <- R15 
+OP: LOAD R1 <- [@-4], val = 1 
+OP: AND R2 <- R1 or R0
+OP: STORE [@-4] <- R2 val: 1
+OP: MOVE R15 <- R14 
+OP: POP R14 <- [@4294963192]
+OP: Return 31
+OP: MOVE R4 <- R0 
+OP: MOVE R0 <- R4 
+STOP
+LOAD R0 <- [@-4], val = 1 
+Registers: 1, 1, 1, 1, 1, 0, 0, 0, 0, 0
