@@ -36,7 +36,7 @@ Bytecode:
 17: MOV, rs15 rd14
 18: LOAD, rd1 <- [@-4]
 19: AND, rs1 rs0 rd2
-20: STORE, r1 -> [@-4]
+20: STORE, r2 -> [@-4]
 21: MOV, rs14 rd15
 22: POP, r14
 23: RETURN

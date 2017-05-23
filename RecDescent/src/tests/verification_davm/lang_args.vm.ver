@@ -14,13 +14,13 @@ OP: PUSH [@4294963180] <- R14
 OP: MOVE R14 <- R15 
 OP: LOADB R1 <- [@4+ R14]OP: ADD R2 <- R0 + R1
 OP: LOADB R3 <- [@3+ R14]OP: ADD R4 <- R2 + R3
-OP: LOADB R1 <- [@2+ R14]OP: ADD R3 <- R1 + R2
-OP: MOVE R0 <- R1 
+OP: LOADB R5 <- [@2+ R14]OP: ADD R6 <- R4 + R5
+OP: MOVE R0 <- R6 
 OP: MOVE R15 <- R14 
 OP: POP R14 <- [@4294963180]
 OP: Return 11
 OP: OP: MOVE R5 <- R0 
-OP: STORE [@0] <- R5 val: 0
+OP: STORE [@0] <- R5 val: 9
 STOP
 LOAD R0 <- [@-4], val = 1 
-Registers: 1, 0, 9, 9, 9, 0, 0, 0, 0, 0
+Registers: 1, 0, 9, 0, 9, 9, 9, 0, 0, 0

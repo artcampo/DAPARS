@@ -7,14 +7,14 @@ store %2 to [LT MainDS:4 (c)]
 %6 = %4 < %5
 JumpCondTrue %6 to:9
 JumpCondFalse %6 to:18
-%7 = Load [LT MainDS:0 (a)]
-%8 = LoadI(1)
+%7 = Load [LT MainDS:4 (c)]
+%8 = Load [LT MainDS:0 (a)]
 %9 = %7 + %8
-store %9 to [LT MainDS:0 (a)]
-%11 = Load [LT MainDS:4 (c)]
-%12 = Load [LT MainDS:0 (a)]
+store %9 to [LT MainDS:4 (c)]
+%11 = Load [LT MainDS:0 (a)]
+%12 = LoadI(1)
 %13 = %11 + %12
-store %13 to [LT MainDS:4 (c)]
+store %13 to [LT MainDS:0 (a)]
 JumpIncond to4
 %15 = Load [LT MainDS:0 (a)]
 %16 = LoadI(4)
@@ -49,14 +49,14 @@ Bytecode:
 8: LST, rs1 rs2 rd3
 9: JUMP_T cond R3 to:11
 10: JUMP_F cond R3 to:20
-11: LOAD, rd1 <- [@0]
-12: LOADI, r2 val: 1
+11: LOAD, rd1 <- [@4]
+12: LOAD, rd2 <- [@0]
 13: ADD, rs1 rs2 rd3
-14: STORE, r3 -> [@0]
-15: LOAD, rd4 <- [@4]
-16: LOAD, rd5 <- [@0]
+14: STORE, r3 -> [@4]
+15: LOAD, rd4 <- [@0]
+16: LOADI, r5 val: 1
 17: ADD, rs4 rs5 rd6
-18: STORE, r6 -> [@4]
+18: STORE, r6 -> [@0]
 19: JUMP: @6
 20: LOAD, rd1 <- [@0]
 21: LOADI, r2 val: 4

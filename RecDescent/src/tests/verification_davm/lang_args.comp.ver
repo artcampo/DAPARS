@@ -50,9 +50,9 @@ Bytecode:
 18: ADD, rs0 rs1 rd2
 19: LOADB, r3 <- [@ r14 + 3]
 20: ADD, rs2 rs3 rd4
-21: LOADB, r1 <- [@ r14 + 2]
-22: ADD, rs1 rs2 rd3
-23: MOV, rs1 rd0
+21: LOADB, r5 <- [@ r14 + 2]
+22: ADD, rs4 rs5 rd6
+23: MOV, rs6 rd0
 24: MOV, rs14 rd15
 25: POP, r14
 26: RETURN

@@ -26,9 +26,10 @@ struct IRStream : public IRBuilder{
 
   MemAddr EntryMemAddr() const noexcept{ return entry_mem_addr_; }
   Addr NextAddress() const noexcept{ return stream_.size(); }
+  Addr Size() const noexcept{ return stream_.size(); }
 
   Inst::Inst& GetInst(const Addr addr) const noexcept{ return *stream_[addr];}
-  bool IsInstBeginBB(const Addr addr) const noexcept{ return is_begin_bb_[addr];}
+
 
   void  Print() const noexcept;
 //   void  PrintLast() const noexcept;
@@ -66,7 +67,7 @@ struct IRStream : public IRBuilder{
 
 private:
   std::vector<Inst::PtrInst> stream_;
-  std::vector<bool> is_begin_bb_;
+
   Label entry_label_;
   MemAddr entry_mem_addr_;
   AST::Function& function_;
@@ -76,7 +77,7 @@ private:
 
   Reg RegAssignedToPreviousInst() const;
 
-  void ComputeBeginBB();
+
 
 public:
   using iterator = std::vector<Inst::PtrInst>::iterator;

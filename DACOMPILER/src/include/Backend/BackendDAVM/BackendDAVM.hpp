@@ -122,7 +122,7 @@ private:
 
     for(auto& it : stream){
       //flush reg alloc at start of BB
-      if(stream.IsInstBeginBB(ir_inst_addr_)){
+      if(ir_unit_.IsInstBeginBB(ir_inst_addr_)){
 //         std::cout << "RegAlloc::flush::BB\n";
         reg_alloc_.Flush();
       }
@@ -135,7 +135,7 @@ private:
 //       std::cout << it->str() <<" IR " <<ir_inst_addr_ << "-> VM " <<address_of_vm_inst<<"\n";
       std::cout << it->str();//<< " => ";
       it->Accept(*this);
-      //byte_code_.DumpLast();
+//       byte_code_.DumpLast();
       std::cout <<"\n";
 //       reg_alloc_.Dump();
       ir_inst_addr_++;  //keep track of current IR's instruction offset
@@ -349,7 +349,7 @@ private:
   }
 
   void IssuePreBasicBlocEnding(){
-    reg_alloc_.Flush();
+    reg_alloc_.WriteBack();
   }
 
   void IssueWriteBack(){
