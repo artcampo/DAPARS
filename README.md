@@ -59,6 +59,9 @@ The next step is IR generation which is entirely within:
 The backend for the VM is in:
 "DACOMPILER/src/include/Backend/BackendDAVM/BackendDAVM.hpp"
 
+The documentation for all the testing infrastructure is in:
+"RecDescent/doc/testing_infrastructure.txt"
+
 ------------------------------------------------------------------------------
 CURRENT STATE
 For instance, this is the output of one subtest of code generation:

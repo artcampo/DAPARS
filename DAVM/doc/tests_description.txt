@@ -2,6 +2,12 @@ Tests for DAVM are of two kinds:
 1) standalone executables, using internal API for inst building
 2) compiler tests, produced by the compiler
 
+-DAVM/src/tests/davm.cpp
+Standalone that executes a bytecode file.
+
+-DAVM/src/tests/unit_test.cpp
+Testing of backpatching and signed codification.
+
 ------------------------------------------------------------------------------
 
 standalone tests
@@ -13,7 +19,3 @@ Adding a new test involves:
 2) Run: clean_install, regenerate_tests
 3) Inspect test result
 
-------------------------------------------------------------------------------
-compiler tests
-
-Directly copied from DACOMP folder.

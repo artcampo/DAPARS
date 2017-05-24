@@ -1,0 +1,23 @@
+These are the tests that cover the different components of the compiler.
+They are self-contained and they cover many different cases (up to 50).
+
+-RecDescent/src/tests/test_grammar_dalang.cpp
+Checks that the grammar has no left recursion or ambiguities.
+
+-RecDescent/src/tests/test_errors_parser.cpp
+Checks different scenarios of parsing/semantics message errors.
+
+-RecDescent/src/tests/test_parser.cpp
+Checks parsing, AST construction, scopes and variable declarations.
+
+-RecDescent/src/tests/test_ir_generator.cpp
+Checks IR generation
+
+-RecDescent/src/tests/test_backend_davm.cpp
+Checks the backend generator for test_backend_davm
+
+
+These tests take input files, and as such depend
+
+-RecDescent/src/tests/test_parser_compiler_davm.cpp
+Given a source file produces bytecode for DAVM

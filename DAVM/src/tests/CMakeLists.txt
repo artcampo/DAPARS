@@ -31,7 +31,7 @@ add_executable(unit_test unit_test.cpp)
 target_link_libraries(unit_test VM)
 
 #VM interpreter
-add_executable(davm main.cpp)
+add_executable(davm davm.cpp)
 target_link_libraries(davm VM)
 
 
