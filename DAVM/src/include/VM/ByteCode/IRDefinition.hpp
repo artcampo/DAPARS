@@ -30,6 +30,7 @@ enum IRClass1{
   , IR_CID_STOREB = 4
   , IR_CID_PUSH   = 5
   , IR_CID_POP    = 6
+  , IR_CID_LEA    = 7
 };
 
 enum IRClass2{
@@ -94,6 +95,8 @@ enum IRCodf {
   IR_STOREB = InstClassRegLit + (IR_CID_STOREB << kClassNumBits),
   IR_PUSH   = InstClassRegLit + (IR_CID_PUSH   << kClassNumBits),
   IR_POP    = InstClassRegLit + (IR_CID_POP    << kClassNumBits),
+  IR_LEA    = InstClassRegLit + (IR_CID_LEA    << kClassNumBits),
+
 
   //Class 2
   IR_JMPC  = InstClassRegLitSub + (IR_CID_JMPC << kClassNumBits),

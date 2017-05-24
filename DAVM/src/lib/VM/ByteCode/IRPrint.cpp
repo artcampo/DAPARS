@@ -145,6 +145,11 @@ std::string Print(const Inst instruction){
     case IR_PUSH:
       s = string("PUSH, r") + to_string(reg_dst);
       break;
+    case IR_LEA:
+      s = string("LEA, r") + to_string(reg_dst) + " = " +
+          "r" + to_string(reg_base) + " + " + to_string(literal);
+      break;
+
 
     //Class 2
     case IR_JMPC:

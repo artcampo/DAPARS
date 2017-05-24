@@ -78,12 +78,20 @@ Inst LoadB(const Reg reg_dst, const Reg reg_base, const SubInst literal){
   return CodeClass1(reg_dst, reg_base, literal, IR_LOADB);
 }
 
+Inst LoadB(const Reg reg_dst, const Reg reg_base){
+  return LoadB(reg_dst, reg_base, 0);
+}
+
 Inst Store(const Reg reg_src, const SubInst literal){
   return CodeClass1(reg_src, kIRUnusedReg, literal, IR_STORE);
 }
 
 Inst StoreB(const Reg reg_src, const Reg reg_base, const SubInst literal){
   return CodeClass1(reg_src, reg_base, literal, IR_STOREB);
+}
+
+Inst StoreB(const Reg reg_src, const Reg reg_base){
+  return StoreB(reg_src, reg_base, 0);
 }
 
 Inst Pop (const Reg reg_dst){
@@ -93,6 +101,12 @@ Inst Pop (const Reg reg_dst){
 Inst Push(const Reg reg_src){
   return CodeClass1(reg_src, kIRUnusedReg, kIrUnusedLit, IR_PUSH);
 }
+
+//Load Effective Address (Léa, also a song by Louise Attaque)
+Inst Lea(const Reg reg_dst, const Reg reg_base, const SubInst literal){
+  return CodeClass1(reg_dst, reg_base, literal, IR_LEA);
+}
+
 
 
 ////////////////////////////////////////////////////////////////////////

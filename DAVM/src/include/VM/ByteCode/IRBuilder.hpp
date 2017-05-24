@@ -27,12 +27,15 @@ Inst Stop();
 // Class 1
 Inst LoadI (const Reg reg_dst, const SubInst literal);
 Inst Store(const Reg reg_src, const SubInst literal);
+Inst LoadB(const Reg reg_dst, const Reg reg_base);
 Inst LoadB(const Reg reg_dst, const Reg reg_base, const SubInst literal);
 Inst Load(const Reg reg_dst, const SubInst literal);
+Inst StoreB(const Reg reg_src, const Reg reg_base);
 Inst StoreB(const Reg reg_src, const Reg reg_base, const SubInst literal);
 Inst Store(const Reg reg_src, const SubInst literal);
 Inst Pop (const Reg reg_dst);
 Inst Push(const Reg reg_src);
+Inst Lea(const Reg reg_dst, const Reg reg_base, const SubInst literal);
 
 
 ///////////////////////////////////////////////////////

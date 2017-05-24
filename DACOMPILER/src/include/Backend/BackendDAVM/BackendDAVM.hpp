@@ -133,9 +133,9 @@ private:
 
 
 //       std::cout << it->str() <<" IR " <<ir_inst_addr_ << "-> VM " <<address_of_vm_inst<<"\n";
-      std::cout << it->str();//<< " => ";
+      std::cout << it->str();
       it->Accept(*this);
-//       byte_code_.DumpLast();
+      std::cout << " => "; byte_code_.DumpLast();
       std::cout <<"\n";
 //       reg_alloc_.Dump();
       ir_inst_addr_++;  //keep track of current IR's instruction offset
@@ -181,11 +181,19 @@ private:
   }
 
   void Visit(const IR::Inst::LoadReg& inst) override{
-    std::cout << inst.str() << " !!!LoadReg\n";
+    RegMap rd = reg_alloc_.IRReg(inst.RegDst());
+    RegMap rb = reg_alloc_.IRReg(inst.RegSrc());
+    reg_alloc_.GetRegLoadI(rd);
+    reg_alloc_.GetRegRead(rb);
+    byte_code_.Append( VM::IRBuilder::LoadB(rd.mreg_, rb.mreg_) );
   }
 
   void Visit(const IR::Inst::LoadRegOffs& inst) override{
-    std::cout << inst.str() << " !!!LoadRegOffs\n";
+    RegMap rd = reg_alloc_.IRReg(inst.RegDst());
+    RegMap rb = reg_alloc_.IRReg(inst.RegSrc());
+    reg_alloc_.GetRegLoadI(rd);
+    reg_alloc_.GetRegRead(rb);
+    byte_code_.Append( VM::IRBuilder::LoadB(rd.mreg_, rb.mreg_, inst.GetOffset().GetAddr() ));
   }
 
   void Visit(const IR::Inst::Store& inst) override{
@@ -196,7 +204,10 @@ private:
   }
 
   void Visit(const IR::Inst::StoreReg& inst) override{
-    std::cout << inst.str() << " !!!\n";
+    RegMap rs = reg_alloc_.IRReg(inst.RegSrc1());
+    RegMap rb = reg_alloc_.IRReg(inst.RegSrc2());
+    reg_alloc_.GetRegStore(rs, rb);
+    byte_code_.Append( VM::IRBuilder::StoreB(rs.mreg_, rb.mreg_ ));
   }
 
   void Visit(const IR::Inst::Arith& inst) override{
@@ -236,7 +247,18 @@ private:
   }
 
   void Visit(const IR::Inst::PtrElem& inst) override{
-    std::cout << inst.str() << " !!!\n";
+    const IR::MemAddr addr = inst.Addr();
+    RegMap rd  = reg_alloc_.IRReg( inst.RegDst() );
+    reg_alloc_.GetRegGetRetVal(rd);
+
+    if(addr.GetLabel().IsRunTime()){
+      MReg reg_base;
+      if(addr.GetLabel().IsArp())     reg_base = reg_alloc_.MRegArpPtr();
+      if(addr.GetLabel().IsThisPtr()) reg_base = reg_alloc_.MRegThisPtr();
+      byte_code_.Append( VM::IRBuilder::Lea(rd.mreg_, reg_base, addr.GetOffset().GetAddr()));
+    }
+    if(addr.GetLabel().IsLinkTime())
+      byte_code_.Append( VM::IRBuilder::LoadI(rd.mreg_, mem_alloc_.Remap(addr)));
   }
 
   void Visit(const IR::Inst::GetRetVal& inst) override{

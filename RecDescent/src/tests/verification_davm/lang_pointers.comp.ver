@@ -1,11 +1,9 @@
 %0 = LoadI(1)
 store %0 to [LT MainDS:0 (a)]
-%2 = PtrElem( LT MainDS:0 (a))%2 = PtrElem( LT MainDS:0 (a)) !!!
-
+%2 = PtrElem( LT MainDS:0 (a))
 store %2 to [LT MainDS:8 (p)]
 %4 = Load [LT MainDS:8 (p)]
-%5 = Load [ %4]%5 = Load [ %4] !!!LoadReg
-
+%5 = Load [ %4]
 store %5 to [LT MainDS:4 (b)]
 %7 = LoadI(2)
 store %0 to [LT MainDS:8 (p)]
@@ -23,17 +21,19 @@ Bytecode:
 1: STORE, r0 -> [@-4]
 2: LOADI, r1 val: 1
 3: STORE, r1 -> [@0]
-4: STORE, r2 -> [@8]
-5: LOAD, rd3 <- [@8]
-6: STORE, r4 -> [@4]
-7: LOADI, r5 val: 2
-8: STORE, r1 -> [@8]
-9: STOP
-10: PUSH, r14  <- [__test]
-11: MOV, rs15 rd14
-12: LOAD, rd1 <- [@-4]
-13: AND, rs1 rs0 rd2
-14: STORE, r2 -> [@-4]
-15: MOV, rs14 rd15
-16: POP, r14
-17: RETURN
+4: LOADI, r2 val: 0
+5: STORE, r2 -> [@8]
+6: LOAD, rd3 <- [@8]
+7: LOADB, r4 <- [@ r3 + 0]
+8: STORE, r4 -> [@4]
+9: LOADI, r5 val: 2
+10: STORE, r1 -> [@8]
+11: STOP
+12: PUSH, r14  <- [__test]
+13: MOV, rs15 rd14
+14: LOAD, rd1 <- [@-4]
+15: AND, rs1 rs0 rd2
+16: STORE, r2 -> [@-4]
+17: MOV, rs14 rd15
+18: POP, r14
+19: RETURN

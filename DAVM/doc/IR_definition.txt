@@ -6,9 +6,9 @@ Classes of instructions:
 
 The mapping of those fields to a 32 bit word is as follows:
 0 -----------LLLLLLLLLLLLLLLLTTTCC
-1 ----LLLLLLLLLLLLLLLLRRRRRRRRTTCC
+1 ---LLLLLLLLLLLLLLLLRRRRRRRRTTTCC
 2 ------LLLLLLLLLLLLLLLLRRRRSSSTCC
-3 ---------------RRRRRRRRRRRRSSTCC
+3 --------------RRRRRRRRRRRRSSTTCC
   !---!---!---!---!---!---!---!---
 
 where:
@@ -20,7 +20,7 @@ where:
 
 Complete instruction set
 C0: Jump, Call, NewVar, Return
-C1: Load, LoadI, LoadB, Store, StoreB, Pop, Push
+C1: Load, LoadI, LoadB, Store, StoreB, Pop, Push, Lea
 C2: JumpIfTrue, JumpIfFalse, ArithI
 C3: Arith, Comp, Move
 
