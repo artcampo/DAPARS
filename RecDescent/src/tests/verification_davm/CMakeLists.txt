@@ -8,6 +8,7 @@ INSTALL(FILES #input lang files
               lang_while.lang
               lang_if.lang
               lang_args.lang
+              lang_pointers.lang
 
               #output of their compilation
               functions.comp.ver
@@ -17,6 +18,7 @@ INSTALL(FILES #input lang files
               lang_while.comp.ver
               lang_if.comp.ver
               lang_args.comp.ver
+              lang_pointers.comp.ver
 
               #output of davm of their execution
               functions.vm.ver
@@ -26,4 +28,5 @@ INSTALL(FILES #input lang files
               lang_while.vm.ver
               lang_if.vm.ver
               lang_args.vm.ver
+              lang_pointers.vm.ver
         DESTINATION tests/davm_tests)

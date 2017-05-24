@@ -1,0 +1,39 @@
+%0 = LoadI(1)
+store %0 to [LT MainDS:0 (a)]
+%2 = PtrElem( LT MainDS:0 (a))%2 = PtrElem( LT MainDS:0 (a)) !!!
+
+store %2 to [LT MainDS:8 (p)]
+%4 = Load [LT MainDS:8 (p)]
+%5 = Load [ %4]%5 = Load [ %4] !!!LoadReg
+
+store %5 to [LT MainDS:4 (b)]
+%7 = LoadI(2)
+store %0 to [LT MainDS:8 (p)]
+store %0 to [%7]store %0 to [%7] !!!
+
+ReturnMain
+%0 = Load [LT MainDS:-4 (__test_result)]
+%1 = GetArg( arg0 )
+%2 = %0 and %1
+store %2 to [LT MainDS:-4 (__test_result)]
+Return
+---------
+Bytecode:
+0: LOADI, r0 val: 1  <- [main]
+1: STORE, r0 -> [@-4]
+2: LOADI, r1 val: 1
+3: STORE, r1 -> [@0]
+4: STORE, r2 -> [@8]
+5: LOAD, rd3 <- [@8]
+6: STORE, r4 -> [@4]
+7: LOADI, r5 val: 2
+8: STORE, r1 -> [@8]
+9: STOP
+10: PUSH, r14  <- [__test]
+11: MOV, rs15 rd14
+12: LOAD, rd1 <- [@-4]
+13: AND, rs1 rs0 rd2
+14: STORE, r2 -> [@-4]
+15: MOV, rs14 rd15
+16: POP, r14
+17: RETURN

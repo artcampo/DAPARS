@@ -34,6 +34,7 @@ regenerate_test_comp_davm error_stack_overflow
 regenerate_test_comp_davm lang_while
 regenerate_test_comp_davm lang_if
 regenerate_test_comp_davm lang_args
+regenerate_test_comp_davm lang_pointers
 
 ###################################################################
 #end

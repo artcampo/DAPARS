@@ -1,5 +1,5 @@
 These are the tests that cover the different components of the compiler.
-They are self-contained and they cover many different cases (up to 50).
+They are self-contained and they cover many different cases (some up to 50).
 
 -RecDescent/src/tests/test_grammar_dalang.cpp
 Checks that the grammar has no left recursion or ambiguities.
@@ -17,7 +17,16 @@ Checks IR generation
 Checks the backend generator for test_backend_davm
 
 
-These tests take input files, and as such depend
+These tests take input files, and as such also comprise a set of
+input tests
 
 -RecDescent/src/tests/test_parser_compiler_davm.cpp
-Given a source file produces bytecode for DAVM
+Given a source file produces bytecode for DAVM. This is the most complete form
+of verification as it involves the whole pipeline. After being compiled,
+bytecode files are executed. High-level constraints can be asserted
+from the language and checked at the end of the execution, and as such make
+more convenient to test functionalities.
+
+In the folder "RecDescent/src/tests/verification_davm" each of the individual
+test can be found: its input language, compiler output and virtual machine
+execution output.
