@@ -849,3 +849,55 @@ LT entry_main[isTarget]
 8: ReturnMain
 LT entry___test[isTarget]
 
+---------------------------------------------------
+Parsing: "bool main(){int a, b; int* p;a = 1; p = &a; b = *p; *p = 2;}"
+
+Scopes of module:
+Scope 0: {(4:main) }
+Scope 2: {(5:a) (6:b) (7:p) }
+
+
+AST fully decorated dump:
+[FDef] FuncDef: main
+-[VDec] int a 
+[VDec] int b 
+-[VDec] int* p 
+-[Assgn] 
+--[Var] a [int Lvalue Write Value Nmemb]
+--[Lit] 1 [int Rvalue]
+-[Assgn] 
+--[Var] p [int* Lvalue Write Value Nmemb]
+--[Refop] @ [int* Lvalue]
+---[Var] a [int Lvalue Read Address Nmemb]
+-[Assgn] 
+--[Var] b [int Lvalue Write Value Nmemb]
+--[Derop] * [int Lvalue Read]
+---[Var] p [int* Lvalue Read Value Nmemb]
+-[Assgn] 
+--[Derop] * [int Lvalue Write]
+---[Var] p [int* Lvalue Write Value Nmemb]
+--[Lit] 2 [int Rvalue]
+- 
+
+
+Declaration Table:
+4: Symbol: [ in scope 0 main of type function: ()->bool]
+5: Symbol: [ in scope 2 a of type int]
+6: Symbol: [ in scope 2 b of type int]
+7: Symbol: [ in scope 2 p of type int*]
+
+IR dump:
+LT entry_main[isTarget]
+0: %0 = LoadI(1)
+1: store %0 to [LT MainDS:0 (a)]
+2: %2 = PtrElem( LT MainDS:0 (a))
+3: store %2 to [LT MainDS:8 (p)]
+4: %4 = Load [LT MainDS:8 (p)]
+5: %5 = Load [ %4]
+6: store %5 to [LT MainDS:4 (b)]
+7: %7 = LoadI(2)
+8: store %0 to [LT MainDS:8 (p)]
+9: store %0 to [%7]
+10: ReturnMain
+LT entry___test[isTarget]
+

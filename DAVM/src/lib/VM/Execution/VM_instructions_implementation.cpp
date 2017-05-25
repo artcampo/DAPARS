@@ -85,7 +85,8 @@ void VirtualMachine::Store(const Reg reg_src, const Word literal){
 void VirtualMachine::StoreB(const Reg reg_src, const Reg reg_base, const Word literal){
   std::cout << "STOREB [@" <<literal <<"+"
             << process_->registers_[reg_base]
-            <<  "] <- " << process_->registers_[reg_src] <<"\n";
+            <<  "] <- " << process_->registers_[reg_src]
+            << " val: " << process_->registers_[reg_src] <<"\n";
   process_->Store(Addr(literal + process_->registers_[reg_base]), process_->registers_[reg_src]);
 }
 

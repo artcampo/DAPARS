@@ -127,6 +127,15 @@ int main()
     "void main(){bool a,b; a = true; b = false; a = a and b;} ")
     , g);
 
+  //pointer
+  parse<Grammar,ParserLL1RecDesc>( std::string(
+    "bool main(){") +
+    "int a, b; int* p;" +
+    "a = 1; p = &a; b = *p; *p = 2;}"
+    , g);
+
+
+
   /*
   parse<Grammar,ParserLL1RecDesc>( std::string(
     "class A{int f(){return 1;}  }") +

@@ -41,7 +41,7 @@ Bytecode:
 8: STORE, r4 -> [@4]
 9: LOADI, r5 val: 2
 10: STORE, r1 -> [@8]
-11: STORE, r1 -> [@r13 + 2047]
+11: STORE, r1 -> [@r15 + 2047]
 12: LOAD, rd6 <- [@4]
 13: LOADI, r7 val: 1
 14: EQT, rs6 rs7 rd8
