@@ -30,8 +30,8 @@ public:
 
   virtual void Visit(DerefOp const& p){
     Set(p);
-    p.Rhs().Accept(*this);
     is_read_or_write_inht_ = true;
+    p.Rhs().Accept(*this);
   }
 
   virtual void Visit(Var& p)      { Set(p);}

@@ -6,8 +6,8 @@ store %2 to [LT MainDS:8 (p)]
 %5 = Load [ %4]
 store %5 to [LT MainDS:4 (b)]
 %7 = LoadI(2)
-store %0 to [LT MainDS:8 (p)]
-store %0 to [%7]
+%8 = Load [LT MainDS:8 (p)]
+store %8 to [%7]
 %10 = Load [LT MainDS:4 (b)]
 %11 = LoadI(1)
 %12 = %10 == %11
@@ -20,48 +20,4 @@ call [LT entry___test[isTarget]:0 ()]
 SetArg( %16)
 call [LT entry___test[isTarget]:0 ()]
 %17 = GetRetVal()
-%18 = %13 and %17
-SetRetVal( %18)
-ReturnMain
-%0 = Load [LT MainDS:-4 (__test_result)]
-%1 = GetArg( arg0 )
-%2 = %0 and %1
-store %2 to [LT MainDS:-4 (__test_result)]
-Return
----------
-Bytecode:
-0: LOADI, r0 val: 1  <- [main]
-1: STORE, r0 -> [@-4]
-2: LOADI, r1 val: 1
-3: STORE, r1 -> [@0]
-4: LOADI, r2 val: 0
-5: STORE, r2 -> [@8]
-6: LOAD, rd3 <- [@8]
-7: LOADB, r4 <- [@ r3 + 0]
-8: STORE, r4 -> [@4]
-9: LOADI, r5 val: 2
-10: STORE, r1 -> [@8]
-11: STORE, r1 -> [@r15 + 2047]
-12: LOAD, rd6 <- [@4]
-13: LOADI, r7 val: 1
-14: EQT, rs6 rs7 rd8
-15: MOV, rs8 rd0
-16: CALL: @27
-17: MOV, rs0 rd9
-18: LOAD, rd10 <- [@0]
-19: LOADI, r11 val: 2
-20: EQT, rs10 rs11 rd12
-21: MOV, rs12 rd0
-22: CALL: @27
-23: MOV, rs0 rd13
-24: AND, rs9 rs13 rd14
-25: MOV, rs14 rd0
-26: STOP
-27: PUSH, r14  <- [__test]
-28: MOV, rs15 rd14
-29: LOAD, rd1 <- [@-4]
-30: AND, rs1 rs0 rd2
-31: STORE, r2 -> [@-4]
-32: MOV, rs14 rd15
-33: POP, r14
-34: RETURN
+%18 = %13 and %17Registers full. Shame on you. (function max:15)

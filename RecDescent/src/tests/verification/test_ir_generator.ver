@@ -875,7 +875,7 @@ AST fully decorated dump:
 ---[Var] p [int* Lvalue Read Value Nmemb]
 -[Assgn] 
 --[Derop] * [int Lvalue Write]
----[Var] p [int* Lvalue Write Value Nmemb]
+---[Var] p [int* Lvalue Read Value Nmemb]
 --[Lit] 2 [int Rvalue]
 - 
 
@@ -896,8 +896,8 @@ LT entry_main[isTarget]
 5: %5 = Load [ %4]
 6: store %5 to [LT MainDS:4 (b)]
 7: %7 = LoadI(2)
-8: store %0 to [LT MainDS:8 (p)]
-9: store %0 to [%7]
+8: %8 = Load [LT MainDS:8 (p)]
+9: store %8 to [%7]
 10: ReturnMain
 LT entry___test[isTarget]
 
