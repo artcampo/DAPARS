@@ -207,6 +207,8 @@ private:
     RegMap rs = reg_alloc_.IRReg(inst.RegSrc1());
     RegMap rb = reg_alloc_.IRReg(inst.RegSrc2());
     reg_alloc_.GetRegStoreThroughPointer(rs);
+    reg_alloc_.GetRegRead(rb);
+    std::cout << "*** StoreB " << rs.mreg_ << ", " <<rb.mreg_ << "\n";
     byte_code_.Append( VM::IRBuilder::StoreB(rs.mreg_, rb.mreg_ ));
   }
 

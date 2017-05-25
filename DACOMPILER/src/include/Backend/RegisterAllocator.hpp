@@ -38,6 +38,12 @@ public:
 
   static int FirstMachRegFree() noexcept { return 1; }  //forbid use of mach_r0
 
+  //RegSym for N virtual registers and M variables are mapped:
+  // { virt_reg0, virt_reg1, ... virt_regN - 1, var0, .., varM - 1
+  bool  RegSymIsVirtualRegister(const RegSym reg_sym) const noexcept{
+    return reg_sym < max_ir_registers_;
+  }
+
   //Initialize regAllocator for a function given its max_ir_registers
   //and the max of machine reg
   void Reset(const IR::Reg max_ir_registers, const int function_fixed_usage_machine_reg){
@@ -243,11 +249,8 @@ private:
   MReg GetFreeReg(){
     if(register_usage_ < function_max_machine_reg_)
       return register_usage_++;
-    else{
-      //free a register
-      std::cout << "Registers full. Shame on you. (function max:"<< function_max_machine_reg_<< ")\n";
-      exit(1);
-    }
+    else
+       return ForceFreeRegister();
   }
 
   //(regsymb_, mreg_) mreg also contains regsymb, both hold it
@@ -311,24 +314,59 @@ private:
   }
 
   void FlushIRSymbol(const RegSym s){
-    const MReg        rs  = *addr_desc_.at(s).begin();
-    const IR::MemAddr ma  = mem_addr_of_reg_sym_id_.at(s);
-    (backend_->*callback_store_)(rs, ma);
+    if(not RegSymIsVirtualRegister(s)){
+      const MReg        rs  = *addr_desc_.at(s).begin();
+      const IR::MemAddr ma  = mem_addr_of_reg_sym_id_.at(s);
+      (backend_->*callback_store_)(rs, ma);
+    }
+  }
+
+  void Evict(int mreg_index){
+    if(mreg_can_be_flushed_[mreg_index]){
+      bool was_used = false;
+      for(auto& irsymbol : reg_desc_[mreg_index]){
+        addr_desc_.erase(irsymbol);
+        is_in_memory_.erase(irsymbol);
+        was_used = true;
+      }
+      reg_desc_[mreg_index].clear();
+      if(was_used) --register_usage_;
+    }
   }
 
   //Remove all IrSymbols (but those reserved for args in machine registers)
   void Evict(){
     for(int mreg_index = 0; mreg_index < function_max_machine_reg_; ++mreg_index)
-      if(mreg_can_be_flushed_[mreg_index]){
-        bool was_used = false;
-        for(auto& irsymbol : reg_desc_[mreg_index]){
-          addr_desc_.erase(irsymbol);
-          is_in_memory_.erase(irsymbol);
-          was_used = true;
-        }
-        reg_desc_[mreg_index].clear();
-        if(was_used) --register_usage_;
-      }
+      Evict(mreg_index);
+  }
+
+  MReg ForceFreeRegister(){
+    MReg free_reg;
+    /*
+std::vector<std::set<RegSym>>     reg_desc_;
+std::map<RegSym, bool>            is_in_memory_;
+std::map<RegSym, std::set<MReg>>  addr_desc_;
+std::vector<bool>                 mreg_can_be_flushed_;*
+      */
+    Dump();
+    //free a register
+    bool  freed = false;
+    int   num_symbols = 1;  //start picking those mreg that only contain 1 symbol
+    while(not freed){
+      for(int i = 0; i < max_machine_reg_ and not freed; ++i)
+        if(   mreg_can_be_flushed_[i]
+          and reg_desc_[i].size() == num_symbols
+          and RegSymIsVirtualRegister(*reg_desc_[i].begin())){
+            std::cout << "flushing " << i <<"\n";
+            FlushMReg(i);
+            Evict(i);
+            free_reg = i;
+            freed = true;
+          }
+      ++num_symbols;
+    }
+
+    return free_reg;
   }
 
 public:
