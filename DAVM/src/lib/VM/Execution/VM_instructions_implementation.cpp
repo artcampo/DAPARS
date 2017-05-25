@@ -73,6 +73,7 @@ void VirtualMachine::LoadB(const Reg reg_dst, const Reg reg_base, const Word lit
   std::cout << "LOADB R"<< reg_dst <<" <- [@"<<literal <<"+ R"<<reg_base<<"]";
   process_->registers_[reg_dst] =
     process_->Load(Addr(literal + process_->registers_[reg_base]));
+  std::cout << ", val = "<< process_->registers_[reg_dst] <<" \n";
 }
 
 

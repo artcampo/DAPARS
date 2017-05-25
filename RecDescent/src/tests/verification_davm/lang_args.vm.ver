@@ -12,9 +12,12 @@ OP: PUSH [@4294963188] <- R4
 OP: Call 15 ret@: 11
 OP: PUSH [@4294963180] <- R14
 OP: MOVE R14 <- R15 
-OP: LOADB R1 <- [@4+ R14]OP: ADD R2 <- R0 + R1
-OP: LOADB R3 <- [@3+ R14]OP: ADD R4 <- R2 + R3
-OP: LOADB R5 <- [@2+ R14]OP: ADD R6 <- R4 + R5
+OP: LOADB R1 <- [@4+ R14], val = 0 
+OP: ADD R2 <- R0 + R1
+OP: LOADB R3 <- [@3+ R14], val = 0 
+OP: ADD R4 <- R2 + R3
+OP: LOADB R5 <- [@2+ R14], val = 0 
+OP: ADD R6 <- R4 + R5
 OP: MOVE R0 <- R6 
 OP: MOVE R15 <- R14 
 OP: POP R14 <- [@4294963180]

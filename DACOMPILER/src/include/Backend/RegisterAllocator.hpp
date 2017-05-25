@@ -126,6 +126,12 @@ public:
 //     Dump();
   }
 
+  void GetRegStoreThroughPointer(RegMap& ms){
+    GetReg(ms);
+    UsageShared(ms);
+//     Dump();
+  }
+
   //returns true if ms was not already on a register (thus load needs to happen)
   bool GetRegLoad(RegMap& md, RegMap& ms){
     if(HasMregAssigned(ms)){

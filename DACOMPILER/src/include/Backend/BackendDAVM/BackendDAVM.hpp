@@ -135,7 +135,7 @@ private:
 //       std::cout << it->str() <<" IR " <<ir_inst_addr_ << "-> VM " <<address_of_vm_inst<<"\n";
       std::cout << it->str();
       it->Accept(*this);
-      std::cout << " => "; byte_code_.DumpLast();
+//       std::cout << " => "; byte_code_.DumpLast();
       std::cout <<"\n";
 //       reg_alloc_.Dump();
       ir_inst_addr_++;  //keep track of current IR's instruction offset
@@ -206,7 +206,7 @@ private:
   void Visit(const IR::Inst::StoreReg& inst) override{
     RegMap rs = reg_alloc_.IRReg(inst.RegSrc1());
     RegMap rb = reg_alloc_.IRReg(inst.RegSrc2());
-    reg_alloc_.GetRegStore(rs, rb);
+    reg_alloc_.GetRegStoreThroughPointer(rs);
     byte_code_.Append( VM::IRBuilder::StoreB(rs.mreg_, rb.mreg_ ));
   }
 
