@@ -227,7 +227,7 @@ void IRGenerator::Visit(DerefOp const& n, const Node* successor){
     reg_dst_of_expr_[&n]  = r;
   }else{
     const IR::Reg src_value = reg_src_of_assignment_[&n];
-    CurrentStream().AppendStoreReg(reg_src_addr, src_value);
+    CurrentStream().AppendStoreReg(src_value, reg_src_addr);
   }
 //   const IR::Reg r       = CurrentStream().AppendAddrUnary(reg_src, AddrUnaryType::kDereference);
 //   reg_dst_of_expr_[&n]  = r;

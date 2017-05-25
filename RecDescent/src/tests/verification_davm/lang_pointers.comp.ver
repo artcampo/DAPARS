@@ -7,7 +7,7 @@ store %2 to [LT MainDS:8 (p)]
 store %5 to [LT MainDS:4 (b)]
 %7 = LoadI(2)
 %8 = Load [LT MainDS:8 (p)]
-store %8 to [%7]
+store %7 to [%8]
 %10 = Load [LT MainDS:4 (b)]
 %11 = LoadI(1)
 %12 = %10 == %11

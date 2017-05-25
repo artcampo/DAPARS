@@ -897,7 +897,7 @@ LT entry_main[isTarget]
 6: store %5 to [LT MainDS:4 (b)]
 7: %7 = LoadI(2)
 8: %8 = Load [LT MainDS:8 (p)]
-9: store %8 to [%7]
+9: store %7 to [%8]
 10: ReturnMain
 LT entry___test[isTarget]
 
