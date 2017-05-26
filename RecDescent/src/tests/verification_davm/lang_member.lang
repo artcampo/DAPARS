@@ -1,0 +1,14 @@
+class O1{
+  int a_;
+  bool set(int a){ a_ = a; return true;}
+  int get(){ return a_;}
+}
+
+bool main(){
+  O1 inst;
+  int a;
+  bool b;
+  b = inst.set(4);
+  a = inst.get();
+  return __test(b == true) and __test(a == 4);
+}

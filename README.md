@@ -64,6 +64,24 @@ The documentation for all the testing infrastructure is in:
 
 ------------------------------------------------------------------------------
 CURRENT STATE
+
+This is one valid program:
+
+class O1{
+  int a_;
+  bool set(int a){ a_ = a; return true;}
+  int get(){ return a_;}
+}
+
+void main(){
+  O1 inst;
+  int a;
+  bool b;
+  b = inst.set(4);
+  a = inst.get();
+  return __test(b == true) and __test(a == 4);  //VM tests exit condition
+}
+
 For instance, this is the output of one subtest of code generation:
 
 Parsing: "int f(int p1){int a; a=p1; return a;} void main(){int a; a=f(2);}"

@@ -35,6 +35,7 @@ regenerate_test_comp_davm lang_while
 regenerate_test_comp_davm lang_if
 regenerate_test_comp_davm lang_args
 regenerate_test_comp_davm lang_pointers
+regenerate_test_comp_davm lang_member
 
 ###################################################################
 #end

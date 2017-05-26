@@ -1,0 +1,15 @@
+EXEC
+OP: PUSH [@4294963196] <- R13
+OP: PUSH [@4294963192] <- R14
+OP: MOVE R14 <- R15 
+OP: STOREB [@0+0] <- 0 val: 0
+OP: LOADI R1 <- 1
+OP: MOVE R0 <- R1 
+OP: MOVE R15 <- R14 
+OP: POP R14 <- [@4294963192]
+OP: POP R13 <- [@4294963196]
+OP: Return 0
+LOAD R0 <- [@-4], val = 0 
+Errors in execution:
+Stack underflow
+Compiler injected tests failed

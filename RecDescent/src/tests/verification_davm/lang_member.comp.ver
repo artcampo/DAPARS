@@ -1,0 +1,95 @@
+%0 = GetArg( arg0 )
+store %0 to [RT this_O1[isThisPtr]:0 (a_)]
+%2 = LoadI(1)
+SetRetVal( %2)
+Return
+%0 = Load [RT this_O1[isThisPtr]:0 (a_)]
+SetRetVal( %0)
+Return
+%0 = LoadI(4)
+SetArg( %0)
+%1 = PtrElem( LT MainDS:0 (inst))
+SetArg( %1)
+call [LT entry_O1::set[isTarget]:0 ()]
+%2 = GetRetVal()
+store %2 to [LT MainDS:8 (b)]
+%4 = PtrElem( LT MainDS:0 (inst))
+SetArg( %4)
+call [LT entry_O1::get[isTarget]:0 ()]
+%5 = GetRetVal()
+store %5 to [LT MainDS:4 (a)]
+%7 = Load [LT MainDS:8 (b)]
+%8 = LoadI(1)
+%9 = %7 == %8
+SetArg( %9)
+call [LT entry___test[isTarget]:0 ()]
+%10 = GetRetVal()
+%11 = Load [LT MainDS:4 (a)]
+%12 = LoadI(4)
+%13 = %11 == %12
+SetArg( %13)
+call [LT entry___test[isTarget]:0 ()]
+%14 = GetRetVal()
+%15 = %10 and %14
+SetRetVal( %15)
+ReturnMain
+%0 = Load [LT MainDS:-4 (__test_result)]
+%1 = GetArg( arg0 )
+%2 = %0 and %1
+store %2 to [LT MainDS:-4 (__test_result)]
+Return
+---------
+Bytecode:
+0: PUSH, r13  <- [O1::set]
+1: PUSH, r14
+2: MOV, rs15 rd14
+3: STORE, r0 -> [@r13 + 0]
+4: LOADI, r1 val: 1
+5: MOV, rs1 rd0
+6: MOV, rs14 rd15
+7: POP, r14
+8: POP, r13
+9: RETURN
+10: PUSH, r13  <- [O1::get]
+11: LOADB, r1 <- [@ r13 + 0]
+12: MOV, rs1 rd0
+13: POP, r13
+14: RETURN
+15: LOADI, r0 val: 1  <- [main]
+16: STORE, r0 -> [@-4]
+17: LOADI, r1 val: 4
+18: MOV, rs1 rd0
+19: LOADI, r2 val: 0
+20: PUSH, r2
+21: CALL: @0
+22: ADDI, rd15 1
+23: MOV, rs0 rd3
+24: STORE, r3 -> [@8]
+25: LOADI, r4 val: 0
+26: MOV, rs4 rd0
+27: CALL: @10
+28: MOV, rs0 rd5
+29: STORE, r5 -> [@4]
+30: LOAD, rd6 <- [@8]
+31: LOADI, r7 val: 1
+32: EQT, rs6 rs7 rd8
+33: MOV, rs8 rd0
+34: CALL: @45
+35: MOV, rs0 rd9
+36: LOAD, rd10 <- [@4]
+37: LOADI, r11 val: 4
+38: EQT, rs10 rs11 rd12
+39: MOV, rs12 rd0
+40: CALL: @45
+41: MOV, rs0 rd13
+42: AND, rs9 rs13 rd14
+43: MOV, rs14 rd0
+44: STOP
+45: PUSH, r14  <- [__test]
+46: MOV, rs15 rd14
+47: LOAD, rd1 <- [@-4]
+48: AND, rs1 rs0 rd2
+49: STORE, r2 -> [@-4]
+50: MOV, rs14 rd15
+51: POP, r14
+52: RETURN
