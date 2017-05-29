@@ -55,6 +55,7 @@ private:
   void StoreB(const Reg reg_src, const Reg reg_base, const Word literal);
   void Pop   (const Reg reg_dst);
   void Push  (const Reg reg_src);
+  void Lea   (const Reg reg_dst, const Reg reg_base, const Word literal);
 
   //Class 2
   void ArithI(const Reg reg_dst, const Word literal,  const SubInst op);

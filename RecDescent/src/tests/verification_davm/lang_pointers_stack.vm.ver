@@ -1,0 +1,39 @@
+EXEC
+OP: LOADI R0 <- 1
+OP: STORE [@-4] <- R0 val: 1
+OP: Call 13 ret@: 3
+OP: PUSH [@4294963192] <- R14
+OP: MOVE R14 <- R15 
+OP: OP: LOADI R1 <- 1
+OP: STOREB [@0+-4108] <- 1 val: 1
+OP: LEA R2 = 0 + R14 (val: -4108)
+OP: STOREB [@-8+-4108] <- -4108 val: -4108
+OP: LOADI R3 <- 2
+OP: LOADB R4 <- [@-8+ R14], val = -4108 
+OP: STOREB [@0+-4108] <- 2 val: 2
+OP: LOADB R5 <- [@-8+ R14], val = -4108 
+OP: LOADB R6 <- [@0+ R5], val = 2 
+OP: MOVE R0 <- R6 
+OP: MOVE R15 <- R14 
+OP: POP R14 <- [@4294963192]
+OP: Return 3
+OP: MOVE R1 <- R0 
+OP: STORE [@0] <- R1 val: 2
+OP: LOAD R2 <- [@0], val = 2 
+OP: LOADI R3 <- 2
+OP: EQL R4 <- R2 == R3
+OP: MOVE R0 <- R4 
+OP: Call 29 ret@: 10
+OP: PUSH [@4294963192] <- R14
+OP: MOVE R14 <- R15 
+OP: LOAD R1 <- [@-4], val = 1 
+OP: AND R2 <- R1 or R0
+OP: STORE [@-4] <- R2 val: 1
+OP: MOVE R15 <- R14 
+OP: POP R14 <- [@4294963192]
+OP: Return 10
+OP: MOVE R5 <- R0 
+OP: MOVE R0 <- R5 
+STOP
+LOAD R0 <- [@-4], val = 1 
+Registers: 1, 1, 1, 2, 1, 1, 2, 0, 0, 0

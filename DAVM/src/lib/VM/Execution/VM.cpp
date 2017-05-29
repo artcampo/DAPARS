@@ -67,6 +67,7 @@ bool VirtualMachine::ExecProcess(){
               case IR_STOREB:StoreB(reg_dst, reg_base, literal);  break;
               case IR_PUSH:  Push  (reg_dst);                     break;
               case IR_POP:   Pop   (reg_dst);                     break;
+              case IR_LEA:   Lea   (reg_dst, reg_base, literal);  break;
               default:       error_log_.Exception("op not found (c1)"); break;
             }
             break;

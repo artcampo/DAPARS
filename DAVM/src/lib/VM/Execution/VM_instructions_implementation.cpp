@@ -247,7 +247,12 @@ std::cout << "AND R"<<reg_dst<<" <- R"<<reg_src1<<" or R"<< reg_src2 <<"\n";
     & process_->registers_[reg_src2];
 }
 
-
+void VirtualMachine::Lea(const Reg reg_dst, const Reg reg_base, const Word literal){
+  std::cout << "LEA R"<<reg_dst<<" = " <<literal <<" + R" << reg_base << " (val: "
+            << process_->registers_[reg_base] << ")\n";
+  process_->registers_[reg_dst]
+    = process_->registers_[reg_base] + literal;
+}
 
 
 }//end namespace VM
