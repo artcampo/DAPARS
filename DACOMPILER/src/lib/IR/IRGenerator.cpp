@@ -17,7 +17,7 @@ void IRGenerator::Visit(ProgBody const& p, const Node* successor){
 //   std::cout << "P\n";
   p.GetProgInit().Accept (*this, nullptr);
 
-  for(auto& it : p.GetClassDefs() ) it->Accept(*this, nullptr);
+
 
   //Process main
   for(auto& it : p) if(it->Name()=="main"){
@@ -25,6 +25,9 @@ void IRGenerator::Visit(ProgBody const& p, const Node* successor){
     it->Accept(*this, successor);
     CurrentStream().AppendReturnMain();
   }
+
+  //Process classes
+  for(auto& it : p.GetClassDefs() ) it->Accept(*this, nullptr);
 
   //Process the rest of the functions
   for(auto& it : p) if(it->Name()!="main"){

@@ -1,15 +1,63 @@
 EXEC
-OP: PUSH [@4294963196] <- R13
-OP: PUSH [@4294963192] <- R14
+OP: LOADI R0 <- 1
+OP: STORE [@-4] <- R0 val: 1
+OP: LOADI R1 <- 4
+OP: MOVE R0 <- R1 
+OP: LOADI R2 <- 0
+OP: PUSH [@4294963196] <- R2
+OP: Call 30 ret@: 7
+OP: PUSH [@4294963188] <- R13
+OP: PUSH [@4294963184] <- R14
 OP: MOVE R14 <- R15 
-OP: STOREB [@0+0] <- 0 val: 0
+OP: STOREB [@0+0] <- 4 val: 4
 OP: LOADI R1 <- 1
 OP: MOVE R0 <- R1 
 OP: MOVE R15 <- R14 
-OP: POP R14 <- [@4294963192]
-OP: POP R13 <- [@4294963196]
-OP: Return 0
-LOAD R0 <- [@-4], val = 0 
-Errors in execution:
-Stack underflow
-Compiler injected tests failed
+OP: POP R14 <- [@4294963184]
+OP: POP R13 <- [@4294963188]
+OP: Return 7
+OP: OP: MOVE R3 <- R0 
+OP: STORE [@8] <- R3 val: 1
+OP: LOADI R4 <- 0
+OP: MOVE R0 <- R4 
+OP: Call 40 ret@: 13
+OP: PUSH [@4294963188] <- R13
+OP: LOADB R1 <- [@0+ R13], val = 4 
+OP: MOVE R0 <- R1 
+OP: POP R13 <- [@4294963188]
+OP: Return 13
+OP: MOVE R5 <- R0 
+OP: STORE [@4] <- R5 val: 4
+OP: LOAD R6 <- [@8], val = 1 
+OP: LOADI R7 <- 1
+OP: EQL R8 <- R6 == R7
+OP: MOVE R0 <- R8 
+OP: Call 45 ret@: 20
+OP: PUSH [@4294963188] <- R14
+OP: MOVE R14 <- R15 
+OP: LOAD R1 <- [@-4], val = 1 
+OP: AND R2 <- R1 or R0
+OP: STORE [@-4] <- R2 val: 1
+OP: MOVE R15 <- R14 
+OP: POP R14 <- [@4294963188]
+OP: Return 20
+OP: MOVE R9 <- R0 
+OP: LOAD R10 <- [@4], val = 4 
+OP: LOADI R11 <- 4
+OP: EQL R12 <- R10 == R11
+OP: MOVE R0 <- R12 
+OP: Call 45 ret@: 26
+OP: PUSH [@4294963188] <- R14
+OP: MOVE R14 <- R15 
+OP: LOAD R1 <- [@-4], val = 1 
+OP: AND R2 <- R1 or R0
+OP: STORE [@-4] <- R2 val: 1
+OP: MOVE R15 <- R14 
+OP: POP R14 <- [@4294963188]
+OP: Return 26
+OP: MOVE R13 <- R0 
+OP: AND R14 <- R9 or R13
+OP: MOVE R0 <- R14 
+STOP
+LOAD R0 <- [@-4], val = 1 
+Registers: 1, 1, 1, 1, 0, 4, 1, 1, 1, 1
