@@ -1,0 +1,10 @@
+int f_normal(int p0, int p1){ return p1; }
+int f_with_stack_vars(int p0, int p1){ return p1; }
+class O{ int f_this_in_stack(int p0, int p1){ return p1; } }
+
+bool main(){
+O inst;
+int a;
+a = f_normal(0, 2) + f_with_stack_vars(0, 3) + inst.f_this_in_stack(0, 11);
+return __test(a == 16);
+}

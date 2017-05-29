@@ -1,0 +1,148 @@
+Symbol: [ in scope 2 p1 of type int] to offset: 2
+Symbol: [ in scope 3 p1 of type int] to offset: 2
+Symbol: [ in scope 5 p1 of type int] to offset: 3
+Symbol: [ in scope 5 p1 of type int] to offset: 3
+%0 = LoadI(0)
+%1 = LoadI(2)
+SetArg( %0)
+SetArg( %1)
+call [LT entry_f_normal[isTarget]:0 ()]
+%2 = GetRetVal()
+%3 = LoadI(0)
+%4 = LoadI(3)
+SetArg( %3)
+SetArg( %4)
+call [LT entry_f_with_stack_vars[isTarget]:0 ()]
+%5 = GetRetVal()
+%6 = %2 + %5
+%7 = LoadI(0)
+%8 = LoadI(11)
+SetArg( %7)
+SetArg( %8)
+%9 = PtrElem( LT MainDS:0 (inst))
+SetArg( %9)
+call [LT entry_O::f_this_in_stack[isTarget]:0 ()]
+%10 = GetRetVal()
+%11 = %6 + %10
+store %11 to [LT MainDS:0 (a)]
+%13 = Load [LT MainDS:0 (a)]
+%14 = LoadI(16)
+%15 = %13 == %14---REG_ALLOC-     r1: %0  
+---REG_ALLOC-     r2: %1  
+---REG_ALLOC-     r3: %2  
+---REG_ALLOC-     r4: %3  
+---REG_ALLOC-     r5: %4  
+---REG_ALLOC-     r6: %5  
+---REG_ALLOC-     r7: %6  
+---REG_ALLOC-     r8: %7  
+---REG_ALLOC-     r9: %8  
+---REG_ALLOC-     r10: %9  
+---REG_ALLOC-     r11: %10  
+---REG_ALLOC-     r12: %11  a  
+---REG_ALLOC-     r13: %13  
+---REG_ALLOC-     r14: %14  
+---REG_ALLOC- [m] %0 : r1 
+---REG_ALLOC- [m] %1 : r2 
+---REG_ALLOC- [m] %2 : r3 
+---REG_ALLOC- [m] %3 : r4 
+---REG_ALLOC- [m] %4 : r5 
+---REG_ALLOC- [m] %5 : r6 
+---REG_ALLOC- [m] %6 : r7 
+---REG_ALLOC- [m] %7 : r8 
+---REG_ALLOC- [m] %8 : r9 
+---REG_ALLOC- [m] %9 : r10 
+---REG_ALLOC- [m] %10 : r11 
+---REG_ALLOC- [m] %11 : r12 
+---REG_ALLOC- [m] %13 : r13 
+---REG_ALLOC- [m] %14 : r14 
+---REG_ALLOC- [m] a : r12 
+flushing 1
+
+SetArg( %15)
+call [LT entry___test[isTarget]:0 ()]
+%16 = GetRetVal()
+SetRetVal( %16)
+ReturnMain
+%0 = Load [RT arp_O::f_this_in_stack[isArp]:3 (p1)]
+SetRetVal( %0)
+Return
+%0 = Load [RT arp_f_normal[isArp]:2 (p1)]
+SetRetVal( %0)
+Return
+%0 = Load [RT arp_f_with_stack_vars[isArp]:2 (p1)]
+SetRetVal( %0)
+Return
+%0 = Load [LT MainDS:-4 (__test_result)]
+%1 = GetArg( arg0 )
+%2 = %0 and %1
+store %2 to [LT MainDS:-4 (__test_result)]
+Return
+---------
+Bytecode:
+0: LOADI, r0 val: 1  <- [main]
+1: STORE, r0 -> [@-4]
+2: LOADI, r1 val: 0
+3: LOADI, r2 val: 2
+4: MOV, rs1 rd0
+5: PUSH, r2
+6: CALL: @45
+7: ADDI, rd15 1
+8: MOV, rs0 rd3
+9: LOADI, r4 val: 0
+10: LOADI, r5 val: 3
+11: MOV, rs4 rd0
+12: PUSH, r5
+13: CALL: @52
+14: ADDI, rd15 1
+15: MOV, rs0 rd6
+16: ADD, rs3 rs6 rd7
+17: LOADI, r8 val: 0
+18: LOADI, r9 val: 11
+19: MOV, rs8 rd0
+20: PUSH, r9
+21: LOADI, r10 val: 0
+22: PUSH, r10
+23: CALL: @36
+24: ADDI, rd15 2
+25: MOV, rs0 rd11
+26: ADD, rs7 rs11 rd12
+27: STORE, r12 -> [@0]
+28: LOAD, rd13 <- [@0]
+29: LOADI, r14 val: 16
+30: EQT, rs13 rs14 rd1
+31: MOV, rs1 rd0
+32: CALL: @59
+33: MOV, rs0 rd14
+34: MOV, rs14 rd0
+35: STOP
+36: PUSH, r13  <- [O::f_this_in_stack]
+37: PUSH, r14
+38: MOV, rs15 rd14
+39: LOADB, r1 <- [@ r14 + 3]
+40: MOV, rs1 rd0
+41: MOV, rs14 rd15
+42: POP, r14
+43: POP, r13
+44: RETURN
+45: PUSH, r14  <- [f_normal]
+46: MOV, rs15 rd14
+47: LOADB, r1 <- [@ r14 + 2]
+48: MOV, rs1 rd0
+49: MOV, rs14 rd15
+50: POP, r14
+51: RETURN
+52: PUSH, r14  <- [f_with_stack_vars]
+53: MOV, rs15 rd14
+54: LOADB, r1 <- [@ r14 + 2]
+55: MOV, rs1 rd0
+56: MOV, rs14 rd15
+57: POP, r14
+58: RETURN
+59: PUSH, r14  <- [__test]
+60: MOV, rs15 rd14
+61: LOAD, rd1 <- [@-4]
+62: AND, rs1 rs0 rd2
+63: STORE, r2 -> [@-4]
+64: MOV, rs14 rd15
+65: POP, r14
+66: RETURN

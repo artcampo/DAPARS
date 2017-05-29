@@ -40,4 +40,5 @@ test_comp_davm lang_if
 test_comp_davm lang_args
 test_comp_davm lang_pointers
 test_comp_davm lang_member
-regenerate_test_comp_davm lang_pointers_stack
+test_comp_davm lang_pointers_stack
+test_comp_davm lang_args_offsets

@@ -1,0 +1,68 @@
+EXEC
+OP: LOADI R0 <- 1
+OP: STORE [@-4] <- R0 val: 1
+OP: LOADI R1 <- 0
+OP: LOADI R2 <- 2
+OP: MOVE R0 <- R1 
+OP: PUSH [@4294963196] <- R2
+OP: Call 45 ret@: 7
+OP: PUSH [@4294963188] <- R14
+OP: MOVE R14 <- R15 
+OP: LOADB R1 <- [@2+ R14], val = 0 
+OP: MOVE R0 <- R1 
+OP: MOVE R15 <- R14 
+OP: POP R14 <- [@4294963188]
+OP: Return 7
+OP: OP: MOVE R3 <- R0 
+OP: LOADI R4 <- 0
+OP: LOADI R5 <- 3
+OP: MOVE R0 <- R4 
+OP: PUSH [@4294963192] <- R5
+OP: Call 52 ret@: 14
+OP: PUSH [@4294963184] <- R14
+OP: MOVE R14 <- R15 
+OP: LOADB R1 <- [@2+ R14], val = 0 
+OP: MOVE R0 <- R1 
+OP: MOVE R15 <- R14 
+OP: POP R14 <- [@4294963184]
+OP: Return 14
+OP: OP: MOVE R6 <- R0 
+OP: ADD R7 <- R3 + R6
+OP: LOADI R8 <- 0
+OP: LOADI R9 <- 11
+OP: MOVE R0 <- R8 
+OP: PUSH [@4294963188] <- R9
+OP: LOADI R10 <- 0
+OP: PUSH [@4294963184] <- R10
+OP: Call 36 ret@: 24
+OP: PUSH [@4294963176] <- R13
+OP: PUSH [@4294963172] <- R14
+OP: MOVE R14 <- R15 
+OP: LOADB R1 <- [@3+ R14], val = 0 
+OP: MOVE R0 <- R1 
+OP: MOVE R15 <- R14 
+OP: POP R14 <- [@4294963172]
+OP: POP R13 <- [@4294963176]
+OP: Return 24
+OP: OP: MOVE R11 <- R0 
+OP: ADD R12 <- R7 + R11
+OP: STORE [@0] <- R12 val: 0
+OP: LOAD R13 <- [@0], val = 0 
+OP: LOADI R14 <- 16
+OP: EQL R1 <- R13 == R14
+OP: MOVE R0 <- R1 
+OP: Call 59 ret@: 33
+OP: PUSH [@4294963176] <- R14
+OP: MOVE R14 <- R15 
+OP: LOAD R1 <- [@-4], val = 1 
+OP: AND R2 <- R1 or R0
+OP: STORE [@-4] <- R2 val: 0
+OP: MOVE R15 <- R14 
+OP: POP R14 <- [@4294963176]
+OP: Return 33
+OP: MOVE R14 <- R0 
+OP: MOVE R0 <- R14 
+STOP
+LOAD R0 <- [@-4], val = 0 
+Errors in execution:
+Compiler injected tests failed

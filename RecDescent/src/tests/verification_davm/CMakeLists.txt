@@ -11,6 +11,7 @@ INSTALL(FILES #input lang files
               lang_pointers.lang
               lang_member.lang
               lang_pointers_stack.lang
+              lang_args_offsets.lang
 
               #output of their compilation
               functions.comp.ver
@@ -23,6 +24,7 @@ INSTALL(FILES #input lang files
               lang_pointers.comp.ver
               lang_member.comp.ver
               lang_pointers_stack.comp.ver
+              lang_args_offsets.comp.ver
 
               #output of davm of their execution
               functions.vm.ver
@@ -35,4 +37,6 @@ INSTALL(FILES #input lang files
               lang_pointers.vm.ver
               lang_member.vm.ver
               lang_pointers_stack.vm.ver
+              lang_args_offsets.vm.ver
+
         DESTINATION tests/davm_tests)
